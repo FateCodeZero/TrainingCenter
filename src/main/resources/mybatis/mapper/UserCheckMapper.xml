@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.trainingcenter.dao.UserCheckMapper">
+
+    <!--tab_user_check表的所有列-->
+    <sql id="userCheckColumns">
+        id,username,password
+    </sql>
+
+    <!--
+        public UserCheck login(@Param("username") String username,@Param("password") String password);
+        登录验证
+        -->
+    <select id="login" resultType="com.trainingcenter.bean.UserCheck">
+        SELECT
+        <include refid="userCheckColumns"></include>
+        FROM tab_user_check
+        WHERE username = #{username} AND password = #{password}
+    </select>
+
+    <!--
+        public UserCheck isExist(@Param("username") String username);
+        验证用户名是否已存在
+        -->
+    <select id="isExist" resultType="com.trainingcenter.bean.UserCheck">
+        SELECT
+        <include refid="userCheckColumns"></include>
+        FROM tab_user_check
+        WHERE username = #{username}
+    </select>
+
+    <!--
+        public Integer add(@Param("userCheck")UserCheck userCheck);
+        添加/注册
+        -->
+    <insert id="add" parameterType="com.trainingcenter.bean.UserCheck">
+        INSERT INTO tab_user_check(<include refid="userCheckColumns"></include>)
+        VALUES (#{userCheck.id},#{userCheck.username},#{userCheck.password})
+    </insert>
+
+    <!--
+        public Integer delete(@Param("id") String id);
+        删除/注销
+        -->
+    <delete id="delete" parameterType="java.lang.String">
+        DELETE FROM tab_user_check
+        WHERE id = #{id}
+    </delete>
+
+    <!--
+        public Integer update(@Param("userCheck") UserCheck userCheck);
+        更新/修改
+        -->
+    <update id="update" parameterType="com.trainingcenter.bean.UserCheck">
+        UPDATE tab_user_check
+        <trim prefix="set">
+            <if test="userCheck.password != null and userCheck.password != '' ">
+                password = #{userCheck.password}
+            </if>
+        </trim>
+        WHERE id = #{userCheck.id}
+    </update>
+
+    <!--
+        public UserCheck getUserCheckById(@Param("id") String id);
+        通过id获取登录信息
+        -->
+    <select id="getUserCheckById" resultType="com.trainingcenter.bean.UserCheck">
+        SELECT <include refid="userCheckColumns"></include>
+        FROM tab_user_check
+        WHERE id = #{id}
+    </select>
+
+</mapper>
