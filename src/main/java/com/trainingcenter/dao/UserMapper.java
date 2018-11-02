@@ -4,6 +4,7 @@ import com.trainingcenter.bean.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -14,26 +15,6 @@ import java.util.List;
  */
 @Repository("userMapper")
 public interface UserMapper {
-    /**
-     * 用户添加方法
-     * @param user：要添加的用户
-     * @return 返回操作成功的个数，0表示操作失败
-     */
-    public Integer add(@Param("user") User user);
-
-    /**
-     * 用户删除方法
-     * @param id：用户id
-     * @return 返回操作成功的个数，0表示操作失败
-     */
-    public Integer delete(@Param("id") String id);
-
-    /**
-     * 用户更新方法
-     * @param user：要更新的用户
-     * @return 返回操作成功的个数，0表示操作失败
-     */
-    public Integer update(@Param("user") User user);
 
     /**
      * 通过id获取用户
@@ -58,4 +39,25 @@ public interface UserMapper {
      */
     public List<User> getUsers(@Param("start") Integer start, @Param("number") Integer number,
                                @Param("searchContent") String searchContent);
+
+    /**
+     * 用户添加方法
+     * @param user：要添加的用户
+     * @return 返回操作成功的个数，0表示操作失败
+     */
+    public Integer add(@Valid @Param("user") User user);
+
+    /**
+     * 用户更新方法
+     * @param user：要更新的用户
+     * @return 返回操作成功的个数，0表示操作失败
+     */
+    public Integer update(@Valid @Param("user") User user);
+
+    /**
+     * 用户删除方法
+     * @param id：用户id
+     * @return 返回操作成功的个数，0表示操作失败
+     */
+    public Integer delete(@Param("id") String id);
 }

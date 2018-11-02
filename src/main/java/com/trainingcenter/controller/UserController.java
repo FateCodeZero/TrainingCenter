@@ -1,20 +1,9 @@
 package com.trainingcenter.controller;
 
-import com.trainingcenter.bean.User;
-import com.trainingcenter.bean.UserCheck;
-import com.trainingcenter.service.UserCheckService;
 import com.trainingcenter.service.UserService;
-import com.trainingcenter.utils.AjaxJson;
-import com.trainingcenter.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by IntelliJ IDEA.

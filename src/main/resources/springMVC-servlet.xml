@@ -24,7 +24,7 @@
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 
         <!-- 指定所有页面的前缀 -->
-        <property name="prefix" value="/WEB-INF/pages/"/>
+        <!--<property name="prefix" value="/WEB-INF/pages/"/>-->
 
         <!-- 指定所有页面的后缀 -->
         <property name="suffix" value=".jsp"/>

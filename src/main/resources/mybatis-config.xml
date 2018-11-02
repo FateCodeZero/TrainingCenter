@@ -13,20 +13,25 @@
 	 		目的：防止 mybatis 版本更替带来不一致的问题
 	 -->
 	 <settings>
-	 	<!-- 设置驼峰命名法 -->
-	 	<setting name="mapUnderscoreToCamelCase" value="true"/>
-	 	
-	 	<!-- 设置字段为空时的 数据库类型，默认为 OTHER（oracle不认识） -->
-	 	<setting name="jdbcTypeForNull" value="NULL"/>
-	 	
-	 	<!-- 开启懒加载策略，对所有关联对象都会延迟加载（默认false） -->
-	 	<setting name="lazyLoadingEnabled" value="true"/>
-	 	
-	 	<!-- 开启时，任何方法的调用都会加载该对象的所有属性。否则，每个属性会按需加载
+		 <!-- 设置驼峰命名法 -->
+		 <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+		 <!-- 设置字段为空时的 数据库类型，默认为 OTHER（oracle不认识） -->
+		 <setting name="jdbcTypeForNull" value="NULL"/>
+
+		 <!-- 开启全局二级缓存 -->
+		 <setting name="cacheEnabled" value="true"/>
+
+		 <!-- 开启懒加载策略，对所有关联对象都会延迟加载（默认false） -->
+		 <setting name="lazyLoadingEnabled" value="true"/>
+
+		 <!-- 开启时，任何方法的调用都会加载该对象的所有属性。否则，每个属性会按需加载
 	 			在mybatis 3.4.1之前默认为 true，之后为 false
 	 	 -->
-	 	<setting name="aggressiveLazyLoading" value="false"/>
-	 	
+		 <setting name="aggressiveLazyLoading" value="false"/>
+
+		 <!-- 打印查询语句 -->
+		 <setting name="logImpl" value="STDOUT_LOGGING" />
 	 </settings>
 	
 	<!-- 

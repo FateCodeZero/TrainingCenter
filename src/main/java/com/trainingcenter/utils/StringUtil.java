@@ -9,6 +9,19 @@ package com.trainingcenter.utils;
 public class StringUtil {
 
     /**
+     * 判断字符串为空
+     * @param string
+     * @return
+     */
+    public static boolean isEmpty(String string){
+        if(string == null || string.equals("")){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    /**
      * 判断字符串不为空
      * @param string
      * @return

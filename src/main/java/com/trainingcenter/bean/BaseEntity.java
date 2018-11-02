@@ -14,11 +14,6 @@ import java.util.Date;
 public class BaseEntity implements Serializable {
 
     /**
-     * ID，对应数据库各表的（id）字段
-     */
-    protected String id;
-
-    /**
      * 备注，对应数据库各表的（remarks）字段
      */
     protected String remarks;
@@ -42,14 +37,6 @@ public class BaseEntity implements Serializable {
      * 更新时间，对应数据库各表的（update_date）字段
      */
     protected Date updateDate;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getRemarks() {
         return remarks;

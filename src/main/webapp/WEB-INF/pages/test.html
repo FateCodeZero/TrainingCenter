@@ -1,0 +1,49 @@
+<div class="container" >
+	<h2 style="text-align:center">会员登录 </h2>
+	<br>
+	<form action="<%=path %>/user/login" method="post" role="form" class="form-horizontal" onsubmit="return on_submit()" >
+		<div class="form-group">
+			<label class="col-md-4 control-label" style="text-align:right">登录名称</label>
+			<div class="col-md-4">
+				<input name="user.userName" id="userName" value="${user.userName}" type="text" class="form-control" placeholder="请输入账号">
+			</div>
+			<div class="col-md-4"><label class="error" id="userEr">
+			<c:if test="${er==4 }">用户名不存在</c:if>
+			</label></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-4 control-label" style="text-align:right">登录密码</label>
+			<div class="col-md-4">
+			  	<input name="user.pswd" id="pswd" value="${user.pswd }" type="password" class="form-control" placeholder="请输入密码">
+			</div>
+			<div class="col-md-4"><label class="error" id="pswdEr">
+			<c:if test="${er==5 }">密码错误</c:if>
+			</label></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-4 control-label" style="text-align:right">验  证  码</label>
+			<div class="col-md-2">
+			  	<input name="vali" id="loginCode" type="text" class="form-control" placeholder="请输入验证码">
+			</div>
+			<div class="col-md-2">
+				<img id='imgVcode' src=" <%=path %>/user/checkCode " title="点击图片切换" style="cursor: pointer;" />
+			</div>
+			<div class="col-md-4"><label class="error" id="codeEr">
+			<c:if test="${er==3 }">验证码错误</c:if>
+			</label></div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-3 col-md-offset-4">
+				<a href="javascript:void(0);" id="checkCode">看不清楚，换一张</a>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-2 col-md-offset-4">
+				<input type="submit" class="btn btn-primary btn-block" value="登录" />	
+			</div>
+			<div class="col-md-2">
+				<a class="btn btn-default btn-block" href="">取消</a>
+			</div>
+		</div>
+	</form>
+</div>

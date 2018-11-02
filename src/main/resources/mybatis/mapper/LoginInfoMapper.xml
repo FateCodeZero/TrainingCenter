@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.trainingcenter.dao.LoginInfoMapper">
+
+    <!-- 使用EhcacheCache二级缓存
+		eviction：缓存的回收策略，默认为LRU
+			LRU – 最近最少未使用的:移除最长时间不被使用的对象。
+			FIFO – 先进先出:按对象进入缓存的顺序来移除它们。
+			SOFT – 软引用:移除基于垃圾回收器状态和软引用规则的对象。
+			WEAK – 弱引用:更积极地移除基于垃圾收集器状态和弱引用规则的对象。
+
+		flushInterval：缓存刷新间隔，即多长时间清空一次缓存（单位毫秒），默认不清空
+
+		readOnly：缓存是否只读(true|false)
+			true：mybatis认为所有从缓存中获取数据的操作都是只读操作，不会修改数据，
+						mybatis为了加快获取速度，直接就会将数据在缓存中的引用交给用户。不安全，但速度快。
+			false：mybatis觉得获取的数据可能会被修改。
+					mybatis会利用序列化&反序列化技术克隆一份新的数据给用户。安全，速度慢。
+
+		size：缓存存放多少元素。
+
+		type：指定自定义缓存的全类名，该类需要实现org.apache.ibatis.cache.Cache接口，
+					mybatis默认使用HashMap进行缓存
+
+		blocking（是否使用阻塞缓存）: 默认为false，当指定为true时将采用BlockingCache进行封装，
+					blocking，阻塞的意思，使用BlockingCache会在查询缓存时锁住对应的Key，
+					如果缓存命中了则会释放对应的锁，否则会在查询数据库以后再释放锁这样
+					可以阻止并发情况下多个线程同时查询数据，详情可参考BlockingCache的源码。
+	 -->
+    <cache eviction="LRU" flushInterval="60000" readOnly="false" size="1024" blocking="false"
+           type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+
+    <!--tab_login_info表的所有列-->
+    <sql id="loginInfoColumns">
+        id,username,password,login_IP,last_login_time
+    </sql>
+
+    <!--
+        public LoginInfo getLoginInfoById(@Param("id") String id);
+        通过id获取登录信息
+        -->
+    <select id="getLoginInfoById" resultType="com.trainingcenter.bean.LoginInfo">
+        SELECT
+        <include refid="loginInfoColumns"></include>
+        FROM tab_login_info
+        WHERE id = #{id}
+    </select>
+
+    <!--
+         public LoginInfo getLoginInfoByUsername(@Param("username") String username);
+        通过username获取登录信息
+        -->
+    <select id="getLoginInfoByUsername" resultType="com.trainingcenter.bean.LoginInfo">
+        SELECT
+        <include refid="loginInfoColumns"></include>
+        FROM tab_login_info
+        WHERE username = #{username}
+    </select>
+
+    <!--
+       public LoginInfo getLoginInfoByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+       通过用户名与密码获取登录信息
+       -->
+    <select id="getLoginInfoByUsernameAndPassword" resultType="com.trainingcenter.bean.LoginInfo">
+        SELECT
+        <include refid="loginInfoColumns"></include>
+        FROM tab_login_info
+        WHERE username = #{username} AND password = #{password}
+    </select>
+
+    <!--    public List<LoginInfo> getLoginInfos(@Param("start") Integer start, @Param("number") Integer number,
+            @Param("searchContent") String searchContent);
+        分页查询
+    -->
+    <select id="getLoginInfos" resultType="com.trainingcenter.bean.LoginInfo">
+        SELECT
+        <include refid="loginInfoColumns"></include>
+        FROM tab_login_info
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != '' ">
+                and(
+                username like CONCAT('%',#{searchContent},'%')
+                OR login_IP like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+        public Integer add(@Param("loginInfo") LoginInfo loginInfo);
+        添加/注册
+        -->
+    <insert id="add">
+        INSERT INTO tab_login_info(<include refid="loginInfoColumns"></include>)
+        VALUES
+        (#{loginInfo.id},#{loginInfo.username},#{loginInfo.password},#{loginInfo.loginIP},#{loginInfo.lastLoginTime})
+    </insert>
+
+    <!--
+        public Integer delete(@Param("id") String id);
+        删除/注销
+        -->
+    <delete id="delete">
+        DELETE FROM tab_login_info
+        WHERE id = #{id}
+    </delete>
+
+    <!--
+        public Integer update(@Param("loginInfo") LoginInfo loginInfo);
+        更新/修改
+        -->
+    <update id="update">
+        UPDATE tab_login_info
+        <trim prefix="set">
+            <if test="loginInfo.password != null and loginInfo.password != '' ">
+                password = #{loginInfo.password}
+            </if>
+            <if test="loginInfo.loginIP != null and loginIP.loginIP != '' ">
+                login_IP = #{loginInfo.loginIP}
+            </if>
+            <if test="loginInfo.lastLoginTime != null">
+                last_login_time = #{loginInfo.lastLoginTime}
+            </if>
+        </trim>
+        WHERE id = #{loginInfo.id}
+    </update>
+
+</mapper>

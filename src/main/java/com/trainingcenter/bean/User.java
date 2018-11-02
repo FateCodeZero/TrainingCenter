@@ -1,6 +1,10 @@
 package com.trainingcenter.bean;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,10 +14,19 @@ import java.io.Serializable;
  *
  * 用户表，对应数据库（tab_user）表
  */
-public class User extends BaseEntity implements Serializable {
+public class User implements Serializable {
+
+    /**
+     * id，对应数据库（id）字段
+     */
+    @NotBlank(message = "用户id不能为空")
+    private String id;
+
     /**
      * 用户名，对应数据库（username）字段
      */
+    @NotBlank(message = "账号不能为空")
+    @Email(message = "邮箱格式不正确")
     private String username;
 
     /**
@@ -22,23 +35,37 @@ public class User extends BaseEntity implements Serializable {
     private String nickname;
 
     /**
-     * 用户头像URL，对应数据库（head_portrait_url）字段
+     * 用户头像URL，对应数据库（head_portrait）字段
      */
-    private String headPortraitUrl;
+    private String headPortrait;
+
+    /**
+     * 用户真实姓名，对应数据库（real_name）字段
+     */
+    private String realName;
+
+    /**
+     * 生日，对应数据库（birthday）字段
+     */
+    @Past(message = "生日必须是一个过去的日期")
+    private Date birthday;
 
     /**
      * 性别，对应数据库（gender）字段
      */
+    @Range(min = 0,max = 1,message = "性别只能是0或1")
     private Integer gender;
 
     /**
      * 手机号，对应数据库（phone）字段
      */
+    @Pattern(regexp = " ^1[0-9]{10}$",message = "手机号码格式不正确")
     private String phone;
 
     /**
      * 邮箱，对应数据库（email）字段
      */
+    @Email(message = "邮箱格式不正确")
     private String email;
 
     /**
@@ -47,9 +74,9 @@ public class User extends BaseEntity implements Serializable {
     private String address;
 
     /**
-     * 用户签名，对应数据库（signature）字段
+     * 用户签名，对应数据库（motto）字段
      */
-    private String signature;
+    private String motto;
 
     /**
      * 用户类型ID，对应数据库（user_type_id）字段
@@ -57,10 +84,10 @@ public class User extends BaseEntity implements Serializable {
     private String userTypeId;
 
     /**
-     * 用户编码（教职工与学生独有，教职工为职工编号，学生为学号），
-     * 对应数据库（user_type_id）字段
+     * 用户编码（教职工与学生独有，教职工为职工编号，学生为学号，其他用户该字段为空）
+     * 对应数据库（user_code）字段
      */
-    private String code;
+    private String userCode;
 
     /**
      * 用户描述，对应数据库（describe）字段
@@ -68,14 +95,31 @@ public class User extends BaseEntity implements Serializable {
     private String describe;
 
     /**
-     * 用户相关图片，对应数据库（img_urls）字段
+     * 用户相关图片，对应数据库（imgs）字段
      */
-    private String imgUrls;
+    private String imgs;
 
     /**
      * 用户使用状态，对应数据库（state）字段
+     * 1：启用
+     * 0：禁用
+     * -1：已注销
      */
+    @Range(min = -1,max = 1,message = "用户使用状态码只能是-1~1")
     private Integer state;
+
+    /**
+     * 注册时间，对应数据库（register_time）字段
+     */
+    private Date registerTime;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -93,12 +137,28 @@ public class User extends BaseEntity implements Serializable {
         this.nickname = nickname;
     }
 
-    public String getHeadPortraitUrl() {
-        return headPortraitUrl;
+    public String getHeadPortrait() {
+        return headPortrait;
     }
 
-    public void setHeadPortraitUrl(String headPortraitUrl) {
-        this.headPortraitUrl = headPortraitUrl;
+    public void setHeadPortrait(String headPortrait) {
+        this.headPortrait = headPortrait;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public Integer getGender() {
@@ -133,12 +193,12 @@ public class User extends BaseEntity implements Serializable {
         this.address = address;
     }
 
-    public String getSignature() {
-        return signature;
+    public String getMotto() {
+        return motto;
     }
 
-    public void setSignature(String signature) {
-        this.signature = signature;
+    public void setMotto(String motto) {
+        this.motto = motto;
     }
 
     public String getUserTypeId() {
@@ -149,12 +209,12 @@ public class User extends BaseEntity implements Serializable {
         this.userTypeId = userTypeId;
     }
 
-    public String getCode() {
-        return code;
+    public String getUserCode() {
+        return userCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
 
     public String getDescribe() {
@@ -165,12 +225,12 @@ public class User extends BaseEntity implements Serializable {
         this.describe = describe;
     }
 
-    public String getImgUrls() {
-        return imgUrls;
+    public String getImgs() {
+        return imgs;
     }
 
-    public void setImgUrls(String imgUrls) {
-        this.imgUrls = imgUrls;
+    public void setImgs(String imgs) {
+        this.imgs = imgs;
     }
 
     public Integer getState() {
@@ -181,28 +241,34 @@ public class User extends BaseEntity implements Serializable {
         this.state = state;
     }
 
+    public Date getRegisterTime() {
+        return registerTime;
+    }
+
+    public void setRegisterTime(Date registerTime) {
+        this.registerTime = registerTime;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
                 ", nickname='" + nickname + '\'' +
-                ", headPortraitUrl='" + headPortraitUrl + '\'' +
+                ", headPortrait='" + headPortrait + '\'' +
+                ", realName='" + realName + '\'' +
+                ", birthday=" + birthday +
                 ", gender=" + gender +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
-                ", signature='" + signature + '\'' +
+                ", motto='" + motto + '\'' +
                 ", userTypeId='" + userTypeId + '\'' +
-                ", code='" + code + '\'' +
+                ", userCode='" + userCode + '\'' +
                 ", describe='" + describe + '\'' +
-                ", imgUrls='" + imgUrls + '\'' +
+                ", imgs='" + imgs + '\'' +
                 ", state=" + state +
-                ", id='" + id + '\'' +
-                ", remarks='" + remarks + '\'' +
-                ", createUserId='" + createUserId + '\'' +
-                ", createDate=" + createDate +
-                ", updateUserId='" + updateUserId + '\'' +
-                ", updateDate=" + updateDate +
+                ", registerTime=" + registerTime +
                 '}';
     }
 }

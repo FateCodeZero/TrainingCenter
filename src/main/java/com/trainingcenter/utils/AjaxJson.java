@@ -1,6 +1,6 @@
 package com.trainingcenter.utils;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AjaxJson {
     private String msg;     //返回的提示信息
     private Integer code;   //返回的操作代码
-    private ConcurrentHashMap<String,Object> data;    //返回的数据
+    private Map<String,Object> data;    //返回的数据
 
     public String getMsg() {
         return msg;
@@ -29,11 +29,11 @@ public class AjaxJson {
         this.code = code;
     }
 
-    public ConcurrentHashMap<String, Object> getData() {
+    public Map<String, Object> getData() {
         return data;
     }
 
-    public void setData(ConcurrentHashMap<String, Object> data) {
+    public void setData(Map<String, Object> data) {
         this.data = data;
     }
 }
