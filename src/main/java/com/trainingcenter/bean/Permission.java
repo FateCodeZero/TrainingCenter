@@ -32,9 +32,9 @@ public class Permission extends BaseEntity implements Serializable {
     private String describe;
 
     /**
-     * 权限对应资源id,对应数据库（resource_id）字段
+     * 权限对应资源url,对应数据库（url）字段
      */
-    private String resourceId;
+    private String url;
 
     public String getId() {
         return id;
@@ -60,12 +60,12 @@ public class Permission extends BaseEntity implements Serializable {
         this.describe = describe;
     }
 
-    public String getResourceId() {
-        return resourceId;
+    public String getUrl() {
+        return url;
     }
 
-    public void setResourceId(String resourceId) {
-        this.resourceId = resourceId;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class Permission extends BaseEntity implements Serializable {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", describe='" + describe + '\'' +
-                ", resourceId='" + resourceId + '\'' +
+                ", url='" + url + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", createUserId='" + createUserId + '\'' +
                 ", createDate=" + createDate +

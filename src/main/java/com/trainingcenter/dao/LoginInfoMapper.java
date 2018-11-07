@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -69,5 +70,15 @@ public interface LoginInfoMapper {
      */
     public Integer update(@Valid @Param("loginInfo") LoginInfo loginInfo);
 
+    /**
+     * 获取含有指定 角色 的所有用户
+     * @param roleId 指定角色id
+     * @param start：从第几条数据开始
+     * @param number：要获取多少条数据
+     * @param searchContent：模糊查询内容
+     * @return 返回含有该角色的所有用户，支持分页与模糊查询
+     */
+    public Collection<LoginInfo> getLoginInfosByRoleId(@Param("roleId") String roleId,@Param("start") Integer start,
+                                                       @Param("number") Integer number, @Param("searchContent") String searchContent);
 
 }

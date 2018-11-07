@@ -2,6 +2,7 @@ package com.trainingcenter.service;
 
 import com.trainingcenter.bean.Role;
 import com.trainingcenter.exception.DeleteException;
+import com.trainingcenter.exception.InsertException;
 import org.apache.ibatis.annotations.Param;
 
 import javax.validation.Valid;
@@ -21,6 +22,14 @@ public interface RoleService {
      * @return 返回对应的角色对象
      */
     public Role getRoleById(String id);
+
+    /**
+     * 通过角色名称获取角色
+     * @param name：角色名称
+     * @return 返回对应的角色对象
+     */
+    public Role getRoleByName(@Param("name") String name);
+
     /**
      * 分页获取所有用户
      *
@@ -29,14 +38,14 @@ public interface RoleService {
      * @param searchContent：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public List<Role> getRoles(Integer currentPage,Integer rows,String searchContent);
+    public List<Role> getRoles(Integer currentPage, Integer rows, String searchContent);
 
     /**
      * 角色添加方法
      * @param role：要添加的角色
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer add(@Valid @Param("role") Role role);
+    public Integer add(@Valid @Param("role") Role role) throws InsertException;
 
     /**
      * 角色更新方法

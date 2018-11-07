@@ -9,6 +9,13 @@
         <!-- 控制Spring版本 -->
         <spring.version>5.0.6.RELEASE</spring.version>
 
+        <!-- spring-security 权限框架 -->
+        <spring-security.version>5.0.6.RELEASE</spring-security.version>
+        <security-oauth2.version>2.3.3.RELEASE</security-oauth2.version>
+
+        <!--谷歌验证码生成器-->
+        <kaptcha.version>2.3.2</kaptcha.version>
+
         <!-- 控制 mybatis 相关jar包 -->
         <mybatis.version>3.4.6</mybatis.version>
         <mybaits-spring.verson>1.3.2</mybaits-spring.verson>
@@ -46,6 +53,9 @@
         <standard.version>1.1.2</standard.version>
         <taglibs-standard.verson>1.2.5</taglibs-standard.verson>
 
+        <!--JCaptcha验证码 -->
+        <jcaptcha.version>1.0</jcaptcha.version>
+
         <!-- 控制JSR303 校验标准 版本 -->
         <JSR303.version>6.0.10.Final</JSR303.version>
 
@@ -67,7 +77,6 @@
         <!-- 指定 JDK 版本 -->
         <jdk.version>1.8</jdk.version>
     </properties>
-
     <dependencies>
 
         <!-- 控制Spring版本 -->
@@ -137,6 +146,56 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- spring-security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>${spring-security.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>${security-oauth2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-client</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+
+        <!--谷歌验证码生成器-->
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>${kaptcha.version}</version>
+        </dependency>
+
         <!-- 控制 mybatis 相关jar包 -->
         <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
         <dependency>
@@ -157,12 +216,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mybatis.caches</groupId>
-            <artifactId>mybatis-ehcache</artifactId>
-            <version>${mybatis-ehcache.verson}</version>
         </dependency>
 
         <!-- ehcache与mybatis连接工具 -->
@@ -217,6 +270,18 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
+        </dependency>
+
+        <!--JCaptcha验证码 -->
+        <dependency>
+            <groupId>com.octo.captcha</groupId>
+            <artifactId>jcaptcha</artifactId>
+            <version>${jcaptcha.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jhlabs</groupId>
+            <artifactId>imaging</artifactId>
+            <version>01012005</version>
         </dependency>
 
         <!-- servlet-api -->
@@ -310,7 +375,6 @@
             <version>${log4j.version}</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <!-- 指定JDK版本 -->
@@ -324,8 +388,7 @@
                 </configuration>
             </plugin>
         </plugins>
-
-        <!--解决idea：mapper.xml在类路径下无法被找到的问题 -->
+        <!--解决idea：mapper.xml在类路径下无法被找到的问题-->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

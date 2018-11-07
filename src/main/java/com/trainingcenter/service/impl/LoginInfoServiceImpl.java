@@ -1,25 +1,32 @@
 package com.trainingcenter.service.impl;
 
 import com.trainingcenter.bean.LoginInfo;
+import com.trainingcenter.bean.LoginInfoRole;
+import com.trainingcenter.bean.Role;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.dao.LoginInfoMapper;
+import com.trainingcenter.dao.LoginInfoRoleMapper;
+import com.trainingcenter.dao.RoleMapper;
 import com.trainingcenter.dao.UserMapper;
 import com.trainingcenter.exception.DeleteException;
+import com.trainingcenter.exception.FindException;
 import com.trainingcenter.exception.RegisterException;
+import com.trainingcenter.exception.UpdateException;
 import com.trainingcenter.service.LoginInfoService;
+import com.trainingcenter.utils.LogUtil;
 import com.trainingcenter.utils.MD5Util;
 import com.trainingcenter.utils.StringUtil;
 import com.trainingcenter.utils.SysUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -29,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 17:29
  */
 @Service("loginInfoService")
-public class LoginInfoServiceImpl implements LoginInfoService {
+public class LoginInfoServiceImpl implements LoginInfoService,UserDetailsService {
     @Qualifier("loginInfoMapper")
     @Autowired
     private LoginInfoMapper loginInfoMapper;
@@ -37,6 +44,14 @@ public class LoginInfoServiceImpl implements LoginInfoService {
     @Qualifier("userMapper")
     @Autowired
     private UserMapper userMapper;
+
+    @Qualifier("loginInfoRoleMapper")
+    @Autowired
+    private LoginInfoRoleMapper loginInfoRoleMapper;
+
+    @Qualifier("roleMapper")
+    @Autowired
+    private RoleMapper roleMapper;
 
     /**
      * 验证用户名是否已存在
@@ -93,17 +108,29 @@ public class LoginInfoServiceImpl implements LoginInfoService {
         if (StringUtil.isNotEmpty(username) && StringUtil.isNotEmpty(password)) {
 
             if (!checkUsername(username)){  //确保账号不存在，即账号可用
-                Integer step1,step2;
-                //添加登录信息
+                Integer step1,step2,step3;
+                //1、添加登录信息
                 LoginInfo loginInfo = new LoginInfo();
                 loginInfo.setId(UUID.randomUUID().toString());
                 loginInfo.setUsername(username);
                 loginInfo.setPassword(MD5Util.md5Encrypt(password)); //md5加密
                 loginInfo.setLoginIP(IP);
                 loginInfo.setLastLoginTime(new Date());
-                step1 = loginInfoMapper.add(loginInfo);
+                loginInfo.setState(1);  //默认使用状态为启用
+                loginInfo.setIsUnlocked(1); //默认未锁定
 
-                //设置用户基本信息：id与账号，其他的取默认值
+                //日志记录
+                LogUtil.info(this,"用户注册","添加用户：【"+username+"】登录信息");
+
+                step1 = loginInfoMapper.add(loginInfo);
+                result = step1;
+                if (result == 0){
+                    //日志记录
+                    LogUtil.info(this,"用户注册","添加用户：【"+username+"】登录信息【失败】");
+                    throw new RegisterException("注册失败，请重试");
+                }
+
+                //2、设置用户基本信息：id与账号，其他的取默认值
                 User user = new User();
                 user.setId(UUID.randomUUID().toString());
                 user.setUsername(username);
@@ -113,12 +140,39 @@ public class LoginInfoServiceImpl implements LoginInfoService {
                 user.setState(1);   //使用状态：默认启用
                 user.setRegisterTime(new Date());//注册时间为当前时间
 
-                step2 = userMapper.add(user);
+                //日志记录
+                LogUtil.info(this,"用户注册","添加用户：【"+username+"】基本信息");
 
-                result = Math.min(step1,step2);     //取小值，保证两个一起成功
+                step2 = userMapper.add(user);
+                result = step2;
                 if (result == 0){
-                    throw new RegisterException("注册失败，请重试！");
+                    //日志记录
+                    LogUtil.info(this,"用户注册","添加用户：【"+username+"】基本信息【失败】");
+                    throw new RegisterException("注册失败，请重试");
                 }
+
+                //3、给用户授默认的用户权限
+                Role role = roleMapper.getRoleByName("USER");
+                if (role == null){
+                    LogUtil.info(this,"用户注册","获取【USER】权限【失败】");
+                    throw new RegisterException("注册失败，请重试");
+                }
+                LoginInfoRole loginInfoRole = new LoginInfoRole();
+                loginInfoRole.setId(UUID.randomUUID().toString());
+                loginInfoRole.setLoginInfoId(loginInfo.getId());
+                loginInfoRole.setRoleId(role.getId());
+
+                //日志记录
+                LogUtil.info(this,"用户注册","给用户：【"+username+"】授USER权限");
+
+                step3 = loginInfoRoleMapper.add(loginInfoRole);
+                result = step3;
+                if (result == 0){
+                    //日志记录
+                    LogUtil.info(this,"用户注册","给用户：【"+username+"】授USER权限【失败】");
+                    throw new RegisterException("注册失败，请重试");
+                }
+
             }else {
                 throw new RegisterException("注册失败，用户名已被使用！");
             }
@@ -134,8 +188,19 @@ public class LoginInfoServiceImpl implements LoginInfoService {
      * @return 返回操作成功的数量，返回0表示操作失败
      */
     @Override
-    public Integer update(@Valid LoginInfo loginInfo) {
-        return loginInfo == null?0:loginInfoMapper.update(loginInfo);
+    public Integer update(@Valid LoginInfo loginInfo) throws UpdateException {
+        if (loginInfo == null){
+            throw new UpdateException("更新失败，用户不存在或已被删除");
+        }
+        //日志记录
+        LogUtil.info(this,"用户登录信息更新","用户：【"+ SysUtil.getCurrentUsername()+"】更新了==》用户：【"+loginInfo.getUsername()+"】的登录信息");
+        Integer res = loginInfoMapper.update(loginInfo);
+        if (res == 0){
+            //日志记录
+            LogUtil.info(this,"用户登录信息更新","用户：【"+SysUtil.getCurrentUsername()+"】更新==》用户：【"+loginInfo.getUsername()+"】登录信息【失败】");
+            throw new UpdateException("更新失败，请重试");
+        }
+        return res;
     }
 
     /**
@@ -146,27 +211,54 @@ public class LoginInfoServiceImpl implements LoginInfoService {
      */
     @Transactional
     @Override
-    public Integer delete(String id) throws DeleteException {
+    public Integer delete(String id) throws DeleteException, FindException {
         Integer result = 0;
         if (StringUtil.isNotEmpty(id)){
 
             if (this.getLoginInfoById(id) != null){//确保要删除对象存在
-                Integer step1,step2;
+                Integer step1,step2,step3;
                 //1、先删除用户信息
-                step1 = userMapper.delete(id);
-                //2、再删除账号密码
-                step2 = loginInfoMapper.delete(id);
+                LoginInfo loginInfo = loginInfoMapper.getLoginInfoById(id);
+                User user = userMapper.getUserByUsername(loginInfo.getUsername());
 
-                result = Math.min(step1,step2);  //取小值
+                //日志记录
+                LogUtil.info(this,"删除用户基本信息","用户：【"+SysUtil.getCurrentUsername()+"】删除了==》用户："+loginInfo.getUsername()+"的基本信息");
 
+                step1 = userMapper.delete(user.getId());
+                result = step1;
                 if (result == 0){
-                    throw new DeleteException("删除失败，请稍后重试！");
+                    //日志记录
+                    LogUtil.info(this,"删除用户基本信息","用户：【"+SysUtil.getCurrentUsername()+"】删除==》用户："+loginInfo.getUsername()+"的基本信息【失败】");
+                    throw new DeleteException("删除失败，请稍后重试");
+                }
+
+                //2、删除用户权限信息
+                Collection<Role> roles = roleMapper.getRolesByUserInfoId(loginInfo.getId(), null, null, null);
+                for (Role role: roles) {
+                    //日志记录
+                    LogUtil.info(this,"删除用户权限","用户：【"+SysUtil.getCurrentUsername()+"】删除了==》用户："+loginInfo.getUsername()+"的【"+role.getName()+"】权限");
+
+                    step2 = loginInfoRoleMapper.delete(role.getId());
+                    result = step2;
+                    if (result == 0){
+                        LogUtil.info(this,"删除用户权限","用户：【"+SysUtil.getCurrentUsername()+"】删除==》用户："+loginInfo.getUsername()+"的【"+role.getName()+"】权限【失败】");
+                        throw new DeleteException("删除失败，请稍后重试");
+                    }
+                }
+
+                //3、再删除账号密码
+                LogUtil.info(this,"删除用户登录信息","用户：【"+SysUtil.getCurrentUsername()+"】删除了==》用户："+loginInfo.getUsername()+"的登录信息");
+                step3 = loginInfoMapper.delete(id);
+                result = step3;
+                if (step3 == 0){
+                    LogUtil.info(this,"删除用户登录信息","用户：【"+SysUtil.getCurrentUsername()+"】删除==》用户："+loginInfo.getUsername()+"的登录信息【失败】");
+                    throw new DeleteException("删除失败，请稍后重试");
                 }
             }else {
-                throw new DeleteException("删除失败，对象不存在或已被删除！");
+                throw new DeleteException("删除失败，删除对象不存在或已被删除");
             }
         }else {
-            throw new DeleteException("删除失败，删除对象id不能为空！");
+            throw new DeleteException("删除失败，删除对象id不能为空");
         }
         return result;
     }
@@ -177,9 +269,9 @@ public class LoginInfoServiceImpl implements LoginInfoService {
      * @return 返回操作成功的数目与操作失败的对象
      */
     @Override
-    public Map<String,Object> batchDelete(String ids){
+    public Map<String,Object> batchDelete(String ids) throws FindException, DeleteException {
         if (StringUtil.isEmpty(ids))
-            return null;
+            throw new DeleteException("删除失败，批量删除id不能为空");
 
         Map<String, Object> result = new ConcurrentHashMap<>();  //返回结果map
 
@@ -214,8 +306,11 @@ public class LoginInfoServiceImpl implements LoginInfoService {
      * @return 返回登录信息
      */
     @Override
-    public LoginInfo getLoginInfoById(String id){
-        return StringUtil.isNotEmpty(id)?loginInfoMapper.getLoginInfoById(id):null;
+    public LoginInfo getLoginInfoById(String id) throws FindException {
+        if (StringUtil.isEmpty(id)){
+            throw new FindException("查询失败：用户不存在或已注销");
+        }
+        return loginInfoMapper.getLoginInfoById(id);
     }
 
     /**
@@ -224,8 +319,11 @@ public class LoginInfoServiceImpl implements LoginInfoService {
      * @return
      */
     @Override
-    public LoginInfo getLoginInfoByUsername(String username){
-        return StringUtil.isNotEmpty(username)?loginInfoMapper.getLoginInfoByUsername(username):null;
+    public LoginInfo getLoginInfoByUsername(String username) throws FindException {
+        if (StringUtil.isEmpty(username)){
+            throw new FindException("查询失败：用户不存在或已注销");
+        }
+        return loginInfoMapper.getLoginInfoByUsername(username);
     }
 
     /**
@@ -236,8 +334,38 @@ public class LoginInfoServiceImpl implements LoginInfoService {
      * @return 返回当前页的数据集合
      */
     @Override
-    public List<LoginInfo> getLoginInfos(Integer currentPage, Integer rows, String searchContent){
+    public List<LoginInfo> getLoginInfos(Integer currentPage, Integer rows, String searchContent) throws FindException {
+        if (currentPage < 0 || rows < 0){
+            throw new FindException("查询失败：分页查询不能的页数或查询数量小于0");
+        }
         Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
         return loginInfoMapper.getLoginInfos(start,rows,searchContent);
+    }
+
+    /**
+     * 加载用户信息，security用
+     * @param username：用户名
+     * @return
+     * @throws UsernameNotFoundException
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        LoginInfo loginInfo = null;
+        if (StringUtil.isNotEmpty(username)){
+            try {
+                loginInfo = this.getLoginInfoByUsername(username);
+            } catch (FindException e) {
+                e.printStackTrace();
+            }
+            if (loginInfo == null){
+                throw new UsernameNotFoundException("查询失败：用户不存在或已注销");
+            }
+            Collection<Role> roles = roleMapper.getRolesByUserInfoId(loginInfo.getId(), null, null, null);
+            loginInfo.setAuthorities(roles); //注入权限
+        }else {
+            throw new UsernameNotFoundException("查询失败：用户名不存在");
+        }
+        return loginInfo;
     }
 }

@@ -29,7 +29,7 @@ public interface UserTypeService {
      * @param searchContent：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public List<UserType> getUserTypes(Integer currentPage,Integer rows,String searchContent);
+    public List<UserType> getUserTypes(Integer currentPage, Integer rows, String searchContent);
 
     /**
      * 添加

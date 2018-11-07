@@ -3,6 +3,7 @@ package com.trainingcenter.service.impl;
 import com.trainingcenter.bean.Role;
 import com.trainingcenter.dao.RoleMapper;
 import com.trainingcenter.exception.DeleteException;
+import com.trainingcenter.exception.InsertException;
 import com.trainingcenter.service.RoleService;
 import com.trainingcenter.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,34 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleMapper roleMapper;
 
+    /**
+     * 通过id获取角色
+     * @param id：角色id
+     * @return 返回对应的角色对象
+     */
     @Override
     public Role getRoleById(String id) {
         return StringUtil.isEmpty(id)?null:roleMapper.getRoleById(id);
     }
 
+    /**
+     * 通过角色名称获取角色
+     * @param name：角色名称
+     * @return 返回对应的角色对象
+     */
+    @Override
+    public Role getRoleByName(String name) {
+        return StringUtil.isEmpty(name)?null:roleMapper.getRoleByName(name);
+    }
+
+    /**
+     * 分页获取所有用户
+     *
+     * @param currentPage：当前页
+     * @param rows：每页要显示的数据条数
+     * @param searchContent：模糊查询内容
+     * @return 返回当前页的数据集合
+     */
     @Override
     public List<Role> getRoles(Integer currentPage, Integer rows, String searchContent) {
         if (currentPage < 0 || rows < 0) {
@@ -41,9 +65,21 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.getRoles(start, rows, searchContent);
     }
 
+    /**
+     * 角色添加方法
+     * @param role：要添加的角色
+     * @return 返回操作成功的个数，0表示操作失败
+     */
     @Override
-    public Integer add(@Valid Role role) {
-        return role == null ? 0 : roleMapper.add(role);
+    public Integer add(@Valid Role role) throws InsertException {
+        if (role == null)
+            return 0;
+
+        Role checkName = this.getRoleByName(role.getName());
+        if (checkName != null)
+            throw new InsertException("角色已存在");
+
+        return roleMapper.add(role);
     }
 
     /**

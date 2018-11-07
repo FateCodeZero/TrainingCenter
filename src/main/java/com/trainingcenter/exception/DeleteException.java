@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 /**
  * 删除异常类
  */
-public class DeleteException extends Exception{
+public class DeleteException extends OperationException{
     public DeleteException() {
         super();
     }

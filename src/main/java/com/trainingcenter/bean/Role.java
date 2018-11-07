@@ -7,13 +7,15 @@ package com.trainingcenter.bean;
  * Time: 17:03
  */
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
  * 角色表，对应数据库（tab_role）
  */
-public class Role extends BaseEntity implements Serializable{
+public class Role extends BaseEntity implements Serializable,GrantedAuthority {
     /**
      * id，对应数据库（id）字段
      */
@@ -30,11 +32,6 @@ public class Role extends BaseEntity implements Serializable{
      * 角色描述，对应数据库（describe）字段
      */
     private String describe;
-
-    /**
-     * 角色所含权限ids，对应数据库（permission_ids）字段
-     */
-    private String permissionIds;
 
     public String getId() {
         return id;
@@ -60,26 +57,26 @@ public class Role extends BaseEntity implements Serializable{
         this.describe = describe;
     }
 
-    public String getPermissionIds() {
-        return permissionIds;
-    }
-
-    public void setPermissionIds(String permissionIds) {
-        this.permissionIds = permissionIds;
-    }
-
     @Override
     public String toString() {
         return "Role{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", describe='" + describe + '\'' +
-                ", permissionIds='" + permissionIds + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", createUserId='" + createUserId + '\'' +
                 ", createDate=" + createDate +
                 ", updateUserId='" + updateUserId + '\'' +
                 ", updateDate=" + updateDate +
                 '}';
+    }
+
+    /**
+     * 获取角色名称，security用
+     *  按 security 的需求，所有角色必须有 ROLE_ 前缀
+     * @return 返回角色名称
+     */
+    public String getAuthority() {
+        return "ROLE_" + this.name;
     }
 }

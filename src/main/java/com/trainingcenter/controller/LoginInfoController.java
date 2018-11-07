@@ -2,7 +2,10 @@ package com.trainingcenter.controller;
 
 import com.trainingcenter.bean.User;
 import com.trainingcenter.bean.LoginInfo;
+import com.trainingcenter.exception.DeleteException;
+import com.trainingcenter.exception.FindException;
 import com.trainingcenter.exception.RegisterException;
+import com.trainingcenter.exception.UpdateException;
 import com.trainingcenter.service.LoginInfoService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Map;
@@ -44,26 +48,21 @@ import java.util.concurrent.ConcurrentHashMap;
  * 如何在 SpringMVC 的目标方法中得到 id?
  * 使用@PathVariable 注解获取
  */
-@SessionAttributes("user")
-@RequestMapping("/loginInfo")
+@RequestMapping("/user")
 @Controller
 public class LoginInfoController {
     @Qualifier("loginInfoService")
     @Autowired
     private LoginInfoService loginInfoService;
 
-    @Qualifier("userService")
-    @Autowired
-    private UserService userService;
-
     /**
      * 进入注册页面
      *
      * @return loginPage
      */
-    @RequestMapping(value = "/loginPage", method = RequestMethod.GET)
+    @RequestMapping(value = "/goLogin", method = RequestMethod.GET)
     public ModelAndView loginPage() {
-        String viewName = "loginPage";
+        String viewName = "user/login";
         return new ModelAndView(viewName);
     }
 
@@ -72,9 +71,9 @@ public class LoginInfoController {
      *
      * @return registerPage
      */
-    @RequestMapping(value = "registerPage", method = RequestMethod.GET)
+    @RequestMapping(value = "/goRegister", method = RequestMethod.GET)
     public ModelAndView registerPage() {
-        String viewName = "registerPage";
+        String viewName = "user/register";
         return new ModelAndView(viewName);
     }
 
@@ -83,76 +82,75 @@ public class LoginInfoController {
      *
      * @return updatePage
      */
-    @RequestMapping(value = "updatePage", method = RequestMethod.GET)
+    @RequestMapping(value = "goUpdate", method = RequestMethod.GET)
     public ModelAndView updatePage() {
-        String viewName = "updatePage";
+        String viewName = "user/update";
         return new ModelAndView(viewName);
     }
 
     /**
-     * 登录方法
+     * 登录方法，由 自定义Security登录验证 来完成
      *
      * @param username：用户名
      * @param password：密码
      * @param request：HttpServletRequest
      * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public AjaxJson login(@RequestParam("username") String username, @RequestParam("password") String password,
-                              @RequestParam("v_code") String v_code,HttpServletRequest request) {
-        AjaxJson ajaxJson = new AjaxJson();
 
-        String msg;             //消息提示
-        Integer code;           //状态码
-        Map<String, Object> map = new ConcurrentHashMap<>(); //返回携带的数据
+     @ResponseBody
+     @RequestMapping(value = "/login", method = RequestMethod.POST)
+     public AjaxJson login(@RequestParam("username") String username, @RequestParam("password") String password,
+     @RequestParam("v_code") String v_code,HttpServletRequest request) {
+     AjaxJson ajaxJson = new AjaxJson();
 
-        if (StringUtil.isEmpty(username) || StringUtil.isEmpty(password)) {
-            code = 0;
-            msg = "登录失败，用户名或密码不能为空！";
-        } else {
-            String IP = SysUtil.getClientIpAddress(request);
-            boolean login = loginInfoService.login(username, password, IP);
-            if (login) {
-                //获取登录用户信息
-                User user = userService.getUserByUsername(username);
-                if (user != null){  //防止空指针异常
-                    map.put("user",user);
-                    request.getSession().setAttribute("user",user);
-                }
+     String msg;             //消息提示
+     Integer code;           //状态码
+     Map<String, Object> map = new ConcurrentHashMap<>(); //返回携带的数据
 
-                code = 1;
-                msg = "登录成功！";
-            } else {
+     if (StringUtil.isEmpty(username) || StringUtil.isEmpty(password)) {
+     code = 0;
+     msg = "登录失败，用户名或密码不能为空！";
+     } else {
+     String IP = SysUtil.getClientIpAddress(request);
+     boolean login = loginInfoService.login(username, password, IP);
+     if (login) {
+     //获取登录用户信息
+     User user = userService.getUserByUsername(username);
+     if (user != null){  //防止空指针异常
+     map.put("user",user);
+     request.getSession().setAttribute("user",user);
+     }
 
-                code = 0;
-                msg = "登录失败，用户名或密码不正确！";
-            }
-        }
+     code = 1;
+     msg = "登录成功！";
+     } else {
 
-        ajaxJson.setMsg(msg);
-        ajaxJson.setCode(code);
-        ajaxJson.setData(map);
+     code = 0;
+     msg = "登录失败，用户名或密码不正确！";
+     }
+     }
 
-        return ajaxJson;
-    }
+     ajaxJson.setMsg(msg);
+     ajaxJson.setCode(code);
+     ajaxJson.setData(map);
+
+     return ajaxJson;
+     }*/
 
     /**
-     * 退出登录
+     * 退出登录，由 自定义Security退出 来完成
      * @param request：HttpServletRequest
      * @return
-     */
-    @RequestMapping("/logout")
-    public ModelAndView logout(HttpServletRequest request,SessionStatus sessionStatus){
-        String viewName = "redirect:/index.jsp";
-        ModelAndView modelAndView = new ModelAndView(viewName);
 
-        HttpSession session = request.getSession();
-        session.removeAttribute("user");
-        sessionStatus.setComplete();
-        session.invalidate();
-        return modelAndView;
-    }
+     @RequestMapping("/logout") public ModelAndView logout(HttpServletRequest request,SessionStatus sessionStatus){
+     String viewName = "redirect:/index.jsp";
+     ModelAndView modelAndView = new ModelAndView(viewName);
+
+     HttpSession session = request.getSession();
+     session.removeAttribute("user");
+     sessionStatus.setComplete();
+     session.invalidate();
+     return modelAndView;
+     }*/
 
     /**
      * 验证用户名是否可用
@@ -161,21 +159,28 @@ public class LoginInfoController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/usernameCheck/{username}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    public AjaxJson checkUsername(@PathVariable("username") String username) {
+    @RequestMapping(value = "/usernameCheck", method = RequestMethod.GET)
+    public AjaxJson checkUsername(@RequestParam("username") String username) {
         AjaxJson ajaxJson = new AjaxJson();
-        if (StringUtil.isNotEmpty(username)) {
-            boolean exist = loginInfoService.checkUsername(username);
-            if (exist) {
-                ajaxJson.setCode(0);
-                ajaxJson.setMsg("用户名已被使用!");
-            } else {
-                ajaxJson.setCode(1);
-                ajaxJson.setMsg("用户名可用！");
-            }
-        } else {
+
+        if (StringUtil.isEmpty(username)) {
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("用户名不能为空！");
+            ajaxJson.setMsg("账号不能为空！");
+            return ajaxJson;
+        }
+        if (!StringUtil.checkEmail(username) && !StringUtil.checkMobileNumber(username)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("账号格式不是一个正确的邮箱或手机号");
+            return ajaxJson;
+        }
+
+        boolean exist = loginInfoService.checkUsername(username);
+        if (exist) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("该账号已被使用");
+        } else {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("账号可用");
         }
         return ajaxJson;
     }
@@ -186,42 +191,57 @@ public class LoginInfoController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public AjaxJson register(@RequestParam("username") String username, @RequestParam("password") String password,
-                             @RequestParam("re_password") String re_password, HttpServletRequest request) {
+                             @RequestParam("rePassword") String rePassword, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
-        if (StringUtil.isNotEmpty(username) && StringUtil.isNotEmpty(password)) {
-            boolean exist = loginInfoService.checkUsername(username);
-            if (exist) {
-                ajaxJson.setCode(0);
-                ajaxJson.setMsg("用户名已存在！");
-            } else {
-                if (!re_password.equals(password)){
-                    ajaxJson.setCode(0);
-                    ajaxJson.setMsg("两次密码输入不一致!");
-                }else {
-                    String ipAddress = SysUtil.getClientIpAddress(request);
-                    Integer res = 0;
-                    try {
-                        res = loginInfoService.register(username, password, ipAddress);
-                    } catch (RegisterException e) {
-                        ajaxJson.setCode(0);
-                        ajaxJson.setMsg(e.getMessage());
-                        e.printStackTrace();
-                    }
-                    if (res > 0) {
-                        ajaxJson.setCode(1);
-                        ajaxJson.setMsg("注册成功！");
-                    } else {
-                        ajaxJson.setCode(0);
-                        ajaxJson.setMsg("注册失败！");
-                    }
-                }
-            }
+
+        //非空验证
+        if (StringUtil.isEmpty(username) || StringUtil.isEmpty(password)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("用户名或密码不能为空");
+            return ajaxJson;
+        }
+
+        //账号可用性验证
+        if (!StringUtil.checkEmail(username) && !StringUtil.checkMobileNumber(username)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("账号格式不是一个正确的邮箱或手机号");
+            return ajaxJson;
+        }
+        boolean exist = loginInfoService.checkUsername(username);
+        if (exist) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("用户名已存在");
+            return ajaxJson;
+        }
+
+        //重复密码一致性验证
+        if (!rePassword.equals(password)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("两次密码输入不一致!");
+            return ajaxJson;
+        }
+
+        //添加注册信息
+        String ipAddress = SysUtil.getClientIpAddress(request);
+        Integer res = 0;
+        try {
+            //加密在 service 层完成
+            res = loginInfoService.register(username, password, ipAddress);
+        } catch (RegisterException e) {
+            ajaxJson.setCode(0);
+            //ajaxJson.setMsg(e.getMessage());
+            e.printStackTrace();
+        }
+        if (res > 0) {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("注册成功");
         } else {
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("用户名或密码不能为空！");
+            ajaxJson.setMsg("注册失败，请重试");
         }
+
         return ajaxJson;
     }
 
@@ -231,22 +251,48 @@ public class LoginInfoController {
      * @param id：用户id
      * @return
      */
-    @RequestMapping(value = "/userCheck/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/loginInfo/{id}", method = RequestMethod.PUT)
     public AjaxJson update(@PathVariable("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
-        if (StringUtil.isNotEmpty(id)) {
-            LoginInfo userCheck = loginInfoService.getLoginInfoById(id);
-            Integer res = loginInfoService.update(userCheck);
-            if (res > 0) {
-                ajaxJson.setCode(1);
-                ajaxJson.setMsg("修改成功！");
-            } else {
-                ajaxJson.setCode(0);
-                ajaxJson.setMsg("修改失败！");
-            }
+
+        if (StringUtil.isEmpty(id)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("更新失败，用户不存在或已注销");
+            return ajaxJson;
+        }
+
+        LoginInfo loginInfo = null;
+        try {
+            loginInfo = loginInfoService.getLoginInfoById(id);
+        } catch (FindException e) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg(e.getMessage());
+            e.printStackTrace();
+            return ajaxJson;
+        }
+
+        if (loginInfo == null){
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("更新失败，用户不存在或已注销");
+            return ajaxJson;
+        }
+        
+        Integer res = 0;
+        try {
+            res = loginInfoService.update(loginInfo);
+        } catch (UpdateException e) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg(e.getMessage());
+            e.printStackTrace();
+            return ajaxJson;
+        }
+
+        if (res > 0) {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("修改成功");
         } else {
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("修改失败，该用户不存在或已被删除！");
+            ajaxJson.setMsg("修改失败，请重试");
         }
         return ajaxJson;
     }
@@ -257,32 +303,52 @@ public class LoginInfoController {
      * @param ids：用户ids
      * @return 返回操作成功的数目与操作失败的对象及消息提示
      */
-    @RequestMapping(value = "/userCheck/{ids}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/loginInfo/{ids}", method = RequestMethod.DELETE)
     public AjaxJson delete(@PathVariable("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
         if (StringUtil.isNotEmpty(ids)) {
-            Map<String, Object> map = loginInfoService.batchDelete(ids);
+            Map<String, Object> map = null;
+            try {
+                map = loginInfoService.batchDelete(ids);
+            } catch (FindException e) {
+                ajaxJson.setCode(0);
+                ajaxJson.setMsg(e.getMessage());
+                e.printStackTrace();
+            } catch (DeleteException e) {
+                ajaxJson.setCode(0);
+                ajaxJson.setMsg(e.getMessage());
+                e.printStackTrace();
+            }
 
             Integer success = (Integer) map.get("success");
-            Map<String, Object> fail = (Map<String, Object>)map.get("fail");
+            Map<String, Object> fail = (Map<String, Object>) map.get("fail");
 
-            if (success == 0){
+            if (success == 0) {
                 ajaxJson.setCode(0);
-                ajaxJson.setMsg("操作失败！");
-            }else {
-                if (fail.size() > 0){
+                ajaxJson.setMsg("操作失败");
+            } else {
+                if (fail.size() > 0) {
                     ajaxJson.setCode(2);
-                    ajaxJson.setMsg("操作成功，但有部分删除失败！");
-                }else {
+                    ajaxJson.setMsg("操作成功，但有部分删除失败");
+                } else {
                     ajaxJson.setCode(1);
-                    ajaxJson.setMsg("操作成功！");
+                    ajaxJson.setMsg("操作成功");
                     ajaxJson.setData(map);
                 }
             }
         } else {
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("操作失败，请先选择要删除的对象！");
+            ajaxJson.setMsg("操作失败，请先选择要删除的对象");
         }
         return ajaxJson;
     }
-} 
+
+    /**
+     * 验证码错误
+     * @return
+     */
+    @RequestMapping(value = "/kaptchaError")
+    public ModelAndView kaptchaError() {
+        return new ModelAndView("user/login");
+    }
+}

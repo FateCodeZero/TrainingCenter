@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 /**
  * 注册异常类
  */
-public class RegisterException extends Exception {
+public class RegisterException extends InsertException {
     public RegisterException() {
         super();
     }

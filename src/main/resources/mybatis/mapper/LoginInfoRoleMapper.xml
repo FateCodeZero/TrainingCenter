@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.LoginInfoRoleMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.LoginInfoMapper"></cache-ref>
+
+    <sql id="loginInfoRole">
+        id,login_info_id,role_id,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!--public Integer add(@Param("loginInfoRole") LoginInfoRole loginInfoRole);
+        添加，在给用户赋权限时调用
+    -->
+    <insert id="add">
+        INSERT INTO tab_login_info_role(<include refid="loginInfoRole"/>)
+        VALUES(#{loginInfoRole.id},#{loginInfoRole.loginInfoId},#{loginInfoRole.roleId},#{loginInfoRole.remarks},
+        #{loginInfoRole.createUserId},#{loginInfoRole.createDate},#{loginInfoRole.updateUserId},#{loginInfoRole.updateDate})
+    </insert>
+
+    <!--public Integer delete(@Param("id") String id);
+        删除，取消用户角色时调用
+    -->
+    <delete id="delete">
+        DELETE FROM tab_login_info_role
+        WHERE id = #{id}
+    </delete>
+
+    <!--public Integer update(@Param("loginInfoRole") LoginInfoRole loginInfoRole);
+        更新，更新用户角色信息时调用
+    -->
+    <update id="update">
+        UPDATE tab_login_info_role
+        <trim prefix="set" suffixOverrides=",">
+            <if test="loginInfoRole.loginInfoId != null and loginInfolog.loginInfoId != '' ">
+                login_info_id = #{inInfoRole.loginInfoId},
+            </if>
+            <if test="loginInfoRole.roleId != null and loginInfoRole.roleId != '' ">
+                role_id = #{loginInfoRole.roleId},
+            </if>
+            <if test="loginInfoRole.remarks != null and loginInfoRole.remarks != '' ">
+                remarks = #{loginInfoRole.remarks},
+            </if>
+            <if test="loginInfoRole.create_user_id != null and loginInfoRole.create_user_id != '' ">
+                create_user_id = #{loginInfoRole.createUserId},
+            </if>
+            <if test="loginInfoRole.create_date != null and loginInfoRole.create_date != '' ">
+                create_date = #{loginInfoRole.createDate},
+            </if>
+            <if test="loginInfoRole.update_user_id != null and loginInfoRole.update_user_id != '' ">
+                update_user_id = #{loginInfoRole.updateUserId},
+            </if>
+            <if test="loginInfoRole.update_date != null and loginInfoRole.update_date != '' ">
+                update_date = #{loginInfoRole.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{loginInfoRole.id}
+    </update>
+
+    <!--    public LoginInfoRole getLoginInfoRoleByLoginInfoIdAndRoleId(@Param("loginInfoId") String loginInfoId, @Param("roleId") String roleId);
+        通过 用户登录信息id 与 角色id 获取授权信息对象
+    -->
+    <select id="" resultType="com.trainingcenter.bean.LoginInfoRole">
+        SELECT <include refid="loginInfoRole"/>
+        FROM tab_login_info_role
+        WHERE login_info_id = #{loginInfoId} AND role_id = #{roleId}
+    </select>
+</mapper>

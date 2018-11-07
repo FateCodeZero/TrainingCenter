@@ -2,7 +2,9 @@ package com.trainingcenter.service;
 
 import com.trainingcenter.bean.LoginInfo;
 import com.trainingcenter.exception.DeleteException;
+import com.trainingcenter.exception.FindException;
 import com.trainingcenter.exception.RegisterException;
+import com.trainingcenter.exception.UpdateException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -49,35 +51,35 @@ public interface LoginInfoService {
      * @param loginInfo：被修改的对象
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer update(@Valid LoginInfo loginInfo);
+    public Integer update(@Valid LoginInfo loginInfo) throws UpdateException;
 
     /**
      * 注销/删除
      * @param id：需要删除对象的id
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer delete(String id) throws DeleteException;
+    public Integer delete(String id) throws DeleteException, FindException;
 
     /**
      * 批量删除
      * @param ids：需要删除的对象的id集
      * @return 返回操作成功的数目与操作失败的对象
      */
-    public Map<String,Object> batchDelete(String ids);
+    public Map<String,Object> batchDelete(String ids) throws FindException, DeleteException;
 
     /**
      * 通过id获取登录信息
      * @param id：对象id
      * @return
      */
-    public LoginInfo getLoginInfoById(String id);
+    public LoginInfo getLoginInfoById(String id) throws FindException;
 
     /**
      * 通过username获取登录信息
      * @param username：账号
      * @return
      */
-    public LoginInfo getLoginInfoByUsername(String username);
+    public LoginInfo getLoginInfoByUsername(String username) throws FindException;
 
     /**
      * 分页获取数据
@@ -86,5 +88,5 @@ public interface LoginInfoService {
      * @param searchContent：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public List<LoginInfo> getLoginInfos(Integer currentPage, Integer rows, String searchContent);
+    public List<LoginInfo> getLoginInfos(Integer currentPage, Integer rows, String searchContent) throws FindException;
 }
