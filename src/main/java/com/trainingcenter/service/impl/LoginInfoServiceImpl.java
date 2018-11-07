@@ -308,7 +308,7 @@ public class LoginInfoServiceImpl implements LoginInfoService,UserDetailsService
     @Override
     public LoginInfo getLoginInfoById(String id) throws FindException {
         if (StringUtil.isEmpty(id)){
-            throw new FindException("查询失败：用户不存在或已注销");
+            throw new FindException("用户不存在或已注销");
         }
         return loginInfoMapper.getLoginInfoById(id);
     }
@@ -321,7 +321,7 @@ public class LoginInfoServiceImpl implements LoginInfoService,UserDetailsService
     @Override
     public LoginInfo getLoginInfoByUsername(String username) throws FindException {
         if (StringUtil.isEmpty(username)){
-            throw new FindException("查询失败：用户不存在或已注销");
+            throw new FindException("用户不存在或已注销");
         }
         return loginInfoMapper.getLoginInfoByUsername(username);
     }
@@ -336,7 +336,7 @@ public class LoginInfoServiceImpl implements LoginInfoService,UserDetailsService
     @Override
     public List<LoginInfo> getLoginInfos(Integer currentPage, Integer rows, String searchContent) throws FindException {
         if (currentPage < 0 || rows < 0){
-            throw new FindException("查询失败：分页查询不能的页数或查询数量小于0");
+            throw new FindException("分页查询不能的页数或查询数量小于0");
         }
         Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
         return loginInfoMapper.getLoginInfos(start,rows,searchContent);
@@ -359,12 +359,12 @@ public class LoginInfoServiceImpl implements LoginInfoService,UserDetailsService
                 e.printStackTrace();
             }
             if (loginInfo == null){
-                throw new UsernameNotFoundException("查询失败：用户不存在或已注销");
+                throw new UsernameNotFoundException("用户不存在或已注销");
             }
             Collection<Role> roles = roleMapper.getRolesByUserInfoId(loginInfo.getId(), null, null, null);
             loginInfo.setAuthorities(roles); //注入权限
         }else {
-            throw new UsernameNotFoundException("查询失败：用户名不存在");
+            throw new UsernameNotFoundException("用户名不存在");
         }
         return loginInfo;
     }

@@ -52,6 +52,8 @@ public class KaptchaAuthenticationFilter extends AbstractAuthenticationProcessin
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res=(HttpServletResponse)response;
 
+        String mt = req.getMethod();
+        String pt = req.getServletPath();
         if ("POST".equalsIgnoreCase(req.getMethod()) && servletPath.equals(req.getServletPath())){
 
             //验证码，使用谷歌的验证码生成器生成

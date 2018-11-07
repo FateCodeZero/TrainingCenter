@@ -27,7 +27,7 @@
     <div class="col-sm-1"></div>
     <div class="text-left col-sm-10 panel panel-primary">
         <br>
-        <form class="form-horizontal" role="form" action="${webRoot}/user/login" id="loginFrom">
+        <form class="form-horizontal" role="form" action="${webRoot}/user/login" id="loginFrom" method="post">
             <%--Restful风格的请求--%>
             <input type="hidden" value="POST" name="_method" id="_method">
 
@@ -60,12 +60,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-center" id="kaptchaMsg" style="color: #b92c28">${SPRING_SECURITY_LAST_EXCEPTION.message}</div>
+                <div class="text-center" id="kaptchaMsg" ><span style="color: #b92c28">${SPRING_SECURITY_LAST_EXCEPTION.message}</span></div>
             </div>
 
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10 text-center">
-                    <button type="button" class="layui-btn col-sm-4" id="submit">提交</button>
+                    <button type="submit" class="layui-btn col-sm-4" id="submit">提交</button>
                     <div class="col-sm-1"></div>
                     <button type="reset" class="layui-btn layui-btn-normal col-sm-4" id="close">重置</button>
                 </div>
@@ -132,38 +132,43 @@
             $("#kaptchaMsg").html('');
             $("#kaptcha").blur();      //失去焦点
         }
+        var form = $("#loginFrom");
+        form.attr('action',"${webRoot}/user/login");
+        form.attr('method',"POST");
+        form.submit();
 
-        //Restful风格的get请求
-        var data = {
-            _method: "POST",
-            username: username,
-            password: password,
-            kaptcha: kaptcha
-        };
+//        //Restful风格的get请求
+//        var data = {
+//            _method: "POST",
+//            username: username,
+//            password: password,
+//            kaptcha: kaptcha
+//        };
+        <%--$.ajax({--%>
+            <%--url: "${webRoot}/user/login",--%>
+            <%--type: "post",--%>
+            <%--data: data,--%>
+            <%--dataType: "json",--%>
+            <%--success: function (data) {--%>
+                    <%--alert("返回");--%>
+                    <%--$("#kaptchaMsg").html('<span>${SPRING_SECURITY_LAST_EXCEPTION.message}</span>');--%>
+                <%--var jsonData = eval(data);   //数据解析--%>
+                <%--var code = jsonData.code;--%>
+                <%--var msg = jsonData.msg;--%>
 
-        $.ajax({
-            url: "${webRoot}/user/login",
-            type: "post",
-            data: data,
-            dataType: "json",
-            success: function (data) {
-                var jsonData = eval(data);   //数据解析
-                var code = jsonData.code;
-                var msg = jsonData.msg;
-
-                if (code == 1) {
-                    layer.alert(msg, {
-                        time: 3000,
-                        icon: 1
-                    });
-                } else {
-                    layer.alert(msg, {
-                        time: 3000,
-                        icon: 2
-                    });
-                }
-            }
-        });
+                <%--if (code == 1) {--%>
+                    <%--layer.alert(msg, {--%>
+                        <%--time: 3000,--%>
+                        <%--icon: 1--%>
+                    <%--});--%>
+                <%--} else {--%>
+                    <%--layer.alert(msg, {--%>
+                        <%--time: 3000,--%>
+                        <%--icon: 2--%>
+                    <%--});--%>
+                <%--}--%>
+            <%--}--%>
+        <%--});--%>
     });
 
     $("#close").click(function () {
