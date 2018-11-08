@@ -1,6 +1,8 @@
 package com.trainingcenter.service.impl;
 
 import com.trainingcenter.bean.Role;
+import com.trainingcenter.controller.validation.TC_Add;
+import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.dao.RoleMapper;
 import com.trainingcenter.exception.DeleteException;
 import com.trainingcenter.exception.InsertException;
@@ -9,6 +11,7 @@ import com.trainingcenter.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -71,7 +74,7 @@ public class RoleServiceImpl implements RoleService {
      * @return 返回操作成功的个数，0表示操作失败
      */
     @Override
-    public Integer add(@Valid Role role) throws InsertException {
+    public Integer add(@Validated(value = {TC_Add.class})  Role role) throws InsertException {
         if (role == null)
             return 0;
 
@@ -89,7 +92,7 @@ public class RoleServiceImpl implements RoleService {
      * @return 返回值大于0表示操作成功，否则操作失败
      */
     @Override
-    public Integer update(@Valid Role role) {
+    public Integer update(@Validated(value = {TC_Update.class}) Role role) {
         return role == null ? 0 : roleMapper.update(role);
     }
 

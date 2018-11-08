@@ -2,8 +2,11 @@ package com.trainingcenter.dao;
 
 import com.trainingcenter.bean.Permission;
 import com.trainingcenter.bean.Role;
+import com.trainingcenter.controller.validation.TC_Add;
+import com.trainingcenter.controller.validation.TC_Update;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -46,14 +49,14 @@ i     * 通过id获取角色
      * @param role：要添加的角色
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer add(@Valid @Param("role") Role role);
+    public Integer add(@Validated(value = {TC_Add.class}) @Param("role") Role role);
 
     /**
      * 角色更新方法
      * @param role: 要更新的角色
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer update(@Valid @Param("role") Role role);
+    public Integer update(@Validated(value = {TC_Update.class}) @Param("role") Role role);
 
     /**
      * 角色删除方法

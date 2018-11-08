@@ -1,5 +1,9 @@
 package com.trainingcenter.bean;
 
+import com.trainingcenter.controller.validation.TC_Add;
+import com.trainingcenter.controller.validation.TC_Delete;
+import com.trainingcenter.controller.validation.TC_Find;
+import com.trainingcenter.controller.validation.TC_Update;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,21 +27,21 @@ public class LoginInfo implements Serializable,UserDetails {
     /**
      * ID，对应数据库（id）字段
      */
-    @NotBlank(message = "登录信息id不能为空")
+    @NotBlank(message = "id不能为空",groups = {TC_Delete.class,TC_Find.class})
     private String id;
 
     /**
      * 用户名，对应数据库（username）字段
      */
-    @NotBlank(message = "账号不能为空")
-    @Email(message = "邮箱格式不正确")
+    @NotBlank(message = "账号不能为空",groups = {TC_Add.class,TC_Update.class})
+    @Email(message = "邮箱格式不正确",groups = {TC_Add.class,TC_Update.class})
     private String username;
 
     /**
      * 密码，对应数据库（password）字段
      */
-    @NotBlank(message = "密码不能为空")
-    @Length(min=6,max=18,message="密码长度必须在6~18位")
+    @NotBlank(message = "密码不能为空",groups = {TC_Add.class,TC_Update.class})
+    @Length(min=6,max=18,message="密码长度必须在6~18位",groups = {TC_Add.class,TC_Update.class})
     private String password;
 
     /**
@@ -49,14 +53,14 @@ public class LoginInfo implements Serializable,UserDetails {
      * 用户使用状态，对应数据库（state）字段
      * （-1：已注销，0：已禁用，1：已启用）
      */
-    @Range(min = -1,max = 1,message = "用户使用状态范围只能在-1~1")
+    @Range(min = -1,max = 1,message = "用户使用状态范围只能在-1~1",groups = {TC_Update.class})
     private Integer state;
 
     /**
      * 用户锁定IP不锁定状态，对应数据库（is_locked）字段
      * （0：被锁定，1：不锁定）
      */
-    @Range(min = -1,max = 1,message = "IP未锁定状态的范围只能在-1~1")
+    @Range(min = -1,max = 1,message = "IP未锁定状态的范围只能在-1~1",groups = {TC_Update.class})
     private Integer isUnlocked;
 
     /**

@@ -51,25 +51,25 @@
         UPDATE tab_user_type
         <trim prefix="set" suffixOverrides=",">
             <if test="userType.name != null and userType.name != '' ">
-                `name` = #{userType.name}
+                `name` = #{userType.name},
             </if>
             <if test="userType.describe != null and userType.describe != '' ">
-                `describe` = #{userType.describe}
+                `describe` = #{userType.describe},
             </if>
             <if test="userType.remarks != null and userType.remarks != '' ">
-                remarks = #{userType.remarks}
+                remarks = #{userType.remarks},
             </if>
             <if test="userType.createUserId != null and userType.createUserId != '' ">
-                create_user_id = #{userType.createUserId}
+                create_user_id = #{userType.createUserId},
             </if>
             <if test="userType.createDate != null">
-                create_date = #{userType.createDate}
+                create_date = #{userType.createDate},
             </if>
             <if test="userType.updateUserId != null and userType.updateUserId != ''">
-                update_user_id = #{userType.updateUserId}
+                update_user_id = #{userType.updateUserId},
             </if>
             <if test="userType.updateDate != null">
-                update_date = #{userType.updateDate}
+                update_date = #{userType.updateDate},
             </if>
         </trim>
         WHERE id = #{userType.id}

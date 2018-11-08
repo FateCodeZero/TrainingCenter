@@ -1,18 +1,15 @@
 package com.trainingcenter.utils;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
  * User: YangYi
- * Date: 2018/10/29
- * Time: 21:58
+ * Date: 2018/11/8
+ * Time: 16:43
  */
-public class SysUtil implements Serializable {
-
+public class HTTPUtils implements Serializable {
     private static final String[] HEADERS_TO_TRY = {
             "X-Forwarded-For",
             "Proxy-Client-IP",
@@ -44,10 +41,14 @@ public class SysUtil implements Serializable {
     }
 
     /**
-     * 获取当前登录用户的用户名
-     * @return username
+     *  判断是否为ajax请求
      */
-    public static String getCurrentUsername(){
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    public static boolean isAjaxRequest(HttpServletRequest request) {
+        if (request.getHeader("accept").indexOf("application/json") > -1
+                || (request.getHeader("X-Requested-With") != null && request.getHeader("X-Requested-With").equals(
+                "XMLHttpRequest"))) {
+            return true;
+        }
+        return false;
     }
 }

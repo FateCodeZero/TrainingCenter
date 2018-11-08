@@ -80,10 +80,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         if (!password.equals(MD5Util.md5Encrypt(credentials))){
             throw new BadCredentialsException("用户名或密码错误");
         }
-        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-        for (GrantedAuthority a : authorities) {
-            System.out.println("========================="+a.getAuthority()+"======================");
-        }
+
         //授权
         return new UsernamePasswordAuthenticationToken(userDetails,password,userDetails.getAuthorities());
     }

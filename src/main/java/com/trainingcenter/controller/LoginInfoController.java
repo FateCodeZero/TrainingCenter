@@ -1,29 +1,23 @@
 package com.trainingcenter.controller;
 
-import com.trainingcenter.bean.User;
 import com.trainingcenter.bean.LoginInfo;
 import com.trainingcenter.exception.DeleteException;
 import com.trainingcenter.exception.FindException;
 import com.trainingcenter.exception.RegisterException;
 import com.trainingcenter.exception.UpdateException;
 import com.trainingcenter.service.LoginInfoService;
-import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
+import com.trainingcenter.utils.HTTPUtils;
 import com.trainingcenter.utils.StringUtil;
-import com.trainingcenter.utils.SysUtil;
+import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by IntelliJ IDEA.
@@ -62,7 +56,7 @@ public class LoginInfoController {
      */
     @RequestMapping(value = "/goLogin", method = RequestMethod.GET)
     public ModelAndView loginPage() {
-        String viewName = "user/login";
+        String viewName = "static/login";
         return new ModelAndView(viewName);
     }
 
@@ -73,7 +67,7 @@ public class LoginInfoController {
      */
     @RequestMapping(value = "/goRegister", method = RequestMethod.GET)
     public ModelAndView registerPage() {
-        String viewName = "user/register";
+        String viewName = "static/register";
         return new ModelAndView(viewName);
     }
 
@@ -84,7 +78,7 @@ public class LoginInfoController {
      */
     @RequestMapping(value = "goUpdate", method = RequestMethod.GET)
     public ModelAndView updatePage() {
-        String viewName = "user/update";
+        String viewName = "static/update";
         return new ModelAndView(viewName);
     }
 
@@ -224,16 +218,12 @@ public class LoginInfoController {
         }
 
         //添加注册信息
-        String ipAddress = SysUtil.getClientIpAddress(request);
+        String ipAddress = HTTPUtils.getClientIpAddress(request);
         Integer res = 0;
-        try {
-            //加密在 service 层完成
-            res = loginInfoService.register(username, password, ipAddress);
-        } catch (RegisterException e) {
-            ajaxJson.setCode(0);
-            //ajaxJson.setMsg(e.getMessage());
-            e.printStackTrace();
-        }
+
+        //异常抛给 SpringMVC 统一异常处理器处理
+        res = loginInfoService.register(username, password, ipAddress);
+
         if (res > 0) {
             ajaxJson.setCode(1);
             ajaxJson.setMsg("注册成功");
@@ -261,31 +251,17 @@ public class LoginInfoController {
             return ajaxJson;
         }
 
-        LoginInfo loginInfo = null;
-        try {
-            loginInfo = loginInfoService.getLoginInfoById(id);
-        } catch (FindException e) {
-            ajaxJson.setCode(0);
-            ajaxJson.setMsg(e.getMessage());
-            e.printStackTrace();
-            return ajaxJson;
-        }
+        //异常抛给 SpringMVC 统一异常处理器处理
+        LoginInfo loginInfo = loginInfoService.getLoginInfoById(id);
 
-        if (loginInfo == null){
+        if (loginInfo == null) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("更新失败，用户不存在或已注销");
             return ajaxJson;
         }
-        
-        Integer res = 0;
-        try {
-            res = loginInfoService.update(loginInfo);
-        } catch (UpdateException e) {
-            ajaxJson.setCode(0);
-            ajaxJson.setMsg(e.getMessage());
-            e.printStackTrace();
-            return ajaxJson;
-        }
+
+        //异常抛给 SpringMVC 统一异常处理器处理
+        Integer res = loginInfoService.update(loginInfo);
 
         if (res > 0) {
             ajaxJson.setCode(1);
@@ -307,17 +283,12 @@ public class LoginInfoController {
     public AjaxJson delete(@PathVariable("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
         if (StringUtil.isNotEmpty(ids)) {
-            Map<String, Object> map = null;
-            try {
-                map = loginInfoService.batchDelete(ids);
-            } catch (FindException e) {
+            Map<String, Object> map = loginInfoService.batchDelete(ids);
+
+            if (map == null){
                 ajaxJson.setCode(0);
-                ajaxJson.setMsg(e.getMessage());
-                e.printStackTrace();
-            } catch (DeleteException e) {
-                ajaxJson.setCode(0);
-                ajaxJson.setMsg(e.getMessage());
-                e.printStackTrace();
+                ajaxJson.setMsg("操作失败");
+                return ajaxJson;
             }
 
             Integer success = (Integer) map.get("success");
@@ -345,10 +316,11 @@ public class LoginInfoController {
 
     /**
      * 验证码错误
+     *
      * @return
      */
     @RequestMapping(value = "/kaptchaError")
     public ModelAndView kaptchaError() {
-        return new ModelAndView("user/login");
+        return new ModelAndView("static/login");
     }
 }

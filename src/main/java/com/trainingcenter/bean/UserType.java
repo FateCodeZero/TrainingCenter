@@ -1,5 +1,10 @@
 package com.trainingcenter.bean;
 
+import com.trainingcenter.controller.validation.TC_Add;
+import com.trainingcenter.controller.validation.TC_Delete;
+import com.trainingcenter.controller.validation.TC_Find;
+import com.trainingcenter.controller.validation.TC_Update;
+
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
@@ -16,13 +21,13 @@ public class UserType extends BaseEntity implements Serializable{
     /**
      * id，对应数据库（id）字段
      */
-    @NotBlank(message = "用户类型id不能为空")
+    @NotBlank(message = "id不能为空",groups = {TC_Delete.class,TC_Find.class})
     private String id;
 
     /**
      * 用户类型名称，对应数据库（name）字段
      */
-    @NotBlank(message = "用户类型名称不能为空")
+    @NotBlank(message = "用户类型名称不能为空",groups = {TC_Add.class, TC_Update.class})
     private String name;
 
     /**

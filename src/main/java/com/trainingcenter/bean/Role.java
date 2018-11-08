@@ -7,6 +7,10 @@ package com.trainingcenter.bean;
  * Time: 17:03
  */
 
+import com.trainingcenter.controller.validation.TC_Add;
+import com.trainingcenter.controller.validation.TC_Delete;
+import com.trainingcenter.controller.validation.TC_Find;
+import com.trainingcenter.controller.validation.TC_Update;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.validation.constraints.NotBlank;
@@ -19,13 +23,13 @@ public class Role extends BaseEntity implements Serializable,GrantedAuthority {
     /**
      * id，对应数据库（id）字段
      */
-    @NotBlank(message = "角色id不能为空")
+    @NotBlank(message = "id不能为空",groups = {TC_Delete.class,TC_Find.class})
     private String id;
 
     /**
      * 角色名称，对应数据库（name）字段
      */
-    @NotBlank(message = "角色名称不能为空")
+    @NotBlank(message = "角色名称不能为空",groups = {TC_Add.class, TC_Update.class})
     private String name;
 
     /**

@@ -83,46 +83,46 @@
                 nickname = #{user.nickname},
             </if>
             <if test="user.headPortrait != null and user.headPortrait != '' ">
-                head_portrait = #{user.headPortrait}
+                head_portrait = #{user.headPortrait},
             </if>
             <if test="user.realName != null and user.realName != '' ">
-                real_name = #{user.realName}
+                real_name = #{user.realName},
             </if>
             <if test="user.birthday != null">
-                birthday = #{user.birthday}
+                birthday = #{user.birthday},
             </if>
             <if test="user.gender != null">
-                gender = #{user.gender}
+                gender = #{user.gender},
             </if>
             <if test="user.phone != null and user.phone != '' ">
-                phone = #{user.phone}
+                phone = #{user.phone},
             </if>
             <if test="user.email != null and user.email != '' ">
-                email = #{user.email}
+                email = #{user.email},
             </if>
             <if test="user.address != null and user.address != '' ">
-                address = #{user.address}
+                address = #{user.address},
             </if>
             <if test="user.motto != null and user.motto != '' ">
-                motto = #{user.motto}
+                motto = #{user.motto},
             </if>
             <if test="user.userTypeId != null and user.userTypeId != '' ">
-                user_type_id = #{user.userTypeId}
+                user_type_id = #{user.userTypeId},
             </if>
             <if test="user.userCode != null and user.userCode != '' ">
-                user_code = #{user.userCode}
+                user_code = #{user.userCode},
             </if>
             <if test="user.describe != null and user.describe != '' ">
-                `describe` = #{user.describe}
+                `describe` = #{user.describe},
             </if>
             <if test="user.imgs != null and user.imgs != '' ">
-                imgs = #{user.imgs}
+                imgs = #{user.imgs},
             </if>
             <if test="user.state != null">
-                state = #{user.state}
+                state = #{user.state},
             </if>
             <if test="user.registerTime != null and user.registerTime != '' ">
-                register_time = #{user.registerTime}
+                register_time = #{user.registerTime},
             </if>
         </trim>
         WHERE id = #{user.id}

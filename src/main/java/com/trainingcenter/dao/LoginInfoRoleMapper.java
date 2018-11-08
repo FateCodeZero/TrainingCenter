@@ -1,8 +1,11 @@
 package com.trainingcenter.dao;
 
 import com.trainingcenter.bean.LoginInfoRole;
+import com.trainingcenter.controller.validation.TC_Add;
+import com.trainingcenter.controller.validation.TC_Update;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,7 +25,7 @@ public interface LoginInfoRoleMapper {
      * @param loginInfoRole
      * @return
      */
-    public Integer add(@Param("loginInfoRole") LoginInfoRole loginInfoRole);
+    public Integer add(@Validated(value = {TC_Add.class}) @Param("loginInfoRole") LoginInfoRole loginInfoRole);
 
     /**
      * 删除，取消用户角色时调用
@@ -36,7 +39,7 @@ public interface LoginInfoRoleMapper {
      * @param loginInfoRole
      * @return
      */
-    public Integer update(@Param("loginInfoRole") LoginInfoRole loginInfoRole);
+    public Integer update(@Validated(value = {TC_Update.class}) @Param("loginInfoRole") LoginInfoRole loginInfoRole);
 
     /**
      * 通过 用户登录信息id 与 角色id 获取授权信息对象

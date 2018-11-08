@@ -1,10 +1,12 @@
 package com.trainingcenter.service;
 
 import com.trainingcenter.bean.LoginInfo;
+import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.exception.DeleteException;
 import com.trainingcenter.exception.FindException;
 import com.trainingcenter.exception.RegisterException;
 import com.trainingcenter.exception.UpdateException;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -51,7 +53,7 @@ public interface LoginInfoService {
      * @param loginInfo：被修改的对象
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer update(@Valid LoginInfo loginInfo) throws UpdateException;
+    public Integer update(@Validated(value = {TC_Update.class}) LoginInfo loginInfo) throws UpdateException;
 
     /**
      * 注销/删除
@@ -79,7 +81,7 @@ public interface LoginInfoService {
      * @param username：账号
      * @return
      */
-    public LoginInfo getLoginInfoByUsername(String username) throws FindException;
+    public LoginInfo getLoginInfoByUsername(String username);
 
     /**
      * 分页获取数据

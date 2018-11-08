@@ -11,9 +11,9 @@ import java.io.PrintWriter;
  */
 
 /**
- * 操作异常类
+ * 运行时操作异常类
  */
-public class OperationException extends Exception {
+public class OperationException extends RuntimeException {
     public OperationException() {
         super();
     }

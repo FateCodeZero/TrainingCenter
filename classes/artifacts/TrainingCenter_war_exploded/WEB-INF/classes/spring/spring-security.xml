@@ -11,18 +11,15 @@
         一、httpUrl访问规则设置
         -->
     <!-- 1、对所有过滤链放行 静态资源及指定页面的 url请求-->
-    <security:http security="none" pattern="/index.jsp"/>
-    <security:http security="none" pattern="/user/usernameCheck/**"/>
-    <security:http security="none" pattern="/user/goLogin/**"/>
-    <security:http security="none" pattern="/webpages/user/login.jsp"/>
-    <security:http security="none" pattern="/user/goRegister/**"/>
-    <security:http security="none" pattern="/webpages/user/register.jsp"/>
-
-    <security:http security="none" pattern="/plug-in/**"/>
     <security:http security="none" pattern="/webpages/static/**"/>
     <security:http security="none" pattern="/webpages/errorpage/**"/>
     <security:http security="none" pattern="/except/**"/>
-    <security:http security="none" pattern="/**/*.ico"/>
+
+    <security:http security="none" pattern="/index.jsp"/>
+    <security:http security="none" pattern="/user/goLogin/**"/>
+    <security:http security="none" pattern="/user/goRegister/**"/>
+    <security:http security="none" pattern="/user/usernameCheck/**"/>
+    <security:http security="none" pattern="/plug-in/**"/>
 
     <!--&lt;!&ndash;管理user目录下url的访问权限&ndash;&gt;-->
     <!--<security:http pattern="/webpages/user/**">-->
@@ -38,30 +35,24 @@
         <!--<security:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>-->
     <!--</security:http>-->
 
-    <!--&lt;!&ndash;管理admin目录下url的访问权限&ndash;&gt;-->
-    <!--<security:http pattern="/webpages/admin/**">-->
-        <!--<security:form-login/>-->
-        <!--<security:logout/>-->
-        <!--<security:csrf disabled="true"/>-->
-        <!--<security:custom-filter ref="kaptchaFilter" before="FORM_LOGIN_FILTER"/>-->
-        <!--<security:custom-filter ref="exceptionTranslationFilter" after="EXCEPTION_TRANSLATION_FILTER"/>-->
-        <!--<security:intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')"/>-->
-    <!--</security:http>-->
-
     <!--管理项目下所有url的访问权限-->
     <security:http auto-config="false">
+        <!--开启匿名访问支持
+             key：用于指定一个在AuthenticationFilter和AuthenticationProvider之间共享的值。
+             username：用于指定匿名用户所对应的用户名，
+             granted-authority：用于指定匿名用户所具有的权限。
+        -->
+        <security:anonymous enabled="true" key="doesNotMatter" username="anonymousUser" granted-authority="ROLE_ANONYMOUS"/>
 
         <!--设置允许匿名访问的url，与security="none" 的区别security="none"是不会进入过滤器链的-->
-        <security:intercept-url pattern="/webpages/user/**" access="hasRole('IS_AUTHENTICATED_ANONYMOUSLY')"/>
-        <!--<security:intercept-url pattern="/webpages/user/individual.jsp" access="hasRole('IS_AUTHENTICATED_ANONYMOUSLY')"/>-->
-        <!--<security:intercept-url pattern="/webpages/user/register.jsp" access="hasRole('IS_AUTHENTICATED_ANONYMOUSLY')"/>-->
+        <security:intercept-url pattern="/webpages/user/userinfo.jsp" access="hasRole('ROLE_USER')"/>
 
         <!--管理员文件夹下需要管理员权限-->
         <security:intercept-url pattern="/webpages/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <!--
-            2、指定拦截规则
+            2、规定指定页面的拦截规则
               intercept-url：指定拦截规则，pattern="/**"：表示对所有请求都拦截，至少需要的权限为ROLE_USER-->
-        <security:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
+        <!--<security:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>-->
 
         <!--
             3、设定登录规则：
@@ -73,13 +64,16 @@
                     default-target-url：指定直接请求登录页面的用户登录成功后返回的页面
                     authentication-success-forward-url：指定被拦截时登录成功后跳转的url
                     authentication-failure-url：指定登录认证失败返回的页面
-                    authentication-success-handler-ref：指定自定义登录成功处理器
+                    authentication-success-handler-ref：指定自定义的登录成功后处理器，使用后之前设置的登录成功后跳转都会失效
+                    authentication-failure-handler-ref：指定自定义的认证失败后处理器，使用后默认的认证失败后跳转都会失效
                     -->
-        <security:form-login login-page="/webpages/user/login.jsp"
+        <security:form-login login-page="/webpages/static/login.jsp"
                              login-processing-url="/user/login"
                              username-parameter="username"
                              password-parameter="password"
-                             default-target-url="/index.jsp"/>
+                             default-target-url="/index.jsp"
+                             authentication-success-handler-ref="authenticationSuccessHandler"
+                             authentication-failure-handler-ref="authenticationFailureHandler"/>
         <!--4、注销：
             logout-url：指定注销请求的url
             logout-success-url：指定注销成功后返回的页面
@@ -103,8 +97,8 @@
 
         <!--（2）自定义异常解释过滤器，主要处理登录用户无权限时需要跳转的页面
                 注：自定义异常解释器需要放在EXCEPTION_TRANSLATION_FILTER之后，否则没有作用
+             <security:custom-filter ref="exceptionTranslationFilter" after="EXCEPTION_TRANSLATION_FILTER"/>
         -->
-        <security:custom-filter ref="exceptionTranslationFilter" after="EXCEPTION_TRANSLATION_FILTER"/>
 
     </security:http>
 
@@ -119,7 +113,7 @@
     <!--2、登录信息认证管理器 -->
     <security:authentication-manager id="userInfoAuthenticationManager">
         <!--
-            1、获取自定义认证类对象（UserDetails）
+            获取自定义认证类对象（UserDetails）服务类
               user-service-ref：通过自定义UserDetailsService获取用户信息
         -->
         <!--<security:authentication-provider user-service-ref="userServiceImpl" >-->
@@ -127,7 +121,7 @@
         <!--<security:password-encoder ref="bcryptEncoder"/>-->
         <!--</security:authentication-provider>-->
 
-        <!--2、自定义登录用户验证规则-->
+        <!--自定义登录用户验证规则-->
         <security:authentication-provider ref="userAuthenticationProvider"/>
 
     </security:authentication-manager>
@@ -155,37 +149,45 @@
     <bean id="kaptchaFilter" class="com.trainingcenter.security.filter.KaptchaAuthenticationFilter">
         <!--只有在访问url=/user/login时，该过滤器的验证才会生效-->
         <constructor-arg name="servletPath" value="/user/login"/>
-        <constructor-arg name="failureUrl" value="/user/login?error"/>
+        <constructor-arg name="failureUrl" value="/user/goLogin"/>
 
         <!--指向认证管理器：authenticationManager-->
         <property name="authenticationManager" ref="kaptchaAuthenticationManager"/>
     </bean>
 
     <!--4、自定义异常解释过滤器-->
-    <bean id="exceptionTranslationFilter"
-          class="org.springframework.security.web.access.ExceptionTranslationFilter">
+    <!--<bean id="exceptionTranslationFilter"-->
+          <!--class="org.springframework.security.web.access.ExceptionTranslationFilter">-->
 
-        <!--（1）authenticationEntryPoint：在用户没有登录时用于引导用户进行登录认证的-->
-        <constructor-arg name="authenticationEntryPoint" ref="authenticationEntryPoint"/>
+        <!--&lt;!&ndash;（1）authenticationEntryPoint：在用户没有登录时用于引导用户进行登录认证的&ndash;&gt;-->
+        <!--<constructor-arg name="authenticationEntryPoint" ref="authenticationEntryPoint"/>-->
 
-        <!--（2）accessDeniedHandler：处理用户已登录，但访问资源没有权限的异常-->
-        <property name="accessDeniedHandler">
-            <bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
-                <property name="errorPage" value="/webpages/errorpage/403.jsp" />
-            </bean>
-        </property>
-    </bean>
+        <!--&lt;!&ndash;（2）accessDeniedHandler：处理用户已登录，但访问资源没有权限的异常-->
+            <!--使用自定义的访问资源无权限处理器-->
+        <!--&ndash;&gt;-->
+        <!--<property name="accessDeniedHandler" ref="accessDeniedHandler"/>-->
+    <!--</bean>-->
 
     <!--自定义authenticationEntryPoint：引导未登录用户登录的入口页面-->
     <bean id="authenticationEntryPoint"
           class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-        <constructor-arg name="loginFormUrl" value="/user/goLogin"/>
+        <constructor-arg name="loginFormUrl" value="/webpages/static/login.jsp"/>
     </bean>
 
     <!--4、注册配置自定义用户登录效验类-->
     <bean id="userAuthenticationProvider"
           class="com.trainingcenter.security.authenticationproviders.UserAuthenticationProvider"/>
 
-    <!--5、自定义登录成功处理器-->
-    <bean id="successHandlerImpl" class="com.trainingcenter.security.handler.AuthenticationSuccessHandlerImpl"/>
+    <!--5、自定义认证成功处理器-->
+    <bean id="authenticationSuccessHandler" class="com.trainingcenter.security.handler.AuthenticationSuccessHandlerImpl"/>
+
+    <!--6、自定义认证失败处理器-->
+    <bean id="authenticationFailureHandler" class="com.trainingcenter.security.handler.SimpleUrlAuthenticationFailureHandler">
+        <property name="defaultFailureUrl" value="/user/goLogin"/>
+    </bean>
+
+    <!--7、自定义访问资源无权限处理器
+    <bean id="accessDeniedHandler" class="com.trainingcenter.security.handler.AccessDeniedHandlerImpl"/>
+    -->
+
 </beans>

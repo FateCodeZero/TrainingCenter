@@ -120,21 +120,21 @@
         -->
     <update id="update">
         UPDATE tab_login_info
-        <trim prefix="set">
+        <trim prefix="set" suffixOverrides=",">
             <if test="loginInfo.password != null and loginInfo.password != '' ">
-                password = #{loginInfo.password}
+                password = #{loginInfo.password},
             </if>
-            <if test="loginInfo.loginIP != null and loginIP.loginIP != '' ">
-                login_IP = #{loginInfo.loginIP}
+            <if test="loginInfo.loginIP != null and loginInfo.loginIP != '' ">
+                login_IP = #{loginInfo.loginIP},
             </if>
             <if test="loginInfo.state != null">
-                state = #{loginInfo.state}
+                state = #{loginInfo.state},
             </if>
             <if test="loginInfo.isUnlocked != null">
-                is_unlocked = #{loginInfo.isUnlocked}
+                is_unlocked = #{loginInfo.isUnlocked},
             </if>
             <if test="loginInfo.lastLoginTime != null">
-                last_login_time = #{loginInfo.lastLoginTime}
+                last_login_time = #{loginInfo.lastLoginTime},
             </if>
         </trim>
         WHERE id = #{loginInfo.id}

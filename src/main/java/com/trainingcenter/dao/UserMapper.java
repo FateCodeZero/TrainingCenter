@@ -1,8 +1,11 @@
 package com.trainingcenter.dao;
 
 import com.trainingcenter.bean.User;
+import com.trainingcenter.controller.validation.TC_Add;
+import com.trainingcenter.controller.validation.TC_Update;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -45,14 +48,14 @@ public interface UserMapper {
      * @param user：要添加的用户
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer add(@Valid @Param("user") User user);
+    public Integer add(@Validated(value = {TC_Add.class}) @Param("user") User user);
 
     /**
      * 用户更新方法
      * @param user：要更新的用户
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer update(@Valid @Param("user") User user);
+    public Integer update(@Validated(value = {TC_Update.class}) @Param("user") User user);
 
     /**
      * 用户删除方法

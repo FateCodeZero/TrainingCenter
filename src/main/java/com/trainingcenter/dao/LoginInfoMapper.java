@@ -1,8 +1,11 @@
 package com.trainingcenter.dao;
 
 import com.trainingcenter.bean.LoginInfo;
+import com.trainingcenter.controller.validation.TC_Add;
+import com.trainingcenter.controller.validation.TC_Update;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -54,7 +57,7 @@ public interface LoginInfoMapper {
      * @param loginInfo :注册对象
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer add(@Valid @Param("loginInfo") LoginInfo loginInfo);
+    public Integer add(@Validated(value = {TC_Add.class}) @Param("loginInfo") LoginInfo loginInfo);
 
     /**
      * 注销/删除
@@ -68,7 +71,7 @@ public interface LoginInfoMapper {
      * @param loginInfo
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer update(@Valid @Param("loginInfo") LoginInfo loginInfo);
+    public Integer update(@Validated(value = {TC_Update.class}) @Param("loginInfo") LoginInfo loginInfo);
 
     /**
      * 获取含有指定 角色 的所有用户

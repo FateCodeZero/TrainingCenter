@@ -25,7 +25,8 @@
 
     <%--顶部公司log图片--%>
     <div id="top">
-        <iframe id="IF-top" src="${webRoot}/webpages/static/top.jsp" frameborder="0" width="100%" scrolling="no"></iframe>
+        <iframe id="IF-top" src="${webRoot}/webpages/static/top.jsp" frameborder="0" width="100%"
+                scrolling="no"></iframe>
     </div>
 
     <%--颈部导航栏--%>
@@ -41,25 +42,25 @@
                 <li class="layui-nav-item">
                     <a href="#">特色课程</a>
                     <dl class="layui-nav-child">
-                        <dd><a >修改信息</a></dd>
-                        <dd><a >安全管理</a></dd>
-                        <dd><a >退了</a></dd>
+                        <dd><a>修改信息</a></dd>
+                        <dd><a>安全管理</a></dd>
+                        <dd><a>退了</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="#">学员风采</a>
                     <dl class="layui-nav-child">
-                        <dd><a >修改信息</a></dd>
-                        <dd><a >安全管理</a></dd>
-                        <dd><a >退了</a></dd>
+                        <dd><a>修改信息</a></dd>
+                        <dd><a>安全管理</a></dd>
+                        <dd><a>退了</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="#">行程配置</a>
                     <dl class="layui-nav-child">
-                        <dd><a >修改信息</a></dd>
-                        <dd><a >安全管理</a></dd>
-                        <dd><a >退了</a></dd>
+                        <dd><a>修改信息</a></dd>
+                        <dd><a>安全管理</a></dd>
+                        <dd><a>退了</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -68,32 +69,38 @@
                 <li class="layui-nav-item">
                     <a href="#">样式预留2<span class="layui-badge-dot"></span></a>
                 </li>
-                <li class="layui-nav-item" style="float: right">
-                    <a href="#"><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>
-                    <dl class="layui-nav-child">
-                        <dd><a >修改信息</a></dd>
-                        <dd><a >安全管理</a></dd>
-                        <dd><a >退了</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item" style="float: right">
-                    <a href="${webRoot}/webpages/user/login.jsp" id="CT-login">登录</a>
-                </li>
-                <li class="layui-nav-item" style="float: right">
-                    <a href="#">注册</a>
-                </li>
+                <c:if test="${not empty user}">
+                    <li class="layui-nav-item" style="float: right">
+                        <a href="#"><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>
+                        <dl class="layui-nav-child">
+                            <dd><a>修改信息</a></dd>
+                            <dd><a>安全管理</a></dd>
+                            <dd><a href="${webRoot}/user/logout">退出</a></dd>
+                        </dl>
+                    </li>
+                </c:if>
+                <c:if test="${empty user}">
+                    <li class="layui-nav-item" style="float: right">
+                        <a href="${webRoot}/user/goLogin" id="CT-login">登录</a>
+                    </li>
+                    <li class="layui-nav-item" style="float: right">
+                        <a href="${webRoot}/user/goRegister">注册</a>
+                    </li>
+                </c:if>
             </ul>
         </div>
     </div>
 
     <%--身体部分,各个页面跳转显示--%>
     <div id="body">
-        <iframe id="IF-body" src="${webRoot}/webpages/static/body.jsp" frameborder="0" width="100%" height="100%" marginheight="50px" scrolling="no"></iframe>
+        <iframe id="IF-body" src="${webRoot}/webpages/static/body.jsp" frameborder="0" width="100%" height="100%"
+                marginheight="50px" scrolling="no"></iframe>
     </div>
 
     <%--页脚，网站相关信息--%>
     <footer id="footer">
-        <iframe id="IF-footer" src="${webRoot}/webpages/static/footer.jsp" frameborder="0" width="100%" scrolling="no" ></iframe>
+        <iframe id="IF-footer" src="${webRoot}/webpages/static/footer.jsp" frameborder="0" width="100%"
+                scrolling="no"></iframe>
     </footer>
 </div>
 </body>
@@ -112,17 +119,14 @@
             layer.msg(elem.text());//弹出提示
             var text = elem.text();
             var loadUrl = '';
-            if (text === '首页'){
+            if (text === '首页') {
                 loadUrl = "${webRoot}/index.jsp";
             }
-            if (text === '登录'){
-                loadUrl = "${webRoot}/user/goLogin";
-            }
-            if (text === '注册'){
-                loadUrl = "${webRoot}/user/goRegister";
+            if (text === '留言咨询') {
+                loadUrl = "${webRoot}/webpages/static/message.jsp";
             }
             //通过修改 iframe 的 url 来切换页面，注：要用此方法，点击处<a>标签必须是 href="#"
-            $("#IF-body").attr('src',loadUrl);
+            $("#IF-body").attr('src', loadUrl);
         });
         element.render("nav");
     });

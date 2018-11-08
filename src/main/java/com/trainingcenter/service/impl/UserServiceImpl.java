@@ -2,6 +2,8 @@ package com.trainingcenter.service.impl;
 
 import com.trainingcenter.bean.User;
 import com.trainingcenter.bean.UserType;
+import com.trainingcenter.controller.validation.TC_Add;
+import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.dao.UserMapper;
 import com.trainingcenter.dao.UserTypeMapper;
 import com.trainingcenter.exception.DeleteException;
@@ -10,6 +12,7 @@ import com.trainingcenter.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -78,7 +81,7 @@ public class UserServiceImpl implements UserService {
      * @return 返回值大于0表示操作成功，否则操作失败
      */
     @Override
-    public Integer add(@Valid User user) {
+    public Integer add(@Validated(value = {TC_Add.class}) User user) {
         return user == null ? 0 : userMapper.add(user);
     }
 
@@ -89,7 +92,7 @@ public class UserServiceImpl implements UserService {
      * @return 返回值大于0表示操作成功，否则操作失败
      */
     @Override
-    public Integer update(@Valid User user) {
+    public Integer update(@Validated(value = {TC_Update.class}) User user) {
         return user == null ? 0 : userMapper.update(user);
     }
 

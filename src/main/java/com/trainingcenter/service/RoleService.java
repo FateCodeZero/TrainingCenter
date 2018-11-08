@@ -1,9 +1,12 @@
 package com.trainingcenter.service;
 
 import com.trainingcenter.bean.Role;
+import com.trainingcenter.controller.validation.TC_Add;
+import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.exception.DeleteException;
 import com.trainingcenter.exception.InsertException;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -45,7 +48,7 @@ public interface RoleService {
      * @param role：要添加的角色
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer add(@Valid @Param("role") Role role) throws InsertException;
+    public Integer add(@Validated(value = {TC_Add.class}) @Param("role") Role role) throws InsertException;
 
     /**
      * 角色更新方法
@@ -53,7 +56,7 @@ public interface RoleService {
      * @param role
      * @return
      */
-    public Integer update(@Valid Role role);
+    public Integer update(@Validated(value = {TC_Update.class})  Role role);
 
     /**
      * 角色删除方法

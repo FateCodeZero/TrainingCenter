@@ -1,8 +1,11 @@
 package com.trainingcenter.dao;
 
 import com.trainingcenter.bean.UserType;
+import com.trainingcenter.controller.validation.TC_Add;
+import com.trainingcenter.controller.validation.TC_Update;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,14 +40,14 @@ public interface UserTypeMapper {
      * @param userType：用户类型对象
      * @return 返回操作成功的条数，0表示操作失败
      */
-    public Integer add(@Valid @Param("userType") UserType userType);
+    public Integer add(@Validated(value = {TC_Add.class}) @Param("userType") UserType userType);
 
     /**
      * 更新
      * @param userType：用户类型对象
      * @return 返回操作成功的条数，0表示操作失败
      */
-    public Integer update(@Valid @Param("userType") UserType userType);
+    public Integer update(@Validated(value = {TC_Update.class}) @Param("userType") UserType userType);
 
     /**
      * 删除

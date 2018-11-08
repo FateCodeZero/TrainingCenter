@@ -2,7 +2,10 @@ package com.trainingcenter.service;
 
 import com.trainingcenter.bean.User;
 import com.trainingcenter.bean.UserType;
+import com.trainingcenter.controller.validation.TC_Add;
+import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.exception.DeleteException;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -48,7 +51,7 @@ public interface UserService {
      * @param user
      * @return 返回值大于0表示操作成功，否则操作失败
      */
-    public Integer add(@Valid User user);
+    public Integer add(@Validated(value = {TC_Add.class}) User user);
 
     /**
      * 用户更新方法
@@ -56,7 +59,7 @@ public interface UserService {
      * @param user
      * @return
      */
-    public Integer update(@Valid User user);
+    public Integer update(@Validated(value = {TC_Update.class}) User user);
 
     /**
      * 用户删除方法
