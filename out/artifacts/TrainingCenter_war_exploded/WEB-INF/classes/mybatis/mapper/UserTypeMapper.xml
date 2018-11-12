@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.UserTypeMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.LoginInfoMapper"></cache-ref>
+
+    <sql id="userTypeColumns">
+        id,`name`,`describe`,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!--public UserType getUserTypeById(@Param("id") String id);
+        通过id获取 UserType对象
+    -->
+    <select id="getUserTypeById" resultType="com.trainingcenter.bean.UserType">
+        SELECT <include refid="userTypeColumns"></include>
+        FROM tab_user_type
+        WHERE id = #{id}
+    </select>
+
+    <!--public List<UserType> getUserTypes(@Param("start") Integer start, @Param("number") Integer number,@Param("searchContent") String searchContent);
+        分页获取 UserType对象
+    -->
+    <select id="getUserTypes" resultType="com.trainingcenter.bean.UserType">
+        SELECT <include refid="userTypeColumns"></include>
+        FROM tab_user_type
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != '' ">
+                and (
+                `name` like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+    </select>
+
+    <!--public Integer add(@Valid @Param("userType") UserType userType);
+        添加对象
+    -->
+    <insert id="add">
+        INSERT INTO tab_user_type(<include refid="userTypeColumns"></include>)
+        VALUES (#{userType.id},#{userType.name},#{userType.describe},#{userType.remarks},#{userType.createUserId},
+        #{userType.createDate},#{userType.updateUserId},#{userType.updateDate}
+        )
+    </insert>
+
+    <!--public Integer update(@Valid @Param("userType") UserType userType);
+        更新对象信息
+    -->
+    <update id="update">
+        UPDATE tab_user_type
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userType.name != null and userType.name != '' ">
+                `name` = #{userType.name},
+            </if>
+            <if test="userType.describe != null and userType.describe != '' ">
+                `describe` = #{userType.describe},
+            </if>
+            <if test="userType.remarks != null and userType.remarks != '' ">
+                remarks = #{userType.remarks},
+            </if>
+            <if test="userType.createUserId != null and userType.createUserId != '' ">
+                create_user_id = #{userType.createUserId},
+            </if>
+            <if test="userType.createDate != null">
+                create_date = #{userType.createDate},
+            </if>
+            <if test="userType.updateUserId != null and userType.updateUserId != ''">
+                update_user_id = #{userType.updateUserId},
+            </if>
+            <if test="userType.updateDate != null">
+                update_date = #{userType.updateDate},
+            </if>
+        </trim>
+        WHERE id = #{userType.id}
+    </update>
+
+    <!--public Integer delete(@Param("id") String id);
+        删除指定id的对象
+    -->
+    <delete id="delete">
+        DELETE FROM tab_user_type
+        WHERE id = #{id}
+    </delete>
+</mapper>

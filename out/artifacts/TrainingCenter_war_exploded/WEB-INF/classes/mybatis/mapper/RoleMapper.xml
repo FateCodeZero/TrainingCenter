@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.RoleMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.LoginInfoMapper"></cache-ref>
+
+
+    <sql id="roleColumns">
+      id,`name`,`describe`,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public Role getRoleById(@Param("id") String id);
+        通过id获取角色
+    -->
+    <select id="getRoleById" resultType="com.trainingcenter.bean.Role">
+        SELECT <include refid="roleColumns"></include>
+        FROM tab_role
+        WHERE id = #{id}
+    </select>
+
+    <!--public Role getRoleByName(@Param("name") String name);
+        通过角色名称获取角色
+    -->
+    <select id="getRoleByName" resultType="com.trainingcenter.bean.Role">
+        SELECT <include refid="roleColumns"></include>
+        FROM tab_role
+        WHERE name = #{name}
+    </select>
+
+    <!-- public List<Role> getRoles(Integer start, Integer number, String searchContent);
+        分页查询所有角色
+    -->
+    <select id="getRoles" resultType="com.trainingcenter.bean.Role">
+        SELECT <include refid="roleColumns"></include>
+        FROM tab_role
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and (
+                `name` like CONCAT('%',#{searchContent},'%') OR
+                `describe` like CONCAT('%',#{searchContent},'%') OR
+                remarks like CONCAT('%',#{searchContent},'%') OR
+                create_date like CONCAT('%',#{searchContent},'%') OR
+                update_date like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("role") Role role;
+    角色添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.Role">
+        INSERT INTO tab_role(<include refid="roleColumns"></include>)
+        VALUES (#{role.id},#{role.name},#{role.describe},#{role.permission_ids},#{role.remarks},#{role.create_user_id},#{role.create_date},
+        #{role.update_user_id},#{role.update_date}
+    </insert>
+
+    <!--
+            public Integer update(@Param("role") Role role);
+            更新角色信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.Role">
+        UPDATE tab_role
+        <trim prefix="set" suffixOverrides=",">
+            <if test="role.name != null and role.name != '' ">
+                `name` = #{role.name},
+            </if>
+            <if test="role.describe != null and role.describe != '' ">
+                `describe` = #{role.describe},
+            </if>
+            <if test="role.permission_ids != null and role.permission_ids != '' ">
+                permission_ids = #{role.permissionIds},
+            </if>
+            <if test="role.remarks != null and role.remarks != '' ">
+                remarks = #{role.remarks},
+            </if>
+            <if test="role.create_user_id != null and role.create_user_id != '' ">
+                create_user_id = #{role.createUserId},
+            </if>
+            <if test="role.create_date != null and role.create_date != '' ">
+                create_date = #{role.createDate},
+            </if>
+            <if test="role.update_user_id != null and role.update_user_id != '' ">
+                update_user_id = #{role.updateUserId},
+            </if>
+            <if test="role.update_date != null and role.update_date != '' ">
+                update_date = #{role.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{role.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除角色
+       -->
+    <delete id="delete">
+        DELETE FROM tab_role
+        WHERE id = #{id}
+    </delete>
+
+    <!--
+       public Collection<Role> getRolesByUserInfoId(@Param("userInfoId") String userInfoId,@Param("start") Integer start,
+                                                 @Param("number") Integer number, @Param("searchContent") String searchContent);
+        获取登录用户所含角色集合
+        -->
+    <select id="getRolesByUserInfoId" resultType="com.trainingcenter.bean.Role">
+        SELECT r.id,r.name,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
+        FROM tab_role r LEFT JOIN tab_login_info_role lir ON r.id = lir.role_id
+        WHERE lir.login_info_id = #{userInfoId}
+        <trim prefixOverrides="AND">
+            <if test="searchContent != null and searchContent != '' ">
+                AND ( r.name like CONCAT('%',#{searchContent},'%')
+                  OR r.describe like CONCAT('%',#{searchContent},'%')
+                  OR r.remarks like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--public Collection<Permission> getRolesByPermissionId(@Param("permissionId") String permissionId, @Param("start") Integer start,
+                                                         @Param("number") Integer number, @Param("searchContent") String searchContent);
+       获取含有指定权限的所有角色
+                                                         -->
+    <select id="getRolesByPermissionId" resultType="com.trainingcenter.bean.Role">
+        SELECT r.id,r.name,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
+        FROM tab_role r LEFT JOIN tab_role_permission rp ON r.id = rp.role_id
+        WHERE rp.permission_id = #{permissionId}
+        <trim prefixOverrides="AND">
+            <if test="searchContent != null and searchContent != '' ">
+                AND ( r.name like CONCAT('%',#{searchContent},'%')
+                OR r.describe like CONCAT('%',#{searchContent},'%')
+                OR r.remarks like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+</mapper>

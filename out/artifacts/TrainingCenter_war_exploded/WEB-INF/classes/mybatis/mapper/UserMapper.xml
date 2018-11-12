@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.UserMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.LoginInfoMapper"></cache-ref>
+
+    <!--用户表的所有列-->
+    <sql id="userColumns">
+        id,username,nickname,head_portrait,real_name,birthday,gender,phone,email,address,motto,
+        user_type_id,user_code,`describe`,imgs,state,register_time
+    </sql>
+
+    <!--
+        public User getUserById(@Param("id") String id);
+        通过id获取用户
+        -->
+    <select id="getUserById" resultType="com.trainingcenter.bean.User">
+        SELECT
+        <include refid="userColumns"></include>
+        FROM tab_user
+        WHERE id = #{id}
+    </select>
+
+    <!--
+        public User getUserByUsername(@Param("username") String username);
+        通过用户名获取用户
+        -->
+    <select id="getUserByUsername" resultType="com.trainingcenter.bean.User">
+        SELECT
+        <include refid="userColumns"></include>
+        FROM tab_user
+        WHERE username = #{username}
+    </select>
+
+    <!--
+        public List<User> getUsers();
+        分页查询所有用户
+        -->
+    <select id="getUsers" resultType="com.trainingcenter.bean.User">
+        SELECT
+        <include refid="userColumns"></include>
+        FROM tab_user
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and (
+                username like CONCAT('%',#{searchContent},'%') OR
+                nickname like CONCAT('%',#{searchContent},'%') OR
+                gender like CONCAT('%',#{searchContent},'%') OR
+                phone like CONCAT('%',#{searchContent},'%') OR
+                email like CONCAT('%',#{searchContent},'%') OR
+                address like CONCAT('%',#{searchContent},'%') OR
+                code like CONCAT('%',#{searchContent},'%') OR
+                remarks like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+        public Integer add(@Param("user") User user;
+        用户添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+        -->
+    <insert id="add" parameterType="com.trainingcenter.bean.User">
+        INSERT INTO tab_user(<include refid="userColumns"></include>)
+        VALUES (#{user.id},#{user.username},#{user.nickname},#{user.headPortrait},#{user.realName},#{user.birthday},#{user.gender},
+        #{user.phone},#{user.email},#{user.address},#{user.motto},#{user.userTypeId},#{user.userCode},#{user.describe},
+        #{user.imgs},#{user.state},#{user.registerTime})
+    </insert>
+
+    <!--
+        public Integer update(@Param("user") User user);
+        更新用户信息
+        -->
+    <update id="update" parameterType="com.trainingcenter.bean.User">
+        UPDATE tab_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="user.nickname != null and user.nickname != '' ">
+                nickname = #{user.nickname},
+            </if>
+            <if test="user.headPortrait != null and user.headPortrait != '' ">
+                head_portrait = #{user.headPortrait},
+            </if>
+            <if test="user.realName != null and user.realName != '' ">
+                real_name = #{user.realName},
+            </if>
+            <if test="user.birthday != null">
+                birthday = #{user.birthday},
+            </if>
+            <if test="user.gender != null">
+                gender = #{user.gender},
+            </if>
+            <if test="user.phone != null and user.phone != '' ">
+                phone = #{user.phone},
+            </if>
+            <if test="user.email != null and user.email != '' ">
+                email = #{user.email},
+            </if>
+            <if test="user.address != null and user.address != '' ">
+                address = #{user.address},
+            </if>
+            <if test="user.motto != null and user.motto != '' ">
+                motto = #{user.motto},
+            </if>
+            <if test="user.userTypeId != null and user.userTypeId != '' ">
+                user_type_id = #{user.userTypeId},
+            </if>
+            <if test="user.userCode != null and user.userCode != '' ">
+                user_code = #{user.userCode},
+            </if>
+            <if test="user.describe != null and user.describe != '' ">
+                `describe` = #{user.describe},
+            </if>
+            <if test="user.imgs != null and user.imgs != '' ">
+                imgs = #{user.imgs},
+            </if>
+            <if test="user.state != null">
+                state = #{user.state},
+            </if>
+            <if test="user.registerTime != null and user.registerTime != '' ">
+                register_time = #{user.registerTime},
+            </if>
+        </trim>
+        WHERE id = #{user.id}
+    </update>
+
+    <!--
+        public Integer delete(@Param("id") String id);
+        通过id删除用户
+        -->
+    <delete id="delete">
+        DELETE FROM tab_user
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
