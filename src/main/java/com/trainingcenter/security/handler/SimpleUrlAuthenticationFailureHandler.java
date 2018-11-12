@@ -7,7 +7,6 @@ package com.trainingcenter.security.handler;
  * Time: 17:17
  */
 
-import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.HTTPUtils;
 import com.trainingcenter.utils.LogUtil;
 import org.apache.commons.logging.Log;
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -54,27 +52,26 @@ public class SimpleUrlAuthenticationFailureHandler implements AuthenticationFail
             if (this.defaultFailureUrl == null) {
                 LogUtil.error(this, "SecurityAjax异常处理", "401错误，没有配置相应的failure URL", exception);
                 this.logger.debug("No failure URL set, sending 401 Unauthorized error");
-                response.sendError(403);
+                response.sendError(401);
             } else {
 
                 //是ajax请求时，不再将异常信息保存到 session 中，而是直接响应
                 //将响应数据封装成 json 格式
-                //ConcurrentHashMap：线程安全
+                //ConcurrentHashMap：线程安全的hashMap
                 Map<String, Object> data = new ConcurrentHashMap<>();
                 data.put("exception", exception);
 
-                AjaxJson ajaxJson = new AjaxJson();
-                ajaxJson.setCode(0);
-                ajaxJson.setMsg(exception.getMessage());
-                ajaxJson.setData(data);
+                //要符合 AjaxJson 类的数据格式
+                Map<String,Object> responseMap = new ConcurrentHashMap<>();
+                responseMap.put("code",0);
+                responseMap.put("msg",exception.getMessage());
+                responseMap.put("data",data);
 
                 this.logger.debug("Forwarding to " + this.defaultFailureUrl);
                 LogUtil.error(this, "SecurityAjax异常处理", "请求错误，异常响应至【" + this.defaultFailureUrl + "】页面", exception);
 
-                //响应 ajax请求的信息
-                PrintWriter printWriter = response.getWriter();
-                printWriter.print(ajaxJson);
-
+                //使用工具类向前端响应数据
+                HTTPUtils.responseByJacson(request,response,responseMap);
             }
         } else {
             if (this.defaultFailureUrl == null) {

@@ -1,4 +1,4 @@
-package com.trainingcenter.security.authenticationproviders;
+package com.trainingcenter.security.authentication.providers;
 
 import com.trainingcenter.utils.MD5Util;
 import com.trainingcenter.utils.StringUtil;
@@ -7,12 +7,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.Collection;
 
 /**
  * Created by IntelliJ IDEA.

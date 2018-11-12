@@ -135,7 +135,7 @@
                 username:username
             };
             $.ajax({
-                url: "${webRoot}/loginInfo/usernameCheck",
+                url: "${webRoot}/user/usernameCheck",
                 type: "get",
                 data: data,
                 dataType: "json",
@@ -204,7 +204,7 @@
         };
 
         $.ajax({
-            url: "${webRoot}/loginInfo/register",
+            url: "${webRoot}/user/register",
             type: "post",
             data: data,
             dataType: "json",

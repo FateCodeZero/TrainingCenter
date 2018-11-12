@@ -8,6 +8,7 @@ package com.trainingcenter.security.filter;
  */
 
 import com.google.code.kaptcha.Constants;
+import com.trainingcenter.utils.HTTPUtils;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -21,6 +22,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 验证码效验过滤器
@@ -52,8 +55,7 @@ public class KaptchaAuthenticationFilter extends AbstractAuthenticationProcessin
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res=(HttpServletResponse)response;
 
-        String mt = req.getMethod();
-        String pt = req.getServletPath();
+        //只处理 POST 方法的登录url
         if ("POST".equalsIgnoreCase(req.getMethod()) && servletPath.equals(req.getServletPath())){
 
             //验证码，使用谷歌的验证码生成器生成
@@ -61,7 +63,17 @@ public class KaptchaAuthenticationFilter extends AbstractAuthenticationProcessin
 
             //判断用户填写的验证码与生存的验证码是否一致
             if(expect!=null && !expect.equalsIgnoreCase(req.getParameter("kaptcha"))){
-                unsuccessfulAuthentication(req, res, new InsufficientAuthenticationException("输入的验证码不正确"));
+
+                //若是 Ajax 请求就直接向前端响应错误信息
+                if (HTTPUtils.isAjaxRequest(req)){
+                    Map<String,Object> map = new ConcurrentHashMap<>();
+                    map.put("code",0);
+                    map.put("msg","输入的验证码不正确");
+                    HTTPUtils.responseByJacson(req,res,map);
+                }else {
+                    //否则抛出异常让 security 去处理
+                    unsuccessfulAuthentication(req, res, new InsufficientAuthenticationException("输入的验证码不正确"));
+                }
                 return;
             }
         }
@@ -69,7 +81,7 @@ public class KaptchaAuthenticationFilter extends AbstractAuthenticationProcessin
     }
 
     /**
-     * attemptAuthentication回调不用理,重写了doFilter方法,它不会被调用
+     * attemptAuthentication 的回调不用理,重写了doFilter方法,它不会被调用
      * @param request
      * @param response
      * @return

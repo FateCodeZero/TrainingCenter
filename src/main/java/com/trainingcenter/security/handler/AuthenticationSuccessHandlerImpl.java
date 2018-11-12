@@ -14,6 +14,7 @@ import com.trainingcenter.service.LoginInfoService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.HTTPUtils;
 import com.trainingcenter.utils.LogUtil;
+import com.trainingcenter.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *  Security 登录成功后跳转及响应统一处理器
@@ -68,6 +71,31 @@ public class AuthenticationSuccessHandlerImpl extends SavedRequestAwareAuthentic
             LogUtil.info(this,"登录成功后处理","用户【"+loginInfo.getUsername()+"】登录成功");
         }
 
-        super.onAuthenticationSuccess(request, response, authentication);
+        if (HTTPUtils.isAjaxRequest(request)){
+
+            Map<String,Object> data = new ConcurrentHashMap<>(); //要返回的数据
+
+            //获取登录前拦截时存入的 url
+            String url = (String) request.getSession().getAttribute("backUrl");
+
+            //若记录的url不为空，且不是直接请求的登录页面，就跳转到之前用户请求的页面，否则跳到首页
+            if (StringUtil.isNotEmpty(url) && !url.endsWith("/user/login") && !url.endsWith("/static/login.jsp")){
+                data.put("url",url);
+            }else {
+                url = request.getContextPath() + "/index.jsp";   //设置默认跳转的url
+                data.put("url",url);
+            }
+
+            Map<String,Object> map = new ConcurrentHashMap<>();
+            map.put("code",1);
+            map.put("msg","登录成功");
+            map.put("data",data);
+
+            //向前端响应
+            HTTPUtils.responseByJacson(request,response,map);
+        }else {
+            //带有用户请求记忆的跳转，但在使用 ajax 请求时跳不过去
+            super.onAuthenticationSuccess(request, response, authentication);
+        }
     }
 }

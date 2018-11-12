@@ -46,14 +46,14 @@ public interface LoginInfoService {
      * @param IP：用户IP
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer register(String username, String password, String IP) throws RegisterException;
+    public Integer register(String username, String password, String IP);
 
     /**
      * 修改
      * @param loginInfo：被修改的对象
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer update(@Validated(value = {TC_Update.class}) LoginInfo loginInfo) throws UpdateException;
+    public Integer update(@Validated(value = {TC_Update.class}) LoginInfo loginInfo);
 
     /**
      * 注销/删除
@@ -67,14 +67,14 @@ public interface LoginInfoService {
      * @param ids：需要删除的对象的id集
      * @return 返回操作成功的数目与操作失败的对象
      */
-    public Map<String,Object> batchDelete(String ids) throws FindException, DeleteException;
+    public Map<String,Object> batchDelete(String ids);
 
     /**
      * 通过id获取登录信息
      * @param id：对象id
      * @return
      */
-    public LoginInfo getLoginInfoById(String id) throws FindException;
+    public LoginInfo getLoginInfoById(String id);
 
     /**
      * 通过username获取登录信息
@@ -90,5 +90,5 @@ public interface LoginInfoService {
      * @param searchContent：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public List<LoginInfo> getLoginInfos(Integer currentPage, Integer rows, String searchContent) throws FindException;
+    public List<LoginInfo> getLoginInfos(Integer currentPage, Integer rows, String searchContent);
 }

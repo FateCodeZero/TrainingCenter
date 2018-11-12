@@ -156,7 +156,7 @@
         <property name="authenticationManager" ref="kaptchaAuthenticationManager"/>
     </bean>
 
-    <!--4、自定义异常解释过滤器。【在使用了自定义认证错误处理器后，此处配置无效了】-->
+    <!--4、自定义异常解释过滤器。【在使用了自定义认证错误处理器后，此处配置就无效了】-->
     <!--<bean id="exceptionTranslationFilter"-->
           <!--class="org.springframework.security.web.access.ExceptionTranslationFilter">-->
 
@@ -169,15 +169,15 @@
         <!--<property name="accessDeniedHandler" ref="accessDeniedHandler"/>-->
     <!--</bean>-->
 
-    <!--自定义authenticationEntryPoint：引导未登录用户登录的入口页面-->
+    <!--自定义authenticationEntryPoint：引导未登录用户进入登录页面，也可在用户登录前做一些事情-->
     <bean id="authenticationEntryPoint"
-          class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+          class="com.trainingcenter.security.authentication.entrypoint.AuthenticationEntryPoint">
         <constructor-arg name="loginFormUrl" value="/webpages/static/login.jsp"/>
     </bean>
 
     <!--4、注册配置自定义用户登录效验类-->
     <bean id="userAuthenticationProvider"
-          class="com.trainingcenter.security.authenticationproviders.UserAuthenticationProvider"/>
+          class="com.trainingcenter.security.authentication.providers.UserAuthenticationProvider"/>
 
     <!--5、自定义认证成功处理器-->
     <bean id="authenticationSuccessHandler" class="com.trainingcenter.security.handler.AuthenticationSuccessHandlerImpl"/>

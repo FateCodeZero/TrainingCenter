@@ -65,6 +65,7 @@
     <servlet>
         <servlet-name>kaptcha</servlet-name>
         <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+        <!--<servlet-class>com.trainingcenter.security.filter.KaptchaServlet</servlet-class>-->
     </servlet>
     <servlet-mapping>
         <servlet-name>kaptcha</servlet-name>
