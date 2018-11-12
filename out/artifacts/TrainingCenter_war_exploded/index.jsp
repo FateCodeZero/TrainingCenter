@@ -22,7 +22,7 @@
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.3.0/layui/layui.all.js"></script>
 </head>
 <body >
-<div id="mian" class="row row_height">
+<div id="mian" >
 
     <%--顶部公司log图片--%>
     <div id="top">
@@ -99,7 +99,7 @@
     <%--身体部分,各个页面跳转显示--%>
     <div id="body">
         <iframe id="IF-body" src="${webRoot}/webpages/static/body.jsp" frameborder="0" width="100%" height="100%"
-                marginheight="50px" scrolling="no"></iframe>
+                marginheight="50px" scrolling="yes"></iframe>
     </div>
 
     <%--页脚，网站相关信息--%>
@@ -137,5 +137,7 @@
 
 
     });
+
+
 </script>
 </html>
