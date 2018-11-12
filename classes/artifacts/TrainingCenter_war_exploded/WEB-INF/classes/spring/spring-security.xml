@@ -81,6 +81,26 @@
         -->
         <security:logout delete-cookies="JSESSIONID" logout-url="/user/logout" logout-success-url="/index.jsp"/>
 
+        <!-- session管理，invalid-session-url指定使用已经超时的sessionId进行请求需要重定向的页面
+                session-authentication-error-url：指定使用 Remember-Me 重复登录时要重定向到的页面
+                注：该重定向页面必须不受 security 过滤链管理，否则会发生重复登录死循环！
+                session-fixation-protection：session 固定攻击保护，防止他人盗用 session 进行登录
+                    （1）migrateSession：默认值，在用户登录后将新建一个session，同时将原session中的attribute都copy到新的session中。
+                    （2）none：表示继续使用原来的session。
+                    （3）newSession：表示重新创建一个新的session，但是不copy原session拥有的attribute。
+        -->
+        <security:session-management invalid-session-url="/webpages/static/login.jsp"
+                                     session-authentication-error-url="/index.jsp"
+                                     session-fixation-protection="migrateSession">
+
+            <!--修改默认的后一次登录覆盖前一次登录的防止重复登录策略，改为不让已用户再次登录
+                error-if-maximum-exceeded="true"：限制用户重复登录，会重定向到由form-login指定的authentication-failure-url
+                expired-url：指定当用户尝试使用一个由于其再次登录导致session超时的session时所要跳转的页面URL。
+                    注：该URL也需要设为不受 security 管理
+            -->
+            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" expired-url="/index.jsp" />
+        </security:session-management>
+
         <!--
             5、跨站请求设置（我们这里关闭）
                1)csrf disabled="true" 关闭 csrf ,如果不加会出现错误

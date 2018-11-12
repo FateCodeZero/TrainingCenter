@@ -46,6 +46,11 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <!--监听用户是否已登录过，防止重复登录，默认让后一次登录覆盖前一次登录-->
+    <listener>
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+
     <!-- 配置SpringMVC，前端控制器 -->
     <servlet>
         <servlet-name>springMVC</servlet-name>
@@ -71,6 +76,11 @@
         <servlet-name>kaptcha</servlet-name>
         <url-pattern>/except/kaptcha</url-pattern>
     </servlet-mapping>
+
+    <!--设置 session 超时时间（分钟）-->
+    <session-config>
+        <session-timeout>10 </session-timeout>
+    </session-config>
 
     <welcome-file-list>
         <welcome-file>index.htm</welcome-file>

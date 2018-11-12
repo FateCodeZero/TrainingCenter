@@ -1,19 +1,23 @@
-22:09:07.927 DEBUG org.hibernate.validator.internal.util.logging.LoggerFactory 22 make - Logging Provider: org.jboss.logging.Log4j2LoggerProvider
-22:09:07.951 INFO  org.hibernate.validator.internal.util.Version 21 <clinit> - HV000001: Hibernate Validator 6.0.10.Final
-22:09:07.992 DEBUG org.hibernate.validator.internal.engine.resolver.TraversableResolvers 60 getDefault - Cannot find javax.persistence.Persistence on classpath. Assuming non JPA 2 environment. All properties will per default be traversable.
-22:09:08.062 DEBUG org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator 89 buildExpressionFactory - Loaded expression factory via original TCCL
-22:09:08.068 DEBUG org.hibernate.validator.internal.engine.ConfigurationImpl 148 messageInterpolator - Setting custom MessageInterpolator of type org.springframework.validation.beanvalidation.LocaleContextMessageInterpolator
-22:09:08.070 DEBUG org.hibernate.validator.internal.engine.ConfigurationImpl 180 constraintValidatorFactory - Setting custom ConstraintValidatorFactory of type org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory
-22:09:08.073 DEBUG org.hibernate.validator.internal.engine.ConfigurationImpl 194 parameterNameProvider - Setting custom ParameterNameProvider of type org.springframework.validation.beanvalidation.LocalValidatorFactoryBean$1
-22:09:08.084 DEBUG org.hibernate.validator.internal.xml.ValidationXmlParser 133 getValidationXmlInputStream - Trying to load META-INF/validation.xml for XML based Validator configuration.
-22:09:08.088 DEBUG org.hibernate.validator.internal.xml.ResourceLoaderHelper 53 getResettableInputStreamForPath - Trying to load META-INF/validation.xml via user class loader
-22:09:08.092 DEBUG org.hibernate.validator.internal.xml.ResourceLoaderHelper 60 getResettableInputStreamForPath - Trying to load META-INF/validation.xml via TCCL
-22:09:08.093 DEBUG org.hibernate.validator.internal.xml.ResourceLoaderHelper 66 getResettableInputStreamForPath - Trying to load META-INF/validation.xml via Hibernate Validator's class loader
-22:09:08.094 DEBUG org.hibernate.validator.internal.xml.ValidationXmlParser 140 getValidationXmlInputStream - No META-INF/validation.xml found. Using annotation based configuration only.
-22:09:08.651 DEBUG org.hibernate.validator.internal.engine.ValidatorFactoryImpl 578 logValidatorFactoryScopedConfiguration - HV000234: Using org.springframework.validation.beanvalidation.LocaleContextMessageInterpolator as ValidatorFactory-scoped message interpolator.
-22:09:08.653 DEBUG org.hibernate.validator.internal.engine.ValidatorFactoryImpl 579 logValidatorFactoryScopedConfiguration - HV000234: Using org.hibernate.validator.internal.engine.resolver.TraverseAllTraversableResolver as ValidatorFactory-scoped traversable resolver.
-22:09:08.654 DEBUG org.hibernate.validator.internal.engine.ValidatorFactoryImpl 580 logValidatorFactoryScopedConfiguration - HV000234: Using org.hibernate.validator.internal.util.ExecutableParameterNameProvider as ValidatorFactory-scoped parameter name provider.
-22:09:08.654 DEBUG org.hibernate.validator.internal.engine.ValidatorFactoryImpl 581 logValidatorFactoryScopedConfiguration - HV000234: Using org.hibernate.validator.internal.engine.DefaultClockProvider as ValidatorFactory-scoped clock provider.
-22:09:08.655 DEBUG org.hibernate.validator.internal.engine.ValidatorFactoryImpl 582 logValidatorFactoryScopedConfiguration - HV000234: Using org.hibernate.validator.internal.engine.scripting.DefaultScriptEvaluatorFactory as ValidatorFactory-scoped script evaluator factory.
-22:10:06.203 DEBUG com.trainingcenter.utils.LogUtil 57 debug - com.trainingcenter.service.impl.LoginInfoServiceImpl@1b4bf4cb
-22:10:06.356 INFO  com.trainingcenter.utils.LogUtil 33 info - com.trainingcenter.security.handler.AuthenticationSuccessHandlerImpl@260b19ad
+15:57:26.138 DEBUG org.hibernate.validator.internal.util.logging.LoggerFactory 22 make - Logging Provider: org.jboss.logging.Log4j2LoggerProvider
+15:57:26.171 INFO  org.hibernate.validator.internal.util.Version 21 <clinit> - HV000001: Hibernate Validator 6.0.10.Final
+15:57:26.224 DEBUG org.hibernate.validator.internal.engine.resolver.TraversableResolvers 60 getDefault - Cannot find javax.persistence.Persistence on classpath. Assuming non JPA 2 environment. All properties will per default be traversable.
+15:57:26.324 DEBUG org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator 89 buildExpressionFactory - Loaded expression factory via original TCCL
+15:57:26.331 DEBUG org.hibernate.validator.internal.engine.ConfigurationImpl 148 messageInterpolator - Setting custom MessageInterpolator of type org.springframework.validation.beanvalidation.LocaleContextMessageInterpolator
+15:57:26.335 DEBUG org.hibernate.validator.internal.engine.ConfigurationImpl 180 constraintValidatorFactory - Setting custom ConstraintValidatorFactory of type org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory
+15:57:26.339 DEBUG org.hibernate.validator.internal.engine.ConfigurationImpl 194 parameterNameProvider - Setting custom ParameterNameProvider of type org.springframework.validation.beanvalidation.LocalValidatorFactoryBean$1
+15:57:26.378 DEBUG org.hibernate.validator.internal.xml.ValidationXmlParser 133 getValidationXmlInputStream - Trying to load META-INF/validation.xml for XML based Validator configuration.
+15:57:26.387 DEBUG org.hibernate.validator.internal.xml.ResourceLoaderHelper 53 getResettableInputStreamForPath - Trying to load META-INF/validation.xml via user class loader
+15:57:26.392 DEBUG org.hibernate.validator.internal.xml.ResourceLoaderHelper 60 getResettableInputStreamForPath - Trying to load META-INF/validation.xml via TCCL
+15:57:26.394 DEBUG org.hibernate.validator.internal.xml.ResourceLoaderHelper 66 getResettableInputStreamForPath - Trying to load META-INF/validation.xml via Hibernate Validator's class loader
+15:57:26.397 DEBUG org.hibernate.validator.internal.xml.ValidationXmlParser 140 getValidationXmlInputStream - No META-INF/validation.xml found. Using annotation based configuration only.
+15:57:27.338 DEBUG org.hibernate.validator.internal.engine.ValidatorFactoryImpl 578 logValidatorFactoryScopedConfiguration - HV000234: Using org.springframework.validation.beanvalidation.LocaleContextMessageInterpolator as ValidatorFactory-scoped message interpolator.
+15:57:27.340 DEBUG org.hibernate.validator.internal.engine.ValidatorFactoryImpl 579 logValidatorFactoryScopedConfiguration - HV000234: Using org.hibernate.validator.internal.engine.resolver.TraverseAllTraversableResolver as ValidatorFactory-scoped traversable resolver.
+15:57:27.341 DEBUG org.hibernate.validator.internal.engine.ValidatorFactoryImpl 580 logValidatorFactoryScopedConfiguration - HV000234: Using org.hibernate.validator.internal.util.ExecutableParameterNameProvider as ValidatorFactory-scoped parameter name provider.
+15:57:27.342 DEBUG org.hibernate.validator.internal.engine.ValidatorFactoryImpl 581 logValidatorFactoryScopedConfiguration - HV000234: Using org.hibernate.validator.internal.engine.DefaultClockProvider as ValidatorFactory-scoped clock provider.
+15:57:27.343 DEBUG org.hibernate.validator.internal.engine.ValidatorFactoryImpl 582 logValidatorFactoryScopedConfiguration - HV000234: Using org.hibernate.validator.internal.engine.scripting.DefaultScriptEvaluatorFactory as ValidatorFactory-scoped script evaluator factory.
+15:59:22.134 DEBUG com.trainingcenter.utils.LogUtil 57 debug - com.trainingcenter.service.impl.LoginInfoServiceImpl@5590f2f5
+15:59:22.277 INFO  com.trainingcenter.utils.LogUtil 33 info - com.trainingcenter.security.handler.AuthenticationSuccessHandlerImpl@d143277
+16:01:37.873 DEBUG com.trainingcenter.utils.LogUtil 57 debug - com.trainingcenter.service.impl.LoginInfoServiceImpl@5590f2f5
+16:01:37.973 INFO  com.trainingcenter.utils.LogUtil 33 info - com.trainingcenter.security.handler.AuthenticationSuccessHandlerImpl@d143277
+16:03:48.967 DEBUG com.trainingcenter.utils.LogUtil 57 debug - com.trainingcenter.service.impl.LoginInfoServiceImpl@5590f2f5
+16:03:49.032 INFO  com.trainingcenter.utils.LogUtil 33 info - com.trainingcenter.security.handler.AuthenticationSuccessHandlerImpl@d143277

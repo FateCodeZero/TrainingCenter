@@ -184,6 +184,8 @@
                         if (url != null) {
                             //登录成功后跳转
                             window.location = url;
+                        }else {
+                            window.location = "/index.jsp";
                         }
                     } else if (code == 0) {
                         layer.alert(msg, {
