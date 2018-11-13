@@ -3,3 +3,5 @@ target
 .settings
 *.iml
 logs
+classes
+*/**/dbconfig.properties

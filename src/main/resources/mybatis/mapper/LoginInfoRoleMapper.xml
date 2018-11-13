@@ -6,15 +6,15 @@
     <!--使用二级缓存-->
     <cache-ref namespace="com.trainingcenter.dao.LoginInfoMapper"></cache-ref>
 
-    <sql id="loginInfoRole">
+    <sql id="loginInfoRoleColumns">
         id,login_info_id,role_id,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
-    <!--public Integer add(@Param("loginInfoRole") LoginInfoRole loginInfoRole);
+    <!--public Integer add(@Validated(value = {TC_Add.class}) @Param("loginInfoRole") LoginInfoRole loginInfoRole);
         添加，在给用户赋权限时调用
     -->
     <insert id="add">
-        INSERT INTO tab_login_info_role(<include refid="loginInfoRole"/>)
+        INSERT INTO tab_login_info_role(<include refid="loginInfoRoleColumns"/>)
         VALUES(#{loginInfoRole.id},#{loginInfoRole.loginInfoId},#{loginInfoRole.roleId},#{loginInfoRole.remarks},
         #{loginInfoRole.createUserId},#{loginInfoRole.createDate},#{loginInfoRole.updateUserId},#{loginInfoRole.updateDate})
     </insert>
@@ -27,14 +27,14 @@
         WHERE id = #{id}
     </delete>
 
-    <!--public Integer update(@Param("loginInfoRole") LoginInfoRole loginInfoRole);
+    <!--public Integer update(@Validated(value = {TC_Update.class}) @Param("loginInfoRole") LoginInfoRole loginInfoRole);
         更新，更新用户角色信息时调用
     -->
     <update id="update">
         UPDATE tab_login_info_role
         <trim prefix="set" suffixOverrides=",">
-            <if test="loginInfoRole.loginInfoId != null and loginInfolog.loginInfoId != '' ">
-                login_info_id = #{inInfoRole.loginInfoId},
+            <if test="loginInfoRole.loginInfoId != null and loginInfoRole.loginInfoId != '' ">
+                login_info_id = #{loginInfoRole.loginInfoId},
             </if>
             <if test="loginInfoRole.roleId != null and loginInfoRole.roleId != '' ">
                 role_id = #{loginInfoRole.roleId},
@@ -59,11 +59,11 @@
         WHERE id = #{loginInfoRole.id}
     </update>
 
-    <!--    public LoginInfoRole getLoginInfoRoleByLoginInfoIdAndRoleId(@Param("loginInfoId") String loginInfoId, @Param("roleId") String roleId);
+    <!--  public LoginInfoRole getLoginInfoRoleByLoginInfoIdAndRoleId(@Param("loginInfoId") String loginInfoId, @Param("roleId") String roleId);
         通过 用户登录信息id 与 角色id 获取授权信息对象
     -->
-    <select id="" resultType="com.trainingcenter.bean.LoginInfoRole">
-        SELECT <include refid="loginInfoRole"/>
+    <select id="getLoginInfoRoleByLoginInfoIdAndRoleId" resultType="com.trainingcenter.bean.LoginInfoRole">
+        SELECT <include refid="loginInfoRoleColumns"/>
         FROM tab_login_info_role
         WHERE login_info_id = #{loginInfoId} AND role_id = #{roleId}
     </select>

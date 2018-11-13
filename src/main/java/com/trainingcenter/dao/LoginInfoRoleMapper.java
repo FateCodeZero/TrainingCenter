@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Collection;
+
 /**
  * Created by IntelliJ IDEA.
  * User: YangYi
@@ -48,4 +50,4 @@ public interface LoginInfoRoleMapper {
      * @return 授权信息对象
      */
     public LoginInfoRole getLoginInfoRoleByLoginInfoIdAndRoleId(@Param("loginInfoId") String loginInfoId, @Param("roleId") String roleId);
-} 
+}

@@ -65,7 +65,7 @@ public class AuthenticationSuccessHandlerImpl extends SavedRequestAwareAuthentic
             try {
                 loginInfoService.update(loginInfo);
             } catch (UpdateException e) {
-                LogUtil.error(this,"登录成功后处理","更新用户登录IP与最后登录时间失败",e);
+                LogUtil.info(this,"登录成功后处理","更新用户登录IP与最后登录时间失败");
                 e.printStackTrace();
             }
             LogUtil.info(this,"登录成功后处理","用户【"+loginInfo.getUsername()+"】登录成功");

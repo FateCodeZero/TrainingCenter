@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.PermissionMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.LoginInfoMapper"></cache-ref>
+
+
+    <sql id="permissionColumns">
+      id,`name`,`describe`,url,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public Permission getPermissionById(@Param("id") String id);
+        通过id获取权限
+    -->
+    <select id="getPermissionById" resultType="com.trainingcenter.bean.Permission">
+        SELECT <include refid="permissionColumns"></include>
+        FROM tab_permission
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<Permission> getPermissions(@Param("start") Integer start, @Param("number") Integer number,
+                               @Param("searchContent") String searchContent);
+        分页查询所有权限
+    -->
+    <select id="getPermissions" resultType="com.trainingcenter.bean.Permission">
+        SELECT <include refid="permissionColumns"></include>
+        FROM tab_permission
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and (
+                `name` like CONCAT('%',#{searchContent},'%') OR
+                `describe` like CONCAT('%',#{searchContent},'%') OR
+                url like CONCAT('%',#{searchContent},'%') OR
+                remarks like CONCAT('%',#{searchContent},'%') OR
+                create_date like CONCAT('%',#{searchContent},'%') OR
+                update_date like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+        public Integer add(@Validated(value = {TC_Add.class}) @Param("permission") Permission permission);
+        权限添加
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.Permission">
+        INSERT INTO tab_permission(<include refid="permissionColumns"></include>)
+        VALUES (#{permission.id},#{permission.name},#{permission.describe},#{permission.url}#{permission.permission_ids},#{permission.remarks},#{permission.create_user_id},#{permission.create_date},
+        #{permission.update_user_id},#{permission.update_date}
+    </insert>
+
+    <!--
+           public Integer update(@Validated(value = {TC_Update.class}) @Param("permission") Permission permission);
+            更新权限信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.Permission">
+        UPDATE tab_permission
+        <trim prefix="set" suffixOverrides=",">
+            <if test="permission.name != null and permission.name != '' ">
+                `name` = #{permission.name},
+            </if>
+            <if test="permission.describe != null and permission.describe != '' ">
+                `describe` = #{permission.describe},
+            </if>
+            <if test="permission.url != null and permission.url != '' ">
+                url = #{permission.url},
+            </if>
+            <if test="permission.remarks != null and permission.remarks != '' ">
+                remarks = #{permission.remarks},
+            </if>
+            <if test="permission.create_user_id != null and permission.create_user_id != '' ">
+                create_user_id = #{permission.createUserId},
+            </if>
+            <if test="permission.create_date != null and permission.create_date != '' ">
+                create_date = #{permission.createDate},
+            </if>
+            <if test="permission.update_user_id != null and permission.update_user_id != '' ">
+                update_user_id = #{permission.updateUserId},
+            </if>
+            <if test="permission.update_date != null and permission.update_date != '' ">
+                update_date = #{permission.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{permission.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除权限
+       -->
+    <delete id="delete">
+        DELETE FROM tab_permission
+        WHERE id = #{id}
+    </delete>
+
+    <!--
+       public Collection<Permission> getPermissionsByRoleId(@Param("roleId") String roleId,@Param("start") Integer start,
+                                                 @Param("number") Integer number, @Param("searchContent") String searchContent);
+        通过id 获取指定 角色 所含有的全部权限，支持分页与模糊查询
+        -->
+    <select id="getPermissionsByRoleId" resultType="com.trainingcenter.bean.Permission">
+        SELECT p.id,p.name,p.describe,p.url,p.remarks,p.create_user_id,p.create_date,p.create_date,p.update_user_id,p.update_date
+        FROM tab_permission p LEFT JOIN tab_role_permission rp ON p.id = rp.permission_id
+        WHERE rp.role_id = #{roleId}
+        <trim prefixOverrides="AND">
+            <if test="searchContent != null and searchContent != '' ">
+                AND ( p.name like CONCAT('%',#{searchContent},'%')
+                OR p.describe like CONCAT('%',#{searchContent},'%')
+                OR p.url like CONCAT('%',#{searchContent},'%')
+                OR p.remarks like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+</mapper>

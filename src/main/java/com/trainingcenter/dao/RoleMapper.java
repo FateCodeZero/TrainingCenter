@@ -1,6 +1,5 @@
 package com.trainingcenter.dao;
 
-import com.trainingcenter.bean.Permission;
 import com.trainingcenter.bean.Role;
 import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Update;
@@ -8,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,7 +20,7 @@ import java.util.List;
 public interface RoleMapper {
 
     /**
-i     * 通过id获取角色
+     * 通过id获取角色
      * @param id：角色id
      * @return 返回对应的角色对象
      */
@@ -36,11 +34,11 @@ i     * 通过id获取角色
     public Role getRoleByName(@Param("name") String name);
 
     /**
-     * 分页获取所有用户
+     * 分页获取所有角色
      * @param start：从第几条数据开始
      * @param number：要获取多少条数据
      * @param searchContent：模糊查询内容
-     * @return 返回用户对象集合
+     * @return 返回角色对象集合
      */
     public List<Role> getRoles(@Param("start") Integer start, @Param("number") Integer number,
                                @Param("searchContent") String searchContent);
@@ -68,13 +66,13 @@ i     * 通过id获取角色
     /**
      * 获取指定登录用户所含有的全部角色
      *
-     * @param userInfoId：用户登录信息id
+     * @param loginInfoId：用户登录信息id
      * @param start：从第几条数据开始
      * @param number：要获取多少条数据
      * @param searchContent：模糊查询内容
      * @return 返回该用户所拥有的所有角色，支持分页、模糊查询
      */
-    public Collection<Role> getRolesByUserInfoId(@Param("userInfoId") String userInfoId,@Param("start") Integer start,
+    public Collection<Role> getRolesByLoginInfoId(@Param("loginInfoId") String loginInfoId,@Param("start") Integer start,
                                                  @Param("number") Integer number, @Param("searchContent") String searchContent);
 
     /**
@@ -86,7 +84,7 @@ i     * 通过id获取角色
      * @param searchContent：模糊查询内容
      * @return ：返回含有该权限的所有角色，支持分页
      */
-    public Collection<Permission> getRolesByPermissionId(@Param("permissionId") String permissionId, @Param("start") Integer start,
+    public Collection<Role> getRolesByPermissionId(@Param("permissionId") String permissionId, @Param("start") Integer start,
                                                          @Param("number") Integer number, @Param("searchContent") String searchContent);
 
 } 

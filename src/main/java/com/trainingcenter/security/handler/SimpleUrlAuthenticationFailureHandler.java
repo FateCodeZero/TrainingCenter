@@ -50,7 +50,7 @@ public class SimpleUrlAuthenticationFailureHandler implements AuthenticationFail
         //如果是 ajax 请求
         if (HTTPUtils.isAjaxRequest(request)) {
             if (this.defaultFailureUrl == null) {
-                LogUtil.error(this, "SecurityAjax异常处理", "401错误，没有配置相应的failure URL", exception);
+                LogUtil.info(this, "SecurityAjax异常处理", "401错误，没有配置相应的failure URL");
                 this.logger.debug("No failure URL set, sending 401 Unauthorized error");
                 response.sendError(401);
             } else {
@@ -68,7 +68,7 @@ public class SimpleUrlAuthenticationFailureHandler implements AuthenticationFail
                 responseMap.put("data",data);
 
                 this.logger.debug("Forwarding to " + this.defaultFailureUrl);
-                LogUtil.error(this, "SecurityAjax异常处理", "请求错误，异常响应至【" + this.defaultFailureUrl + "】页面", exception);
+                LogUtil.info(this, "SecurityAjax异常处理", "请求错误，异常响应至【" + this.defaultFailureUrl + "】页面");
 
                 //使用工具类向前端响应数据
                 HTTPUtils.responseByJacson(request,response,responseMap);

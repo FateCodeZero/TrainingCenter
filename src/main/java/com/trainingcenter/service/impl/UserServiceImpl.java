@@ -67,10 +67,14 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<User> getUsers(Integer currentPage, Integer rows, String searchContent) {
-        if (currentPage < 0 || rows < 0) {
-            return null;
+        Integer start = null;
+        if (currentPage != null && rows != null ) {
+            if (currentPage < 0 || rows < 0){
+                return null;
+            }else {
+                start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
+            }
         }
-        Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
         return userMapper.getUsers(start, rows, searchContent);
     }
 

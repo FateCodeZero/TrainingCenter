@@ -15,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * 角色表，对应数据库（tab_role）
@@ -36,6 +37,11 @@ public class Role extends BaseEntity implements Serializable,GrantedAuthority {
      * 角色描述，对应数据库（describe）字段
      */
     private String describe;
+
+    /**
+     * 角色所含的全部权限
+     */
+    private Collection<Permission> permissions;
 
     public String getId() {
         return id;
@@ -59,6 +65,14 @@ public class Role extends BaseEntity implements Serializable,GrantedAuthority {
 
     public void setDescribe(String describe) {
         this.describe = describe;
+    }
+
+    public Collection<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Collection<Permission> permissions) {
+        this.permissions = permissions;
     }
 
     @Override

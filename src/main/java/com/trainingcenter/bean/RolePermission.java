@@ -3,8 +3,8 @@ package com.trainingcenter.bean;
 /**
  * Created by IntelliJ IDEA.
  * User: YangYi
- * Date: 2018/11/5
- * Time: 20:36
+ * Date: 2018/11/12
+ * Time: 19:16
  */
 
 import com.trainingcenter.controller.validation.TC_Add;
@@ -13,11 +13,12 @@ import com.trainingcenter.controller.validation.TC_Find;
 import com.trainingcenter.controller.validation.TC_Update;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 /**
- * 用户-权限对应信息维护类，对应数据库（tab_login_info_role）表
+ * 角色-权限对应信息维护类，对应数据（tab_role_permission）表
  */
-public class LoginInfoRole extends BaseEntity{
+public class RolePermission extends BaseEntity implements Serializable{
     /**
      * 表id，对应数据库（id）字段
      */
@@ -25,16 +26,16 @@ public class LoginInfoRole extends BaseEntity{
     private String id;
 
     /**
-     * 对应用户登录信息id，对应数据库（login_info_id）字段
+     * 角色id，对应数据库（role_id）字段
      */
-    @NotBlank(message = "被授权用户不能为空",groups = {TC_Add.class, TC_Update.class})
-    private String loginInfoId;
+    @NotBlank(message = "授权角色id不能为空",groups = {TC_Add.class, TC_Update.class})
+    private String roleId;
 
     /**
-     * 对应角色id，对应数据库（role_id）字段
+     * 权限id，对应数据库（permission_id）字段
      */
-    @NotBlank(message = "所授角色不能为空",groups = {TC_Add.class, TC_Update.class})
-    private String roleId;
+    @NotBlank(message = "被授权限id不能为空",groups = {TC_Add.class, TC_Update.class})
+    private String permissionId;
 
     public String getId() {
         return id;
@@ -42,14 +43,6 @@ public class LoginInfoRole extends BaseEntity{
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getLoginInfoId() {
-        return loginInfoId;
-    }
-
-    public void setLoginInfoId(String loginInfoId) {
-        this.loginInfoId = loginInfoId;
     }
 
     public String getRoleId() {
@@ -60,12 +53,20 @@ public class LoginInfoRole extends BaseEntity{
         this.roleId = roleId;
     }
 
+    public String getPermissionId() {
+        return permissionId;
+    }
+
+    public void setPermissionId(String permissionId) {
+        this.permissionId = permissionId;
+    }
+
     @Override
     public String toString() {
-        return "LoginInfoRole{" +
+        return "RolePermission{" +
                 "id='" + id + '\'' +
-                ", loginInfoId='" + loginInfoId + '\'' +
                 ", roleId='" + roleId + '\'' +
+                ", permissionId='" + permissionId + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", createUserId='" + createUserId + '\'' +
                 ", createDate=" + createDate +

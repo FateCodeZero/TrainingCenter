@@ -2702,3 +2702,220 @@ java.sql.SQLException: Access denied for user 'root'@'localhost' (using password
 ����:�û���admin@qq.com����¼�ɹ�
 ����������������������������������������������������������������������������������������������������������������[Info   End]����
 
+[INFO] [2018-11-13 14:58:12][org.springframework.web.context.ContextLoader]Root WebApplicationContext: initialization started
+[INFO] [2018-11-13 14:58:12][org.springframework.web.context.support.XmlWebApplicationContext]Refreshing Root WebApplicationContext: startup date [Tue Nov 13 14:58:12 CST 2018]; root of context hierarchy
+[INFO] [2018-11-13 14:58:13][org.springframework.beans.factory.xml.XmlBeanDefinitionReader]Loading XML bean definitions from class path resource [spring/applicationContext.xml]
+[INFO] [2018-11-13 14:58:13][org.springframework.beans.factory.xml.XmlBeanDefinitionReader]Loading XML bean definitions from class path resource [spring/spring-security.xml]
+[INFO] [2018-11-13 14:58:14][org.springframework.security.config.SecurityNamespaceHandler]Spring Security 'config' module version is 5.0.6.RELEASE
+[INFO] [2018-11-13 14:58:14][org.springframework.security.config.http.FilterInvocationSecurityMetadataSourceParser]Creating access control expression attribute 'hasRole('ROLE_USER')' for /webpages/user/userinfo.jsp
+[INFO] [2018-11-13 14:58:14][org.springframework.security.config.http.FilterInvocationSecurityMetadataSourceParser]Creating access control expression attribute 'hasRole('ROLE_ADMIN')' for /webpages/admin/**
+[INFO] [2018-11-13 14:58:14][org.springframework.security.config.http.HttpSecurityBeanDefinitionParser]Checking sorted filter chain: [Root bean: class [org.springframework.security.web.context.SecurityContextPersistenceFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 200, Root bean: class [org.springframework.security.web.session.ConcurrentSessionFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 300, Root bean: class [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 400, Root bean: class [org.springframework.security.web.header.HeaderWriterFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 500, Root bean: class [org.springframework.security.web.authentication.logout.LogoutFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 800, <kaptchaFilter>, order = 1199, <org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter#0>, order = 1200, Root bean: class [org.springframework.security.web.savedrequest.RequestCacheAwareFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 1700, Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.security.config.http.HttpConfigurationBuilder$SecurityContextHolderAwareRequestFilterBeanFactory#0; factoryMethodName=getBean; initMethodName=null; destroyMethodName=null, order = 1800, Root bean: class [org.springframework.security.web.authentication.AnonymousAuthenticationFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 2100, Root bean: class [org.springframework.security.web.session.SessionManagementFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 2200, Root bean: class [org.springframework.security.web.access.ExceptionTranslationFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 2300, <org.springframework.security.web.access.intercept.FilterSecurityInterceptor#0>, order = 2400]
+[INFO] [2018-11-13 14:58:15][com.mchange.v2.log.MLog]MLog clients using slf4j logging.
+[INFO] [2018-11-13 14:58:16][com.mchange.v2.c3p0.C3P0Registry]Initializing c3p0-0.9.5.2 [built 08-December-2015 22:06:04 -0800; debug? true; trace: 10]
+[INFO] [2018-11-13 14:58:18][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/webpages/static/**'], []
+[INFO] [2018-11-13 14:58:18][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/webpages/errorpage/**'], []
+[INFO] [2018-11-13 14:58:18][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/except/**'], []
+[INFO] [2018-11-13 14:58:18][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/index.jsp'], []
+[INFO] [2018-11-13 14:58:18][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/user/goLogin/**'], []
+[INFO] [2018-11-13 14:58:18][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/user/goRegister/**'], []
+[INFO] [2018-11-13 14:58:18][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/user/usernameCheck/**'], []
+[INFO] [2018-11-13 14:58:18][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/plug-in/**'], []
+[INFO] [2018-11-13 14:58:19][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: org.springframework.security.web.util.matcher.AnyRequestMatcher@1, [org.springframework.security.web.context.SecurityContextPersistenceFilter@27be53dd, org.springframework.security.web.session.ConcurrentSessionFilter@1520c2ef, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@183a7379, org.springframework.security.web.header.HeaderWriterFilter@d5ef019, org.springframework.security.web.authentication.logout.LogoutFilter@582b7ad4, com.trainingcenter.security.filter.KaptchaAuthenticationFilter@4b0fec84, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@65ef27, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7ac1090a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@79bf215c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4d609923, org.springframework.security.web.session.SessionManagementFilter@62535b7f, org.springframework.security.web.access.ExceptionTranslationFilter@10a88766, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@101df1ee]
+[INFO] [2018-11-13 14:58:19][org.springframework.security.config.http.DefaultFilterChainValidator]Checking whether login URL '/webpages/static/login.jsp' is accessible with your configuration
+[INFO] [2018-11-13 14:58:19][org.springframework.web.context.ContextLoader]Root WebApplicationContext: initialization completed in 7236 ms
+[INFO] [2018-11-13 14:58:19][org.springframework.web.servlet.DispatcherServlet]FrameworkServlet 'springMVC': initialization started
+[INFO] [2018-11-13 14:58:20][org.springframework.web.context.support.XmlWebApplicationContext]Refreshing WebApplicationContext for namespace 'springMVC-servlet': startup date [Tue Nov 13 14:58:20 CST 2018]; parent: Root WebApplicationContext
+[INFO] [2018-11-13 14:58:20][org.springframework.beans.factory.xml.XmlBeanDefinitionReader]Loading XML bean definitions from class path resource [spring/springMVC-servlet.xml]
+[INFO] [2018-11-13 14:58:21][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/register],methods=[POST]}" onto public com.trainingcenter.utils.AjaxJson com.trainingcenter.controller.LoginInfoController.register(java.lang.String,java.lang.String,java.lang.String,javax.servlet.http.HttpServletRequest)
+[INFO] [2018-11-13 14:58:21][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/loginInfo/{id}],methods=[PUT]}" onto public com.trainingcenter.utils.AjaxJson com.trainingcenter.controller.LoginInfoController.update(java.lang.String)
+[INFO] [2018-11-13 14:58:21][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/loginInfo/{ids}],methods=[DELETE]}" onto public com.trainingcenter.utils.AjaxJson com.trainingcenter.controller.LoginInfoController.delete(java.lang.String)
+[INFO] [2018-11-13 14:58:21][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/goLogin],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView com.trainingcenter.controller.LoginInfoController.loginPage()
+[INFO] [2018-11-13 14:58:21][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/usernameCheck],methods=[GET]}" onto public com.trainingcenter.utils.AjaxJson com.trainingcenter.controller.LoginInfoController.checkUsername(java.lang.String)
+[INFO] [2018-11-13 14:58:21][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/goRegister],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView com.trainingcenter.controller.LoginInfoController.registerPage()
+[INFO] [2018-11-13 14:58:21][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/goUpdate],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView com.trainingcenter.controller.LoginInfoController.updatePage()
+[INFO] [2018-11-13 14:58:21][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/kaptchaError]}" onto public org.springframework.web.servlet.ModelAndView com.trainingcenter.controller.LoginInfoController.kaptchaError()
+[INFO] [2018-11-13 14:58:23][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter]Looking for @ControllerAdvice: WebApplicationContext for namespace 'springMVC-servlet': startup date [Tue Nov 13 14:58:20 CST 2018]; parent: Root WebApplicationContext
+[INFO] [2018-11-13 14:58:24][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter]Looking for @ControllerAdvice: WebApplicationContext for namespace 'springMVC-servlet': startup date [Tue Nov 13 14:58:20 CST 2018]; parent: Root WebApplicationContext
+[INFO] [2018-11-13 14:58:24][org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver]Detected @ExceptionHandler methods in globalExceptionHandler
+[INFO] [2018-11-13 14:58:24][org.springframework.web.servlet.handler.SimpleUrlHandlerMapping]Mapped URL path [/**] onto handler 'org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler#0'
+[INFO] [2018-11-13 14:58:24][org.springframework.web.servlet.DispatcherServlet]FrameworkServlet 'springMVC': initialization completed in 4342 ms
+[INFO] [2018-11-13 15:02:10][com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource]Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 3, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hgfapt9z3ai1rtkppl1x|5e649b65, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> com.mysql.jdbc.Driver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceSynchronousCheckins -> false, forceUseNamedDriverClass -> false, identityToken -> 1hgfapt9z3ai1rtkppl1x|5e649b65, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:mysql:///trainingcenter?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 15, maxStatements -> 0, maxStatementsPerConnection -> 0, minPoolSize -> 3, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+[WARN] [2018-11-13 15:02:42][com.mchange.v2.resourcepool.BasicResourcePool]com.mchange.v2.resourcepool.BasicResourcePool$ScatteredAcquireTask@721adda8 -- Acquisition Attempt Failed!!! Clearing pending acquires. While trying to acquire a needed new resource, we failed to succeed more than the maximum number of allowed acquisition attempts (30). Last acquisition attempt exception: 
+java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:129)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:832)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:456)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:240)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:207)
+	at com.mchange.v2.c3p0.DriverManagerDataSource.getConnection(DriverManagerDataSource.java:175)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:220)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:206)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager.acquireResource(C3P0PooledConnectionPool.java:203)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquire(BasicResourcePool.java:1138)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquireAndDecrementPendingAcquiresWithinLockOnSuccess(BasicResourcePool.java:1125)
+	at com.mchange.v2.resourcepool.BasicResourcePool.access$700(BasicResourcePool.java:44)
+	at com.mchange.v2.resourcepool.BasicResourcePool$ScatteredAcquireTask.run(BasicResourcePool.java:1870)
+	at com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:696)
+[WARN] [2018-11-13 15:02:42][com.mchange.v2.resourcepool.BasicResourcePool]Having failed to acquire a resource, com.mchange.v2.resourcepool.BasicResourcePool@4da48cc5 is interrupting all Threads waiting on a resource to check out. Will try again in response to new client requests.
+[WARN] [2018-11-13 15:02:42][com.mchange.v2.resourcepool.BasicResourcePool]com.mchange.v2.resourcepool.BasicResourcePool$ScatteredAcquireTask@5a54db8f -- Acquisition Attempt Failed!!! Clearing pending acquires. While trying to acquire a needed new resource, we failed to succeed more than the maximum number of allowed acquisition attempts (30). Last acquisition attempt exception: 
+java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:129)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:832)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:456)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:240)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:207)
+	at com.mchange.v2.c3p0.DriverManagerDataSource.getConnection(DriverManagerDataSource.java:175)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:220)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:206)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager.acquireResource(C3P0PooledConnectionPool.java:203)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquire(BasicResourcePool.java:1138)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquireAndDecrementPendingAcquiresWithinLockOnSuccess(BasicResourcePool.java:1125)
+	at com.mchange.v2.resourcepool.BasicResourcePool.access$700(BasicResourcePool.java:44)
+	at com.mchange.v2.resourcepool.BasicResourcePool$ScatteredAcquireTask.run(BasicResourcePool.java:1870)
+	at com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:696)
+[WARN] [2018-11-13 15:02:42][com.mchange.v2.resourcepool.BasicResourcePool]Having failed to acquire a resource, com.mchange.v2.resourcepool.BasicResourcePool@4da48cc5 is interrupting all Threads waiting on a resource to check out. Will try again in response to new client requests.
+[WARN] [2018-11-13 15:02:42][com.mchange.v2.resourcepool.BasicResourcePool]com.mchange.v2.resourcepool.BasicResourcePool$ScatteredAcquireTask@5b98ef6b -- Acquisition Attempt Failed!!! Clearing pending acquires. While trying to acquire a needed new resource, we failed to succeed more than the maximum number of allowed acquisition attempts (30). Last acquisition attempt exception: 
+java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:129)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:832)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:456)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:240)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:207)
+	at com.mchange.v2.c3p0.DriverManagerDataSource.getConnection(DriverManagerDataSource.java:175)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:220)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:206)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager.acquireResource(C3P0PooledConnectionPool.java:203)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquire(BasicResourcePool.java:1138)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquireAndDecrementPendingAcquiresWithinLockOnSuccess(BasicResourcePool.java:1125)
+	at com.mchange.v2.resourcepool.BasicResourcePool.access$700(BasicResourcePool.java:44)
+	at com.mchange.v2.resourcepool.BasicResourcePool$ScatteredAcquireTask.run(BasicResourcePool.java:1870)
+	at com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:696)
+[WARN] [2018-11-13 15:02:42][com.mchange.v2.resourcepool.BasicResourcePool]Having failed to acquire a resource, com.mchange.v2.resourcepool.BasicResourcePool@4da48cc5 is interrupting all Threads waiting on a resource to check out. Will try again in response to new client requests.
+[INFO] [2018-11-13 15:04:19][org.springframework.web.context.ContextLoader]Root WebApplicationContext: initialization started
+[INFO] [2018-11-13 15:04:19][org.springframework.web.context.support.XmlWebApplicationContext]Refreshing Root WebApplicationContext: startup date [Tue Nov 13 15:04:19 CST 2018]; root of context hierarchy
+[INFO] [2018-11-13 15:04:19][org.springframework.beans.factory.xml.XmlBeanDefinitionReader]Loading XML bean definitions from class path resource [spring/applicationContext.xml]
+[INFO] [2018-11-13 15:04:20][org.springframework.beans.factory.xml.XmlBeanDefinitionReader]Loading XML bean definitions from class path resource [spring/spring-security.xml]
+[INFO] [2018-11-13 15:04:20][org.springframework.security.config.SecurityNamespaceHandler]Spring Security 'config' module version is 5.0.6.RELEASE
+[INFO] [2018-11-13 15:04:20][org.springframework.security.config.http.FilterInvocationSecurityMetadataSourceParser]Creating access control expression attribute 'hasRole('ROLE_USER')' for /webpages/user/userinfo.jsp
+[INFO] [2018-11-13 15:04:20][org.springframework.security.config.http.FilterInvocationSecurityMetadataSourceParser]Creating access control expression attribute 'hasRole('ROLE_ADMIN')' for /webpages/admin/**
+[INFO] [2018-11-13 15:04:20][org.springframework.security.config.http.HttpSecurityBeanDefinitionParser]Checking sorted filter chain: [Root bean: class [org.springframework.security.web.context.SecurityContextPersistenceFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 200, Root bean: class [org.springframework.security.web.session.ConcurrentSessionFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 300, Root bean: class [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 400, Root bean: class [org.springframework.security.web.header.HeaderWriterFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 500, Root bean: class [org.springframework.security.web.authentication.logout.LogoutFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 800, <kaptchaFilter>, order = 1199, <org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter#0>, order = 1200, Root bean: class [org.springframework.security.web.savedrequest.RequestCacheAwareFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 1700, Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.security.config.http.HttpConfigurationBuilder$SecurityContextHolderAwareRequestFilterBeanFactory#0; factoryMethodName=getBean; initMethodName=null; destroyMethodName=null, order = 1800, Root bean: class [org.springframework.security.web.authentication.AnonymousAuthenticationFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 2100, Root bean: class [org.springframework.security.web.session.SessionManagementFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 2200, Root bean: class [org.springframework.security.web.access.ExceptionTranslationFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 2300, <org.springframework.security.web.access.intercept.FilterSecurityInterceptor#0>, order = 2400]
+[INFO] [2018-11-13 15:04:21][com.mchange.v2.log.MLog]MLog clients using slf4j logging.
+[INFO] [2018-11-13 15:04:21][com.mchange.v2.c3p0.C3P0Registry]Initializing c3p0-0.9.5.2 [built 08-December-2015 22:06:04 -0800; debug? true; trace: 10]
+[INFO] [2018-11-13 15:04:23][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/webpages/static/**'], []
+[INFO] [2018-11-13 15:04:23][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/webpages/errorpage/**'], []
+[INFO] [2018-11-13 15:04:23][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/except/**'], []
+[INFO] [2018-11-13 15:04:23][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/index.jsp'], []
+[INFO] [2018-11-13 15:04:23][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/user/goLogin/**'], []
+[INFO] [2018-11-13 15:04:23][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/user/goRegister/**'], []
+[INFO] [2018-11-13 15:04:23][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/user/usernameCheck/**'], []
+[INFO] [2018-11-13 15:04:23][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: Ant [pattern='/plug-in/**'], []
+[INFO] [2018-11-13 15:04:25][org.springframework.security.web.DefaultSecurityFilterChain]Creating filter chain: org.springframework.security.web.util.matcher.AnyRequestMatcher@1, [org.springframework.security.web.context.SecurityContextPersistenceFilter@1d069dae, org.springframework.security.web.session.ConcurrentSessionFilter@117dc09c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@77fef005, org.springframework.security.web.header.HeaderWriterFilter@5a35d0ab, org.springframework.security.web.authentication.logout.LogoutFilter@7377cdae, com.trainingcenter.security.filter.KaptchaAuthenticationFilter@cf19a7c, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@c0f2d3f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@78cb149d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@351cbc97, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@353ef232, org.springframework.security.web.session.SessionManagementFilter@402d577f, org.springframework.security.web.access.ExceptionTranslationFilter@6062dc1b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@30ca3c84]
+[INFO] [2018-11-13 15:04:25][org.springframework.security.config.http.DefaultFilterChainValidator]Checking whether login URL '/webpages/static/login.jsp' is accessible with your configuration
+[INFO] [2018-11-13 15:04:25][org.springframework.web.context.ContextLoader]Root WebApplicationContext: initialization completed in 6191 ms
+[INFO] [2018-11-13 15:04:25][org.springframework.web.servlet.DispatcherServlet]FrameworkServlet 'springMVC': initialization started
+[INFO] [2018-11-13 15:04:25][org.springframework.web.context.support.XmlWebApplicationContext]Refreshing WebApplicationContext for namespace 'springMVC-servlet': startup date [Tue Nov 13 15:04:25 CST 2018]; parent: Root WebApplicationContext
+[INFO] [2018-11-13 15:04:25][org.springframework.beans.factory.xml.XmlBeanDefinitionReader]Loading XML bean definitions from class path resource [spring/springMVC-servlet.xml]
+[INFO] [2018-11-13 15:04:26][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/register],methods=[POST]}" onto public com.trainingcenter.utils.AjaxJson com.trainingcenter.controller.LoginInfoController.register(java.lang.String,java.lang.String,java.lang.String,javax.servlet.http.HttpServletRequest)
+[INFO] [2018-11-13 15:04:26][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/loginInfo/{id}],methods=[PUT]}" onto public com.trainingcenter.utils.AjaxJson com.trainingcenter.controller.LoginInfoController.update(java.lang.String)
+[INFO] [2018-11-13 15:04:26][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/loginInfo/{ids}],methods=[DELETE]}" onto public com.trainingcenter.utils.AjaxJson com.trainingcenter.controller.LoginInfoController.delete(java.lang.String)
+[INFO] [2018-11-13 15:04:26][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/goLogin],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView com.trainingcenter.controller.LoginInfoController.loginPage()
+[INFO] [2018-11-13 15:04:26][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/usernameCheck],methods=[GET]}" onto public com.trainingcenter.utils.AjaxJson com.trainingcenter.controller.LoginInfoController.checkUsername(java.lang.String)
+[INFO] [2018-11-13 15:04:26][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/goRegister],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView com.trainingcenter.controller.LoginInfoController.registerPage()
+[INFO] [2018-11-13 15:04:26][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/goUpdate],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView com.trainingcenter.controller.LoginInfoController.updatePage()
+[INFO] [2018-11-13 15:04:26][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping]Mapped "{[/user/kaptchaError]}" onto public org.springframework.web.servlet.ModelAndView com.trainingcenter.controller.LoginInfoController.kaptchaError()
+[INFO] [2018-11-13 15:04:28][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter]Looking for @ControllerAdvice: WebApplicationContext for namespace 'springMVC-servlet': startup date [Tue Nov 13 15:04:25 CST 2018]; parent: Root WebApplicationContext
+[INFO] [2018-11-13 15:04:28][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter]Looking for @ControllerAdvice: WebApplicationContext for namespace 'springMVC-servlet': startup date [Tue Nov 13 15:04:25 CST 2018]; parent: Root WebApplicationContext
+[INFO] [2018-11-13 15:04:28][org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver]Detected @ExceptionHandler methods in globalExceptionHandler
+[INFO] [2018-11-13 15:04:28][org.springframework.web.servlet.handler.SimpleUrlHandlerMapping]Mapped URL path [/**] onto handler 'org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler#0'
+[INFO] [2018-11-13 15:04:29][org.springframework.web.servlet.DispatcherServlet]FrameworkServlet 'springMVC': initialization completed in 3776 ms
+[INFO] [2018-11-13 15:06:53][com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource]Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 3, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hgfapt9z3apvzj192lcwe|69ff8241, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> com.mysql.jdbc.Driver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceSynchronousCheckins -> false, forceUseNamedDriverClass -> false, identityToken -> 1hgfapt9z3apvzj192lcwe|69ff8241, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:mysql:///trainingcenter?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 15, maxStatements -> 0, maxStatementsPerConnection -> 0, minPoolSize -> 3, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+[INFO] [2018-11-13 15:06:55][com.trainingcenter.service.impl.LoginInfoServiceImpl]
+————————————————————————————————————————————————————————[Info Start]——
+标题:加载用户权限
+内容:加载失败，用户不存在或已注销
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:06:55][com.trainingcenter.service.impl.LoginInfoServiceImpl]
+————————————————————————————————————————————————————————[Info Start]——
+标题:加载用户权限
+内容:加载失败，用户不存在或已注销
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:06:55][com.trainingcenter.security.handler.SimpleUrlAuthenticationFailureHandler]
+————————————————————————————————————————————————————————[Info Start]——
+标题:SecurityAjax异常处理
+内容:请求错误，异常响应至【/user/goLogin】页面
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:07:32][com.trainingcenter.service.impl.LoginInfoServiceImpl]
+————————————————————————————————————————————————————————[Info Start]——
+标题:加载用户权限
+内容:加载失败，用户不存在或已注销
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:07:32][com.trainingcenter.security.handler.SimpleUrlAuthenticationFailureHandler]
+————————————————————————————————————————————————————————[Info Start]——
+标题:SecurityAjax异常处理
+内容:请求错误，异常响应至【/user/goLogin】页面
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:07:32][com.trainingcenter.service.impl.LoginInfoServiceImpl]
+————————————————————————————————————————————————————————[Info Start]——
+标题:加载用户权限
+内容:加载失败，用户不存在或已注销
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:07:58][com.trainingcenter.service.impl.LoginInfoServiceImpl]
+————————————————————————————————————————————————————————[Info Start]——
+标题:加载用户权限
+内容:加载失败，用户不存在或已注销
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:07:58][com.trainingcenter.security.handler.SimpleUrlAuthenticationFailureHandler]
+————————————————————————————————————————————————————————[Info Start]——
+标题:SecurityAjax异常处理
+内容:请求错误，异常响应至【/user/goLogin】页面
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:07:58][com.trainingcenter.service.impl.LoginInfoServiceImpl]
+————————————————————————————————————————————————————————[Info Start]——
+标题:加载用户权限
+内容:加载失败，用户不存在或已注销
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:12:59][com.trainingcenter.service.impl.LoginInfoServiceImpl]
+————————————————————————————————————————————————————————[Info Start]——
+标题:加载用户权限
+内容:加载失败，用户不存在或已注销
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:12:59][com.trainingcenter.security.handler.SimpleUrlAuthenticationFailureHandler]
+————————————————————————————————————————————————————————[Info Start]——
+标题:SecurityAjax异常处理
+内容:请求错误，异常响应至【/user/goLogin】页面
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:13:16][com.trainingcenter.service.impl.LoginInfoServiceImpl]
+————————————————————————————————————————————————————————[Info Start]——
+标题:加载用户权限
+内容:正在加载用户【admin@qq.com】的相关权限及用户信息……
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:13:17][com.trainingcenter.service.impl.LoginInfoServiceImpl]
+————————————————————————————————————————————————————————[Info Start]——
+标题:用户登录信息更新
+内容:用户：【admin@qq.com】更新了==》用户：【admin@qq.com】的登录信息
+————————————————————————————————————————————————————————[Info   End]——
+
+[INFO] [2018-11-13 15:13:17][com.trainingcenter.security.handler.AuthenticationSuccessHandlerImpl]
+————————————————————————————————————————————————————————[Info Start]——
+标题:登录成功后处理
+内容:用户【admin@qq.com】登录成功
+————————————————————————————————————————————————————————[Info   End]——
+

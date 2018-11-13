@@ -8,7 +8,7 @@ import com.trainingcenter.exception.InsertException;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +41,29 @@ public interface RoleService {
      * @param searchContent：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public List<Role> getRoles(Integer currentPage, Integer rows, String searchContent);
+    public Collection<Role> getRoles(Integer currentPage, Integer rows, String searchContent);
+
+    /**
+     * 获取指定登录用户所含有的全部角色
+     *
+     * @param loginInfoId：用户登录信息id
+     * @param currentPage：当前页
+     * @param rows：每页要显示的数据条数
+     * @param searchContent：模糊查询内容
+     * @return 返回该用户所拥有的所有角色，支持分页、模糊查询
+     */
+    public Collection<Role> getRolesByLoginInfoId(String loginInfoId,Integer currentPage, Integer rows, String searchContent);
+
+    /**
+     * 获取含有指定权限的所有角色
+     *
+     * @param permissionId ：指定权限id
+     * @param currentPage：当前页
+     * @param rows：每页要显示的数据条数
+     * @param searchContent：模糊查询内容
+     * @return ：返回含有该权限的所有角色，支持分页
+     */
+    public Collection<Role> getRolesByPermissionId(String permissionId,Integer currentPage, Integer rows, String searchContent);
 
     /**
      * 角色添加方法
@@ -72,6 +94,14 @@ public interface RoleService {
      * @return 返回操作成功的数目与操作失败的对象
      */
     public Map<String,Object> batchDelete(String ids);
+
+    /**
+     * 给角色授权，添加事务保证授权统一成功或失败
+     * @param roleId ：角色id
+     * @param permissionIds ：授予的权限id集
+     * 返回授权成功的个数，0表示授权失败
+     */
+    public Integer grantPermission(String roleId, String permissionIds);
 
     /**
      * 通过多个角色ID去查询符合条件的角色集

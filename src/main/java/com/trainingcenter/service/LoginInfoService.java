@@ -91,4 +91,12 @@ public interface LoginInfoService {
      * @return 返回当前页的数据集合
      */
     public List<LoginInfo> getLoginInfos(Integer currentPage, Integer rows, String searchContent);
+
+    /**
+     * 给用户授角色，添加事务保证授权统一成功或失败
+     * @param loginInfoId ：用户登录信息id
+     * @param roleIds ：授予的角色id集
+     * 返回授权成功的个数，0表示授权失败
+     */
+    public Integer grantRoles(String loginInfoId, String roleIds);
 }
