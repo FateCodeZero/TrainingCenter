@@ -47,7 +47,7 @@
                 <a href="" id="refreshImg">看不清楚？换一张…</a>
             </div>
             <div class="clear"></div>
-            <input type="button" id="submit" value="登陆">
+            <button type="submit" id="submit" >登陆</button>
         </form>
     </div>
 

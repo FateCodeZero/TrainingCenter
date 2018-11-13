@@ -70,7 +70,7 @@ h1{
 label.bar-w3-agile {
 	width: 62px;
 	height: 3px;
-	background: #fd9f3e;
+	background: #2D6CDF;
 	display: block;
 	margin: 12px auto 30px;
 }
@@ -132,7 +132,7 @@ input[type="text"], input[type="password"] {
 }
 .signup-agileinfo h6 a:hover {
 	text-decoration:none;
-	color:#fd9f3e;
+	color:#2D6CDF;
 }
 form ul {
 	float: left;
@@ -181,8 +181,8 @@ form a {
 	font-size: 14px;
 
 }
-input[type="submit"]{
-	background:#fd9f3e;
+button[type="submit"]{
+	background:#2D6CDF;
 	padding:13px 0;
 	font-size:16px;
 	color:#fff;
@@ -237,9 +237,9 @@ a.book.popup-with-zoom-anim.button-isi.zoomIn.animated {
 	font-family: 'Open Sans', sans-serif;
 }
 a.book.popup-with-zoom-anim.button-isi.zoomIn.animated:hover{
-	border:1px solid #fd9f3e;
+	border:1px solid #2D6CDF;
 	color:#fff;
-	background:#fd9f3e;
+	background:#2D6CDF;
 }
 .book-form {
 	padding: 2em;
