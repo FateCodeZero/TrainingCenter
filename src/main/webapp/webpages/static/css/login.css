@@ -29,7 +29,7 @@ nav.horizontal ul li{display: inline-block;}/* horizontal menu */
 img{max-width:100%;}
 /*-- //Reset-Code --*/
 body {
-	background: #003f87;
+	background: url("../images/background_1.jpg");
 	font-family: 'Open Sans', sans-serif;
 }
 h1,h2,h3,h4,h5,h6{
@@ -45,7 +45,7 @@ h1{
 	text-transform: capitalize;
 }
 .w3layouts{
-	width:62%;
+	width:65%;
 	margin:0 auto;
 }
 .signin-agile,.signup-agileinfo {
@@ -115,6 +115,7 @@ input[type="text"], input[type="password"] {
 	margin-bottom: 20px;
 	background:transparent;
 }
+
 .signup-agileinfo h6{
 	text-align: center;
 	font-size: 15px;
@@ -124,7 +125,7 @@ input[type="text"], input[type="password"] {
 	color: #ebebeb;
 	text-decoration:none;
 	padding-top: 23px;
-	padding-bottom: 45px;
+	padding-bottom: 25px;
 }
 .signup-agileinfo h6 a {
 	text-decoration:none;
