@@ -30,7 +30,7 @@
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.3.0/layui/layui.all.js"></script>
 
 </head>
-<body onload="IFrameResize()">
+<body id="" onload="IFrameResize()">
 
     <div id="carousel">
         <div class="layui-carousel all_scroll_map" id="carousel-body">
@@ -245,12 +245,13 @@
 
     });
 
+
     //动态设置iframe高度，让子页面撑开父页面，注意子页面顶部和底部不要设置margin和padding，因为计算高度时会被忽略
     function IFrameResize(){
-        //alert(this.document.body.scrollHeight); //弹出当前页面的高度
+        //alert($(document.body).height()); //弹出当前页面的高度
         var obj = parent.document.getElementById("IF-body"); //取得父页面IFrame对象
-        //alert(obj.height); //弹出父页面中IFrame中设置的高度
-        obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度
+        //alert(parent.document.getElementById("IF-body").height); //弹出父页面中IFrame中设置的高度
+        obj.height = $(document.body).height(); //调整父页面中IFrame的高度为此页面的高度
     }
 
 

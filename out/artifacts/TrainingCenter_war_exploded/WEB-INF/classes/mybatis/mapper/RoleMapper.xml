@@ -55,7 +55,7 @@
     public Integer add(@Param("role") Role role;
     角色添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
     -->
-    <insert id="add" parameterType="com.trainingcenter.bean.Role">
+    <insert id="add">
         INSERT INTO tab_role(<include refid="roleColumns"></include>)
         VALUES (#{role.id},#{role.name},#{role.describe},#{role.permission_ids},#{role.remarks},#{role.create_user_id},#{role.create_date},
         #{role.update_user_id},#{role.update_date}
@@ -65,7 +65,7 @@
             public Integer update(@Param("role") Role role);
             更新角色信息
             -->
-    <update id="update" parameterType="com.trainingcenter.bean.Role">
+    <update id="update">
         UPDATE tab_role
         <trim prefix="set" suffixOverrides=",">
             <if test="role.name != null and role.name != '' ">
@@ -73,9 +73,6 @@
             </if>
             <if test="role.describe != null and role.describe != '' ">
                 `describe` = #{role.describe},
-            </if>
-            <if test="role.permission_ids != null and role.permission_ids != '' ">
-                permission_ids = #{role.permissionIds},
             </if>
             <if test="role.remarks != null and role.remarks != '' ">
                 remarks = #{role.remarks},
@@ -107,14 +104,14 @@
     </delete>
 
     <!--
-       public Collection<Role> getRolesByUserInfoId(@Param("userInfoId") String userInfoId,@Param("start") Integer start,
+       public Collection<Role> getRolesByLoginInfoId(@Param("loginInfoId") String loginInfoId,@Param("start") Integer start,
                                                  @Param("number") Integer number, @Param("searchContent") String searchContent);
         获取登录用户所含角色集合
         -->
-    <select id="getRolesByUserInfoId" resultType="com.trainingcenter.bean.Role">
+    <select id="getRolesByLoginInfoId" resultType="com.trainingcenter.bean.Role">
         SELECT r.id,r.name,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
         FROM tab_role r LEFT JOIN tab_login_info_role lir ON r.id = lir.role_id
-        WHERE lir.login_info_id = #{userInfoId}
+        WHERE lir.login_info_id = #{loginInfoId}
         <trim prefixOverrides="AND">
             <if test="searchContent != null and searchContent != '' ">
                 AND ( r.name like CONCAT('%',#{searchContent},'%')
@@ -128,7 +125,7 @@
         </if>
     </select>
 
-    <!--public Collection<Permission> getRolesByPermissionId(@Param("permissionId") String permissionId, @Param("start") Integer start,
+    <!--public Collection<Role> getRolesByPermissionId(@Param("permissionId") String permissionId, @Param("start") Integer start,
                                                          @Param("number") Integer number, @Param("searchContent") String searchContent);
        获取含有指定权限的所有角色
                                                          -->
