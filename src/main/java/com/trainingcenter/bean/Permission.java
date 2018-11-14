@@ -7,6 +7,8 @@ import com.trainingcenter.controller.validation.TC_Update;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,6 +43,12 @@ public class Permission extends BaseEntity implements Serializable {
      */
     private String url;
 
+    /**
+     * 对某资源含有的操作权限（CREATE、READ、UPDATE、DELETE），各个操作间用英文逗号分分隔
+     * 对应数据库字段（permission）
+     */
+    private String operation;
+
     public String getId() {
         return id;
     }
@@ -73,6 +81,22 @@ public class Permission extends BaseEntity implements Serializable {
         this.url = url;
     }
 
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    /**
+     * 获取权限操作的 list 形式
+     * @return
+     */
+    public List<String> getOperations() {
+        return Arrays.asList(this.operation.trim().split(","));
+    }
+
     @Override
     public String toString() {
         return "Permission{" +
@@ -80,6 +104,7 @@ public class Permission extends BaseEntity implements Serializable {
                 ", name='" + name + '\'' +
                 ", describe='" + describe + '\'' +
                 ", url='" + url + '\'' +
+                ", operation='" + operation + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", createUserId='" + createUserId + '\'' +
                 ", createDate=" + createDate +

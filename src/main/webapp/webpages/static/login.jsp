@@ -38,7 +38,7 @@
             <input type="password" name="password" id="password" class="password" placeholder="请填写密码" required="" />
                 <div class="text-center" id="passwordMsg"></div>
             <input type="text" name="kaptcha" id="kaptcha" class="kaptcha"  placeholder="请填写验证码"/>
-                <div class="text-center" id="kaptchaMsg"></div>
+                <div class="text-center" id="kaptchaMsg">${SPRING_SECURITY_LAST_EXCEPTION}</div>
             <div class="col-lg-4">
                 <img id="kaptchaImg" src="${webRoot}/except/kaptcha" height="40"/>
             </div>
@@ -46,7 +46,7 @@
                 <a href="" id="refreshImg">看不清楚？换一张…</a>
             </div>
             <div class="clear"></div>
-            <button type="submit" id="submit" >登陆</button>
+            <button type="button" id="submit" >登陆</button>
         </form>
     </div>
 

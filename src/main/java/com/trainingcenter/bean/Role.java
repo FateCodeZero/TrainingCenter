@@ -81,6 +81,7 @@ public class Role extends BaseEntity implements Serializable,GrantedAuthority {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", describe='" + describe + '\'' +
+                ", permissions=" + permissions +
                 ", remarks='" + remarks + '\'' +
                 ", createUserId='" + createUserId + '\'' +
                 ", createDate=" + createDate +

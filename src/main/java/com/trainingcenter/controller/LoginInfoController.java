@@ -12,6 +12,7 @@ import com.trainingcenter.utils.StringUtil;
 import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -50,7 +51,7 @@ public class LoginInfoController {
     private LoginInfoService loginInfoService;
 
     /**
-     * 进入注册页面
+     * 进入登录页面
      *
      * @return loginPage
      */
@@ -76,10 +77,21 @@ public class LoginInfoController {
      *
      * @return updatePage
      */
-    @RequestMapping(value = "goUpdate", method = RequestMethod.GET)
+    @PreAuthorize("hasPermission('/webpages/user/update.jsp','READ')")
+    @RequestMapping(value = "/goUpdate", method = RequestMethod.GET)
     public ModelAndView updatePage() {
         String viewName = "static/update";
         return new ModelAndView(viewName);
+    }
+
+    /**
+     * 进入后台管理系统首页
+     * @return
+     */
+    @PreAuthorize(value = "hasPermission('/webpages/admin/main.jsp','READ')")
+    @RequestMapping(value = "/admin",method = RequestMethod.GET)
+    public ModelAndView adminIndex(){
+        return new ModelAndView("admin/main");
     }
 
     /**
@@ -241,6 +253,7 @@ public class LoginInfoController {
      * @param id：用户id
      * @return
      */
+    @PreAuthorize("hasPermission('/webpages/user/update.jsp','UPDATE')")
     @RequestMapping(value = "/loginInfo/{id}", method = RequestMethod.PUT)
     public AjaxJson update(@PathVariable("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
@@ -279,6 +292,7 @@ public class LoginInfoController {
      * @param ids：用户ids
      * @return 返回操作成功的数目与操作失败的对象及消息提示
      */
+    @PreAuthorize("hasPermission('/webpages/user/update.jsp','DELETE')")
     @RequestMapping(value = "/loginInfo/{ids}", method = RequestMethod.DELETE)
     public AjaxJson delete(@PathVariable("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();

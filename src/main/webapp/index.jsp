@@ -81,6 +81,7 @@
                         <dl class="layui-nav-child">
                             <dd><a>个人中心</a></dd>
                             <dd><a>消息通知</a></dd>
+                            <dd><a href="${webRoot}/user/admin">管理系统</a></dd>
                             <dd><a href="${webRoot}/user/logout">退出</a></dd>
                         </dl>
                     </li>

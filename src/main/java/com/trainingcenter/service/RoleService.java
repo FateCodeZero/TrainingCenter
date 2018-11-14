@@ -5,7 +5,6 @@ import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.exception.DeleteException;
 import com.trainingcenter.exception.InsertException;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Collection;
@@ -31,7 +30,7 @@ public interface RoleService {
      * @param name：角色名称
      * @return 返回对应的角色对象
      */
-    public Role getRoleByName(@Param("name") String name);
+    public Role getRoleByName(String name);
 
     /**
      * 分页获取所有用户
@@ -70,7 +69,7 @@ public interface RoleService {
      * @param role：要添加的角色
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer add(@Validated(value = {TC_Add.class}) @Param("role") Role role) throws InsertException;
+    public Integer add(@Validated(value = {TC_Add.class}) Role role) throws InsertException;
 
     /**
      * 角色更新方法
@@ -108,5 +107,5 @@ public interface RoleService {
      * @param roleIds：多个角色ID
      * @return 返回角色集合
      */
-    public List<Role> getRolesByRoleIds(@Param("roleIds") String roleIds);
+    public List<Role> getRolesByRoleIds(String roleIds);
 }
