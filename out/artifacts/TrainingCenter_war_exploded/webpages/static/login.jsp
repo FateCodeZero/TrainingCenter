@@ -22,13 +22,12 @@
     <script type="text/javascript" src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.3.0/layui/layui.all.js"></script>
-<%--    <script type="text/javascript" src="${webRoot}/webpages/static/js/login.js"></script>
-    <script type="text/javascript" src="${webRoot}/webpages/static/js/PageJumpHandle.js"></script>--%>
+
 </head>
 <body >
-<<a href="http://localhost:8080/index.jsp" ></a>
+<a href="http://localhost:8080/index.jsp" ></a>
 <h1>梦润传承</h1>
-<div class="w3layouts">
+<div class="w3layouts" >
     <!-- Sign in -->
     <div class="signin-agile">
         <h2>登陆</h2>
@@ -47,7 +46,7 @@
                 <a href="" id="refreshImg">看不清楚？换一张…</a>
             </div>
             <div class="clear"></div>
-            <input type="button" id="submit" value="登陆">
+            <button type="submit" id="submit" >登陆</button>
         </form>
     </div>
 
@@ -91,9 +90,9 @@
         var kaptcha = $("#kaptcha").val();
 
         if (username === null || username === '') {
-            $("#usernameMsg").html(
+/*            $("#usernameMsg").html(
                 "<span style='color:#FF5722'>请先填写账号！</span>"
-            );
+            );*/
             $("#username").css("border", "1px solid red");  //输入框变红
             $("#username").focus();     //获取焦点
             return false;
@@ -104,9 +103,9 @@
         }
 
         if (password === null || password === '') {
-            $("#passwordMsg").html(
+/*            $("#passwordMsg").html(
                 "<span style='color:#FF5722'>请先填写密码！</span>"
-            );
+            );*/
             $("#password").css("border", "1px solid red");  //输入框变红
             $("#password").focus();
             return false;
@@ -117,9 +116,9 @@
         }
 
         if (kaptcha === null || kaptcha === '') {
-            $("#kaptchaMsg").html(
+/*            $("#kaptchaMsg").html(
                 "<span style='color:#FF5722'>请先填写验证码！</span>"
-            );
+            );*/
             $("#kaptcha").css("border", "1px solid red");  //输入框变红
             $("#kaptcha").focus();
             return false;

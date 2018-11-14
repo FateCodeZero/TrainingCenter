@@ -28,6 +28,7 @@
     <script type="text/javascript" src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.3.0/layui/layui.all.js"></script>
+    <script type="text/javascript" src="${webRoot}/webpages/static/js/utils.js"></script>
 
 </head>
 <body id="" onload="IFrameResize()">
@@ -62,8 +63,6 @@
     </div>
 
     <!-- 新闻公告 -->
-    <div class="copyrights"></div>
-
     <div id="fh5co-pricing" class="fh5co-bg-section">
         <div class="container">
             <div class="row animate-box">
@@ -99,7 +98,9 @@
                                     <a href=""><li class="pricing__feature">汇川区的梦润集团高人云集</li></a>
                                     <a href=""><li class="pricing__feature">脱贫攻坚群英谱，乡村振兴梦</li></a>
                                 </ul>
-                                <button class="pricing__action">全部新闻</button>
+                                <a href="${webRoot}/webpages/static/allNews.jsp" >
+                                    <button class="pricing__action"> 全部新闻</button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -121,14 +122,16 @@
                             <div class="wrap-price">
                                 <ul class="pricing__feature-list">
                                     <a href=""><li class="pricing__feature">获得全国森林康养基地试点建设基地</li></a>
-                                    <a href=""><li class="pricing__feature">公告1</li></a>
+                                    <a href=""><li class="pricing__feature">公告1……</li></a>
                                     <a href=""><li class="pricing__feature">公告2……</li></a>
                                     <a href=""><li class="pricing__feature">公告3……</li></a>
                                     <a href=""><li class="pricing__feature">公告4……</li></a>
                                     <a href=""><li class="pricing__feature">公告5……</li></a>
                                     <a href=""><li class="pricing__feature">公告6……</li></a>
                                 </ul>
-                                <button class="pricing__action">全部公告</button>
+                                <a href="${webRoot}/webpages/static/allNotice.jsp">
+                                    <button class="pricing__action">全部公告</button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -246,13 +249,7 @@
     });
 
 
-    //动态设置iframe高度，让子页面撑开父页面，注意子页面顶部和底部不要设置margin和padding，因为计算高度时会被忽略
-    function IFrameResize(){
-        //alert($(document.body).height()); //弹出当前页面的高度
-        var obj = parent.document.getElementById("IF-body"); //取得父页面IFrame对象
-        //alert(parent.document.getElementById("IF-body").height); //弹出父页面中IFrame中设置的高度
-        obj.height = $(document.body).height(); //调整父页面中IFrame的高度为此页面的高度
-    }
+
 
 
 </script>

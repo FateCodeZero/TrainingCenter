@@ -15,12 +15,35 @@
     <%--CSS--%>
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css" media="all">
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.3.0/layui/css/layui.css">
+    <link rel="stylesheet" href="${webRoot}/webpages/static/css/register.css">
 
     <%--JS--%>
     <script type="text/javascript" src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.3.0/layui/layui.all.js"></script>
 </head>
+<body >
+<a href="http://localhost:8080/index.jsp" ></a>
+<h1>梦润传承</h1>
+<div class="w3layouts" >
+    <!-- Sign in -->
+    <div class="signin-agile">
+        <h2>注册</h2>
+        <label class="bar-w3-agile"></label>
+        <form  role="form" action="${webRoot}/user/login" id="loginFrom" method="post">
+            <input type="text" name="username" id="username" class="name" placeholder="请填写用户名" required="" />
+                <div class="text-center" id="usernameMsg"></div>
+            <input type="password" name="password" id="password" class="password" placeholder="请填写密码" required="" />
+                <div class="text-center" id="passwordMsg"></div>
+            <input type="password" class="password" name="password" id="rePassword" value="" placeholder="重复密码">
+                <div class="text-center" id="rePasswordMsg"></div>
+            <div class="clear"></div>
+            <button type="submit" id="submit" >注册</button>
+        </form>
+    </div>
+</div>
+</body>
+<%--
 <body>
 <br>
 <div class="text-center row" style="margin-top: 10%">
@@ -28,7 +51,7 @@
     <div class="text-left col-sm-10 panel panel-primary">
         <br>
         <form class="form-horizontal" role="form" action="">
-            <%--Restful风格的请求--%>
+            &lt;%&ndash;Restful风格的请求&ndash;%&gt;
             <input type="hidden" value="POST" name="_method" id="_method">
 
             <div class="form-group">
@@ -68,6 +91,9 @@
     <div class="col-sm-1"></div>
 </div>
 </body>
+--%>
+
+
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -159,6 +185,7 @@
         }
     }
 
+
     //提交
     $("#submit").click(function () {
         var username = $("#username").val();
@@ -166,7 +193,7 @@
         var rePassword = $("#rePassword").val();
 
         checkUsername(username); //检查用户名是否可用
-
+        alert("123-----------")
         //验证密码合法性
         if (password === null || password === '' || rePassword === null || rePassword === '') {
             $("#passwordMsg").html(

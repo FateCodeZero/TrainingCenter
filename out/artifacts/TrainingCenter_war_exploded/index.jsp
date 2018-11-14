@@ -72,9 +72,7 @@
                 <li class="layui-nav-item">
                     <a href="#">关于我们</a>
                 </li>
-<%--                <li class="layui-nav-item">
-                    <a href="#">样式预留2<span class="layui-badge-dot"></span></a>
-                </li>--%>
+
                 <c:if test="${not empty user}">
                     <li class="layui-nav-item" style="float: right">
                         <a href="#"><img src="//t.cn/RCzsdCq" class="layui-nav-img">用户A</a>
@@ -135,6 +133,12 @@
             }
             if (text === '体验式教学') {
                 loadUrl = "${webRoot}/webpages/static/allExperientialTeaching.jsp";
+            }
+            if(text === '往期学员故事'){
+                loadUrl = "${webRoot}/webpages/static/studentStory.jsp";
+            }
+            if(text === '交通工具'){
+                loadUrl = "${webRoot}/webpages/static/transportation.jsp";
             }
             //通过修改 iframe 的 url 来切换页面，注：要用此方法，点击处<a>标签必须是 href="#"
             $("#IF-body").attr('src', loadUrl);
