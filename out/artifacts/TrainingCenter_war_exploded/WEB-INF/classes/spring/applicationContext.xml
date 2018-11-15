@@ -60,4 +60,4 @@
              -->
     <mybatis:scan base-package="com.trainingcenter.dao"/>
 
-</beans> 
+</beans>

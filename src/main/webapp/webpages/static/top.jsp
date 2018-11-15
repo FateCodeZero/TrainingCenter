@@ -22,7 +22,7 @@
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.3.0/layui/layui.all.js"></script>
 </head>
 <body>
-<h3 class="col-md-3 col-md-offset-1 top_text" >梦润传承LOGO</h3>
+<h3 class="col-md-3 col-md-offset-1 top_text" ></h3>
 </body>
 <script type="text/javascript">
     $(document).ready(function () {
