@@ -129,7 +129,7 @@
                 loadUrl = "${webRoot}/index.jsp";
             }
             if (text === '留言咨询') {
-                loadUrl = "${webRoot}/webpages/static/message.jsp";
+                loadUrl = "${webRoot}/webpages/static/contact.jsp";
             }
             if (text === '体验式教学') {
                 loadUrl = "${webRoot}/webpages/static/allExperientialTeaching.jsp";

@@ -165,16 +165,7 @@ ul li input[type="checkbox"]+label span:first-child {
 	bottom: 4px;
 	cursor:pointer;
 }
-ul li input[type="checkbox"]:checked+label span:first-child:before {
-	content: "";
-	background: url(../images/tick.png)no-repeat;
-	position: absolute;
-	left: 2px;
-	top: 2px;
-	font-size: 10px;
-	width: 10px;
-	height: 10px;
-}
+
 
 form a {
 	color: #7d7d7d;
@@ -182,7 +173,7 @@ form a {
 	font-size: 14px;
 
 }
-button[type="submit"]{
+input[type="button"]{
 	background:#2D6CDF;
 	padding:13px 0;
 	font-size:16px;
@@ -200,7 +191,7 @@ button[type="submit"]{
 	font-family: 'Open Sans', sans-serif;
 }
 
-input[type="submit"]:hover {
+input[type="button"]:hover {
 	background: #003f87;
 }
 .footer-w3l {
@@ -505,7 +496,7 @@ a.book.popup-with-zoom-anim.button-isi.zoomIn.animated:hover{
 	input[type="text"], input[type="password"] {
 		padding:12px;
 	}
-	input[type="submit"] {
+	input[type="button"] {
 		padding: 12px 0;
 	}
 	.my-mfp-zoom-in.mfp-ready #small-dialog {
@@ -548,7 +539,7 @@ a.book.popup-with-zoom-anim.button-isi.zoomIn.animated:hover{
 		text-align: center;
 		margin-top: 10px;
 	}
-	.signin-agile input[type="submit"] {
+	.signin-agile input[type="button"] {
 		margin-top: 0px;
 	}
 	.signin-agile {
@@ -630,7 +621,7 @@ a.book.popup-with-zoom-anim.button-isi.zoomIn.animated:hover{
 	.signin-agile, .signup-agileinfo {
 		padding: 38px;
 	}
-	input[type="submit"] {
+	input[type="button"] {
 		padding: 9px 0;
 	}
 	a.book.popup-with-zoom-anim.button-isi.zoomIn.animated {
@@ -697,7 +688,7 @@ a.book.popup-with-zoom-anim.button-isi.zoomIn.animated:hover{
 	a.book.popup-with-zoom-anim.button-isi.zoomIn.animated {
 		font-size: 15px;
 	}
-	input[type="submit"] {
+	input[type="button"] {
 		font-size: 15px;
 	}
 	.mfp-container {
@@ -724,7 +715,7 @@ a.book.popup-with-zoom-anim.button-isi.zoomIn.animated:hover{
 	input[type="text"], input[type="password"], input[type="email"] {
 		padding: 6px 10px;
 	}
-	input[type="submit"]{
+	input[type="button"]{
 		padding:10px 0px;
 	}
 	ul li input[type="checkbox"]+label span:first-child {

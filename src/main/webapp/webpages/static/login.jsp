@@ -46,7 +46,7 @@
                 <a href="" id="refreshImg">看不清楚？换一张…</a>
             </div>
             <div class="clear"></div>
-            <button type="button" id="submit" >登陆</button>
+            <input type="button" value="登陆" id="submit" class="btn btn-primary" onclick="javascript:check();"/>
         </form>
     </div>
 

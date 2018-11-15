@@ -38,62 +38,11 @@
             <input type="password" class="password" name="password" id="rePassword" value="" placeholder="重复密码">
                 <div class="text-center" id="rePasswordMsg"></div>
             <div class="clear"></div>
-            <button type="submit" id="submit" >注册</button>
+            <input type="button" value="注册" id="submit" class="btn btn-primary" onclick="javascript:check();"/>
         </form>
     </div>
 </div>
 </body>
-<%--
-<body>
-<br>
-<div class="text-center row" style="margin-top: 10%">
-    <div class="col-sm-1"></div>
-    <div class="text-left col-sm-10 panel panel-primary">
-        <br>
-        <form class="form-horizontal" role="form" action="">
-            &lt;%&ndash;Restful风格的请求&ndash;%&gt;
-            <input type="hidden" value="POST" name="_method" id="_method">
-
-            <div class="form-group">
-                <label for="username" class="col-sm-2 control-label">用户名</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="username" id="username" value="" placeholder="请填写用户名">
-                </div>
-                <div class="text-center" id="usernameMsg"></div>
-            </div>
-            <div class="form-group">
-                <label for="password" class="col-sm-2 control-label">密码</label>
-                <div class="col-sm-10">
-                    <input type="password" class="form-control" name="password" id="password" value=""
-                           placeholder="请填写密码">
-                </div>
-                <div class="text-center" id="passwordMsg"></div>
-            </div>
-
-            <div class="form-group">
-                <label for="rePassword" class="col-sm-2 control-label">重复密码</label>
-                <div class="col-sm-10">
-                    <input type="password" class="form-control" name="password" id="rePassword" value=""
-                           placeholder="请填写密码">
-                </div>
-                <div class="text-center" id="rePasswordMsg"></div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10 text-center">
-                    <button type="button" class="layui-btn col-sm-4" id="submit">提交</button>
-                    <div class="col-sm-1"></div>
-                    <button type="reset" class="layui-btn layui-btn-normal col-sm-4" id="close">重置</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="col-sm-1"></div>
-</div>
-</body>
---%>
-
-
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -193,7 +142,6 @@
         var rePassword = $("#rePassword").val();
 
         checkUsername(username); //检查用户名是否可用
-        alert("123-----------")
         //验证密码合法性
         if (password === null || password === '' || rePassword === null || rePassword === '') {
             $("#passwordMsg").html(
