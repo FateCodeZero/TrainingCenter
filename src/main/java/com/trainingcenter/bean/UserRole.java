@@ -13,11 +13,12 @@ import com.trainingcenter.controller.validation.TC_Find;
 import com.trainingcenter.controller.validation.TC_Update;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 /**
  * 用户-权限对应信息维护类，对应数据库（tab_login_info_role）表
  */
-public class LoginInfoRole extends BaseEntity{
+public class UserRole implements Serializable{
     /**
      * 表id，对应数据库（id）字段
      */
@@ -25,10 +26,10 @@ public class LoginInfoRole extends BaseEntity{
     private String id;
 
     /**
-     * 对应用户登录信息id，对应数据库（login_info_id）字段
+     * 对应用户登录信息id，对应数据库（user_id）字段
      */
     @NotBlank(message = "被授权用户不能为空",groups = {TC_Add.class, TC_Update.class})
-    private String loginInfoId;
+    private String userId;
 
     /**
      * 对应角色id，对应数据库（role_id）字段
@@ -44,12 +45,12 @@ public class LoginInfoRole extends BaseEntity{
         this.id = id;
     }
 
-    public String getLoginInfoId() {
-        return loginInfoId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setLoginInfoId(String loginInfoId) {
-        this.loginInfoId = loginInfoId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getRoleId() {
@@ -58,19 +59,5 @@ public class LoginInfoRole extends BaseEntity{
 
     public void setRoleId(String roleId) {
         this.roleId = roleId;
-    }
-
-    @Override
-    public String toString() {
-        return "LoginInfoRole{" +
-                "id='" + id + '\'' +
-                ", loginInfoId='" + loginInfoId + '\'' +
-                ", roleId='" + roleId + '\'' +
-                ", remarks='" + remarks + '\'' +
-                ", createUserId='" + createUserId + '\'' +
-                ", createDate=" + createDate +
-                ", updateUserId='" + updateUserId + '\'' +
-                ", updateDate=" + updateDate +
-                '}';
     }
 }

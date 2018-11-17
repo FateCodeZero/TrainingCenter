@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -65,7 +64,7 @@ public interface PermissionMapper {
      * @param searchContent：模糊查询内容
      * @return 返回该角色所拥有的所有权限，支持分页、模糊查询
      */
-    public Collection<Permission> getPermissionsByRoleId(@Param("roleId") String roleId,@Param("start") Integer start,
+    public List<Permission> getPermissionsByRoleId(@Param("roleId") String roleId,@Param("start") Integer start,
                                                  @Param("number") Integer number, @Param("searchContent") String searchContent);
 
 } 

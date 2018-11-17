@@ -1,15 +1,11 @@
 package com.trainingcenter.controller;
 
-import com.trainingcenter.bean.LoginInfo;
-import com.trainingcenter.exception.DeleteException;
-import com.trainingcenter.exception.FindException;
-import com.trainingcenter.exception.RegisterException;
-import com.trainingcenter.exception.UpdateException;
-import com.trainingcenter.service.LoginInfoService;
+import com.trainingcenter.bean.User;
+import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.HTTPUtils;
+import com.trainingcenter.utils.MD5Util;
 import com.trainingcenter.utils.StringUtil;
-import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -45,10 +42,10 @@ import java.util.Map;
  */
 @RequestMapping("/user")
 @Controller
-public class LoginInfoController {
-    @Qualifier("loginInfoService")
+public class UserController {
+    @Qualifier("userService")
     @Autowired
-    private LoginInfoService loginInfoService;
+    private UserService userService;
 
     /**
      * 进入登录页面
@@ -117,7 +114,7 @@ public class LoginInfoController {
      msg = "登录失败，用户名或密码不能为空！";
      } else {
      String IP = SysUtil.getClientIpAddress(request);
-     boolean login = loginInfoService.login(username, password, IP);
+     boolean login = userService.login(username, password, IP);
      if (login) {
      //获取登录用户信息
      User user = userService.getUserByUsername(username);
@@ -180,7 +177,7 @@ public class LoginInfoController {
             return ajaxJson;
         }
 
-        boolean exist = loginInfoService.checkUsername(username);
+        boolean exist = userService.checkUsername(username);
         if (exist) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("该账号已被使用");
@@ -215,7 +212,7 @@ public class LoginInfoController {
             ajaxJson.setMsg("账号格式不是一个正确的邮箱或手机号");
             return ajaxJson;
         }
-        boolean exist = loginInfoService.checkUsername(username);
+        boolean exist = userService.checkUsername(username);
         if (exist) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("用户名已存在");
@@ -231,10 +228,19 @@ public class LoginInfoController {
 
         //添加注册信息
         String ipAddress = HTTPUtils.getClientIpAddress(request);
-        Integer res = 0;
+
+        User user = new User();
+        user.setId(UUID.randomUUID().toString());
+        user.setUsername(username);
+        user.setPassword(MD5Util.md5Encrypt(password));
+        user.setLoginIP(ipAddress);
+        user.setUnlockedFlag(1);
+        user.setState(1);
+        user.setRegisterTime(new Date());
+        user.setLastLoginTime(new Date());
 
         //异常抛给 SpringMVC 统一异常处理器处理
-        res = loginInfoService.register(username, password, ipAddress);
+        Integer res = userService.register(user);
 
         if (res > 0) {
             ajaxJson.setCode(1);
@@ -254,7 +260,7 @@ public class LoginInfoController {
      * @return
      */
     @PreAuthorize("hasPermission('/webpages/user/update.jsp','UPDATE')")
-    @RequestMapping(value = "/loginInfo/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public AjaxJson update(@PathVariable("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
 
@@ -265,16 +271,16 @@ public class LoginInfoController {
         }
 
         //异常抛给 SpringMVC 统一异常处理器处理
-        LoginInfo loginInfo = loginInfoService.getLoginInfoById(id);
+        User user = userService.getUserById(id);
 
-        if (loginInfo == null) {
+        if (user == null) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("更新失败，用户不存在或已注销");
             return ajaxJson;
         }
 
         //异常抛给 SpringMVC 统一异常处理器处理
-        Integer res = loginInfoService.update(loginInfo);
+        Integer res = userService.update(user);
 
         if (res > 0) {
             ajaxJson.setCode(1);
@@ -293,38 +299,25 @@ public class LoginInfoController {
      * @return 返回操作成功的数目与操作失败的对象及消息提示
      */
     @PreAuthorize("hasPermission('/webpages/user/update.jsp','DELETE')")
-    @RequestMapping(value = "/loginInfo/{ids}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/user/{ids}", method = RequestMethod.DELETE)
     public AjaxJson delete(@PathVariable("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
-        if (StringUtil.isNotEmpty(ids)) {
-            Map<String, Object> map = loginInfoService.batchDelete(ids);
 
-            if (map == null){
-                ajaxJson.setCode(0);
-                ajaxJson.setMsg("操作失败");
-                return ajaxJson;
-            }
-
-            Integer success = (Integer) map.get("success");
-            Map<String, Object> fail = (Map<String, Object>) map.get("fail");
-
-            if (success == 0) {
-                ajaxJson.setCode(0);
-                ajaxJson.setMsg("操作失败");
-            } else {
-                if (fail.size() > 0) {
-                    ajaxJson.setCode(2);
-                    ajaxJson.setMsg("操作成功，但有部分删除失败");
-                } else {
-                    ajaxJson.setCode(1);
-                    ajaxJson.setMsg("操作成功");
-                    ajaxJson.setData(map);
-                }
-            }
-        } else {
+        if (StringUtil.isEmpty(ids)){
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("操作失败，请先选择要删除的对象");
+            ajaxJson.setMsg("删除失败，请先选择要删除的对象");
+            return ajaxJson;
         }
+
+        boolean delete = userService.batchDelete(ids);
+        if (delete){
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("删除成功");
+        }else {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("删除失败，请稍后重试");
+        }
+
         return ajaxJson;
     }
 

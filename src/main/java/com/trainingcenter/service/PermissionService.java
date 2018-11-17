@@ -5,7 +5,6 @@ import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Update;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,12 +22,53 @@ public interface PermissionService {
     public Permission getPermissionById(String id);
 
     /**
+     * @return 返回权限对象集合
+     */
+    public List<Permission> getPermissions();
+
+    /**
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
      * @param searchContent：模糊查询内容
      * @return 返回权限对象集合
      */
     public List<Permission> getPermissions(Integer currentPage, Integer rows, String searchContent);
+
+    /**
+     * 通过id 获取指定 角色 所含有的全部权限
+     */
+    public List<Permission> getPermissionsByRoleId(String roleId);
+
+    /**
+     * 通过id 获取指定 角色 所含有的全部权限
+     *
+     * @param roleId：角色id
+     * @param currentPage：当前页
+     * @param rows：每页要显示的数据条数
+     * @param searchContent：模糊查询内容
+     * @return 返回该角色所拥有的所有权限，支持分页、模糊查询
+     */
+    public List<Permission> getPermissionsByRoleId( String roleId, Integer currentPage, Integer rows, String searchContent);
+
+    /**
+     * 通过 角色名称 获取指定 角色 所含有的全部权限
+     * @param roleName 角色名称
+     * @return
+     */
+    public List<Permission> getPermissionsByRoleName( String roleName);
+
+    /**
+     * 通过 角色名称 获取指定 角色 所含有的全部权限
+     *
+     * @param roleName：角色名称
+     * @param currentPage：当前页
+     * @param rows：每页要显示的数据条数
+     * @param searchContent：模糊查询内容
+     * @return 返回该角色所拥有的所有权限，支持分页、模糊查询
+     */
+    public List<Permission> getPermissionsByRoleName( String roleName, Integer currentPage, Integer rows, String searchContent);
+
+
     /**
      * 权限添加方法
      * @param permission：要添加的权限
@@ -51,24 +91,11 @@ public interface PermissionService {
     public Integer delete(String id);
 
     /**
-     * 通过id 获取指定 角色 所含有的全部权限
+     * 批量删除
      *
-     * @param roleId：角色id
-     * @param currentPage：当前页
-     * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
-     * @return 返回该角色所拥有的所有权限，支持分页、模糊查询
+     * @param ids：需要删除的对象的id集
+     * @return 返回操作结果（true：删除成功，false：删除失败）
+     * 添加事务，保证中间删除失败时可以回滚
      */
-    public Collection<Permission> getPermissionsByRoleId( String roleId, Integer currentPage, Integer rows, String searchContent);
-
-    /**
-     * 通过 角色名称 获取指定 角色 所含有的全部权限
-     *
-     * @param roleName：角色名称
-     * @param currentPage：当前页
-     * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
-     * @return 返回该角色所拥有的所有权限，支持分页、模糊查询
-     */
-    public Collection<Permission> getPermissionsByRoleName( String roleName, Integer currentPage, Integer rows, String searchContent);
+    public boolean batchDelete(String ids);
 }

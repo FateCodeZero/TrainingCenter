@@ -1,13 +1,12 @@
 package com.trainingcenter.service;
 
 import com.trainingcenter.bean.User;
-import com.trainingcenter.bean.UserType;
 import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.exception.DeleteException;
+import com.trainingcenter.exception.FindException;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -15,29 +14,41 @@ import java.util.Map;
  * Created by IntelliJ IDEA.
  * User: YangYi
  * Date: 2018/10/15
- * Time: 17:26
+ * Time: 17:27
+ *
+ * 用户登录信息服务类，用以检验用户登录的各种信息
  */
 public interface UserService {
 
     /**
-     * 通过id获取用户
-     *
-     * @param id
+     * 检查用户名是否可用
+     * @param username：用户名
+     * @return 用户名是否已被使用 true：账号已存在，false：账号不存在，可用
+     */
+    public boolean checkUsername(String username);
+
+    /**
+     * 通过id获取登录信息
+     * @param id：对象id
      * @return
      */
     public User getUserById(String id);
 
     /**
-     * 通过username获取用户
-     *
-     * @param username
+     * 通过username获取登录信息
+     * @param username：账号
      * @return
      */
     public User getUserByUsername(String username);
 
     /**
-     * 分页获取所有用户
-     *
+     * 获取所有数据
+     * @return 返回所有数据
+     */
+    public List<User> getUsers();
+
+    /**
+     * 分页获取数据
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
      * @param searchContent：模糊查询内容
@@ -46,41 +57,58 @@ public interface UserService {
     public List<User> getUsers(Integer currentPage, Integer rows, String searchContent);
 
     /**
-     * 用户添加方法
-     *
-     * @param user
-     * @return 返回值大于0表示操作成功，否则操作失败
+     * 获取含有指定 角色 的所有用户
+     * @param roleId
+     * @return
      */
-    public Integer add(@Validated(value = {TC_Add.class}) User user);
+    public List<User> getUsersByRoleId( String roleId);
 
     /**
-     * 用户更新方法
-     *
-     * @param user
-     * @return
+     * 分页获取含有指定 角色 的所有用户
+     * @param roleId 指定角色id
+     * @param currentPage：当前页
+     * @param rows：每页要显示的数据条数
+     * @param searchContent：模糊查询内容
+     * @return 返回含有该角色的所有用户，支持分页与模糊查询
+     */
+    public List<User> getUsersByRoleId( String roleId,Integer currentPage,Integer rows,String searchContent);
+
+    /**
+     * 注册/添加
+     * @param user：用户对象
+     * @return 返回操作成功的个数，0表示操作失败
+     */
+    public Integer register(@Validated(value = {TC_Add.class}) User user);
+
+    /**
+     * 修改
+     * @param user：被修改的对象
+     * @return 返回操作成功的个数，0表示操作失败
      */
     public Integer update(@Validated(value = {TC_Update.class}) User user);
 
     /**
-     * 用户删除方法
-     *
-     * @param id：用户id
-     * @return
+     * 注销/删除
+     * @param id：需要删除对象的id
+     * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer delete(String id) throws DeleteException;
+    public Integer delete(String id) throws DeleteException, FindException;
 
     /**
      * 批量删除
      *
      * @param ids：需要删除的对象的id集
-     * @return 返回操作成功的数目与操作失败的对象
+     * @return 返回操作结果（true：删除成功，false：删除失败）
+     * 添加事务，保证中间删除失败时可以回滚
      */
-    public Map<String, Object> batchDelete(String ids);
+    public boolean batchDelete(String ids);
 
     /**
-     * 获取当前用户的用户类型
-     * @param userId：用户id
-     * @return 返回用户类型对象
+     * 给用户授角色，添加事务保证授权统一成功或失败
+     * @param userId ：用户登录信息id
+     * @param roleIds ：授予的角色id集
+     * 返回授权成功的个数，0表示授权失败
      */
-    public UserType getUserTypeByUserId(String userId);
+    public Integer grantRoles(String userId, String roleIds);
+
 }

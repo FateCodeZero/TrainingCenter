@@ -75,21 +75,6 @@ public class Role extends BaseEntity implements Serializable,GrantedAuthority {
         this.permissions = permissions;
     }
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", describe='" + describe + '\'' +
-                ", permissions=" + permissions +
-                ", remarks='" + remarks + '\'' +
-                ", createUserId='" + createUserId + '\'' +
-                ", createDate=" + createDate +
-                ", updateUserId='" + updateUserId + '\'' +
-                ", updateDate=" + updateDate +
-                '}';
-    }
-
     /**
      * 获取角色名称，security用
      *  按 security 的需求，所有角色必须有 ROLE_ 前缀

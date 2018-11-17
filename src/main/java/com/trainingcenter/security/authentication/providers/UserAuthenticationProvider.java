@@ -22,7 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  * 用户登录权限验证类
  */
 public class UserAuthenticationProvider implements AuthenticationProvider {
-    @Qualifier("loginInfoService")
+    @Qualifier("userService")
     @Autowired
     private UserDetailsService userService;
 

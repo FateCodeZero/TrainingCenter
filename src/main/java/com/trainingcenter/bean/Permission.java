@@ -22,6 +22,14 @@ import java.util.List;
  */
 public class Permission extends BaseEntity implements Serializable {
     /**
+     * 操作常量
+     */
+    public static final String CREATE = "CREATE";
+    public static final String READ = "READ";
+    public static final String UPDATE = "UPDATE";
+    public static final String DELETE = "DELETE";
+
+    /**
      * id,对应数据库（id）字段
      */
     @NotBlank(message = "id不能为空",groups = {TC_Delete.class,TC_Find.class})
@@ -34,20 +42,26 @@ public class Permission extends BaseEntity implements Serializable {
     private String name;
 
     /**
-     * 权限描述,对应数据库（describe）字段
+     * 权限对应资源ID，对应数据库（resource_id）字段
      */
-    private String describe;
-
-    /**
-     * 权限对应资源url,对应数据库（url）字段
-     */
-    private String url;
+    @NotBlank(message = "权限对应资源不能为空",groups = {TC_Add.class, TC_Update.class})
+    private String resourceId;
 
     /**
      * 对某资源含有的操作权限（CREATE、READ、UPDATE、DELETE），各个操作间用英文逗号分分隔
      * 对应数据库字段（permission）
      */
-    private String operation;
+    private String operations;
+
+    /**
+     * 权限描述,对应数据库（describe）字段
+     */
+    private String describe;
+
+    /**
+     * 对某资源含有的操作权限集合
+     */
+    private List<String> operationList;
 
     public String getId() {
         return id;
@@ -65,6 +79,22 @@ public class Permission extends BaseEntity implements Serializable {
         this.name = name;
     }
 
+    public String getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(String resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public String getOperations() {
+        return operations;
+    }
+
+    public void setOperations(String operations) {
+        this.operations = operations;
+    }
+
     public String getDescribe() {
         return describe;
     }
@@ -73,43 +103,11 @@ public class Permission extends BaseEntity implements Serializable {
         this.describe = describe;
     }
 
-    public String getUrl() {
-        return url;
+    public List<String> getOperationList() {
+        return Arrays.asList(this.operations.trim().split(","));
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getOperation() {
-        return operation;
-    }
-
-    public void setOperation(String operation) {
-        this.operation = operation;
-    }
-
-    /**
-     * 获取权限操作的 list 形式
-     * @return
-     */
-    public List<String> getOperations() {
-        return Arrays.asList(this.operation.trim().split(","));
-    }
-
-    @Override
-    public String toString() {
-        return "Permission{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", describe='" + describe + '\'' +
-                ", url='" + url + '\'' +
-                ", operation='" + operation + '\'' +
-                ", remarks='" + remarks + '\'' +
-                ", createUserId='" + createUserId + '\'' +
-                ", createDate=" + createDate +
-                ", updateUserId='" + updateUserId + '\'' +
-                ", updateDate=" + updateDate +
-                '}';
+    public void setOperationList(List<String> operationList) {
+        this.operationList = operationList;
     }
 }

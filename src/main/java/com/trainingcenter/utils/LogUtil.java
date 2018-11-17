@@ -30,7 +30,20 @@ public class LogUtil {
                 .append(text + "\n")
                 .append(infoEnd);
         logger.info(stringBuffer.toString());
-        log.info(object);
+        log.info(stringBuffer.toString());
+    }
+
+    public static void warn(Object object, String tittle, String text) {
+        org.apache.commons.logging.Log logger = LogFactory.getLog(object.getClass());
+
+        String infoStart = "\n————————————————————————————————————————————————————————[Info Start]——\n";
+        StringBuffer stringBuffer = new StringBuffer(infoStart);
+        String infoEnd = "————————————————————————————————————————————————————————[Info   End]——\n";
+        stringBuffer.append("标题:" + tittle + "\n内容:")
+                .append(text + "\n")
+                .append(infoEnd);
+        logger.info(stringBuffer.toString());
+        log.warn(stringBuffer.toString());
     }
 
     public static void error(Object object, String tittle, String text, Throwable t) {
@@ -42,7 +55,7 @@ public class LogUtil {
                 .append(text + "\n")
                 .append(infoEnd);
         logger.error(stringBuffer.toString(), t);
-        log.error(object);
+        log.error(stringBuffer.toString());
     }
 
     public static void debug(Object object, String tittle, String text) {
@@ -54,6 +67,6 @@ public class LogUtil {
                 .append(text + "\n")
                 .append(infoEnd);
         logger.debug(stringBuffer.toString());
-        log.debug(object);
+        log.debug(stringBuffer.toString());
     }
 }

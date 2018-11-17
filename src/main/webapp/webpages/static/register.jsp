@@ -38,7 +38,7 @@
             <input type="password" class="password" name="password" id="rePassword" value="" placeholder="重复密码">
                 <div class="text-center" id="rePasswordMsg"></div>
             <div class="clear"></div>
-            <input type="button" value="注册" id="submit" class="btn btn-primary" onclick="javascript:check();"/>
+            <input type="button" value="注册" id="submit" class="btn btn-primary" onclick="javascript:;"/>
         </form>
     </div>
 </div>
@@ -123,6 +123,7 @@
                             "<span style='color:#009688'>" + msg + "</span>"
                         );
                         $("#username").css("border", "1px solid #009688");
+                        window.location="${webRoot}/user/goLogin";
                     } else {
                         $("#usernameMsg").html(
                             "<span style='color:#FF5722'>" + msg + "</span>"

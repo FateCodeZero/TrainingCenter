@@ -7,7 +7,7 @@ import com.trainingcenter.exception.DeleteException;
 import com.trainingcenter.exception.InsertException;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +33,11 @@ public interface RoleService {
     public Role getRoleByName(String name);
 
     /**
+     * 获取所有用户
+     */
+    public List<Role> getRoles();
+
+    /**
      * 分页获取所有用户
      *
      * @param currentPage：当前页
@@ -40,7 +45,14 @@ public interface RoleService {
      * @param searchContent：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public Collection<Role> getRoles(Integer currentPage, Integer rows, String searchContent);
+    public List<Role> getRoles(Integer currentPage, Integer rows, String searchContent);
+
+    /**
+     * 获取指定登录用户所含有的全部角色
+     * @param loginInfoId 用户登录信息id
+     * @return 返回该用户所拥有的所有角色
+     */
+    public List<Role> getRolesByUserId(String loginInfoId);
 
     /**
      * 获取指定登录用户所含有的全部角色
@@ -51,7 +63,14 @@ public interface RoleService {
      * @param searchContent：模糊查询内容
      * @return 返回该用户所拥有的所有角色，支持分页、模糊查询
      */
-    public Collection<Role> getRolesByLoginInfoId(String loginInfoId,Integer currentPage, Integer rows, String searchContent);
+    public List<Role> getRolesByUserId(String loginInfoId,Integer currentPage, Integer rows, String searchContent);
+
+    /**
+     * 获取含有指定权限的所有角色
+     * @param permissionId ：指定权限id
+     * @return 返回含有该权限的所有角色
+     */
+    public List<Role> getRolesByPermissionId(String permissionId);
 
     /**
      * 获取含有指定权限的所有角色
@@ -62,7 +81,7 @@ public interface RoleService {
      * @param searchContent：模糊查询内容
      * @return ：返回含有该权限的所有角色，支持分页
      */
-    public Collection<Role> getRolesByPermissionId(String permissionId,Integer currentPage, Integer rows, String searchContent);
+    public List<Role> getRolesByPermissionId(String permissionId,Integer currentPage, Integer rows, String searchContent);
 
     /**
      * 角色添加方法
@@ -89,10 +108,12 @@ public interface RoleService {
 
     /**
      * 批量删除
+     *
      * @param ids：需要删除的对象的id集
-     * @return 返回操作成功的数目与操作失败的对象
+     * @return 返回操作结果（true：删除成功，false：删除失败）
+     * 添加事务，保证中间删除失败时可以回滚
      */
-    public Map<String,Object> batchDelete(String ids);
+    public boolean batchDelete(String ids);
 
     /**
      * 给角色授权，添加事务保证授权统一成功或失败
@@ -101,11 +122,4 @@ public interface RoleService {
      * 返回授权成功的个数，0表示授权失败
      */
     public Integer grantPermission(String roleId, String permissionIds);
-
-    /**
-     * 通过多个角色ID去查询符合条件的角色集
-     * @param roleIds：多个角色ID
-     * @return 返回角色集合
-     */
-    public List<Role> getRolesByRoleIds(String roleIds);
 }

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.UserInfoMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+    <!--用户信息表的所有列-->
+    <sql id="userInfoColumns">
+        id,username,nickname,real_name,portrait_img,gender,birthday,address,postal_code,email,phone,
+        motto,`describe`,imgs,company,`position`,career
+    </sql>
+
+    <!--
+        public UserInfo getUserInfoById(@Param("id") String id);
+        通过id获取用户信息
+        -->
+    <select id="getUserInfoById" resultType="com.trainingcenter.bean.UserInfo">
+        SELECT
+        <include refid="userInfoColumns"></include>
+        FROM tab_user_info
+        WHERE id = #{id}
+    </select>
+
+    <!--
+        public UserInfo getUserInfoByUsername(@Param("username") String username);
+        通过用户名获取用户信息
+        -->
+    <select id="getUserInfoByUsername" resultType="com.trainingcenter.bean.UserInfo">
+        SELECT
+        <include refid="userInfoColumns"></include>
+        FROM tab_user_info
+        WHERE username = #{username}
+    </select>
+
+    <!--
+       public List<UserInfo> getUserInfos(@Param("start") Integer start, @Param("number") Integer number,
+                                   @Param("searchContent") String searchContent);
+        分页查询所有用户信息
+        -->
+    <select id="getUserInfos" resultType="com.trainingcenter.bean.UserInfo">
+        SELECT
+        <include refid="userInfoColumns"></include>
+        FROM tab_user_info
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and (
+                username like CONCAT('%',#{searchContent},'%') OR
+                nickname like CONCAT('%',#{searchContent},'%') OR
+                real_name like CONCAT('%',#{searchContent},'%') OR
+                gender like CONCAT('%',#{searchContent},'%') OR
+                address like CONCAT('%',#{searchContent},'%') OR
+                postal_code like CONCAT('%',#{searchContent},'%') OR
+                email like CONCAT('%',#{searchContent},'%') OR
+                phone like CONCAT('%',#{searchContent},'%') OR
+                company like CONCAT('%',#{searchContent},'%') OR
+                career like CONCAT('%',#{searchContent},'%') OR
+                `position` like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+        public Integer add(@Validated(value = {TC_Add.class}) @Param("userInfo") UserInfo userInfo);
+        添加用户信息
+        -->
+    <insert id="add" parameterType="com.trainingcenter.bean.UserInfo">
+        INSERT INTO tab_user_info(<include refid="userInfoColumns"></include>)
+        VALUES (#{userInfo.id},#{userInfo.username},#{userInfo.nickname},#{userInfo.realName},#{userInfo.portraitImg},#{userInfo.gender},#{userInfo.birthday},
+        #{userInfo.address},#{userInfo.postalCode},#{userInfo.email},#{userInfo.phone},#{userInfo.motto},#{userInfo.describe},#{userInfo.imgs},
+        #{userInfo.company},#{userInfo.position},#{userInfo.career})
+    </insert>
+
+    <!--
+        public Integer update(@Validated(value = {TC_Update.class}) @Param("userInfo") UserInfo userInfo);
+        更新用户信息
+        -->
+    <update id="update" parameterType="com.trainingcenter.bean.UserInfo">
+        UPDATE tab_user_info
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userInfo.nickname != null and userInfo.nickname != '' ">
+                nickname = #{userInfo.nickname},
+            </if>
+            <if test="userInfo.realName != null and userInfo.realName != '' ">
+                real_name = #{userInfo.realName},
+            </if>
+            <if test="userInfo.portraitImg != null and userInfo.portraitImg != '' ">
+                portrait_img = #{userInfo.portraitImg},
+            </if>
+            <if test="userInfo.gender != null">
+                gender = #{userInfo.gender},
+            </if>
+            <if test="userInfo.birthday != null">
+                birthday = #{userInfo.birthday},
+            </if>
+            <if test="userInfo.address != null and userInfo.address != '' ">
+                address = #{userInfo.address},
+            </if>
+            <if test="userInfo.postalCode != null and userInfo.postalCode != '' ">
+                postal_code = #{userInfo.postalCode},
+            </if>
+            <if test="userInfo.email != null and userInfo.email != '' ">
+                email = #{userInfo.email},
+            </if>
+            <if test="userInfo.phone != null and userInfo.phone != '' ">
+                phone = #{userInfo.phone},
+            </if>
+            <if test="userInfo.motto != null and userInfo.motto != '' ">
+                motto = #{userInfo.motto},
+            </if>
+            <if test="userInfo.describe != null and userInfo.describe != '' ">
+                `describe` = #{userInfo.describe},
+            </if>
+            <if test="userInfo.imgs != null and userInfo.imgs != '' ">
+                imgs = #{userInfo.imgs},
+            </if>
+            <if test="userInfo.company != null and userInfo.company != '' ">
+                company = #{userInfo.company},
+            </if>
+            <if test="userInfo.position != null and userInfo.position != '' ">
+                `position` = #{userInfo.position},
+            </if>
+            <if test="userInfo.career != null and userInfo.career != '' ">
+                career = #{userInfo.career},
+            </if>
+        </trim>
+        WHERE id = #{userInfo.id}
+    </update>
+
+    <!--
+        public Integer delete(@Param("id") String id);
+        通过id删除用户信息
+        -->
+    <delete id="delete">
+        DELETE FROM tab_user_info
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

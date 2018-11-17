@@ -3,6 +3,9 @@
 
     <!--先定义所有的appender -->
     <appenders>
+        <!--设置文件编码-->
+        <param name="encoding" value="UTF-8" />
+
         <!-- 这个输出控制台的配置 -->
         <Console name="Console" target="SYSTEM_OUT">
             <!-- 控制台只输出level及以上级别的信息（onMatch），
@@ -23,6 +26,13 @@
 
         <!--添加过滤器ThresholdFilter,可以有选择的输出某个级别以上的类别
         onMatch="ACCEPT" onMismatch="DENY"意思是匹配就接受,否则直接拒绝  -->
+
+        <!--<File name="WARN" fileName="logs/error.log">-->
+        <File name="WARN" fileName="E:/Github/TrainingCenter/logs/log4j2_warn.log">
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="%d{yyyy.MM.dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+
         <!--<File name="ERROR" fileName="logs/error.log">-->
         <File name="ERROR" fileName="E:/Github/TrainingCenter/logs/log4j2_error.log">
             <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
@@ -45,6 +55,7 @@
         <root level="debug">
             <appender-ref ref="RollingFile"/>
             <appender-ref ref="Console"/>
+            <appender-ref ref="WARN"/>
             <appender-ref ref="ERROR"/>
             <appender-ref ref="log"/>
         </root>

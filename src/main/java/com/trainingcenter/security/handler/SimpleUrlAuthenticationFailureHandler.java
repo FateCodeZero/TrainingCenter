@@ -57,15 +57,11 @@ public class SimpleUrlAuthenticationFailureHandler implements AuthenticationFail
 
                 //是ajax请求时，不再将异常信息保存到 session 中，而是直接响应
                 //将响应数据封装成 json 格式
-                //ConcurrentHashMap：线程安全的hashMap
-                Map<String, Object> data = new ConcurrentHashMap<>();
-                data.put("exception", exception);
 
                 //要符合 AjaxJson 类的数据格式
                 Map<String,Object> responseMap = new ConcurrentHashMap<>();
                 responseMap.put("code",0);
                 responseMap.put("msg",exception.getMessage());
-                responseMap.put("data",data);
 
                 this.logger.debug("Forwarding to " + this.defaultFailureUrl);
                 LogUtil.info(this, "SecurityAjax异常处理", "请求错误，异常响应至【" + this.defaultFailureUrl + "】页面");

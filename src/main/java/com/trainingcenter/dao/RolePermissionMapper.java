@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: YangYi
@@ -38,9 +40,23 @@ public interface RolePermissionMapper {
 
     /**
      * 通过 角色id 与 权限id 获取 角色-权限信息对象
-     * @param roleId
-     * @param permissionId
+     * @param roleId：角色ID
+     * @param permissionId：权限ID
      * @return
      */
     public RolePermission getRolePermissionByRoleIdAndPermissionId(@Param("roleId") String roleId, @Param("permissionId") String permissionId);
+
+    /**
+     * 通过 角色id 获取 角色-权限信息对象
+     * @param roleId ：角色ID
+     * @return
+     */
+    public List<RolePermission> getRolePermissionByRoleId(@Param("roleId") String roleId);
+
+    /**
+     * 通过 权限id 获取 角色-权限信息对象
+     * @param permissionId ：权限ID
+     * @return
+     */
+    public List<RolePermission> getRolePermissionByPermissionId(@Param("permissionId") String permissionId);
 } 

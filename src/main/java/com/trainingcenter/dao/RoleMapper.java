@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -66,13 +65,13 @@ public interface RoleMapper {
     /**
      * 获取指定登录用户所含有的全部角色
      *
-     * @param loginInfoId：用户登录信息id
+     * @param userId：用户登录信息id
      * @param start：从第几条数据开始
      * @param number：要获取多少条数据
      * @param searchContent：模糊查询内容
      * @return 返回该用户所拥有的所有角色，支持分页、模糊查询
      */
-    public Collection<Role> getRolesByLoginInfoId(@Param("loginInfoId") String loginInfoId,@Param("start") Integer start,
+    public List<Role> getRolesByUserId(@Param("userId") String userId,@Param("start") Integer start,
                                                  @Param("number") Integer number, @Param("searchContent") String searchContent);
 
     /**
@@ -84,7 +83,7 @@ public interface RoleMapper {
      * @param searchContent：模糊查询内容
      * @return ：返回含有该权限的所有角色，支持分页
      */
-    public Collection<Role> getRolesByPermissionId(@Param("permissionId") String permissionId, @Param("start") Integer start,
+    public List<Role> getRolesByPermissionId(@Param("permissionId") String permissionId, @Param("start") Integer start,
                                                          @Param("number") Integer number, @Param("searchContent") String searchContent);
 
 } 

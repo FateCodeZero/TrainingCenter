@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.UserRoleMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+    <sql id="userRoleColumns">
+        id,user_id,role_id
+    </sql>
+
+    <!--public Integer add(@Validated(value = {TC_Add.class}) @Param("userRole") UserRole userRole);
+        添加，在给用户赋权限时调用
+    -->
+    <insert id="add">
+        INSERT INTO tab_user_role(<include refid="userRoleColumns"/>)
+        VALUES(#{userRole.id},#{userRole.userId},#{userRole.roleId})
+    </insert>
+
+    <!--public Integer delete(@Param("id") String id);
+        删除，取消用户角色时调用
+    -->
+    <delete id="delete">
+        DELETE FROM tab_user_role
+        WHERE id = #{id}
+    </delete>
+
+    <!-- public Integer update(@Validated(value = {TC_Update.class}) @Param("userRole") UserRole userRole);
+        更新，更新用户角色信息时调用
+    -->
+    <update id="update">
+        UPDATE tab_user_role
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userRole.userId != null and userRole.userId != '' ">
+                user_id = #{userRole.userId},
+            </if>
+            <if test="userRole.roleId != null and userRole.roleId != '' ">
+                role_id = #{userRole.roleId},
+            </if>
+        </trim>
+        WHERE id = #{userRole.id}
+    </update>
+
+    <!--public UserRole getUserRoleByUserIdAndRoleId(@Param("userId") String userId, @Param("roleId") String roleId);
+        通过 用户登录信息id 与 角色id 获取授权信息对象
+    -->
+    <select id="getUserRoleByUserIdAndRoleId" resultType="com.trainingcenter.bean.UserRole">
+        SELECT <include refid="userRoleColumns"/>
+        FROM tab_user_role
+        WHERE user_id = #{userId} AND role_id = #{roleId}
+    </select>
+
+    <!--public UserRole getUserRoleByUserId(@Param("userId") String userId);
+        通过 用户登录信息id 获取授权信息对象
+    -->
+    <select id="getUserRoleByUserId" resultType="com.trainingcenter.bean.UserRole">
+        SELECT <include refid="userRoleColumns"/>
+        FROM tab_user_role
+        WHERE user_id = #{userId}
+    </select>
+
+    <!--public UserRole getUserRoleByRoleId(@Param("roleId") String roleId);
+        通过角色id 获取授权信息对象
+    -->
+    <select id="getUserRoleByRoleId" resultType="com.trainingcenter.bean.UserRole">
+        SELECT <include refid="userRoleColumns"/>
+        FROM tab_user_role
+        WHERE role_id = #{roleId}
+    </select>
+
+</mapper>

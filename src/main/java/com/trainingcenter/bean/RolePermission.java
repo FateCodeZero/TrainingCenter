@@ -18,7 +18,7 @@ import java.io.Serializable;
 /**
  * 角色-权限对应信息维护类，对应数据（tab_role_permission）表
  */
-public class RolePermission extends BaseEntity implements Serializable{
+public class RolePermission implements Serializable{
     /**
      * 表id，对应数据库（id）字段
      */
@@ -59,19 +59,5 @@ public class RolePermission extends BaseEntity implements Serializable{
 
     public void setPermissionId(String permissionId) {
         this.permissionId = permissionId;
-    }
-
-    @Override
-    public String toString() {
-        return "RolePermission{" +
-                "id='" + id + '\'' +
-                ", roleId='" + roleId + '\'' +
-                ", permissionId='" + permissionId + '\'' +
-                ", remarks='" + remarks + '\'' +
-                ", createUserId='" + createUserId + '\'' +
-                ", createDate=" + createDate +
-                ", updateUserId='" + updateUserId + '\'' +
-                ", updateDate=" + updateDate +
-                '}';
     }
 }

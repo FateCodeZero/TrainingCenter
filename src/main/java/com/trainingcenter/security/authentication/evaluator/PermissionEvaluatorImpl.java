@@ -1,8 +1,13 @@
 package com.trainingcenter.security.authentication.evaluator;
 
-import com.trainingcenter.bean.LoginInfo;
+import com.trainingcenter.bean.Resource;
+import com.trainingcenter.bean.User;
 import com.trainingcenter.bean.Permission;
 import com.trainingcenter.bean.Role;
+import com.trainingcenter.service.ResourceService;
+import com.trainingcenter.utils.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
@@ -17,6 +22,10 @@ import java.util.List;
  * Time: 17:21
  */
 public class PermissionEvaluatorImpl implements PermissionEvaluator {
+    @Qualifier("resourceService")
+    @Autowired
+    private ResourceService resourceService;
+
     /**
      * 方法作用：验证用户是否有权执行某个资源（url）下的某个操作（即增删改查对应的方法）
      * 步骤：
@@ -32,7 +41,7 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     @Override
     public boolean hasPermission(Authentication authentication, Object targetUrl, Object targetPermission) {
         // 1、获得loadUserByUsername()方法的结果
-        LoginInfo user = (LoginInfo) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
 
         // 2、获得loadUserByUsername()中注入的角色
         Collection<Role> roles = (Collection<Role>) user.getAuthorities();
@@ -46,10 +55,20 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
             //遍历所有权限，提取里面的url与操作
             for (Permission permission:permissionList) {
                 //权限的操作集合
-                List<String> operations = permission.getOperations();
+                List<String> operations = permission.getOperationList();
+                String resourceId = permission.getResourceId();
+                if (StringUtil.isEmpty(resourceId)){
+                    return false;
+                }
+
+                //获取权限对应的资源
+                Resource resource = resourceService.getResourceById(resourceId);
+                if (resource == null){
+                    return false;
+                }
 
                 // 4、认证url与操作权限，如果访问的Url和权限用户符合的话，返回true
-                if (targetUrl.equals(permission.getUrl()) && operations.contains(targetPermission.toString())){
+                if (targetUrl.equals(resource.getUrl()) && operations.contains(targetPermission.toString())){
                     return true;
                 }
             }

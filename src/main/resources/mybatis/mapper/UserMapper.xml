@@ -2,19 +2,45 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.trainingcenter.dao.UserMapper">
-    <!--使用二级缓存-->
-    <cache-ref namespace="com.trainingcenter.dao.LoginInfoMapper"></cache-ref>
 
-    <!--用户表的所有列-->
+<mapper namespace="com.trainingcenter.dao.UserMapper">
+
+    <!-- 使用EhcacheCache二级缓存
+		eviction：缓存的回收策略，默认为LRU
+			LRU – 最近最少未使用的:移除最长时间不被使用的对象。
+			FIFO – 先进先出:按对象进入缓存的顺序来移除它们。
+			SOFT – 软引用:移除基于垃圾回收器状态和软引用规则的对象。
+			WEAK – 弱引用:更积极地移除基于垃圾收集器状态和弱引用规则的对象。
+
+		flushInterval：缓存刷新间隔，即多长时间清空一次缓存（单位毫秒），默认不清空
+
+		readOnly：缓存是否只读(true|false)
+			true：mybatis认为所有从缓存中获取数据的操作都是只读操作，不会修改数据，
+						mybatis为了加快获取速度，直接就会将数据在缓存中的引用交给用户。不安全，但速度快。
+			false：mybatis觉得获取的数据可能会被修改。
+					mybatis会利用序列化&反序列化技术克隆一份新的数据给用户。安全，速度慢。
+
+		size：缓存存放多少元素。
+
+		type：指定自定义缓存的全类名，该类需要实现org.apache.ibatis.cache.Cache接口，
+					mybatis默认使用HashMap进行缓存
+
+		blocking（是否使用阻塞缓存）: 默认为false，当指定为true时将采用BlockingCache进行封装，
+					blocking，阻塞的意思，使用BlockingCache会在查询缓存时锁住对应的Key，
+					如果缓存命中了则会释放对应的锁，否则会在查询数据库以后再释放锁这样
+					可以阻止并发情况下多个线程同时查询数据，详情可参考BlockingCache的源码。
+	 -->
+    <cache eviction="LRU" flushInterval="60000" readOnly="false" size="1024" blocking="false"
+           type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+
+    <!--tab_user表的所有列-->
     <sql id="userColumns">
-        id,username,nickname,head_portrait,real_name,birthday,gender,phone,email,address,motto,
-        user_type_id,user_code,`describe`,imgs,state,register_time
+        id,username,password,login_IP,unlocked_flag,state,register_time,last_login_time
     </sql>
 
     <!--
         public User getUserById(@Param("id") String id);
-        通过id获取用户
+        通过id获取登录信息
         -->
     <select id="getUserById" resultType="com.trainingcenter.bean.User">
         SELECT
@@ -24,8 +50,8 @@
     </select>
 
     <!--
-        public User getUserByUsername(@Param("username") String username);
-        通过用户名获取用户
+         public User getUserByUsername(@Param("username") String username);
+        通过username获取登录信息
         -->
     <select id="getUserByUsername" resultType="com.trainingcenter.bean.User">
         SELECT
@@ -34,25 +60,20 @@
         WHERE username = #{username}
     </select>
 
-    <!--
-        public List<User> getUsers();
-        分页查询所有用户
-        -->
+    <!-- public List<User> getUsers(@Param("start") Integer start, @Param("number") Integer number, @Param("searchContent") String searchContent);
+        分页查询
+    -->
     <select id="getUsers" resultType="com.trainingcenter.bean.User">
         SELECT
         <include refid="userColumns"></include>
         FROM tab_user
         <trim prefix="WHERE" prefixOverrides="and">
-            <if test="searchContent != null and searchContent != ''">
-                and (
-                username like CONCAT('%',#{searchContent},'%') OR
-                nickname like CONCAT('%',#{searchContent},'%') OR
-                gender like CONCAT('%',#{searchContent},'%') OR
-                phone like CONCAT('%',#{searchContent},'%') OR
-                email like CONCAT('%',#{searchContent},'%') OR
-                address like CONCAT('%',#{searchContent},'%') OR
-                code like CONCAT('%',#{searchContent},'%') OR
-                remarks like CONCAT('%',#{searchContent},'%')
+            <if test="searchContent != null and searchContent != '' ">
+                and(
+                username like CONCAT('%',#{searchContent},'%')
+                OR login_IP like CONCAT('%',#{searchContent},'%')
+                OR state = #{searchContent}
+                OR unlocked_flag = #{searchContent}
                 )
             </if>
         </trim>
@@ -62,67 +83,38 @@
     </select>
 
     <!--
-        public Integer add(@Param("user") User user;
-        用户添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+        public Integer add(@Validated(value = {TC_Add.class}) @Param("user") User user);
+        添加/注册
         -->
-    <insert id="add" parameterType="com.trainingcenter.bean.User">
-        INSERT INTO tab_user(<include refid="userColumns"></include>)
-        VALUES (#{user.id},#{user.username},#{user.nickname},#{user.headPortrait},#{user.realName},#{user.birthday},#{user.gender},
-        #{user.phone},#{user.email},#{user.address},#{user.motto},#{user.userTypeId},#{user.userCode},#{user.describe},
-        #{user.imgs},#{user.state},#{user.registerTime})
+    <insert id="add">
+        INSERT INTO tab_user(<include refid="userColumns"/>)
+        VALUES
+        (#{user.id},#{user.username},#{user.password},#{user.loginIP},
+        #{user.unlockedFlag},#{user.state},#{user.registerTime},#{user.lastLoginTime})
     </insert>
 
+
     <!--
-        public Integer update(@Param("user") User user);
-        更新用户信息
+        public Integer update(@Validated(value = {TC_Update.class}) @Param("user") User user);
+        更新/修改
         -->
-    <update id="update" parameterType="com.trainingcenter.bean.User">
+    <update id="update">
         UPDATE tab_user
         <trim prefix="set" suffixOverrides=",">
-            <if test="user.nickname != null and user.nickname != '' ">
-                nickname = #{user.nickname},
+            <if test="user.password != null and user.password != '' ">
+                password = #{user.password},
             </if>
-            <if test="user.headPortrait != null and user.headPortrait != '' ">
-                head_portrait = #{user.headPortrait},
+            <if test="user.loginIP != null and user.loginIP != '' ">
+                login_IP = #{user.loginIP},
             </if>
-            <if test="user.realName != null and user.realName != '' ">
-                real_name = #{user.realName},
-            </if>
-            <if test="user.birthday != null">
-                birthday = #{user.birthday},
-            </if>
-            <if test="user.gender != null">
-                gender = #{user.gender},
-            </if>
-            <if test="user.phone != null and user.phone != '' ">
-                phone = #{user.phone},
-            </if>
-            <if test="user.email != null and user.email != '' ">
-                email = #{user.email},
-            </if>
-            <if test="user.address != null and user.address != '' ">
-                address = #{user.address},
-            </if>
-            <if test="user.motto != null and user.motto != '' ">
-                motto = #{user.motto},
-            </if>
-            <if test="user.userTypeId != null and user.userTypeId != '' ">
-                user_type_id = #{user.userTypeId},
-            </if>
-            <if test="user.userCode != null and user.userCode != '' ">
-                user_code = #{user.userCode},
-            </if>
-            <if test="user.describe != null and user.describe != '' ">
-                `describe` = #{user.describe},
-            </if>
-            <if test="user.imgs != null and user.imgs != '' ">
-                imgs = #{user.imgs},
+            <if test="user.unlockedFlag != null">
+                unlocked_flag = #{user.unlockedFlag},
             </if>
             <if test="user.state != null">
                 state = #{user.state},
             </if>
-            <if test="user.registerTime != null and user.registerTime != '' ">
-                register_time = #{user.registerTime},
+            <if test="user.lastLoginTime != null">
+                last_login_time = #{user.lastLoginTime},
             </if>
         </trim>
         WHERE id = #{user.id}
@@ -130,11 +122,33 @@
 
     <!--
         public Integer delete(@Param("id") String id);
-        通过id删除用户
+        删除/注销
         -->
     <delete id="delete">
         DELETE FROM tab_user
         WHERE id = #{id}
     </delete>
 
+    <!--public Collection<User> getUsersByRoleId(@Param("roleId") String roleId, @Param("start") Integer start,
+                                                  @Param("number") Integer number, @Param("searchContent") String searchContent);
+        返回含有该角色的所有用户，支持分页与模糊查询
+    -->
+    <select id="getUsersByRoleId" resultType="com.trainingcenter.bean.User">
+        SELECT u.id,u.username,u.password,u.login_IP,u.unlocked_flag,u.state,u.register_time,u.last_login_time
+        FROM tab_user u LEFT JOIN tab_user_role ur ON u.id = ur.user_id
+        WHERE ur.role_id = #{roleId}
+        <trim prefixOverrides="AND">
+            <if test="searchContent != null and searchContent != '' ">
+                AND ( u.username like CONCAT('%',#{searchContent},'%')
+                OR u.password like CONCAT('%',#{searchContent},'%')
+                OR u.login_IP like CONCAT('%',#{searchContent},'%')
+                OR u.unlocked_flag = #{searchContent}
+                OR u.state = #{searchContent}
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
 </mapper>

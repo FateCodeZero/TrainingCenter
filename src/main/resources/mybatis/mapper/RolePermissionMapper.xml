@@ -4,10 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trainingcenter.dao.rolePermissionMapper">
     <!--使用二级缓存-->
-    <cache-ref namespace="com.trainingcenter.dao.LoginInfoMapper"></cache-ref>
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
 
     <sql id="rolePermissionColumns">
-        id,role_id,permission_id,remarks,create_user_id,create_date,update_user_id,update_date
+        id,role_id,permission_id
     </sql>
 
     <!--
@@ -16,8 +16,7 @@
     -->
     <insert id="add">
         INSERT INTO tab_role_permission(<include refid="rolePermissionColumns"/>)
-        VALUES(#{rolePermission.id},#{rolePermission.roleId},#{rolePermission.permissionId},#{rolePermission.remarks},
-        #{rolePermission.createUserId},#{rolePermission.createDate},#{rolePermission.updateUserId},#{rolePermission.updateDate})
+        VALUES(#{rolePermission.id},#{rolePermission.roleId},#{rolePermission.permissionId})
     </insert>
 
     <!--public Integer delete(@Param("id") String id);
@@ -40,22 +39,6 @@
             <if test="rolePermission.permissionId != null and rolePermission.permissionId != '' ">
                 permission_id = #{rolePermission.permissionId},
             </if>
-            <if test="rolePermission.remarks != null and rolePermission.remarks != '' ">
-                remarks = #{rolePermission.remarks},
-            </if>
-            <if test="rolePermission.create_user_id != null and rolePermission.create_user_id != '' ">
-                create_user_id = #{rolePermission.createUserId},
-            </if>
-            <if test="rolePermission.create_date != null and rolePermission.create_date != '' ">
-                create_date = #{rolePermission.createDate},
-            </if>
-            <if test="rolePermission.update_user_id != null and rolePermission.update_user_id != '' ">
-                update_user_id = #{rolePermission.updateUserId},
-            </if>
-            <if test="rolePermission.update_date != null and rolePermission.update_date != '' ">
-                update_date = #{rolePermission.updateDate},
-            </if>
-
         </trim>
         WHERE id = #{rolePermission.id}
     </update>
@@ -67,5 +50,23 @@
         SELECT <include refid="rolePermissionColumns"/>
         FROM tab_role_permission
         WHERE role_id = #{roleId} AND permission_id = #{permissionId}
+    </select>
+
+    <!-- public List<RolePermission> getRolePermissionByRoleId(@Param("roleId") String roleId);
+        通过 角色id 获取 角色-权限信息对象
+    -->
+    <select id="getRolePermissionByRoleId" resultType="com.trainingcenter.bean.RolePermission">
+        SELECT <include refid="rolePermissionColumns"/>
+        FROM tab_role_permission
+        WHERE role_id = #{roleId}
+    </select>
+
+    <!-- public List<RolePermission> getRolePermissionByPermissionId(@Param("permissionId") String permissionId);
+        通过 权限id 获取 角色-权限信息对象
+    -->
+    <select id="getRolePermissionByPermissionId" resultType="com.trainingcenter.bean.RolePermission">
+        SELECT <include refid="rolePermissionColumns"/>
+        FROM tab_role_permission
+        WHERE permission_id = #{permissionId}
     </select>
 </mapper>

@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -20,47 +19,59 @@ import java.util.List;
 public interface UserMapper {
 
     /**
-     * 通过id获取用户
-     * @param id：用户id
-     * @return 返回用户对象
+     * 通过id获取登录信息
+     * @param id : 对象id
+     * @return 返回 User 对象
      */
     public User getUserById(@Param("id") String id);
 
     /**
-     * 通过username获取用户
-     * @param username：用户账号
-     * @return 返回用户对象
+     * 通过username获取登录信息
+     * @param username : 对象username
+     * @return 返回 User 对象
      */
     public User getUserByUsername(@Param("username") String username);
 
     /**
-     * 分页获取所有用户
-     * @param start：从第几条数据开始
-     * @param number：要获取多少条数据
+     * 分页获取数据
+     * @param start：从第几条数据开始查
+     * @param number：查询多少条数据
      * @param searchContent：模糊查询内容
-     * @return 返回用户对象集合
+     * @return 返回当前页的数据集合
      */
-    public List<User> getUsers(@Param("start") Integer start, @Param("number") Integer number,
-                               @Param("searchContent") String searchContent);
+    public List<User> getUsers(@Param("start") Integer start, @Param("number") Integer number, @Param("searchContent") String searchContent);
+
 
     /**
-     * 用户添加方法
-     * @param user：要添加的用户
+     * 注册/添加
+     * @param user :注册对象
      * @return 返回操作成功的个数，0表示操作失败
      */
     public Integer add(@Validated(value = {TC_Add.class}) @Param("user") User user);
 
     /**
-     * 用户更新方法
-     * @param user：要更新的用户
+     * 修改密码
+     * @param user
      * @return 返回操作成功的个数，0表示操作失败
      */
     public Integer update(@Validated(value = {TC_Update.class}) @Param("user") User user);
 
     /**
-     * 用户删除方法
-     * @param id：用户id
+     * 注销/删除
+     * @param id : 删除对象的id
      * @return 返回操作成功的个数，0表示操作失败
      */
     public Integer delete(@Param("id") String id);
+
+    /**
+     * 获取含有指定 角色 的所有用户
+     * @param roleId 指定角色id
+     * @param start：从第几条数据开始
+     * @param number：要获取多少条数据
+     * @param searchContent：模糊查询内容
+     * @return 返回含有该角色的所有用户，支持分页与模糊查询
+     */
+    public List<User> getUsersByRoleId(@Param("roleId") String roleId, @Param("start") Integer start,
+                                                  @Param("number") Integer number, @Param("searchContent") String searchContent);
+
 }

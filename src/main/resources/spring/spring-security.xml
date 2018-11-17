@@ -100,8 +100,11 @@
 
         <!--（6）自定义filter,并将之加入到 securityChain（过滤器链） 的指定位置中……
             注意：不能覆盖默认的过滤器-->
-        <!--自定义验证码过滤器-->
+        <!--A、自定义验证码过滤器-->
         <security:custom-filter ref="kaptchaFilter" before="FORM_LOGIN_FILTER"/>
+        <!--B、自定义异常解释过滤器。【在使用了自定义认证错误处理器后，此处配置无效了】
+            注：自定义异常解释器需要放在EXCEPTION_TRANSLATION_FILTER之后
+        <security:custom-filter ref="saveBackUrlFilter" after="PRE_AUTH_FILTER"/>-->
     </security:http>
 
     <!--5、各种自定义 bean 的实现-->
@@ -121,6 +124,27 @@
 
         <!--指向认证管理器：authenticationManager-->
         <property name="authenticationManager" ref="kaptchaAuthenticationManager"/>
+    </bean>
+
+    <!--(4)、自定义异常解释过滤器 【在使用了自定义认证错误处理器后，此处配置无效了】-->
+    <bean id="saveBackUrlFilter"
+          class="org.springframework.security.web.access.ExceptionTranslationFilter">
+
+        <!--A、authenticationEntryPoint：在用户没有登录时用于引导用户进行登录认证的-->
+        <constructor-arg name="authenticationEntryPoint" ref="authenticationEntryPoint"/>
+
+        <!--B、accessDeniedHandler：处理用户已登录，但访问资源没有权限的异常-->
+
+        <property name="accessDeniedHandler">
+            <bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+                <property name="errorPage" value="/webpages/errorpage/403.jsp" />
+            </bean>
+        </property>
+    </bean>
+    <!--自定义authenticationEntryPoint：引导未登录用户登录的入口页面-->
+    <bean id="authenticationEntryPoint"
+          class="com.trainingcenter.security.authentication.entrypoint.AuthenticationEntryPoint">
+        <constructor-arg name="loginFormUrl" value="/webpages/user/login.jsp"/>
     </bean>
 
 </beans>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.ResourceMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"/>
+
+
+    <sql id="resourceColumns">
+      id,`name`,url,state,`describe`,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public Resource getResourceById(@Param("id") String id);
+        通过id获取资源
+    -->
+    <select id="getResourceById" resultType="com.trainingcenter.bean.Resource">
+        SELECT
+        <include refid="resourceColumns"/>
+        FROM tab_resource
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<Resource> getResources(@Param("start") Integer start, @Param("number") Integer number,
+                                       @Param("searchContent") String searchContent);
+        分页查询所有资源
+    -->
+    <select id="getResources" resultType="com.trainingcenter.bean.Resource">
+        SELECT <include refid="resourceColumns"/>
+        FROM tab_resource
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and
+                (
+                (`name` like CONCAT('%',#{searchContent},'%')
+                OR url like CONCAT('%',#{searchContent},'%')
+                ) OR state = #{searchContent}
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+        public Integer add(@Validated(value = {TC_Add.class}) @Param("resource") Resource resource);
+        资源添加
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.Resource">
+        INSERT INTO tab_resource(<include refid="resourceColumns"></include>)
+        VALUES
+        (#{Resource.id},#{Resource.name},#{Resource.url},#{Resource.state},#{Resource.describe},#{Resource.remarks},#{Resource.create_user_id},#{Resource.create_date},
+        #{Resource.update_user_id},#{Resource.update_date}
+    </insert>
+
+    <!--
+         public Integer update(@Validated(value = {TC_Update.class}) @Param("resource") Resource resource);
+            更新资源信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.Resource">
+        UPDATE tab_resource
+        <trim prefix="set" suffixOverrides=",">
+            <if test="Resource.name != null and Resource.name != '' ">
+                `name` = #{Resource.name},
+            </if>
+            <if test="Resource.url != null and Resource.url != '' ">
+                url = #{Resource.url},
+            </if>
+            <if test="Resource.state != null and Resource.state != '' ">
+                state = #{Resource.state},
+            </if>
+            <if test="Resource.describe != null and Resource.describe != '' ">
+                `describe` = #{Resource.describe},
+            </if>
+            <if test="Resource.remarks != null and Resource.remarks != '' ">
+                remarks = #{Resource.remarks},
+            </if>
+            <if test="Resource.create_user_id != null and Resource.create_user_id != '' ">
+                create_user_id = #{Resource.createUserId},
+            </if>
+            <if test="Resource.create_date != null and Resource.create_date != '' ">
+                create_date = #{Resource.createDate},
+            </if>
+            <if test="Resource.update_user_id != null and Resource.update_user_id != '' ">
+                update_user_id = #{Resource.updateUserId},
+            </if>
+            <if test="Resource.update_date != null and Resource.update_date != '' ">
+                update_date = #{Resource.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{Resource.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除资源
+       -->
+    <delete id="delete">
+        DELETE FROM tab_resource
+        WHERE id = #{id}
+    </delete>
+</mapper>

@@ -4,24 +4,27 @@ import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Delete;
 import com.trainingcenter.controller.validation.TC_Find;
 import com.trainingcenter.controller.validation.TC_Update;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
  * User: YangYi
  * Date: 2018/10/15
- * Time: 15:41
+ * Time: 16:27
  *
- * 用户表，对应数据库（tab_user）表
+ * 用户检查验证表，对应数据库（tab_user_check）表
  */
-public class User implements Serializable {
-
+public class User implements Serializable,UserDetails {
     /**
-     * id，对应数据库（id）字段
+     * ID，对应数据库（id）字段
      */
     @NotBlank(message = "id不能为空",groups = {TC_Delete.class,TC_Find.class})
     private String id;
@@ -29,93 +32,48 @@ public class User implements Serializable {
     /**
      * 用户名，对应数据库（username）字段
      */
-    @NotBlank(message = "账号不能为空",groups = {TC_Add.class, TC_Update.class})
-    @Email(message = "邮箱格式不正确",groups = {TC_Add.class, TC_Update.class})
+    @NotBlank(message = "账号不能为空",groups = {TC_Find.class,TC_Add.class,TC_Update.class})
     private String username;
 
     /**
-     * 用户昵称，对应数据库（nickname）字段
+     * 密码，对应数据库（password）字段
      */
-    private String nickname;
+    @NotBlank(message = "密码不能为空",groups = {TC_Add.class,TC_Update.class})
+    @Length(min=6,max=18,message="密码长度必须在6~18位",groups = {TC_Add.class,TC_Update.class})
+    private String password;
 
     /**
-     * 用户头像URL，对应数据库（head_portrait）字段
+     * 用户登录IP，对应数据库（login_IP）字段
      */
-    private String headPortrait;
+    private String loginIP;
 
     /**
-     * 用户真实姓名，对应数据库（real_name）字段
+     * 用户锁定IP解锁标志，对应数据库（unlockedFlag）字段
+     * （0：锁定，1：解锁）
      */
-    private String realName;
+    @Range(min = -1,max = 1,message = "IP未锁定状态的范围只能在-1~1",groups = {TC_Update.class})
+    private Integer unlockedFlag;
 
     /**
-     * 生日，对应数据库（birthday）字段
+     * 账号使用状态，对应数据库（state）字段
+     * （-1：已注销，0：已禁用，1：已启用）
      */
-    @Past(message = "生日必须是一个过去的日期")
-    private Date birthday;
-
-    /**
-     * 性别，对应数据库（gender）字段
-     */
-    @Range(min = 0,max = 1,message = "性别只能是0或1")
-    private Integer gender;
-
-    /**
-     * 手机号，对应数据库（phone）字段
-     */
-    @Pattern(regexp = " ^1[0-9]{10}$",message = "手机号码格式不正确")
-    private String phone;
-
-    /**
-     * 邮箱，对应数据库（email）字段
-     */
-    @Email(message = "邮箱格式不正确")
-    private String email;
-
-    /**
-     * 地址，对应数据库（address）字段
-     */
-    private String address;
-
-    /**
-     * 用户签名，对应数据库（motto）字段
-     */
-    private String motto;
-
-    /**
-     * 用户类型ID，对应数据库（user_type_id）字段
-     */
-    private String userTypeId;
-
-    /**
-     * 用户编码（教职工与学生独有，教职工为职工编号，学生为学号，其他用户该字段为空）
-     * 对应数据库（user_code）字段
-     */
-    private String userCode;
-
-    /**
-     * 用户描述，对应数据库（describe）字段
-     */
-    private String describe;
-
-    /**
-     * 用户相关图片，对应数据库（imgs）字段
-     */
-    private String imgs;
-
-    /**
-     * 用户使用状态，对应数据库（state）字段
-     * 1：启用
-     * 0：禁用
-     * -1：已注销
-     */
-    @Range(min = -1,max = 1,message = "用户使用状态码只能是-1~1")
+    @Range(min = -1,max = 1,message = "用户使用状态范围只能在-1~1",groups = {TC_Update.class})
     private Integer state;
 
     /**
      * 注册时间，对应数据库（register_time）字段
      */
     private Date registerTime;
+    /**
+     * 最后登录时间，对应数据库（last_login_time）字段
+     */
+    private Date lastLoginTime;
+
+    /**
+     * 用户所含角色集合
+     */
+    private Collection<? extends GrantedAuthority> authorities;
 
     public String getId() {
         return id;
@@ -125,116 +83,74 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    @Override
     public String getUsername() {
         return username;
+    }
+
+    /**
+     * 账号是否未 过期
+     * @return
+     */
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    /**
+     * 账号是否未 被锁定
+     * @return
+     */
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.unlockedFlag == 1;
+    }
+
+    /**
+     * 登录凭证是否未 过期
+     * @return
+     */
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    /**
+     * 账号是否已启用
+     * @return
+     */
+    @Override
+    public boolean isEnabled() {
+        return this.state == 1;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getNickname() {
-        return nickname;
+    @Override
+    public String getPassword() {
+        return password;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getHeadPortrait() {
-        return headPortrait;
+    public String getLoginIP() {
+        return loginIP;
     }
 
-    public void setHeadPortrait(String headPortrait) {
-        this.headPortrait = headPortrait;
+    public void setLoginIP(String loginIP) {
+        this.loginIP = loginIP;
     }
 
-    public String getRealName() {
-        return realName;
+    public Integer getUnlockedFlag() {
+        return unlockedFlag;
     }
 
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public Integer getGender() {
-        return gender;
-    }
-
-    public void setGender(Integer gender) {
-        this.gender = gender;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getMotto() {
-        return motto;
-    }
-
-    public void setMotto(String motto) {
-        this.motto = motto;
-    }
-
-    public String getUserTypeId() {
-        return userTypeId;
-    }
-
-    public void setUserTypeId(String userTypeId) {
-        this.userTypeId = userTypeId;
-    }
-
-    public String getUserCode() {
-        return userCode;
-    }
-
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
-    }
-
-    public String getDescribe() {
-        return describe;
-    }
-
-    public void setDescribe(String describe) {
-        this.describe = describe;
-    }
-
-    public String getImgs() {
-        return imgs;
-    }
-
-    public void setImgs(String imgs) {
-        this.imgs = imgs;
+    public void setUnlockedFlag(Integer unlockedFlag) {
+        this.unlockedFlag = unlockedFlag;
     }
 
     public Integer getState() {
@@ -253,26 +169,24 @@ public class User implements Serializable {
         this.registerTime = registerTime;
     }
 
+    public Date getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    /**
+     * 用户所含权限集合
+     * @return
+     */
     @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", headPortrait='" + headPortrait + '\'' +
-                ", realName='" + realName + '\'' +
-                ", birthday=" + birthday +
-                ", gender=" + gender +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", motto='" + motto + '\'' +
-                ", userTypeId='" + userTypeId + '\'' +
-                ", userCode='" + userCode + '\'' +
-                ", describe='" + describe + '\'' +
-                ", imgs='" + imgs + '\'' +
-                ", state=" + state +
-                ", registerTime=" + registerTime +
-                '}';
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 }
