@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: YangYi
-  Date: 2018/10/22
-  Time: 2:35
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@include file="/context/mytags.jsp" %>
@@ -24,46 +17,39 @@
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.3.0/layui/layui.all.js"></script>
 
 </head>
-<body >
-<a href="http://localhost:8080/index.jsp" ></a>
-<h1>梦润传承</h1>
-<div class="w3layouts" >
-    <!-- Sign in -->
-    <div class="signin-agile">
-        <h2>登陆</h2>
-        <label class="bar-w3-agile"></label>
-        <form  role="form" action="${webRoot}/user/login" id="loginFrom" method="post">
-            <input type="text" name="username" id="username" class="name" placeholder="请填写用户名" required="" />
-                <div class="text-center" id="usernameMsg"></div>
-            <input type="password" name="password" id="password" class="password" placeholder="请填写密码" required="" />
-                <div class="text-center" id="passwordMsg"></div>
-            <input type="text" name="kaptcha" id="kaptcha" class="kaptcha"  placeholder="请填写验证码"/>
-                <div class="text-center" id="kaptchaMsg">${SPRING_SECURITY_LAST_EXCEPTION}</div>
-            <div class="col-lg-4">
-                <img id="kaptchaImg" src="${webRoot}/except/kaptcha" height="40"/>
-            </div>
-            <div>
-                <a href="" id="refreshImg">看不清楚？换一张…</a>
-            </div>
-            <div class="clear"></div>
-            <button type="button" id="submit" >登陆</button>
-        </form>
-    </div>
+<body style="background-image: url(${webRoot}/webpages/static/images/22.jpg); background-repeat: no-repeat;background-size: cover;">
+<h1 class="col-md-12 my_title text-center">梦润传承</h1>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2 login_body">
+        <div class="col-md-6 login_div">
+            <h3 class="col-md-12 text-center my_title2">登录</h3>
 
-    <%--右样式--%>
-    <div class="signup-agileinfo">
-        <p>奋斗不息，追梦不止。为了不辜负党和政府、社会各界的重托，为了带领更多的乡亲实现自己的小康梦想。</p>
-        <h6>人世间的美好梦想,只有通过诚实劳动才能实现.</h6>
+                <input type="text" name="username" id="username" class="col-md-10 col-md-offset-1  login_input" placeholder="请填写用户名" required="" />
+                <div class="col-md-10 col-md-offset-1 text-left" id="usernameMsg"></div>
+
+                <input type="password" name="password" id="password" class="col-md-10 col-md-offset-1  login_input" placeholder="请填写密码" required="" />
+                <div class="col-md-10 col-md-offset-1 text-left" id="passwordMsg"></div>
+
+                <input type="text" name="kaptcha" id="kaptcha" class="col-md-5 col-md-offset-1 login_input" placeholder="请填写验证码" required="" />
+                <img id="kaptchaImg" src="${webRoot}/except/kaptcha" class="col-md-4 col-md-offset-1 captcha_css"/>
+                <div class="col-md-10 col-md-offset-1 text-left" id="kaptchaMsg"></div>
+
+                <button  id="submit" type="button"  class="col-md-10 col-md-offset-1 login_submit" >登录</button>
+
+        </div>
+        <div class="col-md-6 img_div">
+            <h5 class="col-md-12 text-center my_context1"> 赋能人才，从这里开始 </h5>
+            <h5 class="col-md-12 text-center my_context2"> 最科学的培养方案,最新潮的前沿技术，最超乎想象的你</h5>
+            <h5 class="col-md-12 text-center my_context2">卓越人生，从梦润起航，全新的学习方式</h5>
+            <h3 class="col-md-12 text-center my_context3">梦润新世界  梦润新时代 </h3>
+
+        </div>
     </div>
-    <div class="clear"></div>
 </div>
+
 </body>
 <script type="text/javascript" src="${webRoot}/webpages/static/js/PageJumpHandle.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        //页面加载完成
-        //……
-    });
 
     //ajax刷新验证码
     $("#refreshImg").click(function () {
@@ -81,57 +67,45 @@
         <%--alert('响应失败！');--%>
         <%--}--%>
         <%--});--%>
+        return false;
     });
+
+    /*输入控制*/
+    $(document).ready(function(){
+
+        $('#username').blur(function () {
+            if ($('#username').val() =='')
+            {
+                $("#usernameMsg").html("<span style='color:#FF5722'>账号不能为空！</span>" );
+                $("#username").focus(); //获取焦点
+            }else {
+                $("#usernameMsg").html("");
+            }
+        })
+        $('#password').blur(function () {
+            if ($('#password').val() == '') {
+                $("#passwordMsg").html("<span style='color:#FF5722'>密码不能为空！</span>");
+                $("#password").focus();
+            }else {
+                $("#passwordMsg").html("");
+            }
+        })
+        $('#kaptcha').blur(function () {
+            if ($('#kaptcha').val() == '') {
+                $("#kaptchaMsg").html("<span style='color:#FF5722'>验证码不能为空！</span>");
+                $("#kaptcha").focus();
+            }else {
+                $("#kaptchaMsg").html("");
+            }
+        })
+    });
+
 
     //提交登录
     $("#submit").click(function () {
         var username = $("#username").val();
         var password = $("#password").val();
         var kaptcha = $("#kaptcha").val();
-
-        if (username === null || username === '') {
-/*            $("#usernameMsg").html(
-                "<span style='color:#FF5722'>请先填写账号！</span>"
-            );*/
-            $("#username").css("border", "1px solid red");  //输入框变红
-            $("#username").focus();     //获取焦点
-            return false;
-        } else {
-            $("#username").css("border", "1px solid #009688");
-            $("#usernameMsg").html('');
-            $("#username").blur();      //失去焦点
-        }
-
-        if (password === null || password === '') {
-/*            $("#passwordMsg").html(
-                "<span style='color:#FF5722'>请先填写密码！</span>"
-            );*/
-            $("#password").css("border", "1px solid red");  //输入框变红
-            $("#password").focus();
-            return false;
-        } else {
-            $("#password").css("border", "1px solid #009688");
-            $("#passwordMsg").html('');
-            $("#password").blur();      //失去焦点
-        }
-
-        if (kaptcha === null || kaptcha === '') {
-/*            $("#kaptchaMsg").html(
-                "<span style='color:#FF5722'>请先填写验证码！</span>"
-            );*/
-            $("#kaptcha").css("border", "1px solid red");  //输入框变红
-            $("#kaptcha").focus();
-            return false;
-        } else {
-            $("#kaptcha").css("border", "1px solid #009688");
-            $("#kaptchaMsg").html('');
-            $("#kaptcha").blur();      //失去焦点
-        }
-//        from表单请求
-        <%--var form = $("#loginFrom");--%>
-        <%--form.attr('action',"${webRoot}/user/login");--%>
-        <%--form.attr('method',"POST");--%>
-        <%--form.submit();--%>
 
         //Restful风格的Ajax Post请求
         var data = {
@@ -173,16 +147,16 @@
                         time: 3000,
                         icon: 2
                     });
-                    $("#username").css("border", "1px solid #ccc");
-                    $("#password").css("border", "1px solid #ccc");
-                    $("#kaptcha").css("border", "1px solid #ccc");
+                    $("#username").css("border", "1px solid #cccccc");
+                    $("#password").css("border", "1px solid #cccccc");
+                    $("#kaptcha").css("border", "1px solid #cccccc");
 
                     //显示错误信息
                     $("#kaptchaMsg").html('<span style="color: #b92c28">' + msg + '</span>');
                 } else {
-                    $("#username").css("border", "1px solid #ccc");
-                    $("#password").css("border", "1px solid #ccc");
-                    $("#kaptcha").css("border", "1px solid #ccc");
+                    $("#username").css("border", "1px solid #cccccc");
+                    $("#password").css("border", "1px solid #cccccc");
+                    $("#kaptcha").css("border", "1px solid #cccccc");
 
                     //错误错误状态码统一跳转
                     errorPageJump("${webRoot}", code);
@@ -195,5 +169,7 @@
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index); //再执行关闭
     });
+
 </script>
 </html>
+

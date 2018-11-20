@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trainingcenter.dao.RoleMapper">
     <!--使用二级缓存-->
-    <cache-ref namespace="com.trainingcenter.dao.LoginInfoMapper"></cache-ref>
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
 
 
     <sql id="roleColumns">
@@ -38,11 +38,7 @@
         <trim prefix="WHERE" prefixOverrides="and">
             <if test="searchContent != null and searchContent != ''">
                 and (
-                `name` like CONCAT('%',#{searchContent},'%') OR
-                `describe` like CONCAT('%',#{searchContent},'%') OR
-                remarks like CONCAT('%',#{searchContent},'%') OR
-                create_date like CONCAT('%',#{searchContent},'%') OR
-                update_date like CONCAT('%',#{searchContent},'%')
+                `name` like CONCAT('%',#{searchContent},'%')
                 )
             </if>
         </trim>
@@ -77,19 +73,12 @@
             <if test="role.remarks != null and role.remarks != '' ">
                 remarks = #{role.remarks},
             </if>
-            <if test="role.create_user_id != null and role.create_user_id != '' ">
-                create_user_id = #{role.createUserId},
-            </if>
-            <if test="role.create_date != null and role.create_date != '' ">
-                create_date = #{role.createDate},
-            </if>
             <if test="role.update_user_id != null and role.update_user_id != '' ">
                 update_user_id = #{role.updateUserId},
             </if>
             <if test="role.update_date != null and role.update_date != '' ">
                 update_date = #{role.updateDate},
             </if>
-
         </trim>
         WHERE id = #{role.id}
     </update>
@@ -104,20 +93,17 @@
     </delete>
 
     <!--
-       public Collection<Role> getRolesByLoginInfoId(@Param("loginInfoId") String loginInfoId,@Param("start") Integer start,
+       public Collection<Role> getRolesByUserId(@Param("userId") String userId,@Param("start") Integer start,
                                                  @Param("number") Integer number, @Param("searchContent") String searchContent);
         获取登录用户所含角色集合
         -->
-    <select id="getRolesByLoginInfoId" resultType="com.trainingcenter.bean.Role">
+    <select id="getRolesByUserId" resultType="com.trainingcenter.bean.Role">
         SELECT r.id,r.name,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
-        FROM tab_role r LEFT JOIN tab_login_info_role lir ON r.id = lir.role_id
-        WHERE lir.login_info_id = #{loginInfoId}
+        FROM tab_role r LEFT JOIN tab_user_role ur ON r.id = ur.role_id
+        WHERE ur.user_id = #{userId}
         <trim prefixOverrides="AND">
             <if test="searchContent != null and searchContent != '' ">
-                AND ( r.name like CONCAT('%',#{searchContent},'%')
-                  OR r.describe like CONCAT('%',#{searchContent},'%')
-                  OR r.remarks like CONCAT('%',#{searchContent},'%')
-                )
+                AND ( r.name like CONCAT('%',#{searchContent},'%'))
             </if>
         </trim>
         <if test="start != null and number != null">
@@ -135,10 +121,7 @@
         WHERE rp.permission_id = #{permissionId}
         <trim prefixOverrides="AND">
             <if test="searchContent != null and searchContent != '' ">
-                AND ( r.name like CONCAT('%',#{searchContent},'%')
-                OR r.describe like CONCAT('%',#{searchContent},'%')
-                OR r.remarks like CONCAT('%',#{searchContent},'%')
-                )
+                AND ( r.name like CONCAT('%',#{searchContent},'%'))
             </if>
         </trim>
         <if test="start != null and number != null">

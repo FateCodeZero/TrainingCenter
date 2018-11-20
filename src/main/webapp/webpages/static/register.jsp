@@ -52,7 +52,7 @@
         $("#username").blur(function () {
             var username = $("#username").val();
             checkUsername(username); //检查用户名是否可用
-        })
+        });
     });
 
     /**
