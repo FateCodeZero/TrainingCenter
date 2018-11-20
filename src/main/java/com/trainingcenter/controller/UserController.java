@@ -309,8 +309,8 @@ public class UserController {
             return ajaxJson;
         }
 
-        boolean delete = userService.batchDelete(ids);
-        if (delete){
+        Integer delete = userService.batchDelete(ids);
+        if (delete == 1){
             ajaxJson.setCode(1);
             ajaxJson.setMsg("删除成功");
         }else {

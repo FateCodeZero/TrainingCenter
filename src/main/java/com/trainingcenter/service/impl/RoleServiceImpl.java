@@ -281,9 +281,9 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     @Transactional
-    public boolean batchDelete(String ids) {
+    public Integer batchDelete(String ids) {
         if (StringUtil.isEmpty(ids))
-            return false;
+            return 0;
 
         //获取当前登录用户
         String currentUsername = SysResourcesUtils.getCurrentUsername();
@@ -293,10 +293,10 @@ public class RoleServiceImpl implements RoleService {
         for (String id : arr) {
             Integer res = this.delete(id);
             if (res == 0) {
-                return false;
+                return 0;
             }
         }
-        return true;
+        return 1;
     }
 
     /**

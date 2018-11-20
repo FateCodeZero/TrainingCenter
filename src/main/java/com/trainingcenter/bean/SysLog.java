@@ -33,20 +33,20 @@ public class SysLog implements Serializable {
     private String opUserId;
 
     /**
+     * 操作内容，对应数据库（op_content）字段
+     */
+    private String opContent;
+
+    /**
      * 操作类型（添加、修改、删除），对应数据库（op_type）字段
      */
     @NotBlank(message = "操作类型不能为空",groups = {TC_Add.class, TC_Update.class})
     private String opType;
 
     /**
-     * 操作内容，对应数据库（op_content）字段
-     */
-    private String opContent;
-
-    /**
      * 操作时间，对应数据库（op_date）字段
      */
-    private Date opDate;
+    private Date opTime;
 
     public String getId() {
         return id;
@@ -64,14 +64,6 @@ public class SysLog implements Serializable {
         this.opUserId = opUserId;
     }
 
-    public String getOpType() {
-        return opType;
-    }
-
-    public void setOpType(String opType) {
-        this.opType = opType;
-    }
-
     public String getOpContent() {
         return opContent;
     }
@@ -80,22 +72,19 @@ public class SysLog implements Serializable {
         this.opContent = opContent;
     }
 
-    public Date getOpDate() {
-        return opDate;
+    public String getOpType() {
+        return opType;
     }
 
-    public void setOpDate(Date opDate) {
-        this.opDate = opDate;
+    public void setOpType(String opType) {
+        this.opType = opType;
     }
 
-    @Override
-    public String toString() {
-        return "SysLog{" +
-                "id='" + id + '\'' +
-                ", opUserId='" + opUserId + '\'' +
-                ", opType='" + opType + '\'' +
-                ", opContent='" + opContent + '\'' +
-                ", opDate=" + opDate +
-                '}';
+    public Date getOpTime() {
+        return opTime;
+    }
+
+    public void setOpTime(Date opTime) {
+        this.opTime = opTime;
     }
 }

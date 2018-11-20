@@ -97,5 +97,5 @@ public interface PermissionService {
      * @return 返回操作结果（true：删除成功，false：删除失败）
      * 添加事务，保证中间删除失败时可以回滚
      */
-    public boolean batchDelete(String ids);
+    public Integer batchDelete(String ids);
 }

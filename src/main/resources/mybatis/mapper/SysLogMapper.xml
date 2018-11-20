@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.SysLogMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"/>
+
+    <sql id="sysLogColumns">
+      id,op_user_id,op_content,op_type,op_time
+    </sql>
+
+    <!-- public SysLog getSysLogById(@Param("id") String id);
+        通过id获取日志
+    -->
+    <select id="getSysLogById" resultType="com.trainingcenter.bean.SysLog">
+        SELECT
+        <include refid="sysLogColumns"/>
+        FROM tab_log
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<SysLog> getSysLogs(@Param("start") Integer start, @Param("number") Integer number, @Param("searchContent") String searchContent);
+        分页查询所有日志
+    -->
+    <select id="getSysLogs" resultType="com.trainingcenter.bean.SysLog">
+        SELECT <include refid="sysLogColumns"/>
+        FROM tab_log
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and
+                ((
+                op_user_id like CONCAT('%',#{searchContent},'%')
+                OR op_type like CONCAT('%',#{searchContent},'%')
+                ))
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+       public Integer add(@Validated(value = {TC_Add.class}) @Param("sysLog") SysLog sysLog);
+        日志添加
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.SysLog">
+        INSERT INTO tab_log(<include refid="sysLogColumns"></include>)
+        VALUES
+        (#{sysLog.id},#{sysLog.opUserId},#{sysLog.opContent},#{sysLog.opType},#{sysLog.opTime})
+    </insert>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除日志
+       -->
+    <delete id="delete">
+        DELETE FROM tab_log
+        WHERE id = #{id}
+    </delete>
+</mapper>

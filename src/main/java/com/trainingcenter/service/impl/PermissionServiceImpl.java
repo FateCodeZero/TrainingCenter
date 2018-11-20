@@ -271,26 +271,26 @@ public class PermissionServiceImpl implements PermissionService {
      * 批量删除
      *
      * @param ids：需要删除的对象的id集
-     * @return 返回操作结果（true：删除成功，false：删除失败）
+     * @return 返回操作结果（1：删除成功，0：删除失败）
      * 添加事务，保证中间删除失败时可以回滚
      */
     @Override
     @Transactional
-    public boolean batchDelete(String ids) {
+    public Integer batchDelete(String ids) {
         if (StringUtil.isEmpty(ids))
-            return false;
+            return 0;
 
         //获取当前登录用户
         String currentUsername = SysResourcesUtils.getCurrentUsername();
-        LogUtil.info(this, "角色批量删除", "用户：【" + currentUsername + "】正在批量删除IDS为：【" + ids + "】的角色");
+        LogUtil.info(this, "权限批量删除", "用户：【" + currentUsername + "】正在批量删除IDS为：【" + ids + "】的权限");
 
         String[] arr = ids.split(",");  //分割成数组
         for (String id : arr) {
             Integer res = this.delete(id);
             if (res == 0) {
-                return false;
+                return 0;
             }
         }
-        return true;
+        return 1;
     }
 }

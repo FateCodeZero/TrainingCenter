@@ -72,7 +72,7 @@ public class HTTPUtils implements Serializable {
             jsonObject = new JSONObject();
             jsonObject.putAll(responseDataMap);
         } catch (Exception e) {
-            LogUtil.error(JSONObject.class, "原生response AjaxJson 数据响应", "json格式转换出错", e);
+            LogUtil.error(JSONObject.class, "原生response AjaxJson 数据响应", "【Json】格式转换出错", e);
         }
         PrintWriter writer = null;
         try {
@@ -80,7 +80,7 @@ public class HTTPUtils implements Serializable {
             writer.print(jsonObject);
             writer.close();     //关闭资源
         } catch (IOException e) {
-            LogUtil.error(PrintWriter.class, "原生response AjaxJson 数据响应", "向前端响应数据时失败", e);
+            LogUtil.error(PrintWriter.class, "原生response AjaxJson 数据响应", "【Json】向前端响应数据时失败", e);
             e.printStackTrace();
         } finally {
             //就算出错了，也要将资源关闭掉
@@ -105,7 +105,7 @@ public class HTTPUtils implements Serializable {
             mapper = new ObjectMapper();
             jsonData = mapper.writeValueAsString(responseDataMap); //转为 json 格式的字符串
         } catch (IOException e) {
-            LogUtil.error(ObjectMapper.class, "原生response AjaxJson 数据响应", "jackson格式转换出错", e);
+            LogUtil.error(ObjectMapper.class, "原生response AjaxJson 数据响应", "【Jackson】格式转换出错", e);
             e.printStackTrace();
         }
 
@@ -115,7 +115,7 @@ public class HTTPUtils implements Serializable {
             writer.print(jsonData);
             writer.close();     //关闭资源
         } catch (IOException e) {
-            LogUtil.error(PrintWriter.class, "原生response AjaxJson 数据响应", "向前端响应数据时失败", e);
+            LogUtil.error(PrintWriter.class, "原生response AjaxJson 数据响应", "【Jackson】向前端响应数据时失败", e);
             e.printStackTrace();
         } finally {
             //就算出错了，也要将资源关闭掉

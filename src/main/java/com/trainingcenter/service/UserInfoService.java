@@ -70,7 +70,7 @@ public interface UserInfoService {
      * 批量删除
      *
      * @param ids：需要删除的对象的id集
-     * @return 返回操作成功的数目与操作失败的对象
+     * @return 返回操作结果状态（1：成功，0：失败）
      */
-    public boolean batchDelete(String ids);
+    public Integer batchDelete(String ids);
 }

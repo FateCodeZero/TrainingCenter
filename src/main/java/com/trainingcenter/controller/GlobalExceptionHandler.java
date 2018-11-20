@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OperationException.class)
     @ResponseBody
     private AjaxJson handleBusinessException(OperationException e) {
-        LogUtil.info(this, "业务处理", e.getMessage());
+        LogUtil.debug(this, "业务处理异常", e.getMessage());
 
         AjaxJson ajaxJson = new AjaxJson();
         ajaxJson.setCode(0);
@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     private AjaxJson handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        LogUtil.debug(this, "数据效验", e.getMessage());
+        LogUtil.debug(this, "数据效验异常", e.getMessage());
 
         AjaxJson ajaxJson = new AjaxJson();
         ajaxJson.setCode(0);
@@ -81,12 +81,12 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     private void handleException(Exception e, HttpServletResponse response) {
-        LogUtil.info(this, "未知异常", "遇到未知异常，异常详情：\n"+e.getMessage());
+        LogUtil.error(this, "未知异常", "遇到未知异常",e);
         e.printStackTrace();
         try {
             response.sendError(500);
         } catch (IOException e1) {
-            LogUtil.error(this, "未知异常", "遇到未知异常，异常详情：\n" + e.getMessage(), e);
+            LogUtil.error(this, "异常跳转错误异常", "捕获未知异常，跳转到500页面时出错", e);
             e.printStackTrace();
         }
     }

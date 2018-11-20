@@ -23,7 +23,7 @@ public class Resource extends BaseEntity implements Serializable {
     private String url;
     /**
      * 资源使用状态，对应数据库（state）字段
-     * （1：启用，0：禁用）
+     * （1：已启用，0：已禁用，-1：已删除）
      */
     private Integer state;
 

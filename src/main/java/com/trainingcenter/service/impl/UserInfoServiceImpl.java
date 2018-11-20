@@ -6,10 +6,13 @@ import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.dao.UserInfoMapper;
 import com.trainingcenter.exception.DeleteException;
 import com.trainingcenter.service.UserInfoService;
+import com.trainingcenter.utils.LogUtil;
 import com.trainingcenter.utils.StringUtil;
+import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
@@ -106,23 +109,25 @@ public class UserInfoServiceImpl implements UserInfoService {
      * 批量删除
      *
      * @param ids：需要删除的对象的id集
-     * @return 返回操作结果状态（true：成功，false：失败）
+     * @return 返回操作结果状态（1：成功，0：失败）
      */
+    @Transactional
     @Override
-    public boolean batchDelete(String ids){
-        DeleteException deleteException;
+    public Integer batchDelete(String ids){
         if (StringUtil.isEmpty(ids))
-            return false;
+            return 0;
+
+        //获取当前登录用户
+        String currentUsername = SysResourcesUtils.getCurrentUsername();
+        LogUtil.info(this, "用户信息批量删除", "用户：【" + currentUsername + "】正在批量删除IDS为：【" + ids + "】的用户信息");
 
         String[] arr = ids.split(",");  //分割成数组
-        Integer res;
         for (String id : arr) {
-            res = this.delete(id);
+            Integer res = this.delete(id);
             if (res == 0) {
-                deleteException = new DeleteException("删除失败");
-                throw deleteException;
+                return 0;
             }
         }
-        return true;
+        return 1;
     }
 }

@@ -40,6 +40,9 @@
     <!-- 开启基于注解的事务 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <!-- 使 AspectJ 注解起作用：自动为匹配的类生成代理对象 使用之前，需要先导入AOP命名空间 -->
+    <aop:aspectj-autoproxy/>
+
     <!-- 用 Spring 整合 mybatis-->
     <!-- 创建出 SqlSessionFactory对象 -->
     <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
