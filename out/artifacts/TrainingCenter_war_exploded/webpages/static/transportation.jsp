@@ -42,10 +42,12 @@
             <div class="col-md-3 col-sm-6 text-center animate-box">
                 <div class="services">
 						<span class="icon">
-							<i ></i>
+							<i >
+                                <img src="${webRoot}/webpages/static/images/icon_1.png" style="width: 50px;height: 50px;">
+                            </i>
 						</span>
                     <div class="desc">
-                        <h3><a href="#">机场 &amp;巴士</a></h3>
+                        <h3><a href="#"> &amp; 飞机 &amp;</a></h3>
                         <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
                     </div>
                 </div>
@@ -53,7 +55,61 @@
             <div class="col-md-3 col-sm-6 text-center animate-box">
                 <div class="services">
 						<span class="icon">
-							<i class="icon-heart4"></i>
+							<i>
+                                 <img src="${webRoot}/webpages/static/images/icon_2.png" style="width: 50px;height: 50px;">
+                            </i>
+						</span>
+                    <div class="desc">
+                        <h3><a href="#">&amp;  高铁  &amp;</a></h3>
+                        <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 text-center animate-box">
+                <div class="services">
+						<span class="icon">
+							<i>
+                                 <img src="${webRoot}/webpages/static/images/icon_3.png" style="width: 50px;height: 50px;">
+                            </i>
+						</span>
+                    <div class="desc">
+                        <h3><a href="#">共享 &amp; 单车</a></h3>
+                        <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 text-center animate-box">
+                <div class="services">
+						<span class="icon">
+							<i>
+                                 <img src="${webRoot}/webpages/static/images/icon_4.png" style="width: 50px;height: 50px;">
+                            </i>
+						</span>
+                    <div class="desc">
+                        <h3><a href="#">共享 &amp; 汽车</a></h3>
+                        <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 text-center animate-box">
+                <div class="services">
+						<span class="icon">
+							<i>
+                                 <img src="${webRoot}/webpages/static/images/icon_5.png" style="width: 50px;height: 50px;">
+                            </i>
+						</span>
+                    <div class="desc">
+                        <h3><a href="#">城市 &amp; 轻轨</a></h3>
+                        <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 text-center animate-box">
+                <div class="services">
+						<span class="icon">
+							<i>
+                                 <img src="${webRoot}/webpages/static/images/icon_6.png" style="width: 50px;height: 50px;">
+                            </i>
 						</span>
                     <div class="desc">
                         <h3><a href="#">城市 &amp; 公交</a></h3>
@@ -64,10 +120,12 @@
             <div class="col-md-3 col-sm-6 text-center animate-box">
                 <div class="services">
 						<span class="icon">
-							<i class="icon-banknote"></i>
+							<i>
+                                 <img src="${webRoot}/webpages/static/images/icon_7.png" style="width: 50px;height: 50px;">
+                            </i>
 						</span>
                     <div class="desc">
-                        <h3><a href="#">共享 &amp;单车</a></h3>
+                        <h3><a href="#"> 低碳 &amp; 步行 </a></h3>
                         <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
                     </div>
                 </div>
@@ -75,54 +133,12 @@
             <div class="col-md-3 col-sm-6 text-center animate-box">
                 <div class="services">
 						<span class="icon">
-							<i class="icon-lab2"></i>
+							<i>
+                                 <img src="${webRoot}/webpages/static/images/icon_8.png" style="width: 50px;height: 50px;">
+                            </i>
 						</span>
                     <div class="desc">
-                        <h3><a href="#">低碳 &amp; 步行</a></h3>
-                        <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 text-center animate-box">
-                <div class="services">
-						<span class="icon">
-							<i class="icon-photo"></i>
-						</span>
-                    <div class="desc">
-                        <h3><a href="#">Art &amp; Media</a></h3>
-                        <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 text-center animate-box">
-                <div class="services">
-						<span class="icon">
-							<i class="icon-home-outline"></i>
-						</span>
-                    <div class="desc">
-                        <h3><a href="#">Real Estate</a></h3>
-                        <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 text-center animate-box">
-                <div class="services">
-						<span class="icon">
-							<i class="icon-bubble3"></i>
-						</span>
-                    <div class="desc">
-                        <h3><a href="#">Language</a></h3>
-                        <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 text-center animate-box">
-                <div class="services">
-						<span class="icon">
-							<i class="icon-world"></i>
-						</span>
-                    <div class="desc">
-                        <h3><a href="#">Web &amp; Programming</a></h3>
+                        <h3><a href="#">城市 &amp; 地铁</a></h3>
                         <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
                     </div>
                 </div>
