@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/context/mytags.jsp" %>
 <html>
 <head>
     <title>梦润公告</title>

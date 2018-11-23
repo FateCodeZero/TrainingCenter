@@ -1,0 +1,46 @@
+body{
+    font-family: 'Lora', serif !important;
+}
+
+
+.about_bg{
+    background-image: url(../images/about_us_bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0px;
+    margin: 0px;
+}
+
+.mytitle
+{
+
+    color: #FFFFFF;
+    font-size: 80px;
+    margin-top: 150px;
+    margin-bottom: 20px;
+}
+.mytitle2
+{
+
+    color: #FFFFFF;
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+.introduce
+{
+    background-color:#2D6CDF;
+    height: 200px;
+    margin-top: 100px;
+    margin-bottom: 150px;
+
+}
+.introduce_img
+{
+    height: 60px;
+    margin-top: 60px;
+}
+
+div.introduce:hover {
+    background-color:#003f87;
+    color: #FFFFFF;
+}

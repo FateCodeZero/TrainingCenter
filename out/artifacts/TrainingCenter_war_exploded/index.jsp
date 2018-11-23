@@ -55,7 +55,7 @@
                     <a href="#">学员风采</a>
                     <dl class="layui-nav-child">
                         <dd><a href="#">学院学习照</a></dd>
-                        <dd><a href="#">最佳学院</a></dd>
+                        <dd><a href="#">最佳学员</a></dd>
                         <dd><a href="#">往期学员故事</a></dd>
                     </dl>
                 </li>
@@ -130,6 +130,9 @@
             }
             if (text === '留言咨询') {
                 loadUrl = "${webRoot}/webpages/static/contact.jsp";
+            }
+            if (text === '关于我们') {
+                loadUrl = "${webRoot}/webpages/static/aboutUs.jsp";
             }
             if (text === '体验式教学') {
                 loadUrl = "${webRoot}/webpages/static/allExperientialTeaching.jsp";
