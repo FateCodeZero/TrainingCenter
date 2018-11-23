@@ -128,6 +128,9 @@
             if (text === '首页') {
                 loadUrl = "${webRoot}/index.jsp";
             }
+            if (text === '关于我们') {
+                loadUrl = "${webRoot}/webpages/static/aboutUs.jsp";
+            }
             if (text === '留言咨询') {
                 loadUrl = "${webRoot}/webpages/static/contact.jsp";
             }

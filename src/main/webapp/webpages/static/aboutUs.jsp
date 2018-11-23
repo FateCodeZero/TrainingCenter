@@ -7,7 +7,7 @@
 
 
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.3.0/layui/css/layui.css">
+    <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/aboutUs.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/animate.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/bootstrap.css">
@@ -21,7 +21,7 @@
 
     <script type="text/javascript" src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.3.0/layui/layui.all.js"></script>
+    <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script type="text/javascript" src="${webRoot}/webpages/static/js/utils.js"></script>
 </head>
 <body onload="IFrameResize()">
