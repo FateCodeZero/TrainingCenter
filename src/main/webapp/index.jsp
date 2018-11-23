@@ -111,11 +111,6 @@
 
 <script type="text/javascript">
 
-
-    $(document).ready(function () {
-        //页面加载完成……
-    });
-
     //使用 element 模块
     layui.use('element', function () {
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
@@ -150,12 +145,6 @@
 
 
     });
-
-
-
-
-
-
 
 </script>
 </html>

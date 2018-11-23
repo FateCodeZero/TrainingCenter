@@ -55,12 +55,14 @@ public class TrainingDynamicController {
             ajaxJson.setCode(1);
             ajaxJson.setMsg("暂无数据");
             return ajaxJson;
+        }else {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("請求成功");
+            Map<String, Object> map = new ConcurrentHashMap<>();
+            map.put("data",trainingDynamics);
+            ajaxJson.setData(map);
+            return ajaxJson;
         }
-
-        Map<String, Object> map = new ConcurrentHashMap<>();
-        map.put("trainingDynamic",trainingDynamics);
-        ajaxJson.setData(map);
-        return ajaxJson;
     }
 
     /**

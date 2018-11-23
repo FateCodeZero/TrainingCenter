@@ -150,52 +150,7 @@
                     <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6 animate-box">
-                    <div class="course">
-                        <a href="#" class="course-img" style="background-image: url(${webRoot}/webpages/static/images/project-1.jpg);">
-                        </a>
-                        <div class="desc">
-                            <h3><a href="#">大数据挖掘与分析</a></h3>
-                            <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
-                            <span><a href="#" class="btn btn-primary btn-sm btn-course">&amp; 了解 更多</a></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 animate-box">
-                    <div class="course">
-                        <a href="#" class="course-img" style="background-image: url(${webRoot}/webpages/static/images/project-2.jpg);">
-                        </a>
-                        <div class="desc">
-                            <h3><a href="#">云计算虚拟化技术</a></h3>
-                            <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
-                            <span><a href="#" class="btn btn-primary btn-sm btn-course">&amp; 了解 更多</a></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 animate-box">
-                    <div class="course">
-                        <a href="#" class="course-img" style="background-image: url(${webRoot}/webpages/static/images/project-3.jpg);">
-                        </a>
-                        <div class="desc">
-                            <h3><a href="#">Oracle数据库系统</a></h3>
-                            <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
-                            <span><a href="#" class="btn btn-primary btn-sm btn-course">&amp; 了解 更多</a></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 animate-box">
-                    <div class="course">
-                        <a href="#" class="course-img" style="background-image: url(${webRoot}/webpages/static/images/project-4.jpg);">
-                        </a>
-                        <div class="desc">
-                            <h3><a href="#">WebUI设计与实践</a></h3>
-                            <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
-                            <span><a href="#" class="btn btn-primary btn-sm btn-course">&amp; 了解 更多</a></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id="dynamic" class="row"></div>
         </div>
     </div>
 
@@ -227,10 +182,7 @@
 </body>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        //页面加载完成……
 
-    });
     layui.use('carousel', function(){
 
         var carousel = layui.carousel;
@@ -248,7 +200,59 @@
 
     });
 
+    $(document).ready(function(){
 
+        $.ajax({
+            type: 'GET',
+            url: "${webRoot}/trainingDynamic/listPage",
+            data: {currentPage:1,rows:4},
+            dataType: "json",
+            success: function (data) {
+                var jsonData = eval(data);
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+                    if(code == 1){
+                        var trainingDynamics = jsonData.data.data;
+
+                    $.each(trainingDynamics,function (index,trainingDynamic) {
+                        var id = trainingDynamic.id;
+                        var title = trainingDynamic.title;
+                        var content = trainingDynamic.content;
+                        var imgs = trainingDynamic.imgs;
+                        var remarks = trainingDynamic.remarks;
+                        var createUserId = trainingDynamic.createUserId;
+                        var createData = trainingDynamic.createData;
+                        var updateUserId = trainingDynamic.updateUserId;
+                        var updateData = trainingDynamic.updateData;
+
+                        /*截取字符串，p标签里面的文字长度必须一样长，否则页面会乱码*/
+                        if(content.length > 60 ){
+                            content = content.substring(0,60);
+                        }
+
+
+                        var dynamic_div = ' <div class="col-md-6 animate-box"><div class="course"><a href="#" class="course-img" style="background-image: url('+imgs+');"></a>' +
+                            '                        <div id="'+id+'" class="desc">' +
+                            '                            <h3><a href="#">'+title+'</a></h3>' +
+                            '                            <p>'+content+'</p>' +
+                            '                            <span><a href="#" class="btn btn-primary btn-sm btn-course">&amp; 了解 更多</a></span>' +
+                            '                        </div>' +
+                            '                    </div>' +
+                            '                </div>';
+
+                        if (index == 0) {
+                            $("#dynamic").html(dynamic_div);
+                        }else {
+                            $("#dynamic").append(dynamic_div);
+                        }
+                    });
+                }else {
+                    $("#dynamic").html('<h3>暂无数据</h3>');
+                }
+            }
+        });
+
+    });
 
 
 
