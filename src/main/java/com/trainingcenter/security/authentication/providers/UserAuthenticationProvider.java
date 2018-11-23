@@ -56,7 +56,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         }else if (!userDetails.isAccountNonLocked()) {
             throw new LockedException("账号已被锁定");
         }else if (!userDetails.isCredentialsNonExpired()) {
-            throw new CredentialsExpiredException("凭证已过期");
+            throw new CredentialsExpiredException("登录凭证已过期");
         }
 
         //数据库的密码

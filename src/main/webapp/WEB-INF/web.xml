@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <!--中文处理过滤，如果不设计中文的处理下面这部分可以移除-->
+    <!--中文处理过滤，如果不设计中文的处理下面这部分可以移除
     <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -20,7 +20,7 @@
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
 
     <!--springSecurityFilterChain 权限过滤链-->
     <filter>
@@ -79,7 +79,7 @@
 
     <!--设置 session 超时时间（分钟）-->
     <session-config>
-        <session-timeout>10 </session-timeout>
+        <session-timeout>30 </session-timeout>
     </session-config>
 
     <welcome-file-list>

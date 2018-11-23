@@ -51,7 +51,7 @@ public class HTTPUtils implements Serializable {
      *  判断是否为ajax请求
      */
     public static boolean isAjaxRequest(HttpServletRequest request) {
-        if (request.getHeader("accept").indexOf("application/json") > -1
+        if (request.getHeader("accept").contains("application/json")
                 || (request.getHeader("X-Requested-With") != null && request.getHeader("X-Requested-With").equals(
                 "XMLHttpRequest"))) {
             return true;
@@ -67,6 +67,9 @@ public class HTTPUtils implements Serializable {
      * @param responseDataMap 要返回给前端的数据
      */
     public static void responseByJson(HttpServletRequest request, HttpServletResponse response, Map<String, Object> responseDataMap) {
+        //通知浏览器以utf-8解析
+        response.setContentType("text/html;charset=UTF-8"); //等价于response.setHeader("content-type","text/html;charset=UTF-8");
+
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject();
@@ -99,7 +102,10 @@ public class HTTPUtils implements Serializable {
      * @param responseDataMap 要返回给前端的数据
      */
     public static void responseByJacson(HttpServletRequest request, HttpServletResponse response, Map<String, Object> responseDataMap) {
-        ObjectMapper mapper = null;
+        //通知浏览器以utf-8解析
+        response.setContentType("text/html;charset=UTF-8"); //等价于response.setHeader("content-type","text/html;charset=UTF-8");
+
+        ObjectMapper mapper;
         String jsonData = null;
         try {
             mapper = new ObjectMapper();

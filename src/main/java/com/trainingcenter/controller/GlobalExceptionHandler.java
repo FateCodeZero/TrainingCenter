@@ -11,6 +11,7 @@ import com.trainingcenter.exception.OperationException;
 import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.LogUtil;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,6 +42,15 @@ public class GlobalExceptionHandler {
         ajaxJson.setMsg(e.getMessage());
         return ajaxJson;
     }
+
+    /**
+     * 处理登录认证异常
+     * @param e
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseBody
+    private void handleAuthenticationException(AuthenticationException e){
+
+    }*/
 
     /**
      * 处理 SpringSecurity 访问无权限异常

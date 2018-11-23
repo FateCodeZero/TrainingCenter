@@ -76,7 +76,7 @@
             <if test="role.update_user_id != null and role.update_user_id != '' ">
                 update_user_id = #{role.updateUserId},
             </if>
-            <if test="role.update_date != null and role.update_date != '' ">
+            <if test="role.update_date != null ">
                 update_date = #{role.updateDate},
             </if>
         </trim>

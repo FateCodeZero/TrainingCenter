@@ -27,6 +27,11 @@ public class Resource extends BaseEntity implements Serializable {
      */
     private Integer state;
 
+    /**
+     * 资源描述，对应数据库（describe）字段
+     */
+    private String describe;
+
     public String getId() {
         return id;
     }
@@ -57,5 +62,13 @@ public class Resource extends BaseEntity implements Serializable {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 }

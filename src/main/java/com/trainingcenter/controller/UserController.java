@@ -15,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by IntelliJ IDEA.
@@ -85,10 +87,10 @@ public class UserController {
      * 进入后台管理系统首页
      * @return
      */
-    @PreAuthorize(value = "hasPermission('/webpages/admin/main.jsp','READ')")
+//    @PreAuthorize(value = "hasPermission('/webpages/admin/index.jsp','READ')")
     @RequestMapping(value = "/admin",method = RequestMethod.GET)
     public ModelAndView adminIndex(){
-        return new ModelAndView("admin/main");
+        return new ModelAndView("admin/index");
     }
 
     /**
@@ -329,5 +331,41 @@ public class UserController {
     @RequestMapping(value = "/kaptchaError")
     public ModelAndView kaptchaError() {
         return new ModelAndView("static/login");
+    }
+
+    /**
+     * 通过id获取用户
+     * @param id：用户id
+     * @return 返回用户对象，只包含 id 与 username
+     */
+    @ResponseBody
+    @RequestMapping("/getUserById")
+    public AjaxJson getUserById(@RequestParam("id") String id){
+        AjaxJson ajaxJson = new AjaxJson();
+        if (StringUtil.isEmpty(id)){
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("获取对象的id不能为空");
+            return ajaxJson;
+        }
+
+        User user = userService.getUserById(id);
+        if (user == null){
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("对象不存在或已被删除");
+            return ajaxJson;
+        }else {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("获取成功");
+            Map<String,Object> data = new ConcurrentHashMap<>();
+
+            //为保用户数据安全，只返回用户的id与username
+            Map<String,Object> u = new ConcurrentHashMap<>();
+            u.put("id",user.getId());
+            u.put("username",user.getUsername());
+
+            data.put("user",u);
+            ajaxJson.setData(data);
+            return ajaxJson;
+        }
     }
 }

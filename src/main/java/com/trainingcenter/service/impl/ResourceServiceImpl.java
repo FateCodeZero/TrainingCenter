@@ -84,11 +84,13 @@ public class ResourceServiceImpl implements ResourceService {
             throw deleteException;
         }
 
+        //保证删除对象存在
         Resource resource = getResourceById(id);
         if (resource == null){
             deleteException = new DeleteException("删除失败，对象不存在或已被删除");
             throw deleteException;
         }
+
         LogUtil.info(this,"资源删除","用户：【"+currentUsername+"删除了【"+resource.getName()+"】资源");
         //实行软删除
         resource.setState(-1);

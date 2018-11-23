@@ -57,9 +57,14 @@ public class LoggingAspect implements Serializable{
      */
 
     /**
-     *  只拦截 *service.impl 包下的所有方法,除开日志记录本身的
+     *  只拦截 *service.impl 包下的所有方法
+     *  不记录日志本身的添加、修改、删除……
+     *  不记录用户信息的修改……
      */
-    @Pointcut("execution( * com.trainingcenter.service.impl..*(..)) && !execution( * com.trainingcenter.service.impl.SysLogServiceImpl.*(..))")
+    @Pointcut("execution( * com.trainingcenter.service.impl..*(..)) " +
+            " && !execution( * com.trainingcenter.service.impl.SysLogServiceImpl.*(..)) " +
+            " && !execution( * com.trainingcenter.service.impl.UserServiceImpl.update(..)) " +
+            " && !execution( * com.trainingcenter.service.impl.UserInfoServiceImpl.update(..))")
     private static void serviceMethods(){}
 
 //    /**

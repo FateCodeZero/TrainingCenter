@@ -42,6 +42,14 @@
             要进行细粒的权限控制，需要使用注解配合，可做到方法级别的权限控制
     -->
     <security:http auto-config="false" use-expressions="true">
+        <!--（0）开启浏览器加载 frame页面
+            DENY：浏览器拒绝当前页面加载任何Frame页面（默认）
+            SAMEORIGIN：frame页面的地址只能为同源域名下的页面
+            ALLOW-FROM：origin为允许frame加载的页面地址。（不安全）
+            -->
+        <security:headers>
+            <security:frame-options policy="SAMEORIGIN"/>
+        </security:headers>
 
         <!--（1）开启匿名访问支持-->
         <security:anonymous enabled="true" key="doesNotMatter" username="anonymousUser" granted-authority="ROLE_ANONYMOUS"/>

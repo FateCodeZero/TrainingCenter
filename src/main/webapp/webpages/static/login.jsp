@@ -7,14 +7,14 @@
     <title>登录</title>
     <%--CSS--%>
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css" media="all">
-    <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.3.0/layui/css/layui.css">
+    <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/login.css">
 
 
     <%--JS--%>
     <script type="text/javascript" src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.3.0/layui/layui.all.js"></script>
+    <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
 
 </head>
 <body style="background-image: url(${webRoot}/webpages/static/images/22.jpg); background-repeat: no-repeat;background-size: cover;">
