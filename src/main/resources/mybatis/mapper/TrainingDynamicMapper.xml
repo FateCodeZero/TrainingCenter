@@ -31,9 +31,7 @@
                 and (
                 title like CONCAT('%',#{searchContent},'%') OR
                 content like CONCAT('%',#{searchContent},'%') OR
-                remarks like CONCAT('%',#{searchContent},'%') OR
-                create_date like CONCAT('%',#{searchContent},'%') OR
-                update_date like CONCAT('%',#{searchContent},'%')
+                remarks like CONCAT('%',#{searchContent},'%')
                 )
             </if>
         </trim>

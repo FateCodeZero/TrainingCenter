@@ -278,3 +278,23 @@ CREATE TABLE `tab_advertisement` (
 -- ----------------------------
 --  Table structure for `tab_course`
 -- ----------------------------
+-- ----------------------------
+--  Table structure for `tab_news_info`
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_news_info`;
+CREATE TABLE `tab_news_info` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(36) DEFAULT NULL COMMENT '新闻备注',
+  `content` varchar(36) DEFAULT NULL COMMENT '新闻内容',
+  `imgs` text COMMENT '新闻图片',
+  `remarks` varchar(36) DEFAULT NULL COMMENT '新闻备注',
+  `create_user_id` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `create_date` date DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `update_date` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+--  Table structure for `tab_news_info`
+-- ----------------------------

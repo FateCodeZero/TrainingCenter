@@ -29,14 +29,8 @@
         <trim prefix="WHERE" prefixOverrides="and">
             <if test="searchContent != null and searchContent != ''">
                 and (
-                imgs like CONCAT('%',#{searchContent},'%') OR
                 `describe` like CONCAT('%',#{searchContent},'%') OR
-                url like CONCAT('%',#{searchContent},'%') OR
-                start like CONCAT('%',#{searchContent},'%') OR
-                `end` like CONCAT('%',#{searchContent},'%') OR
-                remarks like CONCAT('%',#{searchContent},'%') OR
-                create_date like CONCAT('%',#{searchContent},'%') OR
-                update_date like CONCAT('%',#{searchContent},'%')
+                remarks like CONCAT('%',#{searchContent},'%')
                 )
             </if>
         </trim>

@@ -1,6 +1,6 @@
 package com.trainingcenter.service;
 
-import com.trainingcenter.bean.TrainingDynamic;
+import com.trainingcenter.bean.NewsInfo;
 import com.trainingcenter.exception.DeleteException;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,44 +11,44 @@ import java.util.List;
  * @author Liutingwei
  * @date 2018-11-6 21:34
  */
-public interface TrainingDynamicService {
+public interface NewsInfoService {
     /**
-     * 通过id获取培训动态
-     * @param id：培训动态id
-     * @return 返回对应的培训动态对象
+     * 通过id获取新闻信息
+     * @param id：新闻信息id
+     * @return 返回对应的新闻信息对象
      */
-    public TrainingDynamic getTrainingDynamicById(String id);
+    public NewsInfo getNewsInfoById(String id);
 
     /**
      * 获取所有资源对象
      * @return 返回资源对象集合
      */
-    public List<TrainingDynamic> getTrainingDynamics();
+    public List<NewsInfo> getNewsInfos();
 
     /**
-     * 分页获取所以培训动态
+     * 分页获取所以新闻信息
      *
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
      * @param searchContent：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public List<TrainingDynamic> getTrainingDynamics(Integer currentPage, Integer rows, String searchContent);
+    public List<NewsInfo> getNewsInfos(Integer currentPage, Integer rows, String searchContent);
 
     /**
-     * 培训动态添加方法
-     * @param trainingDynamic：要添加的培训动态
+     * 新闻信息添加方法
+     * @param newsInfo：要添加的新闻信息
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer add(@Valid @Param("trainingDynamic") TrainingDynamic trainingDynamic);
+    public Integer add(@Valid @Param("newsInfo") NewsInfo newsInfo);
 
     /**
-     * 培训动态更新方法
+     * 新闻信息更新方法
      *
-     * @param trainingDynamic:要更新的动态培训
+     * @param newsInfo:要更新的动态培训
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer update(@Valid TrainingDynamic trainingDynamic);
+    public Integer update(@Valid NewsInfo newsInfo);
 
     /**
      * 动态培训删除方法
@@ -68,7 +68,7 @@ public interface TrainingDynamicService {
     public boolean batchDelete(String ids);
     /**
      * 通过多个动态培训ID去查询符合条件的动态培训集
-     * @param trainingDynamicIds：多个动态培训ID
+     * @param newsInfoIds：多个动态培训ID
      * @return 返回动态培训集合
      */
 }

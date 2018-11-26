@@ -1,11 +1,11 @@
 package com.trainingcenter.controller;
 
-import com.trainingcenter.bean.Advertisement;
+import com.trainingcenter.bean.NewsInfo;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.exception.UpdateException;
-import com.trainingcenter.service.AdvertisementService;
+import com.trainingcenter.service.NewsInfoService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.StringUtil;
@@ -30,13 +30,14 @@ import static com.trainingcenter.utils.SysResourcesUtils.getCurrentUsername;
  * @author Liutingwei
  * @date 2018-11-9 19:45
  */
-@RequestMapping("/advertisement")
+@RequestMapping("/newsInfo")
 @Controller
-public class AdvertisementController {
+public class NewsInfoController {
 
-    @Qualifier("advertisementService")
+
+    @Qualifier("newsInfoService")
     @Autowired
-    private AdvertisementService advertisementService;
+    private NewsInfoService newsInfoService;
 
     @Qualifier("userService")
     @Autowired
@@ -49,13 +50,12 @@ public class AdvertisementController {
         if(currentPage < 0 || rows < 0 ){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("参数异常");
-            return ajaxJson;
-        }
-        List<Advertisement> advertisements = advertisementService.getAdvertisements(currentPage, rows, searchContent);
-        Integer total = advertisementService.getAdvertisements().size();
+            return ajaxJson;        }
+        List<NewsInfo> newsInfos = newsInfoService.getNewsInfos(currentPage, rows, searchContent);
+        Integer total = newsInfoService.getNewsInfos().size();
 
-        if (advertisements.size() == 0){
-            ajaxJson.setCode(1);
+        if (newsInfos.size() == 0){
+            ajaxJson.setCode(0);
             ajaxJson.setMsg("暂无数据");
         }else {
             ajaxJson.setCode(1);
@@ -64,7 +64,7 @@ public class AdvertisementController {
 
         Map<String,Object> data = new ConcurrentHashMap<>();
         data.put("total",total);
-        data.put("items",advertisements);
+        data.put("items",newsInfos);
         ajaxJson.setData(data);
         return ajaxJson;
     }
@@ -79,8 +79,8 @@ public class AdvertisementController {
     public AjaxJson detailsPage(@RequestParam("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
         if(StringUtil.isNotEmpty(id)){
-            Advertisement advertisement = advertisementService.getAdvertisementById(id);
-            if (advertisement == null){
+            NewsInfo newsInfo = newsInfoService.getNewsInfoById(id);
+            if (newsInfo == null){
                 ajaxJson.setCode(1);
                 ajaxJson.setMsg("暂无数据");
                 return ajaxJson;
@@ -88,7 +88,7 @@ public class AdvertisementController {
                 ajaxJson.setCode(1);
                 ajaxJson.setMsg("請求成功");
                 Map<String, Object> map = new ConcurrentHashMap<>(); //返回携带的数据
-                map.put("items",advertisement);
+                map.put("items",newsInfo);
                 ajaxJson.setData(map);
                 return ajaxJson;
             }
@@ -106,11 +106,11 @@ public class AdvertisementController {
      */
     @RequestMapping(value = "/addPage", method = RequestMethod.GET)
     public ModelAndView addPage(HttpServletRequest request) {
-        String id = request.getParameter("advertisementId");
+        String id = request.getParameter("newsInfoId");
         ModelAndView modelAndView =new ModelAndView();
         if(StringUtil.isNotEmpty(id)){
-            String viewName = "admin/Ad_addPage";
-            modelAndView.addObject("advertisement",advertisementService.getAdvertisementById(id));
+            String viewName = "admin/newsInfo_addPage";
+            modelAndView.addObject("newsInfo",newsInfoService.getNewsInfoById(id));
             modelAndView.setViewName(viewName);
 
         }
@@ -124,11 +124,11 @@ public class AdvertisementController {
      */
     @RequestMapping(value = "/updatePage", method = RequestMethod.GET)
     public ModelAndView updatePage(HttpServletRequest request) {
-        String id = request.getParameter("advertisementId");
+        String id = request.getParameter("newsInfoId");
         ModelAndView modelAndView =new ModelAndView();
         if(StringUtil.isNotEmpty(id)){
-            String viewName = "admin/Ad_updatePage";
-            modelAndView.addObject("advertisement",advertisementService.getAdvertisementById(id));
+            String viewName = "admin/newsInfo_updatePage";
+            modelAndView.addObject("newsInfo",newsInfoService.getNewsInfoById(id));
             modelAndView.setViewName(viewName);
         }
         return modelAndView;
@@ -136,7 +136,7 @@ public class AdvertisementController {
 
     @RequestMapping(value = "/update",method = RequestMethod.GET)
     @ResponseBody
-    public AjaxJson update(@Validated(value = {TC_Update.class}) Advertisement advertisement){
+    public AjaxJson update(@Validated(value = {TC_Update.class}) NewsInfo newsInfo){
         AjaxJson ajaxJson = new AjaxJson();
         Integer res;    //操作结果 flag
 
@@ -149,7 +149,7 @@ public class AdvertisementController {
             throw new CredentialsExpiredException("登录凭证已过期");
         }
 
-        if (advertisement == null){
+        if (newsInfo == null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("操作失败，对象不能为空");
             return ajaxJson;
@@ -157,32 +157,26 @@ public class AdvertisementController {
         }
         //更新操作
         //当前ID
-        Advertisement newAd = advertisementService.getAdvertisementById(advertisement.getId());
+        NewsInfo newAd = newsInfoService.getNewsInfoById(newsInfo.getId());
         if (newAd == null){
             throw new UpdateException("更新失败，对象不存在或已被删除");
         }else {
-            if (StringUtil.isNotEmpty(advertisement.getImgs())) {
-                newAd.setImgs(advertisement.getImgs());
+            if (StringUtil.isNotEmpty(newsInfo.getImgs())) {
+                newAd.setImgs(newsInfo.getImgs());
             }
-            if (StringUtil.isNotEmpty(advertisement.getUrl())) {
-                newAd.setUrl(advertisement.getUrl());  //注意：URL在上线时应不能更改
+            if (StringUtil.isNotEmpty(newsInfo.getRemarks())) {
+                newAd.setRemarks(newsInfo.getRemarks());
             }
-            if (StringUtil.isNotEmpty(advertisement.getDescribe())) {
-                newAd.setDescribe(advertisement.getDescribe());
+            if (StringUtil.isNotEmpty(newsInfo.getContent())) {
+                newAd.setContent(newsInfo.getContent());
             }
-            if (StringUtil.isNotEmpty(advertisement.getRemarks())) {
-                newAd.setRemarks(advertisement.getRemarks());
-            }
-            if(advertisement.getStart()!=null){
-                newAd.setStart(advertisement.getStart());
-            }
-            if(advertisement.getEnd()!=null){
-                newAd.setEnd(advertisement.getEnd());
+            if(StringUtil.isNotEmpty(newsInfo.getTitle())){
+                newAd.setTitle(newsInfo.getTitle());
             }
             newAd.setUpdateUserId(user.getId());
             newAd.setUpdateDate(new Date());
 
-            res = advertisementService.update(newAd);
+            res = newsInfoService.update(newAd);
         }
         if (res == 0){
             ajaxJson.setCode(0);
@@ -195,9 +189,10 @@ public class AdvertisementController {
         }
     }
 
+
     @RequestMapping(value = "/add",method = RequestMethod.GET)
     @ResponseBody
-    public AjaxJson add(@Validated(value = {TC_Add.class}) Advertisement advertisement){
+    public AjaxJson add(@Validated(value = {TC_Add.class}) NewsInfo newsInfo){
         AjaxJson ajaxJson = new AjaxJson();
 
         //获取当前用户
@@ -206,16 +201,16 @@ public class AdvertisementController {
         User user = userService.getUserByUsername(currentName);
 
         //非空验证
-        if(advertisement==null){
+        if(newsInfo==null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("操作对象为空，操作失败");
         }
         //资料添加
 
-        advertisement.setId(UUID.randomUUID().toString());
-        advertisement.setCreateUserId(user.getId());
-        advertisement.setCreateDate(new Date());
-        Integer add = advertisementService.add(advertisement);
+        newsInfo.setId(UUID.randomUUID().toString());
+        newsInfo.setCreateUserId(user.getId());
+        newsInfo.setCreateDate(new Date());
+        Integer add = newsInfoService.add(newsInfo);
         if (add==1){
             ajaxJson.setCode(1);
             ajaxJson.setMsg("添加成功");
@@ -228,7 +223,6 @@ public class AdvertisementController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    @ResponseBody
     public AjaxJson delete(@PathVariable("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 
@@ -238,7 +232,7 @@ public class AdvertisementController {
             return ajaxJson;
         }
 
-        boolean delete = advertisementService.batchDelete(ids);
+        boolean delete = newsInfoService.batchDelete(ids);
         if (delete){
             ajaxJson.setCode(1);
             ajaxJson.setMsg("删除成功");
