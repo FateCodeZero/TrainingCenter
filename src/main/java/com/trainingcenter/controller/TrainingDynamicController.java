@@ -47,14 +47,17 @@ public class TrainingDynamicController {
     public AjaxJson listPage(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
         AjaxJson ajaxJson = new AjaxJson();
         if(currentPage < 0 || rows < 0 ){
-            return null;
-        }
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("参数异常");
+            return ajaxJson;        }
         List<TrainingDynamic> trainingDynamics = trainingDynamicService.getTrainingDynamics(currentPage, rows, searchContent);
         Integer total = trainingDynamicService.getTrainingDynamics().size();
 
         if (trainingDynamics.size() == 0){
+            ajaxJson.setCode(0);
             ajaxJson.setMsg("暂无数据");
         }else {
+            ajaxJson.setCode(1);
             ajaxJson.setMsg("操作成功");
         }
 
