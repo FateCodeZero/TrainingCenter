@@ -50,11 +50,16 @@ public class TrainingDynamicIServiceImpl implements TrainingDynamicService {
      */
     @Override
     public List<TrainingDynamic> getTrainingDynamics(Integer currentPage, Integer rows, String searchContent) {
-            if(currentPage < 0 || rows < 0){
-                return null;
+            if(currentPage != null && rows != null) {
+                if (currentPage < 0 || rows < 0) {
+                    return null;
+                }
+                Integer start = (currentPage - 1) * rows;
+                return trainingDynamicMapper.getTrainingDynamics(start, rows, searchContent);
             }
-            Integer start = (currentPage - 1) * rows;
-            return trainingDynamicMapper.getTrainingDynamics(start,rows,searchContent);
+            else {
+                return trainingDynamicMapper.getTrainingDynamics(null,null,searchContent);
+            }
     }
 
     /**

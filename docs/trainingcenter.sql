@@ -256,3 +256,25 @@ INSERT INTO `tab_training_dynamic` VALUES ('2', '培训2', 'https://goss.veer.co
 INSERT INTO `tab_training_dynamic` VALUES ('3', '培训3', 'https://goss.veer.com/creative/vcg/veer/800water/veer-302222696.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训3', '培训3', '2018-11-6', '培训3', '2018-11-14');
 INSERT INTO `tab_training_dynamic` VALUES ('4', '培训4', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147418763.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训4', '培训4', '2018-11-5', '培训4', '2018-11-20');
 INSERT INTO `tab_training_dynamic` VALUES ('5', '培训5', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147424398.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训5', '培训5', '2018-11-6', '培训5', '2018-11-22');
+-- ----------------------------
+--  Table structure for `tab_advertisement`
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_advertisement`;
+CREATE TABLE `tab_advertisement` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `imgs` text COMMENT '广告图片',
+  `describe` text COMMENT '广告描述',
+  `url` text COMMENT '广告链接',
+  `start` date DEFAULT NULL COMMENT '开始时间',
+  `end` date DEFAULT NULL COMMENT '结束时间',
+  `remarks` varchar(36) DEFAULT NULL COMMENT '广告备注',
+  `create_user_id` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `create_date` date DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `update_date` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+--  Table structure for `tab_course`
+-- ----------------------------
