@@ -23,7 +23,7 @@ public class UserInfo implements Serializable {
     /**
      * id，对应数据库（id）字段
      */
-    @NotBlank(message = "id不能为空",groups = {TC_Delete.class,TC_Find.class})
+    @NotBlank(message = "id不能为空",groups = {TC_Update.class,TC_Delete.class,TC_Find.class})
     private String id;
 
     /**

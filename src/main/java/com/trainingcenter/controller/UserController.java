@@ -339,12 +339,12 @@ public class UserController {
      * @return 返回用户对象，只包含 id 与 username
      */
     @ResponseBody
-    @RequestMapping("/getUserById")
+    @RequestMapping(value = "/getUserById", method = RequestMethod.GET)
     public AjaxJson getUserById(@RequestParam("id") String id){
         AjaxJson ajaxJson = new AjaxJson();
         if (StringUtil.isEmpty(id)){
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("获取对象的id不能为空");
+            ajaxJson.setMsg("请先选择要查询的对象");
             return ajaxJson;
         }
 

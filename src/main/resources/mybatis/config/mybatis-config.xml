@@ -3,8 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	
-	<!-- 
+
+	<!--
 		2、settings 标签包含很多重要的设置项
 				setting：用来设置每一个设置项
 				name：设置项名
@@ -32,9 +32,10 @@
 
 		 <!-- 打印查询语句 -->
 		 <setting name="logImpl" value="STDOUT_LOGGING" />
+
 	 </settings>
-	
-	<!-- 
+
+	<!--
 		5、databaseIdProvider，支持多数据库产商（mysql、oracle等）
 					type="DB_VENDOR"：VendorDatabaseIdProvider
 						作用：得到数据库产商的标识（驱动getDatabaseProductName()），让mybatis客根据标识来执行不同的sql。

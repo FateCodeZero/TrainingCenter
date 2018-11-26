@@ -7,3 +7,16 @@ function IFrameResize(){
     //alert(parent.document.getElementById("IF-body").height); //弹出父页面中IFrame中设置的高度
     obj.height = $(document.body).height(); //调整父页面中IFrame的高度为此页面的高度
 }
+
+/**
+ * 获取URL后携带的参数
+ * @param name
+ * @returns {null}
+ * @constructor
+ */
+function getUrlParam(name){
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}
+

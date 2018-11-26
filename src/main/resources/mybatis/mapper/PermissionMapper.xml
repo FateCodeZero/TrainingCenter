@@ -8,7 +8,7 @@
 
 
     <sql id="permissionColumns">
-      id,`name`,resource_id,operations,`describe`,remarks,create_user_id,create_date,update_user_id,update_date
+      id,`name`,resource_id,operations,state,`describe`,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public Permission getPermissionById(@Param("id") String id);
@@ -49,8 +49,9 @@
     <insert id="add" parameterType="com.trainingcenter.bean.Permission">
         INSERT INTO tab_permission(<include refid="permissionColumns"></include>)
         VALUES
-        (#{permission.id},#{permission.name},#{permission.resourceId},#{permission.operations},#{permission.describe},#{permission.remarks},#{permission.create_user_id},#{permission.create_date},
-        #{permission.update_user_id},#{permission.update_date}
+        (#{permission.id},#{permission.name},#{permission.resourceId},#{permission.operations},#{permission.state},
+        #{permission.describe},#{permission.remarks},#{permission.createUserId},#{permission.createDate},
+        #{permission.updateUserId},#{permission.updateDate})
     </insert>
 
     <!--
@@ -69,16 +70,19 @@
             <if test="permission.operations != null and permission.operations != '' ">
                 operations = #{permission.operations},
             </if>
+            <if test="permission.state != null ">
+                state = #{permission.state},
+            </if>
             <if test="permission.describe != null and permission.describe != '' ">
                 `describe` = #{permission.describe},
             </if>
             <if test="permission.remarks != null and permission.remarks != '' ">
                 remarks = #{permission.remarks},
             </if>
-            <if test="permission.update_user_id != null and permission.update_user_id != '' ">
+            <if test="permission.updateUserId != null and permission.updateUserId != '' ">
                 update_user_id = #{permission.updateUserId},
             </if>
-            <if test="permission.update_date != null ">
+            <if test="permission.updateDate != null ">
                 update_date = #{permission.updateDate},
             </if>
 
@@ -102,7 +106,7 @@
         -->
     <select id="getPermissionsByRoleId" resultType="com.trainingcenter.bean.Permission">
         SELECT
-        p.id,p.name,p.resource_id,p.operations,p.describe,p.remarks,p.create_user_id,p.create_date,p.create_date,p.update_user_id,p.update_date
+        p.id,p.name,p.resource_id,p.operations,p.state,p.describe,p.remarks,p.create_user_id,p.create_date,p.create_date,p.update_user_id,p.update_date
         FROM tab_permission p LEFT JOIN tab_role_permission rp ON p.id = rp.permission_id
         WHERE rp.role_id = #{roleId}
         <trim prefixOverrides="AND">

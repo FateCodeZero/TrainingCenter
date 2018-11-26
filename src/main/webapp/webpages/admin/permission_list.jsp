@@ -5,14 +5,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>资源菜单管理</title>
+    <title>权限管理</title>
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css" charset="UTF-8">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css" charset="UTF-8">
 
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js" charset="UTF-8"></script>
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js" charset="UTF-8"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js" charset="UTF-8"></script>
-
 </head>
 
 <body>
@@ -55,6 +54,7 @@
 </script>
 
 <script type="text/javascript">
+    var layer_window = ''; 	//定义全局变量,用以储存弹出的窗口的窗口对象
     var searchContent = $("#searchContent").val(); //模糊查询内容
     var table;  //layui table
 
@@ -65,13 +65,13 @@
         element.on('tab', function (data) {
             var lay_id = this.getAttribute('lay-id');
             console.log(lay_id); //当前Tab标题所在的原始DOM元素
-//            if (lay_id === 'enable'){
-//                table.reload('table1',{
-//                    where: {//接口需要的其它参数
-//                        searchContent: 1
-//                    }
-//                });
-//            }
+            /*if (lay_id === 'enable'){
+                table.reload('table1',{
+                    where: {//接口需要的其它参数
+                        searchContent: 1
+                    }
+                });
+            }*/
         });
         element.render('tab');
     });
@@ -86,20 +86,30 @@
             , toolbar: '#table-head'
             , height: 430
             , title: '菜单管理'
-            , url: '${webRoot}/resource/listPage' //数据接口
+            , url: '${webRoot}/permission/listPage' //数据接口
             , page: true //开启分页
             , limit: 10 //每页显示多少条数据
             , cols: [[ //表头
                 {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
                 , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
                 , {field: 'id', title: 'ID', hide: true, width: 100, align: 'center'}
-                , {field: 'name', title: '菜单名称', width: 100, align: 'center'}
-                , {field: 'url', title: '对应URL', width: 150, align: 'center'}
-                , {field: 'describe', title: '资源描述', width: 150, align: 'center'}
+                , {field: 'name', title: '菜单名称', width: 150, align: 'center'}
+                , {
+                    field: 'resourceId', title: '对应资源', width: 150, align: 'center', templet: function (d) {
+                        var resourceId = d.resourceId;
+                        var resource = getResourceById(resourceId);
+                        return resource.name;
+                    }
+                }
+                , {field: 'operations', title: '可操作权限', width: 200, align: 'center', templet: function (d) {
+                    var operations = d.operations;
+                    return operationsToStr(operations);
+                }}
+                , {field: 'describe', title: '权限描述', width: 150, align: 'center'}
                 , {field: 'remarks', title: '备注', width: 150, align: 'center'}
                 , {
                     field: 'state', title: '使用状态', width: 100, align: 'center', templet: function (d) {
-                        if (d.state == 1) {
+                        if (d.state === 1) {
                             return '<span class="layui-btn layui-btn-xs">已启用</span>'
                         } else {
                             return '<span class="layui-btn layui-btn-danger layui-btn-xs">已禁用</span>'
@@ -140,7 +150,7 @@
                 var msg = res.msg;
                 var data = res.data.items;
                 var count = 0;
-                if (data != null){
+                if (data != null) {
                     count = data.total;
                 }
                 return {
@@ -240,22 +250,21 @@
                 enableOpt(data, state);
             } else if (obj.event === 'unEnable') {  //禁用
                 state = 0;
-                enableOpt(data, state);
+                enableOpt(data,state);
             }
         });
     });
 
     function addData() {
         layer.open({
-            title: '添加菜单',
+            title: '添加权限',
             type: 2,
             area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/resource/addOrUpdatePage',
+            content: '${webRoot}/webpages/admin/permission_add.jsp',
             success: function (layero, index) {
-                //                AddLayero = layero;
-                //				        (AddLayero);
+                layer_window = layero;   //获取弹出窗口的窗口对象
             },
             end: function () {
                 location.reload(); //回调函数，刷新页面
@@ -270,13 +279,20 @@
             area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/resource/addOrUpdatePage?resourceId=' + id,
+            content: '${webRoot}/webpages/admin/permission_edit.jsp?id=' + id,
             success: function (layero, index) {
+                layer_window = layero;   //获取弹出窗口的窗口对象
             },
             end: function () {
                 location.reload(); //回调函数，刷新页面
             }
         });
+    }
+
+    //获取弹出窗口返回的json格式的数据
+    function getBackResourceData(JsonData) {		//返回学校数据
+        var resourceSelectWindow = window[layer_window.find('iframe')[0]['name']];	//获取子窗口的窗口对象
+        resourceSelectWindow.window.setResourceData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
     }
 
     //删除
@@ -293,7 +309,7 @@
                     ids: ids
                 };
                 $.ajax({
-                    url: "${webRoot}/resource/delete",
+                    url: "${webRoot}/permission/delete",
                     type: "post",
                     data: data,
                     dataType: "json",
@@ -319,22 +335,23 @@
     }
 
     //启/禁用操作
-    function enableOpt(resource, state) {
-        if (resource.id === null || resource.id === '' || state === null || state === '') {
+    function enableOpt(permission,state) {
+        if (permission.id === null || permission.id === '' || state === null || state === '') {
             layer.alert('请先选择要操作的数据', {
                 time: 3000,
                 icon: 2
             });
             return false;
         } else {
+            /*将更新所必须的字段一起传过去*/
             var data = {
-                id: resource.id,
-                name: resource.name,
-                url: resource.url,
-                state: state
+                id: permission.id,
+                name: permission.name,
+                state: state,
+                resourceId: permission.resourceId
             };
             $.ajax({
-                url: "${webRoot}/resource/addOrUpdate",
+                url: "${webRoot}/permission/update",
                 type: "post",
                 data: data,
                 dataType: "json",
@@ -369,7 +386,7 @@
             });
             return false;
         }
-        var user = '';
+        var user = null;
         var data = {id: id};
         $.ajax({
             url: "${webRoot}/user/getUserById",
@@ -394,6 +411,94 @@
         });
         return user;
     }
+
+    /**
+     * 通过 id 获取资源
+     * @param id
+     * @returns {*}
+     */
+    function getResourceById(id) {
+        if (id == null || id == '') {
+            layer.alert('id不能为空！', {
+                time: 3000,
+                icon: 2
+            });
+            return false;
+        }
+        var resource = null;
+        var data = {id: id};
+        $.ajax({
+            url: "${webRoot}/resource/getResourceById",
+            type: "get",
+            async: false,    //关闭异步请求
+            data: data,
+            dataType: "json",
+            success: function (data) {
+                var jsonData = eval(data); //数据解析
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+                if (code == 1) {
+                    resource = jsonData.data.resource;
+                } else {
+                    layer.alert(msg, {
+                        time: 3000,
+                        icon: 2
+                    });
+                    return false;
+                }
+            }
+        });
+        return resource;
+    }
+
+    /**
+     * 可操作代码转为中文
+     * @param operations
+     * @returns {string}
+     */
+    function operationsToStr(operations) {
+        var optStr = '';
+        if (operations == null || operations == ''){
+            return optStr;
+        }else {
+            var arr = operations.trim().split(",");
+            $.each(arr,function (index, opt) {
+                if (index === 0){
+                    switch (opt){
+                        case 'READ':
+                            optStr += '查看';
+                            break;
+                        case 'CREATE':
+                            optStr += '添加';
+                            break;
+                        case 'UPDATE':
+                            optStr += '更新';
+                            break;
+                        case 'DELETE':
+                            optStr += '删除';
+                            break;
+                    }
+                }else {
+                    switch (opt){
+                        case 'READ':
+                            optStr += '、查看';
+                            break;
+                        case 'CREATE':
+                            optStr += '、添加';
+                            break;
+                        case 'UPDATE':
+                            optStr += '、更新';
+                            break;
+                        case 'DELETE':
+                            optStr += '、删除';
+                            break;
+                    }
+                }
+            });
+        }
+        return optStr;
+    }
+
 </script>
 
 </html>

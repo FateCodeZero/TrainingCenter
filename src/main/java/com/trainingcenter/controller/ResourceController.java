@@ -8,7 +8,6 @@ import com.trainingcenter.exception.UpdateException;
 import com.trainingcenter.service.ResourceService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
-import com.trainingcenter.utils.HTTPUtils;
 import com.trainingcenter.utils.StringUtil;
 import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,13 +43,20 @@ public class ResourceController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 分页获取资源数据
+     * @param currentPage：当前页
+     * @param rows：每页展示的数据条数
+     * @param searchContent：模糊查询
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/listPage")
     public AjaxJson getResources(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null){
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("操作失败，页数不能为空");
+            ajaxJson.setMsg("数据获取失败，页数不能为空");
             return ajaxJson;
         }else {
             Integer total = resourceService.getResources().size();
@@ -61,13 +66,13 @@ public class ResourceController {
             if (resources.size() == 0){
                 ajaxJson.setMsg("暂无数据Ծ‸Ծ");
             }else {
-                ajaxJson.setMsg("操作成功");
-
-                Map<String,Object> data = new ConcurrentHashMap<>();
-                data.put("total",total);
-                data.put("data",resources);
-                ajaxJson.setData(data);
+                ajaxJson.setMsg("数据获取成功");
             }
+
+            Map<String,Object> data = new ConcurrentHashMap<>();
+            data.put("total",total);
+            data.put("items",resources);
+            ajaxJson.setData(data);
             return ajaxJson;
         }
     }
@@ -121,11 +126,21 @@ public class ResourceController {
             if (newResource == null){
                 throw new UpdateException("更新失败，对象不存在或已被删除");
             }
-            newResource.setName(resource.getName());
-            newResource.setUrl(resource.getUrl());  //注意：URL在上线时应不能更改
-            newResource.setState(resource.getState());
-            newResource.setDescribe(resource.getDescribe());
-            newResource.setRemarks(resource.getRemarks());
+            if (StringUtil.isNotEmpty(resource.getName())){
+                newResource.setName(resource.getName());
+            }
+            if (StringUtil.isNotEmpty(resource.getUrl())){
+                newResource.setUrl(resource.getUrl());  //注意：URL在上线时应不能更改
+            }
+            if (resource.getState() != null){
+                newResource.setState(resource.getState());
+            }
+            if (StringUtil.isNotEmpty(resource.getDescribe())){
+                newResource.setDescribe(resource.getDescribe());
+            }
+            if (StringUtil.isNotEmpty(resource.getRemarks())){
+                newResource.setRemarks(resource.getRemarks());
+            }
             newResource.setUpdateUserId(currentUser.getId());
             newResource.setUpdateDate(new Date());
 
@@ -143,6 +158,12 @@ public class ResourceController {
         }
     }
 
+    /**
+     * 删除资源，支持批量删除
+     * @param ids
+     * @return
+     */
+    @ResponseBody
     @RequestMapping("/delete")
     public AjaxJson delete(@RequestParam("ids") String ids){
         AjaxJson ajaxJson = new AjaxJson();
@@ -160,6 +181,35 @@ public class ResourceController {
         }else {
             ajaxJson.setCode(1);
             ajaxJson.setMsg("删除成功");
+            return ajaxJson;
+        }
+    }
+
+    /**
+     * 通过 id 获取资源对象
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getResourceById")
+    public AjaxJson getResourceById(@RequestParam("id") String id){
+        AjaxJson ajaxJson = new AjaxJson();
+        if (StringUtil.isEmpty(id)){
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("请先选择要查询的对象");
+            return ajaxJson;
+        }
+
+        Resource resource = resourceService.getResourceById(id);
+        if (resource == null){
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("对象不存在或已被删除");
+            return ajaxJson;
+        }else {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("获取成功");
+            Map<String,Object> map = new ConcurrentHashMap<>();
+            map.put("resource",resource);
+            ajaxJson.setData(map);
             return ajaxJson;
         }
     }

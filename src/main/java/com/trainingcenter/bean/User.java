@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -26,7 +27,7 @@ public class User implements Serializable,UserDetails {
     /**
      * ID，对应数据库（id）字段
      */
-    @NotBlank(message = "id不能为空",groups = {TC_Delete.class,TC_Find.class})
+    @NotBlank(message = "id不能为空",groups = {TC_Update.class,TC_Delete.class,TC_Find.class})
     private String id;
 
     /**
@@ -58,6 +59,7 @@ public class User implements Serializable,UserDetails {
      * 账号使用状态，对应数据库（state）字段
      * （-1：已注销，0：已禁用，1：已启用）
      */
+    @NotNull(message = "使用状态不能为空",groups = {TC_Add.class, TC_Update.class})
     @Range(min = -1,max = 1,message = "用户使用状态范围只能在-1~1",groups = {TC_Update.class})
     private Integer state;
 

@@ -198,10 +198,17 @@ public class PermissionServiceImpl implements PermissionService {
             LogUtil.warn(this, "权限更新", "用户【" + currentUsername + "】更新权限【失败】，更新对象为空，数据效验没起到应有的作用！");
             throw updateException;
         }
+
+        if (StringUtil.isEmpty(permission.getId()) || permissionMapper.getPermissionById(permission.getId()) == null){
+            updateException = new UpdateException("更新失败，对象不存在或已被删除");
+            LogUtil.warn(this, "权限更新", "用户【" + currentUsername + "】更新权限【失败】，更新对象为空，数据效验没起到应有的作用！");
+            throw updateException;
+        }
+
         //日志记录
         LogUtil.info(this, "权限更新", "用户【" + currentUsername + "】更新了==>权限：【" + permission.getName() + "】的相关信息");
 
-        Integer res = permissionMapper.add(permission);
+        Integer res = permissionMapper.update(permission);
         if (res == 0) {
             updateException = new UpdateException("更新失败，请重试");
             LogUtil.info(this, "权限更新", "未知原因，用户【" + currentUsername + "】更新权限：【" + permission.getName() + "】【失败】！");

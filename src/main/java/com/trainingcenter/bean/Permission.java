@@ -4,8 +4,10 @@ import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Delete;
 import com.trainingcenter.controller.validation.TC_Find;
 import com.trainingcenter.controller.validation.TC_Update;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +34,7 @@ public class Permission extends BaseEntity implements Serializable {
     /**
      * id,对应数据库（id）字段
      */
-    @NotBlank(message = "id不能为空",groups = {TC_Delete.class,TC_Find.class})
+    @NotBlank(message = "id不能为空",groups = {TC_Update.class,TC_Delete.class,TC_Find.class})
     private String id;
 
     /**
@@ -52,6 +54,14 @@ public class Permission extends BaseEntity implements Serializable {
      * 对应数据库字段（permission）
      */
     private String operations;
+
+    /**
+     * 使用状态，对应数据库（state）字段
+     * （1：已启用，0：已禁用，-1：已删除）
+     */
+    @NotNull(message = "使用状态不能为空",groups = {TC_Add.class, TC_Update.class})
+    @Range(min = -1,max = 1,message = "用户使用状态范围只能在-1~1",groups = {TC_Update.class})
+    private Integer state;
 
     /**
      * 权限描述,对应数据库（describe）字段
@@ -95,6 +105,14 @@ public class Permission extends BaseEntity implements Serializable {
         this.operations = operations;
     }
 
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
     public String getDescribe() {
         return describe;
     }
@@ -105,9 +123,5 @@ public class Permission extends BaseEntity implements Serializable {
 
     public List<String> getOperationList() {
         return Arrays.asList(this.operations.trim().split(","));
-    }
-
-    public void setOperationList(List<String> operationList) {
-        this.operationList = operationList;
     }
 }

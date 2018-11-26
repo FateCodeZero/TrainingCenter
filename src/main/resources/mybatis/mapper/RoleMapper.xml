@@ -8,7 +8,7 @@
 
 
     <sql id="roleColumns">
-      id,`name`,`describe`,remarks,create_user_id,create_date,update_user_id,update_date
+      id,`name`,state,`describe`,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public Role getRoleById(@Param("id") String id);
@@ -53,8 +53,8 @@
     -->
     <insert id="add">
         INSERT INTO tab_role(<include refid="roleColumns"></include>)
-        VALUES (#{role.id},#{role.name},#{role.describe},#{role.permission_ids},#{role.remarks},#{role.create_user_id},#{role.create_date},
-        #{role.update_user_id},#{role.update_date}
+        VALUES (#{role.id},#{role.name},#{role.state},#{role.describe},#{role.remarks},#{role.createUserId},#{role.createDate},
+        #{role.updateUserId},#{role.updatDate}
     </insert>
 
     <!--
@@ -66,6 +66,9 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="role.name != null and role.name != '' ">
                 `name` = #{role.name},
+            </if>
+            <if test="role.state != null">
+                state = #{role.state},
             </if>
             <if test="role.describe != null and role.describe != '' ">
                 `describe` = #{role.describe},
@@ -98,7 +101,7 @@
         获取登录用户所含角色集合
         -->
     <select id="getRolesByUserId" resultType="com.trainingcenter.bean.Role">
-        SELECT r.id,r.name,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
+        SELECT r.id,r.name,r.state,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
         FROM tab_role r LEFT JOIN tab_user_role ur ON r.id = ur.role_id
         WHERE ur.user_id = #{userId}
         <trim prefixOverrides="AND">
@@ -116,7 +119,7 @@
        获取含有指定权限的所有角色
                                                          -->
     <select id="getRolesByPermissionId" resultType="com.trainingcenter.bean.Role">
-        SELECT r.id,r.name,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
+        SELECT r.id,r.name,r.state,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
         FROM tab_role r LEFT JOIN tab_role_permission rp ON r.id = rp.role_id
         WHERE rp.permission_id = #{permissionId}
         <trim prefixOverrides="AND">

@@ -54,21 +54,14 @@
             </li>
         </ul>
         <ul class="layui-nav layui-layout-right" lay-filter="nav-user">
-            <li class="layui-nav-item">
-                <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
-                </a>
+            <li class="layui-nav-item" style="float: right">
+                <a href="#"><img src="//t.cn/RCzsdCq" class="layui-nav-img">用户A</a>
                 <dl class="layui-nav-child">
-                    <dd>
-                        <a href="">基本资料</a>
-                    </dd>
-                    <dd>
-                        <a href="">安全设置</a>
-                    </dd>
+                    <dd><a>个人中心</a></dd>
+                    <dd><a>消息通知</a></dd>
+                    <dd><a href="${webRoot}/index.jsp">网站首页</a></dd>
+                    <dd><a href="${webRoot}/user/logout">退出</a></dd>
                 </dl>
-            </li>
-            <li class="layui-nav-item">
-                <a href="">退了</a>
             </li>
         </ul>
     </div>
@@ -205,8 +198,11 @@
                 name: '菜单管理'
                 , url: "${webRoot}/webpages/admin/resource_list.jsp"
             }, {
+                name: '权限管理'
+                , url: "${webRoot}/webpages/admin/permission_list.jsp"
+            }, {
                 name: '角色管理'
-                , url: "${webRoot}/webpages/admin/resource_list.jsp"
+                , url: "${webRoot}/webpages/admin/rose_list.jsp"
             }]
         }, {
             name: '父节点2（可以点左侧箭头，也可以双击标题）'
