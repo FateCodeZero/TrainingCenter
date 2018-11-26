@@ -231,3 +231,28 @@ CREATE TABLE `tab_user_role` (
 -- ----------------------------
 INSERT INTO `tab_user_role` VALUES ('a53ccb57-ca3d-4d76-a1a0-40efa11ce343', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '7e0ee84f-216f-41d3-b3b0-832eaea51e79');
 INSERT INTO `tab_user_role` VALUES ('a53ccb57-ca3d-4d76-a1a0-40efa11ce347', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', 'c09b1a67-1ab6-43fc-b1b6-7cd48ad21336');
+-- ----------------------------
+--  Table structure for `tab_training_dynamic`
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_training_dynamic`;
+CREATE TABLE `tab_training_dynamic` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(36) DEFAULT NULL COMMENT '动态培训的标题',
+  `imgs` text COMMENT '动态培训的图片',
+  `content` text COMMENT '培训内容',
+  `remarks` varchar(36) DEFAULT NULL COMMENT '培训备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+--  Records of `tab_training_dynamic`
+-- ----------------------------
+INSERT INTO `tab_training_dynamic` VALUES ('1', '培训1', 'https://goss.veer.com/creative/vcg/veer/800water/veer-155063993.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训1', '培训1', '2018-11-5', '培训1', '2018-11-29');
+INSERT INTO `tab_training_dynamic` VALUES ('2', '培训2', 'https://goss.veer.com/creative/vcg/veer/800water/veer-303342183.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训2', '培训2', '2018-11-5', '培训2', '2018-11-29');
+INSERT INTO `tab_training_dynamic` VALUES ('3', '培训3', 'https://goss.veer.com/creative/vcg/veer/800water/veer-302222696.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训3', '培训3', '2018-11-6', '培训3', '2018-11-14');
+INSERT INTO `tab_training_dynamic` VALUES ('4', '培训4', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147418763.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训4', '培训4', '2018-11-5', '培训4', '2018-11-20');
+INSERT INTO `tab_training_dynamic` VALUES ('5', '培训5', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147424398.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训5', '培训5', '2018-11-6', '培训5', '2018-11-22');

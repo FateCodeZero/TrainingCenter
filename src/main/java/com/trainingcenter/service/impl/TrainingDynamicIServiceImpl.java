@@ -37,6 +37,10 @@ public class TrainingDynamicIServiceImpl implements TrainingDynamicService {
         return StringUtil.isEmpty(id)?null:trainingDynamicMapper.getTrainingDynamicById(id);
     }
 
+    @Override
+    public List<TrainingDynamic> getTrainingDynamics() {
+        return getTrainingDynamics(null, null, null);
+    }
     /**
      *分页获取所以培训动态
      * @param currentPage：当前页

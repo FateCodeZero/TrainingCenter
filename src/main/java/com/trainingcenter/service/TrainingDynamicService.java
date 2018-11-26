@@ -18,6 +18,13 @@ public interface TrainingDynamicService {
      * @return 返回对应的培训动态对象
      */
     public TrainingDynamic getTrainingDynamicById(String id);
+
+    /**
+     * 获取所有资源对象
+     * @return 返回资源对象集合
+     */
+    public List<TrainingDynamic> getTrainingDynamics();
+
     /**
      * 分页获取所以培训动态
      *

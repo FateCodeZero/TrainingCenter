@@ -50,19 +50,19 @@ public class TrainingDynamicController {
             return null;
         }
         List<TrainingDynamic> trainingDynamics = trainingDynamicService.getTrainingDynamics(currentPage, rows, searchContent);
+        Integer total = trainingDynamicService.getTrainingDynamics().size();
 
-        if(trainingDynamics.size() == 0){
-            ajaxJson.setCode(1);
+        if (trainingDynamics.size() == 0){
             ajaxJson.setMsg("暂无数据");
-            return ajaxJson;
         }else {
-            ajaxJson.setCode(1);
-            ajaxJson.setMsg("請求成功");
-            Map<String, Object> map = new ConcurrentHashMap<>();
-            map.put("data",trainingDynamics);
-            ajaxJson.setData(map);
-            return ajaxJson;
+            ajaxJson.setMsg("操作成功");
         }
+
+        Map<String,Object> data = new ConcurrentHashMap<>();
+        data.put("total",total);
+        data.put("items",trainingDynamics);
+        ajaxJson.setData(data);
+        return ajaxJson;
     }
 
     /**
@@ -71,9 +71,28 @@ public class TrainingDynamicController {
      * @return loginPage
      */
     @RequestMapping(value = "/detailsPage", method = RequestMethod.GET)
-    public ModelAndView detailsPage(@RequestParam("id") String id) {
-        String viewName = "static/detailsPage";
-        return new ModelAndView(viewName);
+    @ResponseBody
+    public AjaxJson detailsPage(@RequestParam("id") String id) {
+        AjaxJson ajaxJson = new AjaxJson();
+        if(StringUtil.isNotEmpty(id)){
+            TrainingDynamic trainingDynamic = trainingDynamicService.getTrainingDynamicById(id);
+            if (trainingDynamic == null){
+                ajaxJson.setCode(1);
+                ajaxJson.setMsg("暂无数据");
+                return ajaxJson;
+            }else{
+                ajaxJson.setCode(1);
+                ajaxJson.setMsg("請求成功");
+                Map<String, Object> map = new ConcurrentHashMap<>(); //返回携带的数据
+                map.put("items",trainingDynamic);
+                ajaxJson.setData(map);
+                return ajaxJson;
+            }
+        }else {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("id异常请检查");
+        }
+        return ajaxJson;
     }
 
     /**
@@ -82,9 +101,16 @@ public class TrainingDynamicController {
      * @return loginPage
      */
     @RequestMapping(value = "/addPage", method = RequestMethod.GET)
-    public ModelAndView addPage() {
-        String viewName = "static/addPage";
-        return new ModelAndView(viewName);
+    public ModelAndView addPage(HttpServletRequest request) {
+        String id = request.getParameter("trainingDynamicId");
+        ModelAndView modelAndView =new ModelAndView();
+        if(StringUtil.isNotEmpty(id)){
+            String viewName = "admin/TD_addPage";
+            modelAndView.addObject("trainingDynamic",trainingDynamicService.getTrainingDynamicById(id));
+            modelAndView.setViewName(viewName);
+
+        }
+        return modelAndView;
     }
 
     /**
@@ -97,10 +123,9 @@ public class TrainingDynamicController {
         String id = request.getParameter("trainingDynamicId");
         ModelAndView modelAndView =new ModelAndView();
         if(StringUtil.isNotEmpty(id)){
-            String viewName = "static/updatePage";
+            String viewName = "admin/TD_updatePage";
             modelAndView.addObject("trainingDynamic",trainingDynamicService.getTrainingDynamicById(id));
             modelAndView.setViewName(viewName);
-
         }
         return modelAndView;
     }
@@ -109,6 +134,8 @@ public class TrainingDynamicController {
     @ResponseBody
     public AjaxJson update(@Validated(value = {TC_Update.class}) TrainingDynamic trainingDynamic){
         AjaxJson ajaxJson = new AjaxJson();
+        Integer res;    //操作结果 flag
+
 
         //获取当前用户
         String currentName = getCurrentUsername();
@@ -136,7 +163,16 @@ public class TrainingDynamicController {
         newTD.setUpdateDate(new Date());
         newTD.setUpdateUserId(user.getId());
 
-        return ajaxJson;
+        res=trainingDynamicService.update(newTD);
+        if (res == 0){
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("操作失败，请重试");
+            return ajaxJson;
+        }else {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("操作成功");
+            return ajaxJson;
+        }
     }
 
 
@@ -173,6 +209,15 @@ public class TrainingDynamicController {
         trainingDynamic.setRemarks(remarks);
         trainingDynamic.setCreateUserId(user.getId());
         trainingDynamic.setCreateDate(new Date());
+        Integer add = trainingDynamicService.add(trainingDynamic);
+        if (add==1){
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("添加成功");
+        }else {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("添加失败，请稍后重试");
+        }
+
         return ajaxJson;
     }
 
