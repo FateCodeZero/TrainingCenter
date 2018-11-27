@@ -139,6 +139,9 @@
             if(text === '交通工具'){
                 loadUrl = "${webRoot}/webpages/static/transportation.jsp";
             }
+            if(text === '个人中心'){
+                loadUrl = "${webRoot}/webpages/static/personalCenter.jsp";
+            }
             //通过修改 iframe 的 url 来切换页面，注：要用此方法，点击处<a>标签必须是 href="#"
             $("#IF-body").attr('src', loadUrl);
         });

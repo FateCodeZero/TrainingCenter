@@ -1,0 +1,118 @@
+body{
+    padding: 0px;
+    margin: 0px;
+    border: none;
+}
+h1,h2,h3,h4,h5,h6{
+    font-family: 'Lora', serif;
+
+}
+.personal_background{
+    background-image: url("../images/school.jpg");
+    position: relative;
+    padding: 7em 0;
+}
+.personal_background .overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    content: '';
+    background: rgba(31, 95, 139, 0.7);
+    z-index:1
+}
+.personal_body{
+    margin-right: auto;
+    position: relative;
+    z-index:2;
+    background-color: #FFFFFF;
+}
+.personal_title{
+    font-size:25px;
+    color:#000;
+    margin: 40px 0;
+    padding: 0 40px;
+}
+label.bar-w3-agile {
+    width: 142px;
+    height: 3px;
+    background: #2D6CDF;
+    display: block;
+    margin-top: 10px;
+}
+.header{
+    float: left;
+    text-align: center;
+    margin-right: 16px;
+    padding: 0;
+    cursor: pointer;
+}
+.head{
+    border-radius: 50%;
+    text-align: center;
+}
+.modify{
+    font-size: 14px;
+    color: #3399ea;
+    margin-top: 8px;
+    cursor: pointer;
+}
+.right_c{
+    float: right;
+    padding: 20px 0px;
+}
+.right_info{
+    padding: 0;
+}
+.id_card{
+    padding: 10px 0;
+}
+.id_name{
+    font-size: 14px;
+    color: #999;
+}
+
+.line{
+    height: 1px;
+    background: #e0e0e0;
+}
+.nick{
+    height: 32px;
+    line-height: 32px;
+    overflow: hidden;
+}
+.nickname{
+    float: left;
+    font-size: 14px;
+    color: #4d4d4d;
+    padding: 0;
+}
+.mod{
+    float: right;
+    font-size: 14px;
+    color: #3399ea;
+    cursor: pointer;
+}
+.common{
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
+    color: #4d4d4d;
+}
+.noWid{
+    font-size: 14px;
+    color: #4d4d4d;
+    overflow: hidden;
+}
+.content {
+    float: left;
+    width: 94%;
+}
+
+
+
+
+
+
+

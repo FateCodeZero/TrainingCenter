@@ -38,44 +38,121 @@
                 <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-lg-4 col-md-4">
-                <div class="fh5co-blog animate-box">
-                    <a href="#" class="blog-img-holder" style="background-image: url(${webRoot}/webpages/static/images/project-1.jpg);"></a>
-                    <div class="blog-text">
-                        <h3><a href="${webRoot}/webpages/static/news.jsp">Healty Lifestyle &amp; Living</a></h3>
-                        <span class="posted_on">March. 15th</span>
-                        <span class="comment"><a href="">21<i class="icon-speech-bubble"></i></a></span>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4">
-                <div class="fh5co-blog animate-box">
-                    <a href="#" class="blog-img-holder" style="background-image: url(${webRoot}/webpages/static/images/project-2.jpg);"></a>
-                    <div class="blog-text">
-                        <h3><a href="#">Healty Lifestyle &amp; Living</a></h3>
-                        <span class="posted_on">March. 15th</span>
-                        <span class="comment"><a href="">21<i class="icon-speech-bubble"></i></a></span>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4">
-                <div class="fh5co-blog animate-box">
-                    <a href="#" class="blog-img-holder" style="background-image: url(${webRoot}/webpages/static/images/project-3.jpg);"></a>
-                    <div class="blog-text">
-                        <h3><a href="#">Healty Lifestyle &amp; Living</a></h3>
-                        <span class="posted_on">March. 15th</span>
-                        <span class="comment"><a href="">21<i class="icon-speech-bubble"></i></a></span>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="allNews" class="row"></div>
+        <div id="allNews_pagination" class="text-center"></div>
     </div>
 </div>
 
 </body>
+<script type="text/javascript">
+
+    layui.use('laypage', function(){
+
+        $(document).ready(function loading(){
+
+            getNewsListPage();
+            IFrameResize();
+        });
+
+        //获取getNewsListPage数据，完成DIV追加，返回总条数
+        function getNewsListPage(currentPage){
+            //首次加载，当前页为第一页时传入参数为空
+            if (currentPage == null){
+                currentPage = 1;
+            }
+
+            $.ajax({
+                type: 'GET',
+                url: "${webRoot}/newsInfo/listPage",
+                data: {currentPage:currentPage,rows:9},
+                dataType: "json",
+                success: function (data) {
+                    var jsonData = eval(data);
+                    var code = jsonData.code;
+                    var msg = jsonData.msg;
+
+                    if(code == 1){
+
+                        var allNews = jsonData.data.items;
+                        var newsTotal = Math.ceil((jsonData.data.total)/9);
+
+                        $.each(allNews,function (index,allNews) {
+                            var id = allNews.id;
+                            var title = allNews.title;
+                            var content = allNews.content;
+                            var imgs = allNews.imgs;
+                            var remarks = allNews.remarks;
+                            var createUserId = allNews.createUserId;
+                            var createDate = allNews.createDate;
+                            var updateUserId = allNews.updateUserId;
+                            var updateDate = allNews.updateDate;
+
+                            /*截取字符串，p标签里面的文字长度必须一样长，否则页面会乱码*/
+                            if(content.length > 60 ){
+                                content = content.substring(0,60);
+                            }
+                            if(title.length > 25 ){
+                                title = title.substring(0,25) +"…";
+                            }
+
+
+                            var allNews_div = ' <div class="col-lg-4 col-md-4"> '+
+                                '                      <div class="fh5co-blog animate-box">'+
+                                '                              <a id="'+id+'" target="news" class="blog-img-holder" style="background-image: url('+imgs+');"></a>' +
+                                '                          <div class="blog-text">' +
+                                '                              <h3><a id="'+id+'" target="news">'+title+'</a></h3>' +
+                                '                              <span class="posted_on">'+createDate+'</span>' +
+                                '                              <p>'+content+'</p>'+
+                                '                          </div>' +
+                                '                      </div>' +
+                                '              </div>';
+
+                            if (index == 0) {
+                                $("#allNews").html(allNews_div);
+                            }else {
+                                $("#allNews").append(allNews_div);
+                            }
+
+                            $("a[target='news']").on('click',function () {
+                                //获取当前被点击的条数ID，携带ID跳转到动态培训详情页面
+                                var news_id = $(this).attr("id");
+                                window.location.href = "news.jsp?id="+news_id+"";
+                            });
+                        });
+                        //生成分页
+                        createlayPage(newsTotal,currentPage);
+                        //再次计算高度，包含ajax新增的数据流
+                        IFrameResize();
+                    }else {
+                        $("#allNews").html('<h3>暂无数据</h3>');
+                    }
+
+                }
+            });
+        }
+
+        /*生成分页*/
+        function createlayPage(newsTotal,currentPage) {
+
+            var laypage = layui.laypage;
+            laypage.render({
+                elem: 'allNews_pagination'      //div的ID
+                , count: newsTotal        //数据总数，从服务端得到
+                , limit: 1              //每页显示数据条数
+                , groups: 3             //连续出现的页码数
+                , theme: '#437be2'           //自定义主题颜色
+                ,curr:currentPage             //当前页
+                , jump: function (obj, first) {
+                    //页码切换回调
+                    if(!first){
+                        //重新获取新分页数据
+                        getNewsListPage(obj.curr);
+                    }
+
+                }
+            });
+        }
+    });
+</script>
+
 </html>
