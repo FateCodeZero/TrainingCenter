@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2018-11-27 01:57:02
+Date: 2018-11-27 14:57:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -85,6 +85,7 @@ CREATE TABLE `tab_permission` (
   `name` varchar(100) NOT NULL COMMENT '权限名称',
   `resource_id` varchar(36) NOT NULL COMMENT '权限对应资源ID',
   `operations` varchar(50) DEFAULT NULL COMMENT '可执行操作',
+  `state` int(2) DEFAULT '1' COMMENT '使用状态（1：已启用，0已禁用）',
   `describe` varchar(500) DEFAULT NULL COMMENT '权限描述',
   `remarks` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_user_id` varchar(36) DEFAULT NULL COMMENT '创建人ID',
@@ -108,7 +109,7 @@ CREATE TABLE `tab_resource` (
   `id` varchar(36) NOT NULL COMMENT '主键ID',
   `name` varchar(100) NOT NULL COMMENT '资源名称',
   `url` varchar(255) NOT NULL COMMENT '资源对应URL',
-  `state` int(2) DEFAULT '1' COMMENT '资源使用状态',
+  `state` int(2) DEFAULT '1' COMMENT '使用状态（1：已启用，0已禁用）',
   `describe` varchar(500) DEFAULT NULL COMMENT '资源描述',
   `remarks` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_user_id` varchar(36) DEFAULT NULL COMMENT '创建人ID',
@@ -131,6 +132,7 @@ DROP TABLE IF EXISTS `tab_role`;
 CREATE TABLE `tab_role` (
   `id` varchar(36) NOT NULL COMMENT '主键ID',
   `name` varchar(100) NOT NULL COMMENT '角色名称',
+  `state` int(2) DEFAULT '1' COMMENT '使用状态（1：已启用，0已禁用）',
   `describe` varchar(500) DEFAULT NULL COMMENT '角色描述',
   `remarks` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_user_id` varchar(36) DEFAULT NULL COMMENT '创建人ID',
@@ -144,8 +146,8 @@ CREATE TABLE `tab_role` (
 -- ----------------------------
 -- Records of tab_role
 -- ----------------------------
-INSERT INTO `tab_role` VALUES ('7e0ee84f-216f-41d3-b3b0-832eaea51e79', 'USER', '普通用户角色', '普通用户角色，在用户注册时会默认添加', null, '2018-11-18 00:00:00', null, null);
-INSERT INTO `tab_role` VALUES ('c09b1a67-1ab6-43fc-b1b6-7cd48ad21336', 'ADMIN', '超级管理员角色', '超级管理员', null, '2018-11-18 00:00:00', null, null);
+INSERT INTO `tab_role` VALUES ('7e0ee84f-216f-41d3-b3b0-832eaea51e79', 'USER', '1', '普通用户角色', '普通用户角色，在用户注册时会默认添加', null, '2018-11-18 00:00:00', null, null);
+INSERT INTO `tab_role` VALUES ('c09b1a67-1ab6-43fc-b1b6-7cd48ad21336', 'ADMIN', '1', '超级管理员角色', '超级管理员', null, '2018-11-18 00:00:00', null, null);
 
 -- ----------------------------
 -- Table structure for tab_role_permission
