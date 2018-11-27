@@ -7,7 +7,6 @@
 
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
-    <link rel="stylesheet" href="${webRoot}/webpages/static/css/body.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/animate.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/bootstrap.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/magnific-popup.css">

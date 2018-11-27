@@ -10,8 +10,7 @@
 <%@include file="/context/mytags.jsp" %>
 <html>
 <head>
-    <title>培训动态</title>
-    <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css">
+    <title>培训动态详情</title>
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/dynamic.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/animate.css">
@@ -33,28 +32,67 @@
 
 
 <div  id="fh5co-about">
-    <div class="container">
-        <div class="row animate-box">
-            <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">
-                <h2>培训动态详情</h2>
-                <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
-            </div>
-        </div>
-        <div class="col-md-6 animate-box">
-            <span>About Our University</span>
-            <h2 id="dynamic_title">Web 前端企业级开发</h2>
-            <p>Web前端开发是从网页制作演变而来的，之前使用Photoshop和Dreamweaver就可以方便的制作网页。但如果要让网页的内容更加生动，提供更多交互形式的用户体验，以满足企业级别的需求。 .</p>
-            <p>那么还需要掌握基本的Web前端开发技术，其中包括：CSS、HTML、DOM、Ajax、JavaScript等。.</p>
-            <p>本套课程主要从就业的需求为向导，适合于希望从事WEB网页开发的工作的学员，属于网页制作的进阶课程，学习本课程的学员需先了解HTML语言，课程将采用手工书写代码的方式教学，以满足代码开发的需要；课程重点在于CSS+DIV的应用、JavaScript程序设计及Ajax、Html5等前沿技术的探讨</p>
-        </div>
-        <div class="col-md-6 img_height">
-            <img class="img-responsive" src="${webRoot}/webpages/static/images/project-9.jpg" alt="Free HTML5 Bootstrap Template">
-        </div>
-    </div>
+    <div id="dynamic_details" class="container"></div>
+    <div class="col-md-12" style="height: 100px;"></div>
 </div>
 </body>
 
 <script>
+
+    $(document).ready(function () {
+
+        var id = $.Request('id');
+        $.ajax({
+            type: 'GET',
+            url: "${webRoot}/trainingDynamic/detailsPage",
+            data: {id:id},
+            dataType: "json",
+            success:function (data) {
+                var jsonData = eval(data);
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+
+                if(code == 1){
+                    var dynamic_details = jsonData.data.items;
+                    var id = dynamic_details.id;
+                    var title = dynamic_details.title;
+                    var content = dynamic_details.content;
+                    var imgs = dynamic_details.imgs;
+
+                    var dynamic_details_div = '    <div id="'+id+' " class="container">' +
+                        '        <div class="row animate-box">' +
+                        '            <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">' +
+                        '                <h2>培训动态详情</h2>' +
+                        '                <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>\n' +
+                        '            </div>' +
+                        '        </div>' +
+                        '        <div class="col-md-6 animate-box">' +
+                        '            <span>About Our University</span>' +
+                        '            <h2>'+title+'</h2>' +
+                        '            <p>'+content+'</p>' +
+                        '        </div>\n' +
+                        '        <div class="col-md-6 img_height">' +
+                        '            <img class="img-responsive"  src="'+imgs+'">' +
+                        '        </div>' +
+                        '    </div>';
+
+                    $("#dynamic_details").html(dynamic_details_div);
+
+                }else {
+                    alert(msg);
+                }
+
+
+
+            },
+            error:function (msg) {
+                alert(msg);
+            }
+
+
+        })
+        IFrameResize();
+    })
 
 </script>
 </html>

@@ -13,7 +13,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>首页内容</title>
 
-    <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/body.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/animate.css">
@@ -151,7 +150,11 @@
                 </div>
             </div>
             <div id="dynamic" class="row"></div>
+            <div id="dynamic_pagination" class="text-center"></div>
+
+
         </div>
+
     </div>
 
     <!-- 广告 -->
@@ -183,9 +186,11 @@
 
 <script type="text/javascript">
 
-    layui.use('carousel', function(){
+    layui.use(['carousel','laypage'], function(){
+
 
         var carousel = layui.carousel;
+        var laypage = layui.laypage;
         //建造实例
         carousel.render({
             elem: '#carousel-body'
@@ -195,66 +200,85 @@
             ,anim: 'default' //切换动画方式
         });
 
-
-
-
-    });
-
-    $(document).ready(function(){
-
-        $.ajax({
-            type: 'GET',
-            url: "${webRoot}/trainingDynamic/listPage",
-            data: {currentPage:1,rows:4},
-            dataType: "json",
-            success: function (data) {
-                var jsonData = eval(data);
-                var code = jsonData.code;
-                var msg = jsonData.msg;
-                    if(code == 1){
-                        var trainingDynamics = jsonData.data.data;
-
-                    $.each(trainingDynamics,function (index,trainingDynamic) {
-                        var id = trainingDynamic.id;
-                        var title = trainingDynamic.title;
-                        var content = trainingDynamic.content;
-                        var imgs = trainingDynamic.imgs;
-                        var remarks = trainingDynamic.remarks;
-                        var createUserId = trainingDynamic.createUserId;
-                        var createData = trainingDynamic.createData;
-                        var updateUserId = trainingDynamic.updateUserId;
-                        var updateData = trainingDynamic.updateData;
-
-                        /*截取字符串，p标签里面的文字长度必须一样长，否则页面会乱码*/
-                        if(content.length > 60 ){
-                            content = content.substring(0,60);
-                        }
-
-
-                        var dynamic_div = ' <div class="col-md-6 animate-box"><div class="course"><a href="#" class="course-img" style="background-image: url('+imgs+');"></a>' +
-                            '                        <div id="'+id+'" class="desc">' +
-                            '                            <h3><a href="#">'+title+'</a></h3>' +
-                            '                            <p>'+content+'</p>' +
-                            '                            <span><a href="#" class="btn btn-primary btn-sm btn-course">&amp; 了解 更多</a></span>' +
-                            '                        </div>' +
-                            '                    </div>' +
-                            '                </div>';
-
-                        if (index == 0) {
-                            $("#dynamic").html(dynamic_div);
-                        }else {
-                            $("#dynamic").append(dynamic_div);
-                        }
-                    });
-                }else {
-                    $("#dynamic").html('<h3>暂无数据</h3>');
-                }
+        //执行一个laypage实例
+        laypage.render({
+            elem: 'dynamic_pagination'      //注意，这里的 test1 是 ID，不用加 # 号
+            , count: 200        //数据总数，从服务端得到
+            , limit: 10              //每页显示数据条数
+            , limits: [4, 8, 16, 32, 64]
+            , groups: 3             //连续出现的页码数
+            , theme: '#437be2'           //自定义主题颜色
+            , jump: function (obj, first) {    //页码切换回调
+                //obj包含了当前分页的所有参数，比如：
+//                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+//                console.log(obj.limit); //得到每页显示的条数
             }
         });
 
+        $(document).ready(function(){
+
+            $.ajax({
+                type: 'GET',
+                url: "${webRoot}/trainingDynamic/listPage",
+                data: {currentPage:1,rows:4},
+                dataType: "json",
+                success: function (data) {
+                    var jsonData = eval(data);
+                    var code = jsonData.code;
+                    var msg = jsonData.msg;
+                    if(code == 1){
+                        var trainingDynamics = jsonData.data.items;
+                        var dynamicsTotal = jsonData.data.total;
+
+                        $.each(trainingDynamics,function (index,trainingDynamic) {
+                            var id = trainingDynamic.id;
+                            var title = trainingDynamic.title;
+                            var content = trainingDynamic.content;
+                            var imgs = trainingDynamic.imgs;
+                            var remarks = trainingDynamic.remarks;
+                            var createUserId = trainingDynamic.createUserId;
+                            var createData = trainingDynamic.createData;
+                            var updateUserId = trainingDynamic.updateUserId;
+                            var updateData = trainingDynamic.updateData;
+
+                            /*截取字符串，p标签里面的文字长度必须一样长，否则页面会乱码*/
+                            if(content.length > 60 ){
+                                content = content.substring(0,60);
+                            }
+
+                            var dynamic_div = ' <div class="col-md-6 animate-box"><div class="course"><a href="#" class="course-img" style="background-image: url('+imgs+');"></a>' +
+                                '                        <div class="desc">' +
+                                '                            <h3><a href="#">'+title+'</a></h3>' +
+                                '                            <p>'+content+'</p>' +
+                                '                            <span><a id="'+id+'" target="dynamic_a"  class="btn btn-primary btn-sm btn-course">&amp; 了解 更多</a></span>' +
+                                '                        </div>' +
+                                '                    </div>' +
+                                '                </div>';
+
+
+                            if (index == 0) {
+                                $("#dynamic").html(dynamic_div);
+                            }else {
+                                $("#dynamic").append(dynamic_div);
+                            }
+
+                            $("a[target='dynamic_a']").on('click',function () {
+                                //获取当前被点击的条数ID，携带ID跳转到动态培训详情页面
+                                var dynamic_id = $(this).attr("id");
+                                window.location.href = "dynamic.jsp?id="+dynamic_id+"";
+                            });
+
+                        });
+                    }else {
+                        $("#dynamic").html('<h3>暂无数据</h3>');
+                    }
+                }
+            });
+
+            //再次计算高度，包含ajax新增的数据流
+            IFrameResize();
+        });
     });
-
-
 
 </script>
 
