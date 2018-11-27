@@ -128,7 +128,7 @@ public class PermissionController {
             ajaxJson.setMsg("更新失败，请先选择要更新的对象");
             return ajaxJson;
         }
-
+        //从数据库读取旧的对象进行更新
         Permission oldPermission = permissionService.getPermissionById(permission.getId());
         if (oldPermission == null){
             ajaxJson.setCode(0);

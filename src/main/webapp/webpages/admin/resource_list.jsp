@@ -252,7 +252,7 @@
             area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/resource/addOrUpdatePage',
+            content: '${webRoot}/webpages/admin/resource_add.jsp',
             success: function (layero, index) {
                 //                AddLayero = layero;
                 //				        (AddLayero);
@@ -270,7 +270,7 @@
             area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/resource/addOrUpdatePage?resourceId=' + id,
+            content: '${webRoot}/webpages/admin/resource_edit.jsp?id=' + id,
             success: function (layero, index) {
             },
             end: function () {

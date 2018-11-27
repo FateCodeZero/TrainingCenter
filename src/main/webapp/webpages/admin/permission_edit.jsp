@@ -19,7 +19,7 @@
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
-    <script src="${webRoot}/webpages/static/js/utils.js"></script>
+    <script src="${webRoot}/webpages/admin/js/utils.js"></script>
 </head>
 <body>
 <br>
@@ -298,20 +298,6 @@
         }
         $("#describe").html(permission.describe);
         $("#remarks").html(permission.remarks);
-    }
-
-    /**
-     * 获取URL后携带的参数
-     * @param paramName:参数名称
-     */
-    function getUrlParam(paramName) {
-        var query = window.location.search.substring(1);
-        var vars = query.split("&");
-        for (var i=0;i<vars.length;i++) {
-            var pair = vars[i].split("=");
-            if(pair[0] == paramName){return pair[1];}
-        }
-        return(false);
     }
 
     /**

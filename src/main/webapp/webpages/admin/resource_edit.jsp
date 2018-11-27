@@ -19,6 +19,7 @@
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
+    <script src="${webRoot}/webpages/admin/js/utils.js"></script>
 </head>
 <body>
 <br>
@@ -45,8 +46,8 @@
                 <div class="col-sm-10">
                     <select class="form-control" name="state" id="state">
                         <option value="1">选择状态</option>
-                        <option value="1">启用</option>
-                        <option value="0">禁用</option>
+                        <option value="1" id="enable">启用</option>
+                        <option value="0" id="unEnable">禁用</option>
                     </select>
                 </div>
             </div>
@@ -81,7 +82,78 @@
     $(document).ready(function () {
         //页面加载完成
         //……
+
+        /*从URL获取对象ID*/
+        var resourceId = getUrlParam('id');
+        /*通过ID获取对象信息*/
+        var resource = getResourceById(resourceId);
+        /*初始化编辑数据*/
+        editDataInitialization(resource);
     });
+
+    /**
+     * 编辑数据初始化
+     * @param resource：要编辑的资源对象
+     */
+    function editDataInitialization(resource) {
+        if (resource === null || resource === '') {
+            layer.alert('数据初始化失败，对象不能为空', {
+                time: 3000,
+                icon: 2
+            });
+            return false;
+        }
+        $("#id").val(resource.id);
+        $("#name").val(resource.name);
+        $("#url").val(resource.url);
+        var state = resource.state;
+        if(state === 1){
+            $("#enable").attr('selected','selected')
+        }else {
+            $("#unEnable").attr('selected','selected')
+        }
+        $("#describe").html(resource.describe);
+        $("#remarks").html(resource.remarks);
+    }
+
+    /**
+     * 通过 id 获取资源
+     * @param id
+     * @returns {*}
+     */
+    function getResourceById(id) {
+        if (id == null || id == '') {
+            layer.alert('id不能为空！', {
+                time: 3000,
+                icon: 2
+            });
+            return false;
+        }
+        var resource = null;
+        var data = {id: id};
+        $.ajax({
+            url: "${webRoot}/resource/getResourceById",
+            type: "get",
+            async: false,    //关闭异步请求
+            data: data,
+            dataType: "json",
+            success: function (data) {
+                var jsonData = eval(data); //数据解析
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+                if (code == 1) {
+                    resource = jsonData.data.resource;
+                } else {
+                    layer.alert(msg, {
+                        time: 3000,
+                        icon: 2
+                    });
+                    return false;
+                }
+            }
+        });
+        return resource;
+    }
 
     //提交
     $("#submit").click(function () {
@@ -92,7 +164,7 @@
         var describe = $("#describe").val();
         var remarks = $("#remarks").val();
 
-        if (name == null || name == "") {
+        if (name === null || name === '') {
             layer.msg("请填写菜单名称！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -104,7 +176,7 @@
             $("#name").css("border", "1px solid #009688");
             $("#name").blur();      //失去焦点
         }
-        if (url == null || url == "") {
+        if (url === null || url === '') {
             layer.msg("请填写菜单URL！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -116,7 +188,7 @@
             $("#url").css("border", "1px solid #009688");
             $("#url").blur();      //失去焦点
         }
-        if (state == null || state == "") {
+        if (state === null || state === '') {
             layer.msg("请选择菜单使用状态！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -139,7 +211,7 @@
         };
 
         $.ajax({
-            url: "${webRoot}/resource/add",
+            url: "${webRoot}/resource/update",
             type: "post",
             data: data,
             dataType: "json",
@@ -152,7 +224,7 @@
                         time: 3000,
                         icon: 1
                     });
-                    closeView();    //关闭窗口
+                    /*close();*/    //关闭窗口
                 } else {
                     layer.alert(msg, {
                         time: 3000,
@@ -164,10 +236,10 @@
     });
 
     $("#close").click(function () {
-        closeView();
+        close();
     });
 
-    function closeView() {
+    function close() {
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index); //再执行关闭
     }
