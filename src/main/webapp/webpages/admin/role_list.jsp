@@ -5,14 +5,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>资源菜单管理</title>
+    <title>角色管理</title>
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css" charset="UTF-8">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css" charset="UTF-8">
 
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js" charset="UTF-8"></script>
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js" charset="UTF-8"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js" charset="UTF-8"></script>
-
 </head>
 
 <body>
@@ -55,6 +54,7 @@
 </script>
 
 <script type="text/javascript">
+    var layer_window = ''; 	//定义全局变量,用以储存弹出的窗口的窗口对象
     var searchContent = $("#searchContent").val(); //模糊查询内容
     var table;  //layui table
 
@@ -65,13 +65,13 @@
         element.on('tab', function (data) {
             var lay_id = this.getAttribute('lay-id');
             console.log(lay_id); //当前Tab标题所在的原始DOM元素
-//            if (lay_id === 'enable'){
-//                table.reload('table1',{
-//                    where: {//接口需要的其它参数
-//                        searchContent: 1
-//                    }
-//                });
-//            }
+            /*if (lay_id === 'enable'){
+                table.reload('table1',{
+                    where: {//接口需要的其它参数
+                        searchContent: 1
+                    }
+                });
+            }*/
         });
         element.render('tab');
     });
@@ -86,20 +86,19 @@
             , toolbar: '#table-head'
             , height: 430
             , title: '菜单管理'
-            , url: '${webRoot}/resource/list' //数据接口
+            , url: '${webRoot}/role/list' //数据接口
             , page: true //开启分页
             , limit: 10 //每页显示多少条数据
             , cols: [[ //表头
                 {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
                 , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
                 , {field: 'id', title: 'ID', hide: true, width: 100, align: 'center'}
-                , {field: 'name', title: '菜单名称', width: 100, align: 'center'}
-                , {field: 'url', title: '对应URL', width: 150, align: 'center'}
-                , {field: 'describe', title: '资源描述', width: 150, align: 'center'}
+                , {field: 'name', title: '角色名称', width: 150, align: 'center'}
+                , {field: 'describe', title: '权限描述', width: 150, align: 'center'}
                 , {field: 'remarks', title: '备注', width: 150, align: 'center'}
                 , {
                     field: 'state', title: '使用状态', width: 100, align: 'center', templet: function (d) {
-                        if (d.state == 1) {
+                        if (d.state === 1) {
                             return '<span class="layui-btn layui-btn-xs">已启用</span>'
                         } else {
                             return '<span class="layui-btn layui-btn-danger layui-btn-xs">已禁用</span>'
@@ -140,7 +139,7 @@
                 var msg = res.msg;
                 var data = res.data.items;
                 var count = 0;
-                if (data != null){
+                if (data != null) {
                     count = data.total;
                 }
                 return {
@@ -240,22 +239,21 @@
                 enableOpt(data, state);
             } else if (obj.event === 'unEnable') {  //禁用
                 state = 0;
-                enableOpt(data, state);
+                enableOpt(data,state);
             }
         });
     });
 
     function addData() {
         layer.open({
-            title: '添加菜单',
+            title: '添加角色',
             type: 2,
             area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/webpages/admin/resource_add.jsp',
+            content: '${webRoot}/webpages/admin/role_add.jsp',
             success: function (layero, index) {
-                //                AddLayero = layero;
-                //				        (AddLayero);
+                layer_window = layero;   //获取弹出窗口的窗口对象
             },
             end: function () {
                 location.reload(); //回调函数，刷新页面
@@ -265,18 +263,25 @@
 
     function editData(id) {
         layer.open({
-            title: '编辑菜单',
+            title: '编辑角色',
             type: 2,
             area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/webpages/admin/resource_edit.jsp?id=' + id,
+            content: '${webRoot}/webpages/admin/role_edit.jsp?id=' + id,
             success: function (layero, index) {
+                layer_window = layero;   //获取弹出窗口的窗口对象
             },
             end: function () {
                 location.reload(); //回调函数，刷新页面
             }
         });
+    }
+
+    //获取弹出窗口返回的json格式的数据
+    function getBackPermissionData(JsonData) {		//返回权限数据
+        var resourceSelectWindow = window[layer_window.find('iframe')[0]['name']];	//获取子窗口的窗口对象
+        resourceSelectWindow.window.setPermissionData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
     }
 
     //删除
@@ -293,7 +298,7 @@
                     ids: ids
                 };
                 $.ajax({
-                    url: "${webRoot}/resource/delete",
+                    url: "${webRoot}/role/delete",
                     type: "post",
                     data: data,
                     dataType: "json",
@@ -301,7 +306,7 @@
                         var jsonData = eval(data); //数据解析
                         var code = jsonData.code;
                         var msg = jsonData.msg;
-                        if (code == 1) {
+                        if (code === 1) {
                             layer.alert(msg, {
                                 time: 3000,
                                 icon: 1
@@ -319,7 +324,7 @@
     }
 
     //启/禁用操作
-    function enableOpt(obj, state) {
+    function enableOpt(obj,state) {
         if (obj.id === null || obj.id === '' || state === null || state === '') {
             layer.alert('请先选择要操作的数据', {
                 time: 3000,
@@ -327,14 +332,15 @@
             });
             return false;
         } else {
+            /*将更新所必须的字段一起传过去*/
             var data = {
                 id: obj.id,
                 name: obj.name,
-                url: obj.url,
-                state: state
+                state: state,
+                resourceId: obj.resourceId
             };
             $.ajax({
-                url: "${webRoot}/resource/addOrUpdate",
+                url: "${webRoot}/role/update",
                 type: "post",
                 data: data,
                 dataType: "json",
@@ -342,7 +348,7 @@
                     var jsonData = eval(data);
                     var code = jsonData.code;
                     var msg = jsonData.msg;
-                    if (code == 1) {
+                    if (code === 1) {
                         layer.msg(msg);
                     } else {
                         layer.alert(msg, {
@@ -369,7 +375,7 @@
             });
             return false;
         }
-        var user = '';
+        var user = null;
         var data = {id: id};
         $.ajax({
             url: "${webRoot}/user/getUserById",

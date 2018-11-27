@@ -52,7 +52,7 @@ public class ResourceController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/listPage")
+    @RequestMapping("/list")
     public AjaxJson getResources(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent) {
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null) {

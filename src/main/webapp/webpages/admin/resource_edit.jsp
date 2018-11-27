@@ -11,7 +11,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>添加菜单</title>
+    <title>编辑菜单</title>
 
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css">
@@ -122,7 +122,7 @@
      * @returns {*}
      */
     function getResourceById(id) {
-        if (id == null || id == '') {
+        if (id === null || id === '') {
             layer.alert('id不能为空！', {
                 time: 3000,
                 icon: 2
@@ -141,7 +141,7 @@
                 var jsonData = eval(data); //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code == 1) {
+                if (code === 1) {
                     resource = jsonData.data.resource;
                 } else {
                     layer.alert(msg, {
@@ -163,6 +163,19 @@
         var state = $("#state").val();
         var describe = $("#describe").val();
         var remarks = $("#remarks").val();
+
+        if (id === null || id === ''){
+            var msg = '<div style="text-align: center"><span style="color: #FF5722;font-size: large">对象不存在或已被删除，</span><br>即将返回列表界面。</div>';
+            layer.confirm(msg, {
+                    btn: ['确定', '取消']//按钮
+                }
+                , function () { //确定之后执行
+                    closeView();    //关闭当前窗口
+                }, function () { //取消之后执行
+                    closeView();    //关闭当前窗口
+                }
+            );
+        }
 
         if (name === null || name === '') {
             layer.msg("请填写菜单名称！", {
@@ -219,7 +232,7 @@
                 var jsonData = eval(data);   //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code == 1) {
+                if (code === 1) {
                     layer.alert(msg, {
                         time: 3000,
                         icon: 1
@@ -236,10 +249,10 @@
     });
 
     $("#close").click(function () {
-        close();
+        closeView();
     });
 
-    function close() {
+    function closeView() {
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index); //再执行关闭
     }

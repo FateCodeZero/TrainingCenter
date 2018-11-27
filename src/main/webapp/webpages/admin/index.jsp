@@ -202,7 +202,7 @@
                 , url: "${webRoot}/webpages/admin/permission_list.jsp"
             }, {
                 name: '角色管理'
-                , url: "${webRoot}/webpages/admin/rose_list.jsp"
+                , url: "${webRoot}/webpages/admin/role_list.jsp"
             }]
         }, {
             name: '父节点2（可以点左侧箭头，也可以双击标题）'

@@ -86,14 +86,14 @@
             , toolbar: '#table-head'
             , height: 430
             , title: '菜单管理'
-            , url: '${webRoot}/permission/listPage' //数据接口
+            , url: '${webRoot}/permission/list' //数据接口
             , page: true //开启分页
             , limit: 10 //每页显示多少条数据
             , cols: [[ //表头
                 {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
                 , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
                 , {field: 'id', title: 'ID', hide: true, width: 100, align: 'center'}
-                , {field: 'name', title: '菜单名称', width: 150, align: 'center'}
+                , {field: 'name', title: '权限名称', width: 150, align: 'center'}
                 , {
                     field: 'resourceId', title: '对应资源', width: 150, align: 'center', templet: function (d) {
                         var resourceId = d.resourceId;
@@ -274,7 +274,7 @@
 
     function editData(id) {
         layer.open({
-            title: '编辑菜单',
+            title: '编辑权限',
             type: 2,
             area: ['1000px', '450px'],
             fix: false, //不固定
@@ -290,7 +290,7 @@
     }
 
     //获取弹出窗口返回的json格式的数据
-    function getBackResourceData(JsonData) {		//返回学校数据
+    function getBackResourceData(JsonData) {		//返回资源数据
         var resourceSelectWindow = window[layer_window.find('iframe')[0]['name']];	//获取子窗口的窗口对象
         resourceSelectWindow.window.setResourceData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
     }
@@ -335,8 +335,8 @@
     }
 
     //启/禁用操作
-    function enableOpt(permission,state) {
-        if (permission.id === null || permission.id === '' || state === null || state === '') {
+    function enableOpt(obj,state) {
+        if (obj.id === null || obj.id === '' || state === null || state === '') {
             layer.alert('请先选择要操作的数据', {
                 time: 3000,
                 icon: 2
@@ -345,10 +345,10 @@
         } else {
             /*将更新所必须的字段一起传过去*/
             var data = {
-                id: permission.id,
-                name: permission.name,
+                id: obj.id,
+                name: obj.name,
                 state: state,
-                resourceId: permission.resourceId
+                resourceId: obj.resourceId
             };
             $.ajax({
                 url: "${webRoot}/permission/update",

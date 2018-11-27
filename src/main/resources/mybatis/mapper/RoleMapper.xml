@@ -54,7 +54,7 @@
     <insert id="add">
         INSERT INTO tab_role(<include refid="roleColumns"></include>)
         VALUES (#{role.id},#{role.name},#{role.state},#{role.describe},#{role.remarks},#{role.createUserId},#{role.createDate},
-        #{role.updateUserId},#{role.updatDate}
+        #{role.updateUserId},#{role.updateDate})
     </insert>
 
     <!--
@@ -76,10 +76,10 @@
             <if test="role.remarks != null and role.remarks != '' ">
                 remarks = #{role.remarks},
             </if>
-            <if test="role.update_user_id != null and role.update_user_id != '' ">
+            <if test="role.updateUserId != null and role.updateUserId != '' ">
                 update_user_id = #{role.updateUserId},
             </if>
-            <if test="role.update_date != null ">
+            <if test="role.updateDate != null ">
                 update_date = #{role.updateDate},
             </if>
         </trim>

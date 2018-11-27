@@ -1,9 +1,9 @@
 package com.trainingcenter.controller;
 
-import com.trainingcenter.bean.Permission;
+import com.trainingcenter.bean.Role;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.controller.validation.TC_Add;
-import com.trainingcenter.service.PermissionService;
+import com.trainingcenter.service.RoleService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.StringUtil;
@@ -27,33 +27,33 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by IntelliJ IDEA.
  * User: YangYi
- * Date: 2018/11/26
- * Time: 16:37
+ * Date: 2018/11/27
+ * Time: 16:49
  */
-@RequestMapping("/permission")
+@RequestMapping("/role")
 @Controller
-public class PermissionController {
-    @Qualifier("permissionService")
+public class RoleController {
+    @Qualifier("roleService")
     @Autowired
-    private PermissionService permissionService;
+    private RoleService roleService;
     @Qualifier("userService")
     @Autowired
     private UserService userService;
 
     @ResponseBody
     @RequestMapping("/list")
-    public AjaxJson getPermissions(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
+    public AjaxJson getRoles(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("数据获取失败，页数不能为空");
             return ajaxJson;
         }else {
-            Integer total = permissionService.getPermissions().size();
-            List<Permission> permissions = permissionService.getPermissions(currentPage,rows,searchContent);
+            Integer total = roleService.getRoles().size();
+            List<Role> roles = roleService.getRoles(currentPage,rows,searchContent);
 
             ajaxJson.setCode(1);
-            if (permissions.size() == 0){
+            if (roles.size() == 0){
                 ajaxJson.setMsg("暂无数据Ծ‸Ծ");
             }else {
                 ajaxJson.setMsg("数据获取成功");
@@ -61,7 +61,7 @@ public class PermissionController {
 
             Map<String,Object> data = new ConcurrentHashMap<>();
             data.put("total",total);
-            data.put("items",permissions);
+            data.put("items",roles);
             ajaxJson.setData(data);
             return ajaxJson;
         }
@@ -69,12 +69,12 @@ public class PermissionController {
 
     /**
      * 数据添加
-     * @param permission 添加的权限对象
+     * @param role
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public AjaxJson add(@Validated(value = {TC_Add.class}) Permission permission){
+    public AjaxJson add(@Validated(value = {TC_Add.class}) Role role){
         String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
         User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
 
@@ -83,19 +83,19 @@ public class PermissionController {
         }
         AjaxJson ajaxJson = new AjaxJson();
 
-        if (permission == null){
+        if (role == null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("添加失败，添加对象不能为空");
             return ajaxJson;
         }
 
-        permission.setId(UUID.randomUUID().toString());
-        permission.setCreateUserId(currentUser.getId());
-        permission.setCreateDate(new Date());
-        permission.setUpdateUserId(currentUser.getId());
-        permission.setUpdateDate(new Date());
+        role.setId(UUID.randomUUID().toString());
+        role.setCreateUserId(currentUser.getId());
+        role.setCreateDate(new Date());
+        role.setUpdateUserId(currentUser.getId());
+        role.setUpdateDate(new Date());
 
-        Integer res = permissionService.add(permission);//操作结果 flag
+        Integer res = roleService.add(role);//操作结果 flag
         if (res == 0){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("添加失败，请重试");
@@ -109,12 +109,12 @@ public class PermissionController {
 
     /**
      * 数据更新
-     * @param permission 要更新的权限对象
+     * @param role:要更新的角色对象
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/update")
-    public AjaxJson update(@Validated(value = {TC_Add.class}) Permission permission){
+    public AjaxJson update(@Validated(value = {TC_Add.class}) Role role){
         String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
         User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
 
@@ -123,47 +123,39 @@ public class PermissionController {
         }
 
         AjaxJson ajaxJson = new AjaxJson();
-        if (permission == null || StringUtil.isEmpty(permission.getId())){
+        if (role == null || StringUtil.isEmpty(role.getId())){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("更新失败，请先选择要更新的对象");
             return ajaxJson;
         }
         //从数据库读取旧的对象进行更新
-        Permission oldPermission = permissionService.getPermissionById(permission.getId());
-        if (oldPermission == null){
+        Role oldRole = roleService.getRoleById(role.getId());
+        if (oldRole == null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("更新失败，对象不存在或已被删除");
             return ajaxJson;
         }
 
-        String name = permission.getName();
+        String name = role.getName();
         if (StringUtil.isNotEmpty(name)){
-            oldPermission.setName(name);
+            oldRole.setName(name);
         }
-        String resourceId = permission.getResourceId();
-        if (StringUtil.isNotEmpty(resourceId)){
-            oldPermission.setResourceId(resourceId);
-        }
-        String operations = permission.getOperations();
-        if (StringUtil.isNotEmpty(operations)){
-            oldPermission.setOperations(operations);
-        }
-        Integer state = permission.getState();
+        Integer state = role.getState();
         if (state != null){
-            oldPermission.setState(state);
+            oldRole.setState(state);
         }
-        String describe = permission.getDescribe();
+        String describe = role.getDescribe();
         if (StringUtil.isNotEmpty(describe)){
-            oldPermission.setDescribe(describe);
+            oldRole.setDescribe(describe);
         }
-        String remarks = permission.getRemarks();
+        String remarks = role.getRemarks();
         if (StringUtil.isNotEmpty(remarks)){
-            oldPermission.setRemarks(remarks);
+            oldRole.setRemarks(remarks);
         }
-        oldPermission.setUpdateUserId(currentUser.getId());
-        oldPermission.setUpdateDate(new Date());
+        oldRole.setUpdateUserId(currentUser.getId());
+        oldRole.setUpdateDate(new Date());
 
-        Integer res = permissionService.update(oldPermission);
+        Integer res = roleService.update(oldRole);
         if (res == 0){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("更新失败，请重试");
@@ -181,8 +173,8 @@ public class PermissionController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/getPermissionById",method = RequestMethod.GET)
-    public AjaxJson getPermissionById(@RequestParam("id") String id){
+    @RequestMapping(value = "/getRoleById",method = RequestMethod.GET)
+    public AjaxJson getRoleById(@RequestParam("id") String id){
         AjaxJson ajaxJson = new AjaxJson();
         if (StringUtil.isEmpty(id)){
             ajaxJson.setCode(0);
@@ -190,8 +182,8 @@ public class PermissionController {
             return ajaxJson;
         }
 
-        Permission permission = permissionService.getPermissionById(id);
-        if (permission == null){
+        Role role = roleService.getRoleById(id);
+        if (role == null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("对象不存在或已被删除");
             return ajaxJson;
@@ -199,7 +191,7 @@ public class PermissionController {
             ajaxJson.setCode(1);
             ajaxJson.setMsg("获取成功");
             Map<String,Object> map = new ConcurrentHashMap<>();
-            map.put("permission",permission);
+            map.put("role",role);
             ajaxJson.setData(map);
             return ajaxJson;
         }
@@ -219,7 +211,7 @@ public class PermissionController {
             ajaxJson.setMsg("请先选择要删除的对象");
             return ajaxJson;
         }
-        Integer res = permissionService.batchDelete(ids);
+        Integer res = roleService.batchDelete(ids);
         if (res == 0){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("删除失败，请重试");

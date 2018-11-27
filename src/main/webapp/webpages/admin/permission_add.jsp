@@ -28,7 +28,6 @@
     <div class="text-left col-sm-10 panel panel-primary">
         <br>
         <form class="form-horizontal" role="form" action="">
-            <input type="hidden" value="" name="id" id="id">
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">权限名称</label>
                 <div class="col-sm-10">
@@ -102,7 +101,7 @@
     //选择权限对应的资源
     $("#selectResource_btn").click(function () {
         parent.layer.open({		//从本页的父页面打开
-            title: '编辑菜单',
+            title: '选择资源',
             type: 2,
             area: ['1000px', '500px'],
             fix: false, //不固定
@@ -119,7 +118,6 @@
 
     //提交
     $("#submit").click(function () {
-        var id = $("#id").val();
         var name = $("#name").val();
         var resourceId = $("#resourceId").val();
         var operations = $("#operations").val().toString();
@@ -127,7 +125,7 @@
         var describe = $("#describe").val();
         var remarks = $("#remarks").val();
 
-        if (name == null || name == "") {
+        if (name === null || name === "") {
             layer.msg("请填写权限名称！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -139,7 +137,7 @@
             $("#name").css("border", "1px solid #009688");
             $("#name").blur();      //失去焦点
         }
-        if (resourceId == null || resourceId == "") {
+        if (resourceId === null || resourceId === "") {
             layer.msg("请选择权限对应的资源！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -151,7 +149,7 @@
             $("#resourceId").css("border", "1px solid #009688");
             $("#resourceId").blur();      //失去焦点
         }
-        if (state == null || state == "") {
+        if (state === null || state === "") {
             layer.msg("请选择权限使用状态！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -165,7 +163,6 @@
         }
 
         var data = {
-            id: id,
             name: name,
             resourceId: resourceId,
             operations: operations,
@@ -183,7 +180,7 @@
                 var jsonData = eval(data);   //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code == 1) {
+                if (code === 1) {
                     layer.alert(msg, {
                         time: 3000,
                         icon: 1

@@ -109,7 +109,7 @@
     //选择权限对应的资源
     $("#selectResource_btn").click(function () {
         parent.layer.open({		//从本页的父页面打开
-            title: '编辑菜单',
+            title: '选择资源',
             type: 2,
             area: ['1000px', '500px'],
             fix: false, //不固定
@@ -134,7 +134,20 @@
         var describe = $("#describe").val();
         var remarks = $("#remarks").val();
 
-        if (name == null || name == "") {
+        if (id === null || id === ''){
+            var msg = '<div style="text-align: center"><span style="color: #FF5722;font-size: large">对象不存在或已被删除，</span><br>即将返回列表界面。</div>';
+            layer.confirm(msg, {
+                    btn: ['确定', '取消']//按钮
+                }
+                , function () { //确定之后执行
+                    closeView();    //关闭当前窗口
+                }, function () { //取消之后执行
+                    closeView();    //关闭当前窗口
+                }
+            );
+        }
+
+        if (name === null || name === "") {
             layer.msg("请填写权限名称！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -146,7 +159,7 @@
             $("#name").css("border", "1px solid #009688");
             $("#name").blur();      //失去焦点
         }
-        if (resourceId == null || resourceId == "") {
+        if (resourceId === null || resourceId === "") {
             layer.msg("请选择权限对应的资源！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -158,7 +171,7 @@
             $("#resourceId").css("border", "1px solid #009688");
             $("#resourceId").blur();      //失去焦点
         }
-        if (state == null || state == "") {
+        if (state === null || state === "") {
             layer.msg("请选择权限使用状态！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -207,10 +220,10 @@
     });
 
     $("#close").click(function () {
-        close();
+        closeView();
     });
 
-    function close() {
+    function closeView() {
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index); //再执行关闭
     }
@@ -256,7 +269,7 @@
 
     /**
      * 编辑数据初始化
-     * @param permission
+     * @param permission 要编辑的权限对象
      */
     function editDataInitialization(permission) {
         if (permission === null || permission === '') {
@@ -306,7 +319,7 @@
      * @returns {*}
      */
     function getResourceById(id) {
-        if (id == null || id == '') {
+        if (id === null || id === '') {
             layer.alert('id不能为空！', {
                 time: 3000,
                 icon: 2
@@ -325,7 +338,7 @@
                 var jsonData = eval(data); //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code == 1) {
+                if (code === 1) {
                     resource = jsonData.data.resource;
                 } else {
                     layer.alert(msg, {

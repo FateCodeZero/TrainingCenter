@@ -28,19 +28,13 @@
         <br>
         <form class="form-horizontal" role="form" action="">
             <div class="form-group">
-                <label for="name" class="col-sm-2 control-label">菜单名称</label>
+                <label for="name" class="col-sm-2 control-label">角色名称</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" name="name" id="name" value="" placeholder="请填写菜单名称">
+                    <input type="text" class="form-control" name="name" id="name" value="" placeholder="请填写角色名称">
                 </div>
             </div>
             <div class="form-group">
-                <label for="url" class="col-sm-2 control-label">URL</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="url" id="url" value="" placeholder="请填写菜单URL">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="state" class="col-sm-2 control-label">菜单使用状态</label>
+                <label for="state" class="col-sm-2 control-label">角色使用状态</label>
                 <div class="col-sm-10">
                     <select class="form-control" name="state" id="state">
                         <option value="1">选择状态</option>
@@ -50,7 +44,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="describe" class="col-sm-2 control-label">资源描述</label>
+                <label for="describe" class="col-sm-2 control-label">角色描述</label>
                 <div class="col-sm-10">
                     <textarea rows="3" class="form-control" name="describe" id="describe"
                               placeholder="描述内容"></textarea>
@@ -85,13 +79,12 @@
     //提交
     $("#submit").click(function () {
         var name = $("#name").val();
-        var url = $("#url").val();
         var state = $("#state").val();
         var describe = $("#describe").val();
         var remarks = $("#remarks").val();
 
-        if (name === null || name === "") {
-            layer.msg("请填写菜单名称！", {
+        if (name == null || name == "") {
+            layer.msg("请填写角色名称！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
             });
@@ -102,20 +95,8 @@
             $("#name").css("border", "1px solid #009688");
             $("#name").blur();      //失去焦点
         }
-        if (url === null || url === "") {
-            layer.msg("请填写菜单URL！", {
-                icon: 2,
-                time: 2000 //2秒关闭（如果不配置，默认是3秒）
-            });
-            $("#url").css("border", "1px solid red");
-            $("#url").focus();
-            return false;
-        } else {
-            $("#url").css("border", "1px solid #009688");
-            $("#url").blur();      //失去焦点
-        }
-        if (state === null || state === "") {
-            layer.msg("请选择菜单使用状态！", {
+        if (state == null || state == "") {
+            layer.msg("请选择角色使用状态！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
             });
@@ -129,14 +110,13 @@
 
         var data = {
             name: name,
-            url: url,
             state: state,
             describe: describe,
             remarks: remarks
         };
 
         $.ajax({
-            url: "${webRoot}/resource/add",
+            url: "${webRoot}/role/add",
             type: "post",
             data: data,
             dataType: "json",
@@ -144,7 +124,7 @@
                 var jsonData = eval(data);   //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code === 1) {
+                if (code == 1) {
                     layer.alert(msg, {
                         time: 3000,
                         icon: 1
