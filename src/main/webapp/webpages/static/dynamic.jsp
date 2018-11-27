@@ -72,26 +72,23 @@
                         '            <p>'+content+'</p>' +
                         '        </div>\n' +
                         '        <div class="col-md-6 img_height">' +
-                        '            <img class="img-responsive"  src="'+imgs+'">' +
+                        '            <img class="img-responsive" style="height:380px;"  src="'+imgs+'">' +
                         '        </div>' +
                         '    </div>';
 
                     $("#dynamic_details").html(dynamic_details_div);
+                    IFrameResize();
 
                 }else {
                     alert(msg);
                 }
 
-
-
             },
             error:function (msg) {
                 alert(msg);
             }
-
-
         })
-        IFrameResize();
+
     })
 
 </script>

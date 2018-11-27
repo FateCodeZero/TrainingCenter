@@ -190,8 +190,7 @@
 
 
         var carousel = layui.carousel;
-        var laypage = layui.laypage;
-        //建造实例
+        //建造实例,渲染轮播图
         carousel.render({
             elem: '#carousel-body'
             ,width: '100%' //设置容器宽度
@@ -200,27 +199,23 @@
             ,anim: 'default' //切换动画方式
         });
 
-        //执行一个laypage实例
-        laypage.render({
-            elem: 'dynamic_pagination'      //注意，这里的 test1 是 ID，不用加 # 号
-            , count: 200        //数据总数，从服务端得到
-            , limit: 10              //每页显示数据条数
-            , limits: [4, 8, 16, 32, 64]
-            , groups: 3             //连续出现的页码数
-            , theme: '#437be2'           //自定义主题颜色
-            , jump: function (obj, first) {    //页码切换回调
-                //obj包含了当前分页的所有参数，比如：
-//                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-//                console.log(obj.limit); //得到每页显示的条数
-            }
+        $(document).ready(function loading(){
+
+            getDynamicListPage();
+            IFrameResize();
         });
 
-        $(document).ready(function(){
+        //获取dynamiclistPage数据，完成DIV追加，返回总条数
+        function getDynamicListPage(currentPage){
+            //首次加载，当前页为第一页时传入参数为空
+            if (currentPage == null){
+                currentPage = 1;
+            }
 
             $.ajax({
                 type: 'GET',
                 url: "${webRoot}/trainingDynamic/listPage",
-                data: {currentPage:1,rows:4},
+                data: {currentPage:currentPage,rows:4},
                 dataType: "json",
                 success: function (data) {
                     var jsonData = eval(data);
@@ -228,7 +223,7 @@
                     var msg = jsonData.msg;
                     if(code == 1){
                         var trainingDynamics = jsonData.data.items;
-                        var dynamicsTotal = jsonData.data.total;
+                        var dynamicsTotal = Math.ceil((jsonData.data.total)/4);
 
                         $.each(trainingDynamics,function (index,trainingDynamic) {
                             var id = trainingDynamic.id;
@@ -267,17 +262,44 @@
                                 var dynamic_id = $(this).attr("id");
                                 window.location.href = "dynamic.jsp?id="+dynamic_id+"";
                             });
-
                         });
+
+                        //生成分页
+                        createlayPage(dynamicsTotal,currentPage);
+                        //再次计算高度，包含ajax新增的数据流
+                        IFrameResize();
                     }else {
                         $("#dynamic").html('<h3>暂无数据</h3>');
                     }
                 }
             });
 
-            //再次计算高度，包含ajax新增的数据流
-            IFrameResize();
-        });
+
+
+        }
+
+        /*生成分页*/
+        function createlayPage(dynamicsTotal,currentPage) {
+
+            var laypage = layui.laypage;
+            laypage.render({
+                elem: 'dynamic_pagination'      //div的ID
+                , count: dynamicsTotal        //数据总数，从服务端得到
+                , limit: 1              //每页显示数据条数
+                , groups: 3             //连续出现的页码数
+                , theme: '#437be2'           //自定义主题颜色
+                ,curr:currentPage             //当前页
+                , jump: function (obj, first) {
+                    //页码切换回调
+                    if(!first){
+                        //重新获取新分页数据
+                        getDynamicListPage(obj.curr);
+                    }
+
+                }
+            });
+        }
+
     });
 
 </script>
