@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,27 +33,44 @@ public class ResourceServiceImpl implements ResourceService {
     @Autowired
     ResourceMapper resourceMapper;
 
+    /**
+     * 通过 id 获取资源信息
+     * @param id ：资源ID
+     * @return 返回资源对象
+     */
     @Override
     public Resource getResourceById(String id) {
         return StringUtil.isEmpty(id) ? null : resourceMapper.getResourceById(id);
     }
 
+    /**
+     * 获取所有资源对象
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
+     * @return 返回资源对象集合
+     */
     @Override
-    public List<Resource> getResources() {
-        return getResources(null, null, null);
+    public List<Resource> getResources(Map<String,Object> condition) {
+        return getResources(null, null, condition);
     }
 
+    /**
+     * 获取所有资源对象，支持分页
+     * @param currentPage：当前页
+     * @param rows：每页要显示的数据条数
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
+     * @return 返回资源对象集合
+     */
     @Override
-    public List<Resource> getResources(Integer currentPage, Integer rows, String searchContent) {
+    public List<Resource> getResources(Integer currentPage, Integer rows, Map<String,Object> condition) {
         if (currentPage != null && rows != null) {
             if (currentPage < 0 || rows < 0) {
                 return null;
             } else {
                 Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
-                return resourceMapper.getResources(start, rows, searchContent);
+                return resourceMapper.getResources(start, rows, condition);
             }
         } else {
-            return resourceMapper.getResources(null, null, searchContent);
+            return resourceMapper.getResources(null, null, condition);
         }
     }
 

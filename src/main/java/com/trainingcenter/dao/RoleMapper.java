@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,11 +37,11 @@ public interface RoleMapper {
      * 分页获取所有角色
      * @param start：从第几条数据开始
      * @param number：要获取多少条数据
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回角色对象集合
      */
     public List<Role> getRoles(@Param("start") Integer start, @Param("number") Integer number,
-                               @Param("searchContent") String searchContent);
+                               @Param("condition") Map<String,Object> condition);
     /**
      * 角色添加方法
      * @param role：要添加的角色

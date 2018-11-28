@@ -6,6 +6,7 @@ import com.trainingcenter.controller.validation.TC_Update;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,19 +23,20 @@ public interface ResourceService {
     public Resource getResourceById(String id);
 
     /**
-     * 获取所有资源对象
+     * 获取所有资源对象，不分页
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回资源对象集合
      */
-    public List<Resource> getResources();
+    public List<Resource> getResources(Map<String,Object> condition);
 
     /**
      * 获取所有资源对象，支持分页
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回资源对象集合
      */
-    public List<Resource> getResources(Integer currentPage, Integer rows,String searchContent);
+    public List<Resource> getResources(Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 添加方法

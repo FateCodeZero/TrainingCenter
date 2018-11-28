@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -53,20 +54,21 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回权限对象集合
      */
-    public List<Permission> getPermissions() {
-        return getPermissions(null, null, null);
+    public List<Permission> getPermissions(Map<String,Object> condition) {
+        return getPermissions(null, null, condition);
     }
 
     /**
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回权限对象集合
      */
     @Override
-    public List<Permission> getPermissions(Integer currentPage, Integer rows, String searchContent) {
+    public List<Permission> getPermissions(Integer currentPage, Integer rows, Map<String,Object> condition) {
         FindException findException;
 
         if (currentPage != null && rows != null) {
@@ -76,9 +78,9 @@ public class PermissionServiceImpl implements PermissionService {
                 throw findException;
             }
             Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
-            return permissionMapper.getPermissions(start, rows, searchContent);
+            return permissionMapper.getPermissions(start, rows, condition);
         }else {
-            return permissionMapper.getPermissions(null, null, searchContent);
+            return permissionMapper.getPermissions(null, null, condition);
         }
     }
 

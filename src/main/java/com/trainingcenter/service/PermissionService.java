@@ -6,6 +6,7 @@ import com.trainingcenter.controller.validation.TC_Update;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,17 +23,19 @@ public interface PermissionService {
     public Permission getPermissionById(String id);
 
     /**
+     * 获取所有权限对象，不分页
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回权限对象集合
      */
-    public List<Permission> getPermissions();
+    public List<Permission> getPermissions(Map<String,Object> condition);
 
     /**
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回权限对象集合
      */
-    public List<Permission> getPermissions(Integer currentPage, Integer rows, String searchContent);
+    public List<Permission> getPermissions(Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 通过id 获取指定 角色 所含有的全部权限

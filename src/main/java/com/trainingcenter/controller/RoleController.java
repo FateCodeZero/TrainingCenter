@@ -40,17 +40,74 @@ public class RoleController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 分页获取角色数据（获取全部，（已启用 + 已禁用 + 已删除（软删除）），供管理用）
+     * @param currentPage：当前页
+     * @param rows：每页展示的数据条数
+     * @param searchContent：模糊查询
+     */
     @ResponseBody
     @RequestMapping("/list")
-    public AjaxJson getRoles(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
+    public AjaxJson getRoles_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("数据获取失败，页数不能为空");
             return ajaxJson;
         }else {
-            Integer total = roleService.getRoles().size();
-            List<Role> roles = roleService.getRoles(currentPage,rows,searchContent);
+
+            //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
+            Map<String,Object> condition = new ConcurrentHashMap<>();
+
+            // 此处注意：ConcurrentHashMap 不允许 NULL 值
+            if (StringUtil.isNotEmpty(searchContent)){
+                condition.put("searchContent",searchContent);
+            }
+            Integer total = roleService.getRoles(condition).size();
+            List<Role> roles = roleService.getRoles(currentPage,rows,condition);
+
+            ajaxJson.setCode(1);
+            if (roles.size() == 0){
+                ajaxJson.setMsg("暂无数据Ծ‸Ծ");
+            }else {
+                ajaxJson.setMsg("数据获取成功");
+            }
+
+            Map<String,Object> data = new ConcurrentHashMap<>();
+            data.put("total",total);
+            data.put("items",roles);
+            ajaxJson.setData(data);
+            return ajaxJson;
+        }
+    }
+
+    /**
+     * 分页获取角色数据（获取只获取已启用的，供选择用）
+     * @param currentPage：当前页
+     * @param rows：每页展示的数据条数
+     * @param searchContent：模糊查询
+     */
+    @ResponseBody
+    @RequestMapping("/select")
+    public AjaxJson getRoles_select(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
+        AjaxJson ajaxJson = new AjaxJson();
+        if (currentPage == null || rows == null){
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("数据获取失败，页数不能为空");
+            return ajaxJson;
+        }else {
+            //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
+            Map<String,Object> condition = new ConcurrentHashMap<>();
+
+            condition.put("state",1);   //只查询已启用的
+
+            // 此处注意：ConcurrentHashMap 不允许 NULL 值
+            if (StringUtil.isNotEmpty(searchContent)){
+                condition.put("searchContent",searchContent);
+            }
+
+            Integer total = roleService.getRoles(condition).size();
+            List<Role> roles = roleService.getRoles(currentPage,rows,condition);
 
             ajaxJson.setCode(1);
             if (roles.size() == 0){
@@ -69,7 +126,7 @@ public class RoleController {
 
     /**
      * 数据添加
-     * @param role
+     * @param role 角色对象
      * @return
      */
     @ResponseBody

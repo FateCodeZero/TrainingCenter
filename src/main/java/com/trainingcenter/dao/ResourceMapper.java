@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,11 +30,11 @@ public interface ResourceMapper {
      * 获取所有资源对象，支持分页
      * @param start：从第几条数据开始查询
      * @param number：一个查询多少条数据
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回资源对象集合
      */
     public List<Resource> getResources(@Param("start") Integer start, @Param("number") Integer number,
-                                       @Param("searchContent") String searchContent);
+                                       @Param("condition") Map<String,Object> condition);
 
     /**
      * 添加方法

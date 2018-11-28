@@ -67,10 +67,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /**
-     * 分页获取所有用户
+     * 获取所有用户，不分页
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      */
-    public List<Role> getRoles() {
-        return getRoles(null, null, null);
+    public List<Role> getRoles(Map<String,Object> condition) {
+        return getRoles(null, null, condition);
     }
 
     /**
@@ -78,20 +79,20 @@ public class RoleServiceImpl implements RoleService {
      *
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回当前页的数据集合
      */
     @Override
-    public List<Role> getRoles(Integer currentPage, Integer rows, String searchContent) {
+    public List<Role> getRoles(Integer currentPage, Integer rows, Map<String,Object> condition) {
         if (currentPage != null && rows != null) {
             if (currentPage < 0 || rows < 0) {
                 return null;
             } else {
                 Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
-                return roleMapper.getRoles(start, rows, searchContent);
+                return roleMapper.getRoles(start, rows, condition);
             }
         } else {
-            return roleMapper.getRoles(null, null, searchContent);
+            return roleMapper.getRoles(null, null, condition);
         }
     }
 

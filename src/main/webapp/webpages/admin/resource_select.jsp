@@ -48,7 +48,7 @@
             , elem: '#tableData'
             , height: 450
             , title: '菜单管理'
-            , url: '${webRoot}/resource/listPage' //数据接口
+            , url: '${webRoot}/resource/select' //数据接口
             , page: true //开启分页
             , limit: 10 //每页显示多少条数据
             , cols: [[ //表头

@@ -36,12 +36,28 @@
         SELECT <include refid="roleColumns"></include>
         FROM tab_role
         <trim prefix="WHERE" prefixOverrides="and">
-            <if test="searchContent != null and searchContent != ''">
-                and (
-                `name` like CONCAT('%',#{searchContent},'%')
-                )
-            </if>
+            <foreach collection="condition" index="key" item="value">
+                <if test="key == &quot;name&quot; and value != null and value != '' ">
+                    and name = #{value}
+                </if>
+                <if test="key == &quot;state&quot; and value != null ">
+                    and state = #{value}
+                </if>
+                <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                    and create_user_id = #{value}
+                </if>
+                <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                    and update_user_id = #{value}
+                </if>
+                <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                    and (
+                    `name` like CONCAT('%',#{value},'%')
+                    OR state like CONCAT('%',#{value},'%')
+                    )
+                </if>
+            </foreach>
         </trim>
+        ORDER BY update_date DESC
         <if test="start != null and number != null">
             LIMIT #{start},#{number}
         </if>

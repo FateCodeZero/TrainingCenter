@@ -99,10 +99,14 @@
                 , {field: 'remarks', title: '备注', width: 150, align: 'center'}
                 , {
                     field: 'state', title: '使用状态', width: 100, align: 'center', templet: function (d) {
-                        if (d.state == 1) {
+                        if (d.state === 1) {
                             return '<span class="layui-btn layui-btn-xs">已启用</span>'
-                        } else {
+                        }
+                        if(d.state === 0){
                             return '<span class="layui-btn layui-btn-danger layui-btn-xs">已禁用</span>'
+                        }
+                        if(d.state === -1){
+                            return '<span class="layui-btn layui-btn-disabled layui-btn-xs">已删除</span>'
                         }
                     }
                 }
@@ -129,18 +133,18 @@
                     }
                 }
                 <%--<sec:authorize access="hasPermission('/webpages/admin/resource_list.jsp','UPDATE')">--%>
-                , {title: '操作', fixed: 'right', align: 'center', toolbar: '#table-opt', width: 150, align: 'center'} //这里的toolbar值是模板元素的选择器
+                , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 150, align: 'center'} //这里的toolbar值是模板元素的选择器
                 <%--</sec:authorize>--%>
             ]]
             , where: {//接口需要的其它参数
                 searchContent: searchContent
             }
             , parseData: function (res) { //res 即为原始返回的数据
-                var code = res.code == 1 ? 0 : 1;
+                var code = res.code === 1 ? 0 : 1;
                 var msg = res.msg;
                 var data = res.data.items;
                 var count = 0;
-                if (data != null){
+                if (data !== null){
                     count = data.total;
                 }
                 return {
@@ -169,7 +173,7 @@
             var checkStatus = table.checkStatus('table1');
             var data = checkStatus.data;
 
-            if (data.length == 0 && obj.event != 'add') {
+            if (data.length === 0 && obj.event !== 'add') {
                 layer.alert('请先选择要操作的数据', {
                     time: 3000,
                     icon: 2
@@ -185,7 +189,7 @@
                         var ids = '';
                         var cnt = 0;
                         $.each(data, function (index, d) { //拼装ids
-                            if (index == 0) {
+                            if (index === 0) {
                                 ids += d.id;
                             } else {
                                 ids += ",";
@@ -203,8 +207,7 @@
                             });
                             return false;
                         } else {
-                            var id = data[0].id;
-                            editData(id);
+                            editData(data[0].id);
                         }
                         break;
                     case 'detail':
@@ -215,8 +218,7 @@
                             });
                             return false;
                         } else {
-                            var id = data[0].id;
-                            layer.msg("ID:【" + id + "】的查看操作");
+                            layer.msg("ID:【" + data[0].id + "】的查看操作");
                         }
                         break;
                 }
@@ -301,7 +303,7 @@
                         var jsonData = eval(data); //数据解析
                         var code = jsonData.code;
                         var msg = jsonData.msg;
-                        if (code == 1) {
+                        if (code === 1) {
                             layer.alert(msg, {
                                 time: 3000,
                                 icon: 1
@@ -327,6 +329,7 @@
             });
             return false;
         } else {
+            //传入必须的参数
             var data = {
                 id: obj.id,
                 name: obj.name,
@@ -334,7 +337,7 @@
                 state: state
             };
             $.ajax({
-                url: "${webRoot}/resource/addOrUpdate",
+                url: "${webRoot}/resource/update",
                 type: "post",
                 data: data,
                 dataType: "json",
@@ -342,7 +345,7 @@
                     var jsonData = eval(data);
                     var code = jsonData.code;
                     var msg = jsonData.msg;
-                    if (code == 1) {
+                    if (code === 1) {
                         layer.msg(msg);
                     } else {
                         layer.alert(msg, {
@@ -362,7 +365,7 @@
      * @returns {*}
      */
     function getUserById(id) {
-        if (id == null || id == '') {
+        if (id === null || id === '') {
             layer.alert('id不能为空！', {
                 time: 3000,
                 icon: 2

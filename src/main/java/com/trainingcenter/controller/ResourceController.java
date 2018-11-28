@@ -44,24 +44,30 @@ public class ResourceController {
     private UserService userService;
 
     /**
-     * 分页获取资源数据
-     *
+     * 分页获取资源数据（获取全部，（已启用 + 已禁用 + 已删除（软删除）））
      * @param currentPage：当前页
      * @param rows：每页展示的数据条数
      * @param searchContent：模糊查询
-     * @return
      */
     @ResponseBody
     @RequestMapping("/list")
-    public AjaxJson getResources(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent) {
+    public AjaxJson getResources_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent) {
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("数据获取失败，页数不能为空");
             return ajaxJson;
         } else {
-            Integer total = resourceService.getResources().size();
-            List<Resource> resources = resourceService.getResources(currentPage, rows, searchContent);
+            //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
+            Map<String,Object> condition = new ConcurrentHashMap<>();
+            // 此处注意：ConcurrentHashMap 不允许 NULL 值
+            if (StringUtil.isNotEmpty(searchContent)){
+                condition.put("searchContent",searchContent);
+            }
+            //获取当前查询条件下的所有数据条数，分页用
+            Integer total = resourceService.getResources(condition).size();
+            //获取当前页的数据
+            List<Resource> resources = resourceService.getResources(currentPage, rows, condition);
 
             ajaxJson.setCode(1);
             if (resources.size() == 0) {
@@ -78,16 +84,48 @@ public class ResourceController {
         }
     }
 
-    @RequestMapping("/addOrUpdatePage")
-    public ModelAndView addOrUpdatePage(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView();
-        String id = request.getParameter("resourceId");
-        if (StringUtil.isNotEmpty(id)) {
-            Resource resource = resourceService.getResourceById(id);
-            modelAndView.addObject("resource", resource);
+    /**
+     * 分页获取资源数据（获取只获取已启用的）
+     * @param currentPage：当前页
+     * @param rows：每页展示的数据条数
+     * @param searchContent：模糊查询
+     */
+    @ResponseBody
+    @RequestMapping("/select")
+    public AjaxJson getResources_select(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent) {
+        AjaxJson ajaxJson = new AjaxJson();
+        if (currentPage == null || rows == null) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("数据获取失败，页数不能为空");
+            return ajaxJson;
+        } else {
+            //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
+            Map<String,Object> condition = new ConcurrentHashMap<>();
+            condition.put("state",1);   //只查询已启用的数据
+
+            // 此处注意：ConcurrentHashMap 不允许 NULL 值
+            if (StringUtil.isNotEmpty(searchContent)){
+                condition.put("searchContent",searchContent);
+            }
+
+            //获取当前查询条件下的所有数据条数，分页用
+            Integer total = resourceService.getResources(condition).size();
+            //获取当前页的数据
+            List<Resource> resources = resourceService.getResources(currentPage, rows, condition);
+
+            ajaxJson.setCode(1);
+            if (resources.size() == 0) {
+                ajaxJson.setMsg("暂无数据Ծ‸Ծ");
+            } else {
+                ajaxJson.setMsg("数据获取成功");
+            }
+
+            Map<String, Object> data = new ConcurrentHashMap<>();
+            data.put("total", total);
+            data.put("items", resources);
+            ajaxJson.setData(data);
+            return ajaxJson;
         }
-        modelAndView.setViewName("admin/resource_add");
-        return modelAndView;
     }
 
     @ResponseBody

@@ -49,6 +49,7 @@
 
 <%--表格操作--%>
 <script type="text/html" id="table-opt">
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="grant">授权</a>
     <a class="layui-btn layui-btn-xs" lay-event="enable">启用</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="unEnable">禁用</a>
 </script>
@@ -94,14 +95,18 @@
                 , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
                 , {field: 'id', title: 'ID', hide: true, width: 100, align: 'center'}
                 , {field: 'name', title: '角色名称', width: 150, align: 'center'}
-                , {field: 'describe', title: '权限描述', width: 150, align: 'center'}
+                , {field: 'describe', title: '角色描述', width: 150, align: 'center'}
                 , {field: 'remarks', title: '备注', width: 150, align: 'center'}
                 , {
                     field: 'state', title: '使用状态', width: 100, align: 'center', templet: function (d) {
                         if (d.state === 1) {
                             return '<span class="layui-btn layui-btn-xs">已启用</span>'
-                        } else {
+                        }
+                        if(d.state === 0){
                             return '<span class="layui-btn layui-btn-danger layui-btn-xs">已禁用</span>'
+                        }
+                        if(d.state === -1){
+                            return '<span class="layui-btn layui-btn-disabled layui-btn-xs">已删除</span>'
                         }
                     }
                 }
@@ -128,7 +133,7 @@
                     }
                 }
                 <%--<sec:authorize access="hasPermission('/webpages/admin/resource_list.jsp','UPDATE')">--%>
-                , {title: '操作', fixed: 'right', align: 'center', toolbar: '#table-opt', width: 150, align: 'center'} //这里的toolbar值是模板元素的选择器
+                , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 180, align: 'center'} //这里的toolbar值是模板元素的选择器
                 <%--</sec:authorize>--%>
             ]]
             , where: {//接口需要的其它参数

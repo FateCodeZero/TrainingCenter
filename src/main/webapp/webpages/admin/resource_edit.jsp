@@ -237,7 +237,7 @@
                         time: 3000,
                         icon: 1
                     });
-                    /*close();*/    //关闭窗口
+                    closeView();    //关闭窗口
                 } else {
                     layer.alert(msg, {
                         time: 3000,
