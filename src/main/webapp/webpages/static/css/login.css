@@ -53,6 +53,17 @@
 
 }
 
+.refreshImg_css
+{
+    text-decoration: none;
+    margin-top: 5px;
+    color:#2D6CDF ;
+}
+a:hover{
+    color: #003f87;
+    text-decoration: none;
+}
+
 .login_submit
 {
     border:0px;

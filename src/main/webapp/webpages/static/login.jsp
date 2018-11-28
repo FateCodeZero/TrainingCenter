@@ -32,6 +32,7 @@
 
                 <input type="text" name="kaptcha" id="kaptcha" class="col-md-5 col-md-offset-1 login_input" placeholder="请填写验证码" required="" />
                 <img id="kaptchaImg" src="${webRoot}/except/kaptcha" class="col-md-4 col-md-offset-1 captcha_css"/>
+                <a id="refreshImg" class="col-md-4 col-md-offset-7 text-center refreshImg_css">点此刷新验证码</a>
                 <div class="col-md-10 col-md-offset-1 text-left" id="kaptchaMsg"></div>
 
                 <button  id="submit" type="button"  class="col-md-10 col-md-offset-1 login_submit" >登录</button>
