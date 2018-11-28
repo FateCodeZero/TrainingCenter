@@ -39,22 +39,22 @@
                 <div style="background-image: url(${webRoot}/webpages/static/images/img_bg1.PNG)" class="scroll_map">
                         <div class="scrolls_map_text text-center">
                             <h1 class="myh1">梦  润，  知  识  从  未  如  此  有  趣</h1>
-                            <h3 class="myh3">卓越人生，从梦润起航，梦润新世界 <a href="#" target="_blank">全新的学习方式</a></h3>
-                            <p><a class="btn btn-primary btn-lg btn-learn" href="#">开 启 学 习！</a></p>
+                            <h3 class="myh3">卓越人生，从梦润起航，梦润新世界 <a href="${webRoot}/webpages/static/allExperientialTeaching.jsp" class="myh3 a_study">全新的学习方式</a></h3>
+                            <p><a class="btn btn-primary btn-lg btn-learn btn_study" href="${webRoot}/webpages/static/allExperientialTeaching.jsp">开 启 学 习！</a></p>
                         </div>
                 </div>
                 <div style="background-image: url(${webRoot}/webpages/static/images/img_bg3.PNG)" class="scroll_map">
                     <div class="scrolls_map_text text-center">
                         <h1 class="myh1">赋  能  人  才，从  这  里  开  始</h1>
-                        <h3 class="myh3">卓越人生，从梦润起航，梦润新世界  <a href="#" target="_blank">全新的学习方式</a></h3>
-                        <p><a class="btn btn-primary btn-lg btn-learn" href="#">开 启 学 习！</a></p>
+                        <h3 class="myh3">卓越人生，从梦润起航，梦润新世界  <a href="${webRoot}/webpages/static/allExperientialTeaching.jsp" class="myh3 a_study">全新的学习方式</a></h3>
+                        <p><a class="btn btn-primary btn-lg btn-learn btn_study" href="#">开 启 学 习！</a></p>
                     </div>
                 </div>
                 <div style="background-image: url(${webRoot}/webpages/static/images/img_bg2.PNG)" class="scroll_map">
                     <div class="scrolls_map_text text-center">
                         <h1 class="myh1">梦  润， 最  新  潮  的  培  养  方  案</h1>
-                        <h3 class="myh3">遇见梦润，遇见一个超乎想象的你   <a href="#" target="_blank">全新的学习方式</a></h3>
-                        <p><a class="btn btn-primary btn-lg btn-learn" href="#">开 启 学 习！</a></p>
+                        <h3 class="myh3">遇见梦润，遇见一个超乎想象的你   <a href="${webRoot}/webpages/static/allExperientialTeaching.jsp" class="myh3 a_study" >全新的学习方式</a></h3>
+                        <p><a class="btn btn-primary btn-lg btn-learn btn_study" href="#">开 启 学 习！</a></p>
                     </div>
                 </div>
 
