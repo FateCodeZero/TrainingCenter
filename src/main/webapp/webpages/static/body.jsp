@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/flexslider.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/pricing.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/style.css">
+    <link rel="stylesheet" href="${webRoot}/webpages/static/css/style2.css">
 
     <script type="text/javascript" src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
@@ -151,10 +152,7 @@
             </div>
             <div id="dynamic" class="row"></div>
             <div id="dynamic_pagination" class="text-center"></div>
-
-
         </div>
-
     </div>
 
     <!-- 广告 -->
@@ -166,19 +164,10 @@
                     <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
                 </div>
             </div>
-            <div class="col-md-12" style="background-image: url(${webRoot}/webpages/static/images/a1.PNG)">
-                <h3 class="advertisement">我是广告1</h3>
+            <div class="row">
+                <div id="advertisement" class="col-md-12"></div>
+                <div class="col-md-12" style="height:70px;"></div>
             </div>
-
-            <div class="col-md-12" style="height: 30px;"></div>
-
-            <div class="col-md-12" style="background-image: url(${webRoot}/webpages/static/images/a2.PNG)">
-                <h3 class="advertisement">我是广告2</h3>
-            </div>
-
-            <div class="col-md-12" style="height: 100px;"></div>
-
-
         </div>
     </div>
 
@@ -202,6 +191,7 @@
         $(document).ready(function loading(){
 
             getDynamicListPage();
+            getAdvertisement();
             IFrameResize();
         });
 
@@ -299,6 +289,64 @@
                 }
             });
         }
+
+
+        /*获取广告*/
+        function getAdvertisement() {
+
+            $.ajax({
+                type: 'GET',
+                url: "${webRoot}/advertisement/listPage",
+                data: {currentPage:1,rows:2},
+                dataType: "json",
+                success: function (data) {
+                    var jsonData = eval(data);
+                    var code = jsonData.code;
+                    var msg = jsonData.msg;
+                    if(code == 1){
+                        var advertisements = jsonData.data.items;
+
+                        $.each(advertisements,function (index,advertisement) {
+
+                            var advertisement_id = advertisement.id;
+                            var advertisement_img = advertisement.imgs;
+                            var advertisement_describe = advertisement.describe;
+                            var advertisement_url = advertisement.url;
+
+                            //alert("数据id:"+advertisement_id+"图片："+advertisement_img+"链接："+advertisement_url);
+                            var advertisement_div = ' <div  id="'+advertisement_id+'" class="col-md-12 w3agile_gallery_grid">\n' +
+                                '                    <div  class="col-md-12 w3agile_gallery_image">\n' +
+                                '                        <a href="'+advertisement_url+'">\n' +
+                                '                            <figure>\n' +
+                                '                                <img id="advertisement_img" class="col-md-12" style="background-size:cover; padding:0px; height:150px;" src="'+advertisement_img+'" />\n' +
+                                '                                <figcaption class="col-md-12 padding:0px;">\n' +
+                                '                                    <h4 id="describe_title" style="color: #FFFFFF;">广告'+advertisement_id+'</h4>\n' +
+                                '                                    <p id="describe" class="text-center">'+advertisement_describe+'</p>\n' +
+                                '                                </figcaption>\n' +
+                                '                            </figure>\n' +
+                                '                        </a>\n' +
+                                '                    </div>\n' +
+                                '               </div>\n' +
+                                '                <div class="col-md-12" style="height:30px;"></div>';
+
+                            if (index == 0) {
+                                $("#advertisement").html(advertisement_div);
+                            }else {
+                                $("#advertisement").append(advertisement_div);
+                            }
+
+                        });
+                        //再次计算高度，包含ajax新增的数据流
+                        IFrameResize();
+                    }else {
+                        $("#advertisement").html('<h3>暂无数据</h3>');
+                    }
+                }
+            });
+
+        }
+
+        IFrameResize();
 
     });
 

@@ -34,27 +34,35 @@
                 梦润，致力于让每个人都能公平和便利地获取优质教育服务，实现可持续职业成长
             </h4>
             <div class="col-md-10 col-md-offset-1">
-                <div class="col-md-4">
-                   <div class="col-md-10 col-md-offset-1 introduce"  >
+                <div class="col-md-3">
+                   <div class="col-md-10 col-md-offset-1 introduce" style="background-color: rgb(248, 90, 64);">
                        <a href="#introduce1">
-                       <img src="${webRoot}/webpages/static/images/introduce1.png" class="col-md-4 col-md-offset-4 introduce_img">
+                       <img src="${webRoot}/webpages/static/images/introduce1.png" class="col-md-6 col-md-offset-3 introduce_img">
                        <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">公司简介</h3>
                        </a>
                    </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="col-md-10 col-md-offset-1 introduce" >
+                <div class="col-md-3">
+                    <div class="col-md-10 col-md-offset-1 introduce" style="background-color: rgb(244, 119, 33);">
                         <a href="#introduce2">
-                        <img src="${webRoot}/webpages/static/images/introduce2.png" class="col-md-4 col-md-offset-4 introduce_img">
-                        <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">管理团队</h3>
+                        <img src="${webRoot}/webpages/static/images/introduce2.png" class="col-md-6 col-md-offset-3 introduce_img">
+                        <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">红色历史文化教学点</h3>
                         </a>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="col-md-10 col-md-offset-1 introduce" >
+                <div class="col-md-3">
+                    <div class="col-md-10 col-md-offset-1 introduce" style="background-color: rgb(0, 153, 204);>
+                        <a href="#introduce2">
+                            <img src="${webRoot}/webpages/static/images/introduce2.png" class="col-md-6 col-md-offset-3 introduce_img">
+                            <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">绿色发展教学点</h3>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="col-md-10 col-md-offset-1 introduce" style="background-color: rgb(86, 46, 25);>
                         <a href="#introduce3">
-                        <img src="${webRoot}/webpages/static/images/introduce3.png" class="col-md-4 col-md-offset-4 introduce_img">
-                        <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">核心竞争力</h3>
+                        <img src="${webRoot}/webpages/static/images/introduce3.png" class="col-md-6 col-md-offset-3 introduce_img">
+                        <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">挂牌单位</h3>
                         </a>
                     </div>
                 </div>
@@ -91,7 +99,83 @@
                 <div class="container">
                     <div class="row animate-box">
                         <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-                            <h2>管理 &amp; 团队</h2>
+                            <h2> &amp; 红色历史文化教学点&amp; </h2>
+                            <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3 animate-box text-center">
+                            <div class="staff">
+                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-1.jpg);">
+                                    <ul class="fh5co-social">
+                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>
+                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>
+                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>
+                                        <li><a href="#"><i class="icon-github"></i></a></li>
+                                    </ul>
+                                </div>
+                                <span>Health Teacher</span>
+                                <h3><a href="#">Mike Smith</a></h3>
+                                <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 animate-box text-center">
+                            <div class="staff">
+                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-3.jpg);">
+                                    <ul class="fh5co-social">
+                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>
+                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>
+                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>
+                                        <li><a href="#"><i class="icon-github"></i></a></li>
+                                    </ul>
+                                </div>
+                                <span>Health Teacher</span>
+                                <h3><a href="#">Mike Smith</a></h3>
+                                <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 animate-box text-center">
+                            <div class="staff">
+                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-2.jpg);">
+                                    <ul class="fh5co-social">
+                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>
+                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>
+                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>
+                                        <li><a href="#"><i class="icon-github"></i></a></li>
+                                    </ul>
+                                </div>
+                                <span>Health Teacher</span>
+                                <h3><a href="#">Mike Smith</a></h3>
+                                <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 animate-box text-center">
+                            <div class="staff">
+                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-3.jpg);">
+                                    <ul class="fh5co-social">
+                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>
+                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>
+                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>
+                                        <li><a href="#"><i class="icon-github"></i></a></li>
+                                    </ul>
+                                </div>
+                                <span>Health Teacher</span>
+                                <h3><a href="#">Mike Smith</a></h3>
+                                <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--管理团队--%>
+        <div id="introduce2" class="col-md-12 fh5co-bg-section">
+            <div>
+                <div class="container" style="margin-top: 150px;">
+                    <div class="row animate-box">
+                        <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+                            <h2> &amp; 绿色发展教学点&amp; </h2>
                             <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
                         </div>
                     </div>
@@ -163,11 +247,11 @@
         </div>
 
         <%--核心竞争力--%>
-        <div class="col-md-12">
+        <div class="col-md-12" style="margin-top: 150px;">
             <div class="container">
                 <div class="row animate-box">
                     <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-                        <h2>核心 &amp; 竞争力</h2>
+                        <h2>挂牌 &amp; 单位</h2>
                         <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
                     </div>
                 </div>
