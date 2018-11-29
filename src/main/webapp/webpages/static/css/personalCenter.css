@@ -109,6 +109,33 @@ label.bar-w3-agile {
     float: left;
     width: 94%;
 }
+.bd{
+    padding-top: 20px;
+}
+.item{
+    padding-top: 10px;
+}
+.common_input{
+    width: 300px;
+    height: 30px;
+}
+.input-area{
+    width: 300px;
+}
+.tipMsg{
+    text-align: right;
+}
+input[type="radio"] {
+    margin: 4px 10px;
+    line-height: normal;
+}
+.select_gender{
+    padding-left: 10px;
+}
+.intro{
+    padding-bottom: 50px;
+}
+
 
 
 
