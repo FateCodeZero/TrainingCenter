@@ -18,7 +18,7 @@
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
 </head>
-<body>
+<body onload="IFrameResize()">
     <div class="col-md-12 bg_css">
         <div class="col-md-3"></div>
         <div class="col-md-6 center-vertical text-center">
@@ -32,4 +32,10 @@
         <div class="col-md-3"></div>
     </div>
 </body>
+<script>
+    function IFrameResize(){
+        var obj = parent.document.getElementById("IF-body"); //取得父页面IFrame对象
+        obj.height = 700; //调整父页面中IFrame的高度为700px
+    }
+</script>
 </html>

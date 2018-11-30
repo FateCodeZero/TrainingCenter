@@ -54,8 +54,8 @@
                 <li class="layui-nav-item">
                     <a href="#">学员风采</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="#">学院学习照</a></dd>
-                        <dd><a href="#">最佳学院</a></dd>
+                        <dd><a href="#">学员学习照</a></dd>
+                        <dd><a href="#">最佳学员</a></dd>
                         <dd><a href="#">往期学员故事</a></dd>
                     </dl>
                 </li>
@@ -132,6 +132,24 @@
             }
             if (text === '体验式教学') {
                 loadUrl = "${webRoot}/webpages/static/allExperientialTeaching.jsp";
+            }
+            if (text === '访谈教学') {
+                loadUrl = "${webRoot}/webpages/static/interviewTeaching.jsp";
+            }
+            if (text === '现场讲解') {
+                loadUrl = "${webRoot}/webpages/static/spotTeaching.jsp";
+            }
+            if (text === '影音教学') {
+                loadUrl = "${webRoot}/webpages/static/videoTeaching.jsp";
+            }
+            if (text === '与创业名人/团队交流调研') {
+                loadUrl = "${webRoot}/webpages/static/communicationTeaching.jsp";
+            }
+            if (text === '学员学习照') {
+                loadUrl = "${webRoot}/webpages/static/studentPhotos.jsp";
+            }
+            if (text === '最佳学员') {
+                loadUrl = "${webRoot}/webpages/static/bastStudent.jsp";
             }
             if(text === '往期学员故事'){
                 loadUrl = "${webRoot}/webpages/static/studentStory.jsp";

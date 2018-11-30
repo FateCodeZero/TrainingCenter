@@ -93,7 +93,7 @@
             </div>
         </div>
 
-        <%--管理团队--%>
+        <%--红色历史文化教学点--%>
         <div id="introduce2" class="col-md-12">
             <div id="fh5co-staff">
                 <div class="container">
@@ -107,7 +107,7 @@
 
                         <div class="col-md-3 animate-box text-center">
                             <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-1.jpg);">
+                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green1.jpg);">
                                     <ul class="fh5co-social">
                                         <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                         <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -122,7 +122,7 @@
                         </div>
                         <div class="col-md-3 animate-box text-center">
                             <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-3.jpg);">
+                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green2.jpg);">
                                     <ul class="fh5co-social">
                                         <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                         <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -137,7 +137,7 @@
                         </div>
                         <div class="col-md-3 animate-box text-center">
                             <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-2.jpg);">
+                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green3.jpg);">
                                     <ul class="fh5co-social">
                                         <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                         <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -152,7 +152,7 @@
                         </div>
                         <div class="col-md-3 animate-box text-center">
                             <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-3.jpg);">
+                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green4.jpg);">
                                     <ul class="fh5co-social">
                                         <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                         <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -169,7 +169,7 @@
                 </div>
             </div>
         </div>
-        <%--管理团队--%>
+        <%--绿色发展教学点--%>
         <div id="introduce2" class="col-md-12 fh5co-bg-section">
             <div>
                 <div class="container" style="margin-top: 150px;">
@@ -183,7 +183,7 @@
 
                         <div class="col-md-3 animate-box text-center">
                             <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-1.jpg);">
+                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green1.jpg);">
                                     <ul class="fh5co-social">
                                         <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                         <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -198,7 +198,7 @@
                         </div>
                         <div class="col-md-3 animate-box text-center">
                             <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-3.jpg);">
+                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green2.jpg);">
                                     <ul class="fh5co-social">
                                         <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                         <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -213,7 +213,7 @@
                         </div>
                         <div class="col-md-3 animate-box text-center">
                             <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-2.jpg);">
+                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green3.jpg);">
                                     <ul class="fh5co-social">
                                         <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                         <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -228,7 +228,7 @@
                         </div>
                         <div class="col-md-3 animate-box text-center">
                             <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-3.jpg);">
+                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green4.jpg);">
                                     <ul class="fh5co-social">
                                         <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                         <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -247,7 +247,7 @@
         </div>
 
         <%--核心竞争力--%>
-        <div class="col-md-12" style="margin-top: 150px;">
+        <div class="col-md-12 " style="margin-top: 150px;">
             <div class="container">
                 <div class="row animate-box">
                     <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
@@ -256,136 +256,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="w3agile_gallery_grids">
-                        <div class="col-md-3 w3agile_gallery_grid">
-                            <div class="w3agile_gallery_image">
-                                <a class="sb" href="${webRoot}/webpages/static/images/project-3.jpg" title="Agriculture">
-                                    <figure>
-                                        <img src="${webRoot}/webpages/static/images/project-3.jpg" alt="" class="img-responsive" />
-                                        <figcaption>
-                                            <h4>Sowing</h4>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor.
-                                            </p>
-                                        </figcaption>
-                                    </figure>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-3 w3agile_gallery_grid">
-                            <div class="w3agile_gallery_image">
-                                <a class="sb" title="Agriculture" href="${webRoot}/webpages/static/images/project-3.jpg">
-                                    <figure>
-                                        <img src="${webRoot}/webpages/static/images/project-3.jpg" alt="" class="img-responsive" />
-                                        <figcaption>
-                                            <h4>Sowing</h4>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor.
-                                            </p>
-                                        </figcaption>
-                                    </figure>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-3 w3agile_gallery_grid">
-                            <div class="w3agile_gallery_image">
-                                <a class="sb" title="Agriculture" href="${webRoot}/webpages/static/images/project-3.jpg">
-                                    <figure>
-                                        <img src="${webRoot}/webpages/static/images/project-3.jpg" alt="" class="img-responsive" />
-                                        <figcaption>
-                                            <h4>Sowing</h4>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor.
-                                            </p>
-                                        </figcaption>
-                                    </figure>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-3 w3agile_gallery_grid">
-                            <div class="w3agile_gallery_image">
-                                <a class="sb" title="Agriculture" href="${webRoot}/webpages/static/images/project-3.jpg">
-                                    <figure>
-                                        <img src="${webRoot}/webpages/static/images/project-3.jpg" alt="" class="img-responsive" />
-                                        <figcaption>
-                                            <h4>Sowing</h4>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor.
-                                            </p>
-                                        </figcaption>
-                                    </figure>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-3 w3agile_gallery_grid">
-                            <div class="w3agile_gallery_image">
-                                <a class="sb" title="Agriculture" href="${webRoot}/webpages/static/images/project-3.jpg">
-                                    <figure>
-                                        <img src="${webRoot}/webpages/static/images/project-3.jpg" alt="" class="img-responsive" />
-                                        <figcaption>
-                                            <h4>Sowing</h4>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor.
-                                            </p>
-                                        </figcaption>
-                                    </figure>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-3 w3agile_gallery_grid">
-                            <div class="w3agile_gallery_image">
-                                <a class="sb" title="Agriculture" href="${webRoot}/webpages/static/images/project-3.jpg">
-                                    <figure>
-                                        <img src="${webRoot}/webpages/static/images/project-3.jpg" alt="" class="img-responsive" />
-                                        <figcaption>
-                                            <h4>Sowing</h4>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor.
-                                            </p>
-                                        </figcaption>
-                                    </figure>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-3 w3agile_gallery_grid">
-                            <div class="w3agile_gallery_image">
-                                <a class="sb" title="Agriculture" href="${webRoot}/webpages/static/images/project-3.jpg">
-                                    <figure>
-                                        <img src="${webRoot}/webpages/static/images/project-3.jpg" alt="" class="img-responsive" />
-                                        <figcaption>
-                                            <h4>Sowing</h4>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor.
-                                            </p>
-                                        </figcaption>
-                                    </figure>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-3 w3agile_gallery_grid">
-                            <div class="w3agile_gallery_image">
-                                <a class="sb" title="Agriculture" href="${webRoot}/webpages/static/images/project-3.jpg">
-                                    <figure>
-                                        <img src="${webRoot}/webpages/static/images/project-3.jpg" alt="" class="img-responsive" />
-                                        <figcaption>
-                                            <h4>Sowing</h4>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor.
-                                            </p>
-                                        </figcaption>
-                                    </figure>
-                                </a>
-                            </div>
-                        </div>
+                    <div class="col-md-12">
+                        <img src="${webRoot}/webpages/static/images/cooperate_company.png">
                     </div>
+
                 </div>
             </div>
             <div class="col-md-12" style="height: 150px; background-color: #FFFFFF"></div>

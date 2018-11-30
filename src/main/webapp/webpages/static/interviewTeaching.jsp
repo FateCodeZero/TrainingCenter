@@ -10,7 +10,7 @@
 <%@include file="/context/mytags.jsp" %>
 <html>
 <head>
-    <title>体验式教学</title>
+    <title>访谈教学</title>
 
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
@@ -30,12 +30,12 @@
 </head>
 <body onload="IFrameResize()">
 
-<!-- 体验式教学 -->
+<!-- 访谈教学 -->
 <div id="fh5co-course">
     <div class="container">
         <div class="row animate-box">
             <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">
-                <h2>体验式教学</h2>
+                <h2>访谈教学</h2>
                 <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
             </div>
         </div>

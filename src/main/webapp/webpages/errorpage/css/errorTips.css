@@ -4,10 +4,11 @@
 .bg_css
 {
 	background-image: url("../images/error_bg.PNG");
-	background-size: cover;
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 a {font-size:25px}

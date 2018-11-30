@@ -43,7 +43,7 @@
             <div class="row">
                 <div class="col-md-3 text-center">
                     <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-1.jpg);">
+                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student1.jpg);">
                             <ul class="fh5co-social">
                                 <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                 <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-md-3 animate-box text-center">
                     <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-2.jpg);">
+                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student2.jpg);">
                             <ul class="fh5co-social">
                                 <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                 <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -73,7 +73,7 @@
                 </div>
                 <div class="col-md-3 animate-box text-center">
                     <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-3.jpg);">
+                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student3.jpg);">
                             <ul class="fh5co-social">
                                 <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                 <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -88,7 +88,7 @@
                 </div>
                 <div class="col-md-3 animate-box text-center">
                     <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-1.jpg);">
+                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student4.jpg);">
                             <ul class="fh5co-social">
                                 <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                 <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -103,7 +103,7 @@
                 </div>
                 <div class="col-md-3 animate-box text-center">
                     <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-1.jpg);">
+                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student4.jpg);">
                             <ul class="fh5co-social">
                                 <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                 <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -118,7 +118,7 @@
                 </div>
                 <div class="col-md-3 animate-box text-center">
                     <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-3.jpg);">
+                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student3.jpg);">
                             <ul class="fh5co-social">
                                 <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                 <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -133,7 +133,7 @@
                 </div>
                 <div class="col-md-3 animate-box text-center">
                     <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-2.jpg);">
+                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student2.jpg);">
                             <ul class="fh5co-social">
                                 <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                 <li><a href="#"><i class="icon-twitter2"></i></a></li>
@@ -148,7 +148,7 @@
                 </div>
                 <div class="col-md-3 animate-box text-center">
                     <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/staff-3.jpg);">
+                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student1.jpg);">
                             <ul class="fh5co-social">
                                 <li><a href="#"><i class="icon-facebook2"></i></a></li>
                                 <li><a href="#"><i class="icon-twitter2"></i></a></li>

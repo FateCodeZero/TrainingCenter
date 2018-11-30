@@ -17,19 +17,23 @@
     <script type="text/javascript" src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
+    <script type="text/javascript" src="${webRoot}/webpages/static/js/utils.js"></script>
 </head>
-<body>
-    <div class="col-md-12 bg_css">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 center-vertical text-center">
-            <p class="notFond1">404</p>
-            <h1 class="notFond2">找不到页面</h1>
-            <h2 class="notFond3">非常抱歉，网页出现未知故障，&nbsp;&nbsp;&nbsp;您可以选择
-                <a  href="#" >&nbsp;返回&nbsp;</a>或者<a href="#" >&nbsp;联系我们&nbsp;</a></h2>
+<body onload="IFrameResize()">
+    <div class="row">
+        <div class="col-md-12 bg_css">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 center-vertical text-center">
+                <p class="notFond1">404</p>
+                <h1 class="notFond2">找不到页面</h1>
+                <h2 class="notFond3">非常抱歉，网页出现未知故障，&nbsp;&nbsp;&nbsp;您可以选择
+                    <a  href="#" >&nbsp;返回&nbsp;</a>或者<a href="#" >&nbsp;联系我们&nbsp;</a></h2>
 
+            </div>
+            <div class="col-md-3"></div>
         </div>
-        <div class="col-md-3"></div>
     </div>
+
 
 
 
@@ -41,7 +45,9 @@
 
 
 <script>
-
-
+    function IFrameResize(){
+        var obj = parent.document.getElementById("IF-body"); //取得父页面IFrame对象
+        obj.height = 700; //调整父页面中IFrame的高度为此页面的高度
+    }
 </script>
 </html>
