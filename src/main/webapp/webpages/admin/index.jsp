@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>layout 后台大布局 - Layui</title>
+    <title>梦润-后台管理系统</title>
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/tree.css">
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css">
@@ -14,6 +14,7 @@
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
+    <script src="${webRoot}/plug-in/js/bootstrap-treeview.min.js"></script>
 
     <style>
         body .layui-tree-skin-my_tree .layui-tree-branch {
@@ -26,7 +27,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">layui 后台布局</div>
+        <div class="layui-logo">梦润后台管理系统</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left" lay-filter="nav-top">
             <li class="layui-nav-item">
@@ -67,76 +68,7 @@
     </div>
 
     <div class="layui-side layui-bg-black">
-        <div class="layui-side-scroll">
-            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <%--<ul class="layui-nav layui-nav-tree" lay-filter="nav-left">--%>
-            <%--<li class="layui-nav-item layui-nav-itemed">--%>
-            <%--<a class="" href="javascript:;">系统管理</a>--%>
-            <%--<div class="layui-nav-child">--%>
-            <%--<div>--%>
-            <%--<a href="javascript:;">菜单管理</a>--%>
-            <%--<div class="layui-nav-child">--%>
-            <%--<a href="javascript:;">列表一</a>--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--<div>--%>
-            <%--<a href="javascript:;">角色管理</a>--%>
-            <%--<div class="layui-nav-child">--%>
-            <%--<a href="javascript:;">列表一</a>--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--<div>--%>
-            <%--<a href="javascript:;">权限管理</a>--%>
-            <%--<div class="layui-nav-child">--%>
-            <%--<a href="javascript:;">列表一</a>--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--<div>--%>
-            <%--<a href="">超链接</a>--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--</li>--%>
-
-            <%--<li class="layui-nav-item layui-nav-itemed">--%>
-            <%--<a class="" href="javascript:;">所有商品</a>--%>
-            <%--<dl class="layui-nav-child">--%>
-            <%--<dd>--%>
-            <%--<a href="javascript:;">列表一</a>--%>
-            <%--</dd>--%>
-            <%--<dd>--%>
-            <%--<a href="javascript:;">列表二</a>--%>
-            <%--</dd>--%>
-            <%--<dd>--%>
-            <%--<a href="javascript:;">列表三</a>--%>
-            <%--</dd>--%>
-            <%--<dd>--%>
-            <%--<a href="">超链接</a>--%>
-            <%--</dd>--%>
-            <%--</dl>--%>
-            <%--</li>--%>
-            <%--<li class="layui-nav-item">--%>
-            <%--<a href="javascript:;">解决方案</a>--%>
-            <%--<dl class="layui-nav-child">--%>
-            <%--<dd>--%>
-            <%--<a href="javascript:;">列表一</a>--%>
-            <%--</dd>--%>
-            <%--<dd>--%>
-            <%--<a href="javascript:;">列表二</a>--%>
-            <%--</dd>--%>
-            <%--<dd>--%>
-            <%--<a href="">超链接</a>--%>
-            <%--</dd>--%>
-            <%--</dl>--%>
-            <%--</li>--%>
-            <%--<li class="layui-nav-item">--%>
-            <%--<a href="">云市场</a>--%>
-            <%--</li>--%>
-            <%--<li class="layui-nav-item">--%>
-            <%--<a href="">发布商品</a>--%>
-            <%--</li>--%>
-            <%--</ul>--%>
-            <ul id="nav-left" lay-filter="nav-left"></ul>
-        </div>
+        <div id="treeview-selectable" class=""></div>
     </div>
 
     <!-- 主体内容 -->
@@ -158,7 +90,9 @@
 </body>
 <script>
     $(document).ready(function () {
-        //页面加载完成……
+        var resourceData = getResourceData();
+        var treeData = buildTreeData(resourceData);
+        initSelectableTree(treeData);
     });
 
     //JavaScript代码区域
@@ -174,52 +108,93 @@
             if (text === '控制台') {
                 loadUrl = "${webRoot}/webpages/admin/index.jsp";
             }
-            if (text === '列表一') {
-                loadUrl = "${webRoot}/webpages/admin/test1.jsp";
-            }
-            if (text === '列表二') {
-                loadUrl = "${webRoot}/webpages/admin/resource_list.jsp";
-            }
-            if (text === '列表三') {
-                loadUrl = "${webRoot}/webpages/admin/test3.jsp";
-            }
             //通过修改 iframe 的 url 来切换页面，注：要用此方法，点击处<a>标签必须是 href="#"
             $("#index-body").attr('src', loadUrl);
         });
         element.render("nav");
     });
 
-    layui.tree({
-        elem: '#nav-left' //传入元素选择器
-        , skin: 'sidebar'
-        , nodes: [{ //节点
-            name: '系统管理'
-            , children: [{
-                name: '菜单管理'
-                , url: "${webRoot}/webpages/admin/resource_list.jsp"
-            }, {
-                name: '权限管理'
-                , url: "${webRoot}/webpages/admin/permission_list.jsp"
-            }, {
-                name: '角色管理'
-                , url: "${webRoot}/webpages/admin/role_list.jsp"
-            }]
-        }, {
-            name: '父节点2（可以点左侧箭头，也可以双击标题）'
-            , children: [{
-                name: '子节点21'
-                , children: [{
-                    name: '子节点211'
-                }]
-            }]
-        }]
-        , click: function (node) {
-            console.log(node) //node即为当前点击的节点数据
-            var loadUrl = node.url;
-            $("#index-body").attr('src', loadUrl);
-        }
-    });
+    /*获取菜单数据*/
+    function getResourceData() {
+        var returnData = null;
+        $.ajax({
+            url: "${webRoot}/resource/tree",
+            type: "get",
+            async: false,    //关闭异步请求
+            data: null,
+            dataType: "json",
+            success: function (data) {
+                var jsonData = eval(data); //数据解析
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+                if (code === 1) {
+                    returnData = jsonData.data.items;
+                } else {
+                    layer.alert(msg, {
+                        time: 3000,
+                        icon: 2
+                    });
+                    return false;
+                }
+            }
+        });
+        return returnData;
+    }
 
+    /*构建树形数据*/
+    function buildTreeData(data) {
+        var tree = [];
+        $.each(data, function (index, item) {
+            var id = item.id;   /*本节点菜单id*/
+            var name = item.name;   /*本节点菜单名称*/
+            var parentId = item.parentId;   /*本节点的父节点菜单id*/
+            var order = item.order; /*本节点排序，可忽略*/
+            var level = item.level; /*本节点层级*/
+            var url = item.data.url;   /*本节点url*/
+            var iconStyle = item.data.iconStyle;  /*本节点iocn*/
+            var children = item.children;   /*子节点*/
+
+            //使用递归方式解析数据
+            tree[index] = {
+                id: id,
+                pid: parentId,
+                order: order,
+                text: name,
+                icon:iconStyle,  /*当前节点上的图标*/
+                selectedIcon:iconStyle,  /*当前节点被选择后的图标*/
+                href:url,
+                tags: level,
+                nodes: buildTreeData(children)
+            };
+        });
+        return tree;
+    }
+
+    /*初始化选择树*/
+    function initSelectableTree(data) {
+        return $('#treeview-selectable').treeview({
+            data: data,
+            backColor:'#32353E',    //树所有节点的背景颜色
+            onhoverColor:'#009688', //节点在用户鼠标滑过时的背景颜色
+            selectedBackColor:'#009688', //节点被选中后的背景颜色
+            showBorder:false,       //不显示边框
+            showIcon: true,    /*开启节点图标*/
+            enableLinks:false,  /*不启用当前节点的超链接*/
+            multiSelect: $('#chk-select-multi').is(':checked'),
+            onNodeSelected: function (event, node) {
+                console.log(node);
+                var id = node.id; //节点数据id
+                var href = node.href;
+                if (href !== null && href !== '' && href !== '/webpages/admin/index.jsp'){
+                    //点击切换 iframe
+                    $("#index-body").attr('src', "${webRoot}"+href);
+                }
+            },
+            onNodeUnselected: function (event, node) {
+                /*取消节点选中事件*/
+            }
+        });
+    }
 </script>
 
 </html>

@@ -8,7 +8,7 @@
 
 
     <sql id="resourceColumns">
-      id,`name`,url,state,`describe`,remarks,create_user_id,create_date,update_user_id,update_date
+      id,`name`,url,state,parent_id,order_number,`level`,icon_style,`describe`,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public Resource getResourceById(@Param("id") String id);
@@ -40,6 +40,18 @@
                     <if test="key == &quot;state&quot; and value != null ">
                         and state = #{value}
                     </if>
+                    <if test="(key == &quot;parentId&quot; or key == &quot;parent_id&quot;) and value != null ">
+                        and parent_id = #{value}
+                    </if>
+                    <if test="(key == &quot;orderNumber&quot; or key == &quot;order_number&quot;) and value != null ">
+                        and order_number = #{value}
+                    </if>
+                    <if test="key == &quot;level&quot; and value != null ">
+                        and `level` = #{value}
+                    </if>
+                    <if test="(key == &quot;iconStyle&quot; or key == &quot;icon_style&quot;) and value != null ">
+                        and icon_style = #{value}
+                    </if>
                     <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
                         and create_user_id = #{value}
                     </if>
@@ -52,6 +64,9 @@
                         `name` like CONCAT('%',#{value},'%')
                         OR url like CONCAT('%',#{value},'%')
                         OR state like CONCAT('%',#{value},'%')
+                        OR order_number like CONCAT('%',#{value},'%')
+                        OR `level` like CONCAT('%',#{value},'%')
+                        OR icon_style like CONCAT('%',#{value},'%')
                         )
                     </if>
                 </foreach>
@@ -70,8 +85,8 @@
     <insert id="add" parameterType="com.trainingcenter.bean.Resource">
         INSERT INTO tab_resource(<include refid="resourceColumns"></include>)
         VALUES
-        (#{resource.id},#{resource.name},#{resource.url},#{resource.state},#{resource.describe},#{resource.remarks},#{resource.createUserId},#{resource.createDate},
-        #{resource.updateUserId},#{resource.updateDate})
+        (#{resource.id},#{resource.name},#{resource.url},#{resource.state},#{resource.parentId},#{resource.orderNumber},#{resource.level},#{resource.iconStyle},
+        #{resource.describe},#{resource.remarks},#{resource.createUserId},#{resource.createDate},#{resource.updateUserId},#{resource.updateDate})
     </insert>
 
     <!--
@@ -89,6 +104,18 @@
             </if>
             <if test="resource.state != null">
                 state = #{resource.state},
+            </if>
+            <if test="resource.parentId != null and resource.parentId != '' ">
+                parent_id = #{resource.parentId},
+            </if>
+            <if test="resource.orderNumber != null">
+                order_number = #{resource.orderNumber},
+            </if>
+            <if test="resource.level != null">
+                `level` = #{resource.level},
+            </if>
+            <if test="resource.iconStyle != null and resource.iconStyle != '' ">
+                icon_style = #{resource.iconStyle},
             </if>
             <if test="resource.describe != null and resource.describe != '' ">
                 `describe` = #{resource.describe},

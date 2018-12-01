@@ -83,8 +83,9 @@
         table.render({
             id: 'table1'
             , elem: '#tableData'
+            , autoSort:true     /*自动排序*/
+            ,initSort: 'name'  /*默认排序字段*/
             , toolbar: '#table-head'
-            , height: 430
             , title: '菜单管理'
             , url: '${webRoot}/permission/list' //数据接口
             , page: true //开启分页
@@ -93,7 +94,7 @@
                 {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
                 , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
                 , {field: 'id', title: 'ID', hide: true, width: 100, align: 'center'}
-                , {field: 'name', title: '权限名称', width: 150, align: 'center'}
+                , {field: 'name', title: '权限名称', width: 150, align: 'center',sort:true}
                 , {
                     field: 'resourceId', title: '对应资源', width: 150, align: 'center', templet: function (d) {
                         var resourceId = d.resourceId;
@@ -101,10 +102,12 @@
                         return resource.name;
                     }
                 }
-                , {field: 'operations', title: '可操作权限', width: 200, align: 'center', templet: function (d) {
-                    var operations = d.operations;
-                    return operationsToStr(operations);
-                }}
+                , {
+                    field: 'operations', title: '可操作权限', width: 200, align: 'center', templet: function (d) {
+                        var operations = d.operations;
+                        return operationsToStr(operations);
+                    }
+                }
                 , {field: 'describe', title: '权限描述', width: 150, align: 'center'}
                 , {field: 'remarks', title: '备注', width: 150, align: 'center'}
                 , {
@@ -112,10 +115,10 @@
                         if (d.state === 1) {
                             return '<span class="layui-btn layui-btn-xs">已启用</span>'
                         }
-                        if(d.state === 0){
+                        if (d.state === 0) {
                             return '<span class="layui-btn layui-btn-danger layui-btn-xs">已禁用</span>'
                         }
-                        if(d.state === -1){
+                        if (d.state === -1) {
                             return '<span class="layui-btn layui-btn-disabled layui-btn-xs">已删除</span>'
                         }
                     }
@@ -150,11 +153,14 @@
                 searchContent: searchContent
             }
             , parseData: function (res) { //res 即为原始返回的数据
-                var code = res.code == 1 ? 0 : 1;
+                var code = res.code === 1 ? 0 : 1;
                 var msg = res.msg;
-                var data = res.data.items;
+                var data = null;
+                if (code === 0) {
+                    data = res.data.items;
+                }
                 var count = 0;
-                if (data != null) {
+                if (data !== null) {
                     count = data.total;
                 }
                 return {
@@ -183,7 +189,7 @@
             var checkStatus = table.checkStatus('table1');
             var data = checkStatus.data;
 
-            if (data.length == 0 && obj.event != 'add') {
+            if (data.length === 0 && obj.event !== 'add') {
                 layer.alert('请先选择要操作的数据', {
                     time: 3000,
                     icon: 2
@@ -199,7 +205,7 @@
                         var ids = '';
                         var cnt = 0;
                         $.each(data, function (index, d) { //拼装ids
-                            if (index == 0) {
+                            if (index === 0) {
                                 ids += d.id;
                             } else {
                                 ids += ",";
@@ -217,8 +223,7 @@
                             });
                             return false;
                         } else {
-                            var id = data[0].id;
-                            editData(id);
+                            editData(data[0].id);
                         }
                         break;
                     case 'detail':
@@ -229,8 +234,7 @@
                             });
                             return false;
                         } else {
-                            var id = data[0].id;
-                            layer.msg("ID:【" + id + "】的查看操作");
+                            layer.msg("ID:【" + data[0].id + "】的查看操作");
                         }
                         break;
                 }
@@ -254,7 +258,7 @@
                 enableOpt(data, state);
             } else if (obj.event === 'unEnable') {  //禁用
                 state = 0;
-                enableOpt(data,state);
+                enableOpt(data, state);
             }
         });
     });
@@ -321,7 +325,7 @@
                         var jsonData = eval(data); //数据解析
                         var code = jsonData.code;
                         var msg = jsonData.msg;
-                        if (code == 1) {
+                        if (code === 1) {
                             layer.alert(msg, {
                                 time: 3000,
                                 icon: 1
@@ -339,7 +343,7 @@
     }
 
     //启/禁用操作
-    function enableOpt(obj,state) {
+    function enableOpt(obj, state) {
         if (obj.id === null || obj.id === '' || state === null || state === '') {
             layer.alert('请先选择要操作的数据', {
                 time: 3000,
@@ -363,7 +367,7 @@
                     var jsonData = eval(data);
                     var code = jsonData.code;
                     var msg = jsonData.msg;
-                    if (code == 1) {
+                    if (code === 1) {
                         layer.msg(msg);
                     } else {
                         layer.alert(msg, {
@@ -383,7 +387,7 @@
      * @returns {*}
      */
     function getUserById(id) {
-        if (id == null || id == '') {
+        if (id === null || id === '') {
             layer.alert('id不能为空！', {
                 time: 3000,
                 icon: 2
@@ -402,7 +406,7 @@
                 var jsonData = eval(data); //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code == 1) {
+                if (code === 1) {
                     user = jsonData.data.user;
                 } else {
                     layer.alert(msg, {
@@ -422,7 +426,7 @@
      * @returns {*}
      */
     function getResourceById(id) {
-        if (id == null || id == '') {
+        if (id === null || id === '') {
             layer.alert('id不能为空！', {
                 time: 3000,
                 icon: 2
@@ -462,13 +466,13 @@
      */
     function operationsToStr(operations) {
         var optStr = '';
-        if (operations == null || operations == ''){
+        if (operations == null || operations == '') {
             return optStr;
-        }else {
+        } else {
             var arr = operations.trim().split(",");
-            $.each(arr,function (index, opt) {
-                if (index === 0){
-                    switch (opt){
+            $.each(arr, function (index, opt) {
+                if (index === 0) {
+                    switch (opt) {
                         case 'READ':
                             optStr += '查看';
                             break;
@@ -482,8 +486,8 @@
                             optStr += '删除';
                             break;
                     }
-                }else {
-                    switch (opt){
+                } else {
+                    switch (opt) {
                         case 'READ':
                             optStr += '、查看';
                             break;

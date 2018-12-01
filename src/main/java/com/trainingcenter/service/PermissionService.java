@@ -38,7 +38,7 @@ public interface PermissionService {
     public List<Permission> getPermissions(Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
-     * 通过id 获取指定 角色 所含有的全部权限
+     * 通过角色id 获取指定 角色 所含有的全部权限
      */
     public List<Permission> getPermissionsByRoleId(String roleId);
 
@@ -70,7 +70,6 @@ public interface PermissionService {
      * @return 返回该角色所拥有的所有权限，支持分页、模糊查询
      */
     public List<Permission> getPermissionsByRoleName( String roleName, Integer currentPage, Integer rows, String searchContent);
-
 
     /**
      * 权限添加方法

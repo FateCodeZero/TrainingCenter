@@ -85,7 +85,6 @@
             id: 'table1'
             , elem: '#tableData'
             , toolbar: '#table-head'
-            , height: 430
             , title: '菜单管理'
             , url: '${webRoot}/role/list' //数据接口
             , page: true //开启分页
@@ -140,11 +139,14 @@
                 searchContent: searchContent
             }
             , parseData: function (res) { //res 即为原始返回的数据
-                var code = res.code == 1 ? 0 : 1;
+                var code = res.code === 1 ? 0 : 1;
                 var msg = res.msg;
-                var data = res.data.items;
+                var data = null;
+                if (code === 0){
+                    data = res.data.items;
+                }
                 var count = 0;
-                if (data != null) {
+                if (data !== null) {
                     count = data.total;
                 }
                 return {
@@ -173,7 +175,7 @@
             var checkStatus = table.checkStatus('table1');
             var data = checkStatus.data;
 
-            if (data.length == 0 && obj.event != 'add') {
+            if (data.length === 0 && obj.event !== 'add') {
                 layer.alert('请先选择要操作的数据', {
                     time: 3000,
                     icon: 2
@@ -189,7 +191,7 @@
                         var ids = '';
                         var cnt = 0;
                         $.each(data, function (index, d) { //拼装ids
-                            if (index == 0) {
+                            if (index === 0) {
                                 ids += d.id;
                             } else {
                                 ids += ",";
@@ -207,8 +209,7 @@
                             });
                             return false;
                         } else {
-                            var id = data[0].id;
-                            editData(id);
+                            editData(data[0].id);
                         }
                         break;
                     case 'detail':
@@ -219,8 +220,7 @@
                             });
                             return false;
                         } else {
-                            var id = data[0].id;
-                            layer.msg("ID:【" + id + "】的查看操作");
+                            layer.msg("ID:【" + data[0].id + "】的查看操作");
                         }
                         break;
                 }
@@ -245,6 +245,21 @@
             } else if (obj.event === 'unEnable') {  //禁用
                 state = 0;
                 enableOpt(data,state);
+            }else if (obj.event === 'grant'){ //授权
+                layer.open({
+                    title: '角色授权',
+                    type: 2,
+                    area: ['1000px', '450px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: '${webRoot}/webpages/admin/permission_select.jsp?id='+id,
+                    success: function (layero, index) {
+                        layer_window = layero;   //获取弹出窗口的窗口对象
+                    },
+                    end: function () {
+                        location.reload(); //回调函数，刷新页面
+                    }
+                });
             }
         });
     });

@@ -57,7 +57,7 @@ public class LoggingAspect implements Serializable{
      */
 
     /**
-     *  只拦截 *service.impl 包下的所有方法
+     *  拦截 *service.impl 包下的所有方法
      *  不记录日志本身的添加、修改、删除……
      *  不记录用户信息的修改……
      */

@@ -4,12 +4,12 @@ import com.trainingcenter.bean.Resource;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Update;
+import com.trainingcenter.exception.InsertException;
 import com.trainingcenter.exception.UpdateException;
 import com.trainingcenter.service.ResourceService;
 import com.trainingcenter.service.UserService;
-import com.trainingcenter.utils.AjaxJson;
-import com.trainingcenter.utils.StringUtil;
-import com.trainingcenter.utils.SysResourcesUtils;
+import com.trainingcenter.utils.*;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -21,10 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -45,6 +44,7 @@ public class ResourceController {
 
     /**
      * 分页获取资源数据（获取全部，（已启用 + 已禁用 + 已删除（软删除）））
+     *
      * @param currentPage：当前页
      * @param rows：每页展示的数据条数
      * @param searchContent：模糊查询
@@ -59,10 +59,10 @@ public class ResourceController {
             return ajaxJson;
         } else {
             //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
-            Map<String,Object> condition = new ConcurrentHashMap<>();
+            Map<String, Object> condition = new ConcurrentHashMap<>();
             // 此处注意：ConcurrentHashMap 不允许 NULL 值
-            if (StringUtil.isNotEmpty(searchContent)){
-                condition.put("searchContent",searchContent);
+            if (StringUtil.isNotEmpty(searchContent)) {
+                condition.put("searchContent", searchContent);
             }
             //获取当前查询条件下的所有数据条数，分页用
             Integer total = resourceService.getResources(condition).size();
@@ -86,13 +86,13 @@ public class ResourceController {
 
     /**
      * 分页获取资源数据（获取只获取已启用的）
+     *
      * @param currentPage：当前页
      * @param rows：每页展示的数据条数
-     * @param searchContent：模糊查询
      */
     @ResponseBody
     @RequestMapping("/select")
-    public AjaxJson getResources_select(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent) {
+    public AjaxJson getResources_select(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null) {
             ajaxJson.setCode(0);
@@ -100,13 +100,12 @@ public class ResourceController {
             return ajaxJson;
         } else {
             //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
-            Map<String,Object> condition = new ConcurrentHashMap<>();
-            condition.put("state",1);   //只查询已启用的数据
-
-            // 此处注意：ConcurrentHashMap 不允许 NULL 值
-            if (StringUtil.isNotEmpty(searchContent)){
-                condition.put("searchContent",searchContent);
+            Map<String, Object> condition = new ConcurrentHashMap<>();
+            String conditionStr = request.getParameter("condition");
+            if (StringUtil.isNotEmpty(conditionStr)){
+                condition = FindConditionUtils.findConditionBuild(Resource.class,conditionStr);
             }
+            condition.put("state", 1);   //只查询已启用的数据
 
             //获取当前查询条件下的所有数据条数，分页用
             Integer total = resourceService.getResources(condition).size();
@@ -126,6 +125,57 @@ public class ResourceController {
             ajaxJson.setData(data);
             return ajaxJson;
         }
+    }
+
+    /**
+     * 获取树形资源数据（获取只获取已启用的）
+     */
+    @ResponseBody
+    @RequestMapping("/tree")
+    public AjaxJson getResources_tree() {
+        AjaxJson ajaxJson = new AjaxJson();
+        //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
+        Map<String, Object> condition = new ConcurrentHashMap<>();
+        condition.put("state", 1);   //只查询已启用的数据
+
+        //获取当前查询条件下的所有数据条数，分页用
+        Integer total = resourceService.getResources(condition).size();
+
+        //获取所有数据
+        List<Resource> resources = resourceService.getResources(condition);
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        ajaxJson.setCode(1);
+
+        if (resources.size() == 0) {
+            ajaxJson.setMsg("暂无数据Ծ‸Ծ");
+        } else {
+
+            List<TreeNode> treeNodes = new ArrayList<>();
+            for (Resource resource:resources) {
+                TreeNode node = new TreeNode();
+                node.setId(resource.getId());
+                node.setName(resource.getName());
+                node.setParentId(resource.getParentId());
+                node.setOrder(resource.getOrderNumber());
+                node.setLevel(resource.getLevel());
+
+                Map<String,Object> other = new ConcurrentHashMap<>();
+                other.put("url",resource.getUrl());
+                other.put("iconStyle",resource.getIconStyle());
+                node.setData(other);
+                treeNodes.add(node);
+            }
+            //按指定的属性排序
+            Collections.sort(treeNodes);
+
+            //用list 构建 树
+            List<TreeNode> trees = TreeUtils.build(treeNodes);
+            data.put("total", total);
+            data.put("items", trees);
+            ajaxJson.setMsg("数据获取成功");
+        }
+        ajaxJson.setData(data);
+        return ajaxJson;
     }
 
     @ResponseBody
@@ -148,6 +198,20 @@ public class ResourceController {
         resource.setCreateDate(new Date());
         resource.setUpdateUserId(currentUser.getId());
         resource.setUpdateDate(new Date());
+
+        if (StringUtil.isEmpty(resource.getParentId())) {
+            resource.setParentId("0");  //默认父菜单为0
+            //父菜单为自己时，表示该菜单为顶级菜单
+            resource.setLevel(0);
+        }else {
+            //获取当前菜单的父级菜单
+            Resource parent = resourceService.getResourceById(resource.getParentId());
+            if (parent == null){
+                throw new InsertException("添加失败，父级菜单不存在或已被删除");
+            }
+            //设置当前菜单的层级为父菜单层级 + 1
+            resource.setLevel(parent.getLevel() + 1);
+        }
 
         Integer res = resourceService.add(resource);
 
@@ -195,6 +259,26 @@ public class ResourceController {
         }
         if (resource.getState() != null) {
             oldResource.setState(resource.getState());
+        }
+        if (resource.getParentId() != null) {
+            oldResource.setParentId(resource.getParentId());
+        }
+        //菜单层级不能手动更新
+        String parentId = resource.getParentId();
+        if (!parentId.equals("0")){
+            //获取当前菜单的父级菜单
+            Resource parent = resourceService.getResourceById(resource.getParentId());
+            //设置当前菜单的层级为父菜单层级 + 1
+            oldResource.setLevel(parent.getLevel() + 1);
+        }else {
+            //顶级页面层级为0
+            oldResource.setLevel(0);
+        }
+        if (resource.getOrderNumber() != null) {
+            oldResource.setOrderNumber(resource.getOrderNumber());
+        }
+        if (resource.getIconStyle() != null) {
+            oldResource.setIconStyle(resource.getIconStyle());
         }
         if (StringUtil.isNotEmpty(resource.getDescribe())) {
             oldResource.setDescribe(resource.getDescribe());

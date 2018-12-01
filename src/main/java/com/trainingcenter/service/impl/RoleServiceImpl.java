@@ -13,6 +13,7 @@ import com.trainingcenter.utils.StringUtil;
 import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -288,6 +289,9 @@ public class RoleServiceImpl implements RoleService {
 
         //获取当前登录用户
         String currentUsername = SysResourcesUtils.getCurrentUsername();
+        if (currentUsername == null) {
+            throw new CredentialsExpiredException("登录凭证已过期");
+        }
         LogUtil.info(this, "角色批量删除", "用户：【" + currentUsername + "】正在批量删除IDS为：【" + ids + "】的角色");
 
         String[] arr = ids.split(",");  //分割成数组
@@ -325,6 +329,10 @@ public class RoleServiceImpl implements RoleService {
 
         //获取当前登录用户
         String currentUsername = SysResourcesUtils.getCurrentUsername();
+        if (currentUsername == null) {
+            throw new CredentialsExpiredException("登录凭证已过期");
+        }
+
         LogUtil.info(this, "角色授权", "用户：【" + currentUsername + "】正在给【" + role.getId() + "】授权……");
 
         //先回收该角色之前的所有权限，再逐一授权
@@ -349,6 +357,7 @@ public class RoleServiceImpl implements RoleService {
             }
         }
 
+        //授权不为空时再执行授权，否则就是取消当前角色的所有权限
         if (StringUtil.isNotEmpty(permissionIds)) {
             //逐一授权
             String[] arr = permissionIds.split(",");

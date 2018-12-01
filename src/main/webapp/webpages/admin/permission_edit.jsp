@@ -19,7 +19,7 @@
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
-    <script src="${webRoot}/webpages/admin/js/utils.js"></script>
+    <script src="${webRoot}/plug-in/js/utils.js"></script>
 </head>
 <body>
 <br>
@@ -48,7 +48,8 @@
             <div class="form-group">
                 <label for="operations" class="col-sm-2 control-label">可操作权限</label>
                 <div class="col-sm-10">
-                    <select class="form-control" name="operations" id="operations" multiple="multiple">
+                    <%--multiple="multiple"--%>
+                    <select class="form-control" name="operations" id="operations">
                         <option value="READ" id="O_R">可查看</option>
                         <option value="CREATE" id="O_C">可添加</option>
                         <option value="UPDATE" id="O_U">可更新</option>
@@ -253,7 +254,7 @@
                 var jsonData = eval(data);
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code == 1) {
+                if (code === 1) {
                     permission = jsonData.data.permission;
                 } else {
                     layer.alert(msg, {

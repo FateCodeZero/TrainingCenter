@@ -19,7 +19,7 @@
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
-    <script src="${webRoot}/webpages/static/js/utils.js"></script>
+    <script src="${webRoot}/plug-in/js/utils.js"></script>
 </head>
 <body>
 <br>
@@ -28,12 +28,6 @@
     <div class="text-left col-sm-10 panel panel-primary">
         <br>
         <form class="form-horizontal" role="form" action="">
-            <div class="form-group">
-                <label for="name" class="col-sm-2 control-label">权限名称</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="name" id="name" value="" placeholder="请填写权限名称">
-                </div>
-            </div>
             <div class="form-group">
                 <label for="resourceId" class="col-sm-2 control-label">权限对应资源</label>
                 <div class="col-sm-8">
@@ -45,9 +39,16 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">权限名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="name" id="name" value="" placeholder="请填写权限名称">
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="operations" class="col-sm-2 control-label">可操作权限</label>
                 <div class="col-sm-10">
-                    <select class="form-control" name="operations" id="operations" multiple="multiple">
+                    <%--multiple="multiple"--%>
+                    <select class="form-control" name="operations" id="operations">
                         <option value="READ">可查看</option>
                         <option value="CREATE">可添加</option>
                         <option value="UPDATE">可更新</option>
@@ -185,7 +186,7 @@
                         time: 3000,
                         icon: 1
                     });
-                    close();    //关闭窗口
+                    closeView();    //关闭窗口
                 } else {
                     layer.alert(msg, {
                         time: 3000,
@@ -197,10 +198,10 @@
     });
 
     $("#close").click(function () {
-        close();
+        closeView();
     });
 
-    function close() {
+    function closeView() {
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index); //再执行关闭
     }

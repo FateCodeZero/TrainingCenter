@@ -19,7 +19,8 @@
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
-    <script src="${webRoot}/webpages/admin/js/utils.js"></script>
+    <script src="${webRoot}/plug-in/js/utils.js"></script>
+
 </head>
 <body>
 <br>
@@ -29,6 +30,18 @@
         <br>
         <form class="form-horizontal" role="form" action="">
             <input type="hidden" value="" name="id" id="id">
+            <div class="form-group">
+                <label for="parentId" class="col-sm-2 control-label">父级菜单</label>
+                <div class="col-sm-8">
+                    <input type="hidden" name="parentId" id="parentId"/>
+                    <input type="text" class="form-control" name="parentName" id="parentName" value=""
+                           disabled="disabled"
+                           placeholder="选择父级菜单，顶级菜单为管理系统首页">
+                </div>
+                <div class="col-sm-2">
+                    <button id="parentResource_btn" class="layui-btn layui-btn-sm">选择父级菜单</button>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">菜单名称</label>
                 <div class="col-sm-10">
@@ -52,7 +65,22 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="describe" class="col-sm-2 control-label">资源描述</label>
+                <label for="orderNumber" class="col-sm-2 control-label">菜单排序</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="orderNumber" id="orderNumber" value=""
+                           placeholder="请填写菜单顺序">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="iconStyle" class="col-sm-2 control-label">菜单图标</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="iconStyle" id="iconStyle" value=""
+                           placeholder="请填写菜单图标icon">
+                </div>
+                <a href="https://getbootstrap.com/docs/3.3/components/" style="color: #009688" target="_blank">查看图标</a>
+            </div>
+            <div class="form-group">
+                <label for="describe" class="col-sm-2 control-label">菜单描述</label>
                 <div class="col-sm-10">
                     <textarea rows="3" class="form-control" name="describe" id="describe"
                               placeholder="描述内容"></textarea>
@@ -104,6 +132,20 @@
             return false;
         }
         $("#id").val(resource.id);
+        var parentId = resource.parentId;
+        //父菜单对象
+        if (parentId == 0 || parentId === '0'){
+            //顶级菜单的父对象id为0,父对象名称显示自己
+            $("#parentId").val("0");
+            $("#parentName").val(resource.name);
+        }else {
+            var parent = getResourceById(resource.parentId);
+            $("#parentId").val(parent.id);
+            $("#parentName").val(parent.name);
+        }
+
+        $("#orderNumber").val(resource.orderNumber);
+        $("#iconStyle").val(resource.iconStyle);
         $("#name").val(resource.name);
         $("#url").val(resource.url);
         var state = resource.state;
@@ -161,6 +203,9 @@
         var name = $("#name").val();
         var url = $("#url").val();
         var state = $("#state").val();
+        var parentId = $("#parentId").val();
+        var orderNumber = $("#orderNumber").val();
+        var iconStyle = $("#iconStyle").val();
         var describe = $("#describe").val();
         var remarks = $("#remarks").val();
 
@@ -189,18 +234,6 @@
             $("#name").css("border", "1px solid #009688");
             $("#name").blur();      //失去焦点
         }
-        if (url === null || url === '') {
-            layer.msg("请填写菜单URL！", {
-                icon: 2,
-                time: 2000 //2秒关闭（如果不配置，默认是3秒）
-            });
-            $("#url").css("border", "1px solid red");
-            $("#url").focus();
-            return false;
-        } else {
-            $("#url").css("border", "1px solid #009688");
-            $("#url").blur();      //失去焦点
-        }
         if (state === null || state === '') {
             layer.msg("请选择菜单使用状态！", {
                 icon: 2,
@@ -213,12 +246,27 @@
             $("#state").css("border", "1px solid #009688");
             $("#state").blur();      //失去焦点
         }
+        if (orderNumber === null || orderNumber === "") {
+            layer.msg("请填写菜单顺序！", {
+                icon: 2,
+                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+            });
+            $("#orderNumber").css("border", "1px solid red");
+            $("#orderNumber").focus();
+            return false;
+        } else {
+            $("#orderNumber").css("border", "1px solid #009688");
+            $("#orderNumber").blur();      //失去焦点
+        }
 
         var data = {
             id: id,
             name: name,
             url: url,
             state: state,
+            parentId: parentId,
+            orderNumber:orderNumber,
+            iconStyle: iconStyle,
             describe: describe,
             remarks: remarks
         };
@@ -247,6 +295,23 @@
             }
         });
     });
+
+    $("#parentResource_btn").click(function () {
+        parent.layer.open({		//从本页的父页面打开
+            title: '选择父级菜单',
+            type: 2,
+            area: ['1000px', '500px'],
+            fix: false, //不固定
+            maxmin: true,
+            content: '${webRoot}/webpages/admin/resource_select.jsp',
+        });
+    });
+
+    //设置资源的值，此方法由该弹出窗口的父窗口调用
+    function setResourceData(jsonData) {
+        $("#parentId").val(jsonData.id);
+        $("#parentName").val(jsonData.name);
+    }
 
     $("#close").click(function () {
         closeView();

@@ -1,11 +1,13 @@
 package com.trainingcenter.controller;
 
 import com.trainingcenter.bean.Permission;
+import com.trainingcenter.bean.Resource;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.service.PermissionService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
+import com.trainingcenter.utils.FindConditionUtils;
 import com.trainingcenter.utils.StringUtil;
 import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -85,11 +88,10 @@ public class PermissionController {
      * 分页获取权限数据（获取只获取已启用的，供选择用）
      * @param currentPage：当前页
      * @param rows：每页展示的数据条数
-     * @param searchContent：模糊查询
      */
     @ResponseBody
     @RequestMapping("/select")
-    public AjaxJson getPermissions_select(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
+    public AjaxJson getPermissions_select(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request){
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null){
             ajaxJson.setCode(0);
@@ -97,12 +99,13 @@ public class PermissionController {
             return ajaxJson;
         }else {
             //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
-            Map<String,Object> condition = new ConcurrentHashMap<>();
-            condition.put("state",1);   //只查询已启用的
-            // 此处注意：ConcurrentHashMap 不允许 NULL 值
-            if (StringUtil.isNotEmpty(searchContent)){
-                condition.put("searchContent",searchContent);
+            Map<String, Object> condition = new ConcurrentHashMap<>();
+            String conditionStr = request.getParameter("condition");
+            if (StringUtil.isNotEmpty(conditionStr)){
+                condition = FindConditionUtils.findConditionBuild(Permission.class,conditionStr);
             }
+            condition.put("state", 1);   //只查询已启用的数据
+
             //获取当前查询条件下的所有数据条数，分页用
             Integer total = permissionService.getPermissions(condition).size();
             //获取当前页的数据
@@ -121,6 +124,29 @@ public class PermissionController {
             ajaxJson.setData(data);
             return ajaxJson;
         }
+    }
+
+    /**
+     * 获取一个角色所拥有的所有权限
+     * @param roleId：角色id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getPermissionsByRoleId")
+    public AjaxJson getPermissionsByRoleId(@RequestParam("roleId") String roleId){
+        AjaxJson ajaxJson = new AjaxJson();
+        if (StringUtil.isEmpty(roleId)){
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("数据获取失败，查询对象不能为空");
+            return ajaxJson;
+        }
+        List<Permission> permissions = permissionService.getPermissionsByRoleId(roleId);
+        ajaxJson.setCode(1);
+        ajaxJson.setMsg("数据获取成功");
+        Map<String,Object> data = new ConcurrentHashMap<>();
+        data.put("items",permissions);
+        ajaxJson.setData(data);
+        return ajaxJson;
     }
 
     /**
