@@ -37,7 +37,10 @@
 
     <div class="col-md-12 text-center footdiv" >
         <p class="block_p">
-            <small >&copy; 2018 FateCode项目组出品 遵义市梦润传承培训中心 官方网页 欢迎关注 <a href="" target="_blank" title="梦润课程">梦润课程</a>  &amp;<a href="" title="梦润风采" target="_blank">梦润风采</a> &amp; <a href="" target="_blank">梦润团队</a></small>
+            <small >&copy; 2018 FateCode项目组出品 遵义市梦润传承培训中心 官方网页 欢迎了解更多
+                <a href="http://www.gzmrjt.com/a/zoujinmengrun/jituanjianjie/index.html" target="_blank" title="梦润集团">梦润集团</a>  &amp;
+                <a href="http://www.51mengrun.shop/web/index.php?c=user&a=login&" title="梦润商城" target="_blank">梦润商城</a> &amp;
+                <a href="${webRoot}/webpages/static/aboutUs.jsp" target="_blank">关于我们</a></small>
         </p>
         <div class="col-md-8 col-md-offset-2  text-center">
             <div class="col-md-4">电话：400-0852-339</div>

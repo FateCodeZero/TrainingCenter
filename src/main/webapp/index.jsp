@@ -154,8 +154,20 @@
             if(text === '往期学员故事'){
                 loadUrl = "${webRoot}/webpages/static/studentStory.jsp";
             }
+            if(text === '红色圣地'){
+                loadUrl = "${webRoot}/webpages/static/revolutionarySite.jsp";
+            }
             if(text === '交通工具'){
                 loadUrl = "${webRoot}/webpages/static/transportation.jsp";
+            }
+            if(text === '特色美食'){
+                loadUrl = "${webRoot}/webpages/static/specialFood.jsp";
+            }
+            if(text === '文化产品'){
+                loadUrl = "${webRoot}/webpages/static/culturalProducts.jsp";
+            }
+            if(text === '特此介绍'){
+                loadUrl = "${webRoot}/webpages/static/Introduce.jsp";
             }
             if(text === '个人中心'){
                 loadUrl = "${webRoot}/webpages/static/personalCenter.jsp";

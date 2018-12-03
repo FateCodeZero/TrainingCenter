@@ -53,7 +53,7 @@
                 <div class="col-md-3">
                     <div class="col-md-10 col-md-offset-1 introduce" style="background-color: rgb(0, 153, 204);>
                         <a href="#introduce2">
-                            <img src="${webRoot}/webpages/static/images/introduce2.png" class="col-md-6 col-md-offset-3 introduce_img">
+                            <img src="${webRoot}/webpages/static/images/introduce3.png" class="col-md-6 col-md-offset-3 introduce_img">
                             <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">绿色发展教学点</h3>
                         </a>
                     </div>
@@ -61,7 +61,7 @@
                 <div class="col-md-3">
                     <div class="col-md-10 col-md-offset-1 introduce" style="background-color: rgb(86, 46, 25);>
                         <a href="#introduce3">
-                        <img src="${webRoot}/webpages/static/images/introduce3.png" class="col-md-6 col-md-offset-3 introduce_img">
+                        <img src="${webRoot}/webpages/static/images/introduce4.png" class="col-md-6 col-md-offset-3 introduce_img">
                         <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">挂牌单位</h3>
                         </a>
                     </div>
