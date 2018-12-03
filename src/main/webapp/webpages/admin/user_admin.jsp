@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>权限管理</title>
+    <title>管理员用户管理</title>
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css" charset="UTF-8">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css" charset="UTF-8">
 
@@ -49,6 +49,7 @@
 
 <%--表格操作--%>
 <script type="text/html" id="table-opt">
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="grant">授权</a>
     <a class="layui-btn layui-btn-xs" lay-event="enable">启用</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="unEnable">禁用</a>
 </script>
@@ -83,82 +84,65 @@
         table.render({
             id: 'table1'
             , elem: '#tableData'
-            , autoSort:true     /*自动排序*/
-            , initSort: 'name'  /*默认排序字段*/
             , toolbar: '#table-head'
-            , title: '菜单管理'
-            , url: '${webRoot}/permission/list' //数据接口
+            , title: '用户管理'
+            , url: '${webRoot}/user/list_admin' //数据接口
             , page: true //开启分页
             , limit: 10 //每页显示多少条数据
             , cols: [[ //表头
                 {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
                 , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
                 , {field: 'id', title: 'ID', hide: true, width: 100, align: 'center'}
-                , {field: 'name', title: '权限名称', width: 150, align: 'center',sort:true}
+                , {field: 'username', title: '用户账号', width: 150, align: 'center'}
+                , {field: 'loginIP', title: '登录IP', width: 150, align: 'center'}
                 , {
-                    field: 'resourceId', title: '对应资源', width: 150, align: 'center', templet: function (d) {
-                        var resourceId = d.resourceId;
-                        var resource = getResourceById(resourceId);
-                        return resource.name;
-                    }
-                }
-                , {
-                    field: 'operations', title: '可操作权限', width: 200, align: 'center', templet: function (d) {
-                        var operations = d.operations;
-                        return operationsToStr(operations);
-                    }
-                }
-                , {field: 'describe', title: '权限描述', width: 150, align: 'center'}
-                , {field: 'remarks', title: '备注', width: 150, align: 'center'}
-                , {
-                    field: 'state', title: '使用状态', width: 100, align: 'center', templet: function (d) {
-                        if (d.state === 1) {
+                    field: 'unlockedFlag', title: 'IP锁定状态', width: 100, align: 'center', templet: function (d) {
+                        if (d.unlockedFlag === 1) {
                             return '<span class="layui-btn layui-btn-xs">已启用</span>'
                         }
-                        if (d.state === 0) {
+                        if(d.unlockedFlag === 0){
                             return '<span class="layui-btn layui-btn-danger layui-btn-xs">已禁用</span>'
                         }
-                        if (d.state === -1) {
+                        if(d.unlockedFlag === -1){
                             return '<span class="layui-btn layui-btn-disabled layui-btn-xs">已删除</span>'
                         }
                     }
                 }
                 , {
-                    field: 'createUserId', title: '创建人', width: 150, align: 'center', templet: function (d) {
-                        var user = getUserById(d.createUserId);
-                        return user.username;
+                    field: 'state', title: '使用状态', width: 100, align: 'center', templet: function (d) {
+                        if (d.state === 1) {
+                            return '<span class="layui-btn layui-btn-xs">已启用</span>'
+                        }
+                        if(d.state === 0){
+                            return '<span class="layui-btn layui-btn-danger layui-btn-xs">已禁用</span>'
+                        }
+                        if(d.state === -1){
+                            return '<span class="layui-btn layui-btn-disabled layui-btn-xs">已删除</span>'
+                        }
                     }
                 }
                 , {
-                    field: 'createDate', title: '创建时间', sort: true, width: 180, align: 'center', templet: function (d) {
-                        return new Date(d.createDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
+                    field: 'registerTime', title: '注册时间', width: 150, align: 'center', templet: function (d) {
+                        return new Date(d.registerTime).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
                     }
                 }
                 , {
-                    field: 'updateUserId', title: '更新人Id', width: 150, align: 'center', templet: function (d) {
-                        var user = getUserById(d.updateUserId);
-                        return user.username;
-                    }
-                }
-                , {
-                    field: 'updateDate', title: '更新时间', sort: true, width: 180, align: 'center', templet: function (d) {
-                        return new Date(d.updateDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
+                    field: 'lastLoginTime', title: '创建时间', sort: true, width: 180, align: 'center', templet: function (d) {
+                        return new Date(d.lastLoginTime).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
                     }
                 }
                 <%--<sec:authorize access="hasPermission('/webpages/admin/resource_list.jsp','UPDATE')">--%>
-                , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 150, align: 'center'} //这里的toolbar值是模板元素的选择器
+                , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 180, align: 'center'} //这里的toolbar值是模板元素的选择器
                 <%--</sec:authorize>--%>
             ]]
             , where: {//接口需要的其它参数
-                condition: {
-                    condition: JSON.stringify({searchContent:searchContent})
-                }
+                condition: JSON.stringify({searchContent:searchContent})
             }
             , parseData: function (res) { //res 即为原始返回的数据
                 var code = res.code === 1 ? 0 : 1;
                 var msg = res.msg;
                 var data = null;
-                if (code === 0) {
+                if (code === 0){
                     data = res.data.items;
                 }
                 var count = 0;
@@ -260,19 +244,34 @@
                 enableOpt(data, state);
             } else if (obj.event === 'unEnable') {  //禁用
                 state = 0;
-                enableOpt(data, state);
+                enableOpt(data,state);
+            }else if (obj.event === 'grant'){ //授权
+                layer.open({
+                    title: '角色授权',
+                    type: 2,
+                    area: ['1000px', '450px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: '${webRoot}/webpages/admin/permission_select.jsp?id='+id,
+                    success: function (layero, index) {
+                        layer_window = layero;   //获取弹出窗口的窗口对象
+                    },
+                    end: function () {
+                        location.reload(); //回调函数，刷新页面
+                    }
+                });
             }
         });
     });
 
     function addData() {
         layer.open({
-            title: '添加权限',
+            title: '添加用户',
             type: 2,
             area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/webpages/admin/permission_add.jsp',
+            content: '${webRoot}/webpages/admin/role_add.jsp',
             success: function (layero, index) {
                 layer_window = layero;   //获取弹出窗口的窗口对象
             },
@@ -284,12 +283,12 @@
 
     function editData(id) {
         layer.open({
-            title: '编辑权限',
+            title: '编辑角色',
             type: 2,
             area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/webpages/admin/permission_edit.jsp?id=' + id,
+            content: '${webRoot}/webpages/admin/role_edit.jsp?id=' + id,
             success: function (layero, index) {
                 layer_window = layero;   //获取弹出窗口的窗口对象
             },
@@ -300,9 +299,9 @@
     }
 
     //获取弹出窗口返回的json格式的数据
-    function getBackResourceData(JsonData) {		//返回资源数据
+    function getBackPermissionData(JsonData) {		//返回权限数据
         var resourceSelectWindow = window[layer_window.find('iframe')[0]['name']];	//获取子窗口的窗口对象
-        resourceSelectWindow.window.setResourceData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
+        resourceSelectWindow.window.setPermissionData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
     }
 
     //删除
@@ -319,7 +318,7 @@
                     ids: ids
                 };
                 $.ajax({
-                    url: "${webRoot}/permission/delete",
+                    url: "${webRoot}/role/delete",
                     type: "post",
                     data: data,
                     dataType: "json",
@@ -345,7 +344,7 @@
     }
 
     //启/禁用操作
-    function enableOpt(obj, state) {
+    function enableOpt(obj,state) {
         if (obj.id === null || obj.id === '' || state === null || state === '') {
             layer.alert('请先选择要操作的数据', {
                 time: 3000,
@@ -361,7 +360,7 @@
                 resourceId: obj.resourceId
             };
             $.ajax({
-                url: "${webRoot}/permission/update",
+                url: "${webRoot}/role/update",
                 type: "post",
                 data: data,
                 dataType: "json",
@@ -389,7 +388,7 @@
      * @returns {*}
      */
     function getUserById(id) {
-        if (id === null || id === '') {
+        if (id == null || id == '') {
             layer.alert('id不能为空！', {
                 time: 3000,
                 icon: 2
@@ -408,7 +407,7 @@
                 var jsonData = eval(data); //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code === 1) {
+                if (code == 1) {
                     user = jsonData.data.user;
                 } else {
                     layer.alert(msg, {
@@ -421,94 +420,6 @@
         });
         return user;
     }
-
-    /**
-     * 通过 id 获取资源
-     * @param id
-     * @returns {*}
-     */
-    function getResourceById(id) {
-        if (id === null || id === '') {
-            layer.alert('id不能为空！', {
-                time: 3000,
-                icon: 2
-            });
-            return false;
-        }
-        var resource = null;
-        var data = {id: id};
-        $.ajax({
-            url: "${webRoot}/resource/getResourceById",
-            type: "get",
-            async: false,    //关闭异步请求
-            data: data,
-            dataType: "json",
-            success: function (data) {
-                var jsonData = eval(data); //数据解析
-                var code = jsonData.code;
-                var msg = jsonData.msg;
-                if (code == 1) {
-                    resource = jsonData.data.resource;
-                } else {
-                    layer.alert(msg, {
-                        time: 3000,
-                        icon: 2
-                    });
-                    return false;
-                }
-            }
-        });
-        return resource;
-    }
-
-    /**
-     * 可操作代码转为中文
-     * @param operations
-     * @returns {string}
-     */
-    function operationsToStr(operations) {
-        var optStr = '';
-        if (operations == null || operations == '') {
-            return optStr;
-        } else {
-            var arr = operations.trim().split(",");
-            $.each(arr, function (index, opt) {
-                if (index === 0) {
-                    switch (opt) {
-                        case 'READ':
-                            optStr += '查看';
-                            break;
-                        case 'CREATE':
-                            optStr += '添加';
-                            break;
-                        case 'UPDATE':
-                            optStr += '更新';
-                            break;
-                        case 'DELETE':
-                            optStr += '删除';
-                            break;
-                    }
-                } else {
-                    switch (opt) {
-                        case 'READ':
-                            optStr += '、查看';
-                            break;
-                        case 'CREATE':
-                            optStr += '、添加';
-                            break;
-                        case 'UPDATE':
-                            optStr += '、更新';
-                            break;
-                        case 'DELETE':
-                            optStr += '、删除';
-                            break;
-                    }
-                }
-            });
-        }
-        return optStr;
-    }
-
 </script>
 
 </html>

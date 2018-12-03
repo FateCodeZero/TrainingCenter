@@ -25,7 +25,7 @@
                 <div id="treeView-checkbox" class=""></div>
             </div>
             <div class="col-sm-8 text-center layui-tab-content">
-                <div class="text-center" style="color: #FF5722">菜单详细授权</div>
+                <div class="text-center" style="color: #FF5722">菜单详细授权，此处勾选后记得保存哟~</div>
                 <table id="tableData" lay-filter="table-filter"></table>
             </div>
         </div>
@@ -34,7 +34,7 @@
 <footer style="z-index: 999">
     <div class="row">
         <div class="col-sm-offset-2 col-sm-12 text-center">
-            <button type="button" class="layui-btn col-sm-4" id="submit">确认提交</button>
+            <button type="button" class="layui-btn col-sm-4" id="submit">保存授权</button>
             <button type="button" class="layui-btn layui-btn-normal col-sm-4" id="close">关闭并回返</button>
         </div>
     </div>
@@ -43,19 +43,31 @@
 
 <script type="text/javascript">
     var table = null;  //layui table
-    var roleId = '';    /*当前要授权的角色id*/
-    var resourceData = null;    /*菜单数据*/
-    var permissionData = null;  /*权限数据*/
-    var treeData = null;        /*菜单树所需要的数据*/
+    var roleId = '';
+    /*当前要授权的角色id*/
+    var resourceData = null;
+    /*菜单数据*/
+    var permissionData = null;
+    /*权限数据*/
+    var treeData = null;
+    /*菜单树所需要的数据*/
+    var currentResouceId = null;
+    /*当前授权的页面菜单id*/
     $(document).ready(function () {
         /*从URL获取对象ID*/
-        roleId = getUrlParam('id');     /*获取当前要授权的角色对象id*/
-        resourceData = getResourceData();     /*获取菜单数据*/
-        permissionData = getPermissionsByRoleId(roleId); /*获取当前角色所含有的所有权限数据*/
-        var resourceIds = getResourceIdsByPermissions(permissionData);  /*提取权限数据中的菜单id*/
-        treeData = buildTreeData(resourceData,resourceIds);  /*构建菜单树所需要的数据*/
+        roleId = getUrlParam('id');
+        /*获取当前要授权的角色对象id*/
+        resourceData = getResourceData();
+        /*获取菜单数据*/
+        permissionData = getPermissionsByRoleId(roleId);
+        /*获取当前角色所含有的所有权限数据*/
+        var resourceIds = getResourceIdsByPermissions(permissionData);
+        /*提取权限数据中的菜单id*/
+        treeData = buildTreeData(resourceData, resourceIds);
+        /*构建菜单树所需要的数据*/
         console.log(treeData);
-        initCheckboxTree(treeData);  /*初始化Checkbox菜单树*/
+        initCheckboxTree(treeData);
+        /*初始化Checkbox菜单树*/
     });
 
     /*获取菜单资源*/
@@ -88,9 +100,9 @@
     /*获取当前角色所含有的所有权限*/
     function getPermissionsByRoleId(roleId) {
         var permissions = null;
-        if (roleId !== null && roleId !== ''){
+        if (roleId !== null && roleId !== '') {
             var data = {
-                roleId:roleId
+                roleId: roleId
             };
             $.ajax({
                 url: "${webRoot}/permission/getPermissionsByRoleId",
@@ -120,11 +132,11 @@
     /*提取出权限中的菜单id*/
     function getResourceIdsByPermissions(permissions) {
         var ids = '';
-        if (permissions !== null && permissions !== ''){
-            $.each(permissions,function (index,permission) {
-                if (index === 0){
+        if (permissions !== null && permissions !== '') {
+            $.each(permissions, function (index, permission) {
+                if (index === 0) {
                     ids += permission.resourceId;
-                }else {
+                } else {
                     ids += ",";
                     ids += permission.resourceId;
                 }
@@ -137,21 +149,29 @@
     * resourceData：菜单数据
     * permissionResourceIds：当前角色中所含的权限对应的菜单id
     * */
-    function buildTreeData(resourceData,permissionResourceIds) {
+    function buildTreeData(resourceData, permissionResourceIds) {
         var tree = [];
         $.each(resourceData, function (index, item) {
-            var id = item.id;   /*本节点菜单id*/
-            var name = item.name;   /*本节点菜单名称*/
-            var parentId = item.parentId;   /*本节点的父节点菜单id*/
-            var order = item.order; /*本节点排序，可忽略*/
-            var level = item.level; /*本节点层级*/
-            var url = item.data.url;   /*本节点url*/
-            var iconStyle = item.data.iconStyle;  /*本节点iocn*/
-            var children = item.children;   /*子节点*/
+            var id = item.id;
+            /*本节点菜单id*/
+            var name = item.name;
+            /*本节点菜单名称*/
+            var parentId = item.parentId;
+            /*本节点的父节点菜单id*/
+            var order = item.order;
+            /*本节点排序，可忽略*/
+            var level = item.level;
+            /*本节点层级*/
+            var url = item.data.url;
+            /*本节点url*/
+            var iconStyle = item.data.iconStyle;
+            /*本节点iocn*/
+            var children = item.children;
+            /*子节点*/
 
             var checked = false;  //是否处于checked状态
             /*若当前菜单在处在当前角色的权限集合中，则让其处于被选中状态*/
-            if (permissionResourceIds.indexOf(id) !== -1){
+            if (permissionResourceIds.indexOf(id) !== -1) {
                 checked = true;
             }
 
@@ -161,14 +181,15 @@
                 pid: parentId,
                 order: order,
                 text: name,
-                icon:iconStyle,  /*当前节点上的图标*/
-                selectedIcon:iconStyle,  /*当前节点被选择后的图标*/
-                href:"${webRoot}/"+url,
+                icon: iconStyle, /*当前节点上的图标*/
+                selectedIcon: iconStyle, /*当前节点被选择后的图标*/
+                href: "${webRoot}/" + url,
                 tags: level,
-                state:{     /*一个节点的初始状态*/
-                    checked:checked  /*是否处于checked状态*/
+                state: {
+                    /*一个节点的初始状态*/
+                    checked: checked  /*是否处于checked状态*/
                 },
-                nodes: buildTreeData(children,permissionResourceIds)
+                nodes: buildTreeData(children, permissionResourceIds)
             };
         });
         return tree;
@@ -177,10 +198,10 @@
     /*初始化选择树*/
     function initCheckboxTree(data) {
         return $('#treeView-checkbox').treeview({
-            data: data,         /*加载的树形json数据*/
-            showIcon: true,    /*开启节点图标*/
+            data: data, /*加载的树形json数据*/
+            showIcon: true, /*开启节点图标*/
             showCheckbox: true, /*开启Checkbox*/
-            enableLinks:false,  /*不启用当前节点的超链接*/
+            enableLinks: false, /*不启用当前节点的超链接*/
             onNodeChecked: function (event, node) {     //节点选择事件
                 var selectNodes = getChildNodeIdArr(node);
                 console.log(node);
@@ -206,7 +227,7 @@
                 var id = node.id;  //节点数据id
                 var parentId = node.pid; //当前节点的父节点数据id
                 var condition = {resourceId: id}; //自定义查询条件
-
+                currentResouceId = id;  //设置当前页面菜单id
                 tableData(JSON.stringify(condition));
             }
         });
@@ -254,6 +275,13 @@
     * condition：json字符串查询条件
     * */
     function tableData(condition) {
+        if (condition === null || condition === '') {
+            layer.alert('查询条件不能为空', {
+                time: 3000,
+                icon: 2
+            });
+            return false;
+        }
         layui.use('table', function () {
             table = layui.table;
 
@@ -305,18 +333,19 @@
 
                     /*让角色已有的权限处于被选中状态*/
                     var permissionIds = '';
-                    $.each(permissionData,function (index, permission) {
-                        if (index === 0){
+                    $.each(permissionData, function (index, permission) {
+                        if (index === 0) {
                             permissionIds += permission.id;
-                        }else {
+                        } else {
                             permissionIds += ',';
                             permissionIds += permission.id;
                         }
                     });
-                    $.each(data,function (index, item) {
+                    $.each(data, function (index, item) {
                         var id = item.id;
-                        if (permissionIds.indexOf(id) !== -1){
-                            data[index].LAY_CHECKED = true;  /*让数据处于被选中状态*/
+                        if (permissionIds.indexOf(id) !== -1) {
+                            data[index].LAY_CHECKED = true;
+                            /*让数据处于被选中状态*/
                         }
                     });
                     //返回要渲染的数据
@@ -368,20 +397,23 @@
         var checkStatus = table.checkStatus('table1');
         var items = checkStatus.data;
 
+        var resourceId = currentResouceId; //当前授权菜单id
         //获取表格选中的操作权限
         var permissionIds = '';    //选中的权限数据
 
         //遍历获取被选中数据的id
         $.each(items, function (index, item) {
-            if (index === 0) {
+            if(index === 0){
                 permissionIds += item.id;
-            } else {
+            }else {
                 permissionIds += ',';
                 permissionIds += item.id;
             }
         });
-        alert(permissionIds);
-        return permissionIds;
+        return {
+            resourceId: resourceId,
+            permissionIds: permissionIds
+        };
     }
 
     //授权提交
@@ -394,14 +426,20 @@
             return false;
         }
 
-        //获取被选中的tree数据
-        var permissionIds = getTableSelectedData();
-        //获取被选中的菜单数据
+        /*获取被选中的tree数据，即菜单数据*/
         var resourceIds = getSelectedNodes();
+
+        /*获取被选中的菜单数据，即当前菜单的授权数据*/
+        var permissionData = getTableSelectedData();
+
+        /*保证当前授权菜单被选中
+        if (permissionData !== null && (resourceIds === null || resourceIds === '')) {
+            resourceIds += currentResouceId;
+        }*/
 
         var grantData = {
             roleId: roleId,
-            permissionIds: permissionIds,
+            permissionData: permissionData,
             resourceIds: resourceIds
         };
         console.log(grantData);
@@ -419,6 +457,7 @@
                 var code = jsonData.code;
                 var msg = jsonData.msg;
                 if (code === 1) {
+                    msg += ",关闭当前窗口后起效~";
                     layer.alert(msg, {
                         time: 3000,
                         icon: 1

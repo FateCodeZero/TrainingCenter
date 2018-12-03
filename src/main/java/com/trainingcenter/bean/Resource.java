@@ -51,6 +51,7 @@ public class Resource extends BaseEntity implements Serializable {
     /**
      * 资源菜单排序序号，对应数据库（order_number）字段
      */
+    @NotNull(message = "菜单顺序不能为空",groups = {TC_Add.class, TC_Update.class})
     private Integer orderNumber;
 
     /**

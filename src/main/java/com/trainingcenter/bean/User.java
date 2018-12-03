@@ -39,7 +39,7 @@ public class User implements Serializable,UserDetails {
     /**
      * 密码，对应数据库（password）字段
      */
-    @NotBlank(message = "密码不能为空",groups = {TC_Add.class,TC_Update.class})
+    @NotBlank(message = "密码不能为空",groups = {TC_Add.class})
     @Length(min=6,max=18,message="密码长度必须在6~18位",groups = {TC_Add.class,TC_Update.class})
     private String password;
 

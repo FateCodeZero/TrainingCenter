@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 /**
  * 查询条件映射异常类
  */
-public class FindConditionMapException extends OperationException {
+public class FindConditionMapException extends FindException {
     public FindConditionMapException() {
         super();
     }

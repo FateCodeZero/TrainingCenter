@@ -5,6 +5,7 @@ import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.dao.*;
 import com.trainingcenter.exception.*;
+import com.trainingcenter.service.LockedIPService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.LogUtil;
 import com.trainingcenter.utils.StringUtil;
@@ -18,9 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.*;
 import java.util.List;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -48,6 +48,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Qualifier("permissionMapper")
     @Autowired
     private PermissionMapper permissionMapper;
+    @Qualifier("lockedIPService")
+    @Autowired
+    private LockedIPService lockedIPService;
 
     /**
      * 验证用户名是否已存在
@@ -91,11 +94,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     /**
      * 获取所有数据
-     *
+     *@param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return
      */
-    public List<User> getUsers() {
-        return getUsers(null, null, null);
+    public List<User> getUsers(Map<String,Object> condition) {
+        return getUsers(null, null, condition);
     }
 
     /**
@@ -103,11 +106,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      *
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回当前页的数据集合
      */
     @Override
-    public List<User> getUsers(Integer currentPage, Integer rows, String searchContent) {
+    public List<User> getUsers(Integer currentPage, Integer rows, Map<String,Object> condition) {
         FindException findException;
 
         if (currentPage != null && rows != null) {
@@ -117,10 +120,43 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 throw findException;
             } else {
                 Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
-                return userMapper.getUsers(start, rows, searchContent);
+                return userMapper.getUsers(start, rows, condition);
             }
         } else {
-            return userMapper.getUsers(null, null, searchContent);
+            return userMapper.getUsers(null, null, condition);
+        }
+    }
+
+    /**
+     * 获取所有管理员数据
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
+     * @return 返回所有数据
+     */
+    public List<User> getUsersForAdmin(Map<String,Object> condition){
+        return getUsersForAdmin(null,null,condition);
+    }
+
+    /**
+     * 分页获取管理员数据
+     * @param currentPage：当前页
+     * @param rows：每页要显示的数据条数
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
+     * @return 返回当前页的数据集合
+     */
+    public List<User> getUsersForAdmin(Integer currentPage, Integer rows, Map<String,Object> condition){
+        FindException findException;
+
+        if (currentPage != null && rows != null) {
+            if (currentPage < 0 || rows < 0) {
+                findException = new FindException("分页查询不能的页数或查询数量小于0");
+                LogUtil.info(this, "查询用户登录信息", "查询失败，分页查询不能的页数或查询数量小于0");
+                throw findException;
+            } else {
+                Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
+                return userMapper.getUsersForAdmin(start, rows, condition);
+            }
+        } else {
+            return userMapper.getUsersForAdmin(null, null, condition);
         }
     }
 
@@ -358,6 +394,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 exception = new UsernameNotFoundException("用户不存在或已注销");
                 LogUtil.info(this, "加载用户权限", "加载失败，用户不存在或已注销");
                 throw exception;
+            }
+
+            //判断用户IP是否被锁定
+            List<LockedIP> lockedIPs = lockedIPService.getLockedIPs(null);
+            Set<String> ips = Collections.synchronizedSet(new HashSet<>());
+            for (LockedIP lockedIP:lockedIPs) {
+                ips.add(lockedIP.getIP());
+            }
+            if (ips.contains(user.getLoginIP())){
+                if (user.getUnlockedFlag() == 1){
+                    user.setUnlockedFlag(0);
+                    update(user);
+                }
+            }else {
+                if (user.getUnlockedFlag() == 0){
+                    user.setUnlockedFlag(1);
+                    update(user);
+                }
             }
 
             LogUtil.info(this, "加载用户权限", "正在加载用户【" + username + "】的相关权限及用户信息……");

@@ -15,7 +15,8 @@
         通过id获取角色
     -->
     <select id="getRoleById" resultType="com.trainingcenter.bean.Role">
-        SELECT <include refid="roleColumns"></include>
+        SELECT
+        <include refid="roleColumns"></include>
         FROM tab_role
         WHERE id = #{id}
     </select>
@@ -24,7 +25,8 @@
         通过角色名称获取角色
     -->
     <select id="getRoleByName" resultType="com.trainingcenter.bean.Role">
-        SELECT <include refid="roleColumns"></include>
+        SELECT
+        <include refid="roleColumns"></include>
         FROM tab_role
         WHERE name = #{name}
     </select>
@@ -33,29 +35,32 @@
         分页查询所有角色
     -->
     <select id="getRoles" resultType="com.trainingcenter.bean.Role">
-        SELECT <include refid="roleColumns"></include>
+        SELECT
+        <include refid="roleColumns"></include>
         FROM tab_role
         <trim prefix="WHERE" prefixOverrides="and">
-            <foreach collection="condition" index="key" item="value">
-                <if test="key == &quot;name&quot; and value != null and value != '' ">
-                    and name = #{value}
-                </if>
-                <if test="key == &quot;state&quot; and value != null ">
-                    and state = #{value}
-                </if>
-                <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
-                    and create_user_id = #{value}
-                </if>
-                <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
-                    and update_user_id = #{value}
-                </if>
-                <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
-                    and (
-                    `name` like CONCAT('%',#{value},'%')
-                    OR state like CONCAT('%',#{value},'%')
-                    )
-                </if>
-            </foreach>
+            <if test="condition != null ">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;name&quot; and value != null and value != '' ">
+                        and `name` = #{value}
+                    </if>
+                    <if test="key == &quot;state&quot; and value != null ">
+                        and state = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and (
+                        `name` like CONCAT('%',#{value},'%')
+                        OR state like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
         </trim>
         ORDER BY update_date DESC
         <if test="start != null and number != null">
@@ -64,17 +69,18 @@
     </select>
 
     <!--
-    public Integer add(@Param("role") Role role;
-    角色添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    public Integer add(@Validated(value = {TC_Add.class}) @Param("role") Role role);
+    角色添加
     -->
     <insert id="add">
         INSERT INTO tab_role(<include refid="roleColumns"></include>)
-        VALUES (#{role.id},#{role.name},#{role.state},#{role.describe},#{role.remarks},#{role.createUserId},#{role.createDate},
+        VALUES
+        (#{role.id},#{role.name},#{role.state},#{role.describe},#{role.remarks},#{role.createUserId},#{role.createDate},
         #{role.updateUserId},#{role.updateDate})
     </insert>
 
     <!--
-            public Integer update(@Param("role") Role role);
+            public Integer update(@Validated(value = {TC_Update.class}) @Param("role") Role role);
             更新角色信息
             -->
     <update id="update">
@@ -117,7 +123,8 @@
         获取登录用户所含角色集合
         -->
     <select id="getRolesByUserId" resultType="com.trainingcenter.bean.Role">
-        SELECT r.id,r.name,r.state,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
+        SELECT
+        r.id,r.name,r.state,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
         FROM tab_role r LEFT JOIN tab_user_role ur ON r.id = ur.role_id
         WHERE ur.user_id = #{userId}
         <trim prefixOverrides="AND">
@@ -135,7 +142,8 @@
        获取含有指定权限的所有角色
                                                          -->
     <select id="getRolesByPermissionId" resultType="com.trainingcenter.bean.Role">
-        SELECT r.id,r.name,r.state,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
+        SELECT
+        r.id,r.name,r.state,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
         FROM tab_role r LEFT JOIN tab_role_permission rp ON r.id = rp.role_id
         WHERE rp.permission_id = #{permissionId}
         <trim prefixOverrides="AND">

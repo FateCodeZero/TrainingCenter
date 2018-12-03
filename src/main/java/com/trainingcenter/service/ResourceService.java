@@ -57,7 +57,7 @@ public interface ResourceService {
      * 批量删除
      *
      * @param ids：需要删除的对象的id集
-     * @return 返回操作结果（true：删除成功，false：删除失败）
+     * @return 返回操作结果（1：删除成功，0：删除失败）
      * 添加事务，保证中间删除失败时可以回滚
      */
     public Integer batchDelete(String ids);

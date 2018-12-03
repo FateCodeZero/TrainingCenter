@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 /**
  * 授权异常类
  */
-public class GrantException extends InsertException {
+public class GrantException extends OperationException {
     public GrantException() {
         super();
     }

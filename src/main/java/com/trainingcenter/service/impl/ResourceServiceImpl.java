@@ -8,9 +8,7 @@ import com.trainingcenter.exception.DeleteException;
 import com.trainingcenter.exception.InsertException;
 import com.trainingcenter.exception.UpdateException;
 import com.trainingcenter.service.ResourceService;
-import com.trainingcenter.utils.LogUtil;
 import com.trainingcenter.utils.StringUtil;
-import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -81,7 +78,12 @@ public class ResourceServiceImpl implements ResourceService {
             insertException = new InsertException("添加失败，添加对象不能为空");
             throw insertException;
         }
-        return resourceMapper.add(resource);
+        Integer add = resourceMapper.add(resource);
+        if (add == 0) {
+            insertException = new InsertException("添加失败，请重试");
+            throw insertException;
+        }
+        return add;
     }
 
     @Override
@@ -91,12 +93,16 @@ public class ResourceServiceImpl implements ResourceService {
             updateException = new UpdateException("更新失败，请先选择更新对象");
             throw updateException;
         }
-        return resourceMapper.update(resource);
+        Integer update = resourceMapper.update(resource);
+        if (update == 0){
+            updateException = new UpdateException("更新失败，请重试");
+            throw updateException;
+        }
+        return update;
     }
 
     @Override
     public Integer delete(String id) {
-        String currentUsername = SysResourcesUtils.getCurrentUsername();
         DeleteException deleteException;
         if (StringUtil.isEmpty(id)){
             deleteException = new DeleteException("删除失败，请先选择要删除的对象");
@@ -110,14 +116,12 @@ public class ResourceServiceImpl implements ResourceService {
             throw deleteException;
         }
 
-        LogUtil.info(this,"资源删除","用户：【"+currentUsername+"删除了【"+resource.getName()+"】资源");
         //实行软删除
         resource.setState(-1);
         Integer delete = resourceMapper.update(resource);
 
         if (delete == 0){
             deleteException = new DeleteException("删除失败，请稍后重试");
-            LogUtil.warn(this,"资源删除","未知错误：对象存在但删除失败！");
             throw deleteException;
         }
 
@@ -136,11 +140,6 @@ public class ResourceServiceImpl implements ResourceService {
     public Integer batchDelete(String ids) {
         if (StringUtil.isEmpty(ids))
             return 0;
-
-        //获取当前登录用户
-        String currentUsername = SysResourcesUtils.getCurrentUsername();
-        LogUtil.info(this, "资源批量删除", "用户：【" + currentUsername + "】正在批量删除IDS为：【" + ids + "】的资源");
-
         String[] arr = ids.split(",");  //分割成数组
         for (String id : arr) {
             Integer res = this.delete(id);

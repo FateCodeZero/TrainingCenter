@@ -74,7 +74,7 @@
                     <input type="text" class="form-control" name="iconStyle" id="iconStyle" value=""
                            placeholder="请填写菜单图标icon">
                 </div>
-                <a href="https://getbootstrap.com/docs/3.3/components/" style="color: #009688" target="_parent">查看图标</a>
+                <a href="https://getbootstrap.com/docs/3.3/components/" style="color: #009688" target="_blank">查看图标</a>
             </div>
             <div class="form-group">
                 <label for="describe" class="col-sm-2 control-label">菜单描述</label>

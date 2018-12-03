@@ -17,6 +17,7 @@ import com.trainingcenter.utils.StringUtil;
 import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -166,6 +167,9 @@ public class PermissionServiceImpl implements PermissionService {
     public Integer add(@Validated(value = {TC_Add.class}) Permission permission) {
         InsertException insertException; //添加异常
         String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
+        if (StringUtil.isEmpty(currentUsername)){
+            throw new CredentialsExpiredException("登录凭证已过期");
+        }
         if (permission == null) {
             insertException = new InsertException("添加失败，添加对象不能为空");
             LogUtil.warn(this, "权限添加", "用户【" + currentUsername + "】添加权限【失败】，添加对象为空，数据效验没起到应有的作用！");
@@ -194,6 +198,9 @@ public class PermissionServiceImpl implements PermissionService {
     public Integer update(Permission permission) {
         UpdateException updateException;  //更新异常
         String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
+        if (StringUtil.isEmpty(currentUsername)){
+            throw new CredentialsExpiredException("登录凭证已过期");
+        }
 
         if (permission == null) {
             updateException = new UpdateException("更新失败，更新对象不能为空");
@@ -230,6 +237,9 @@ public class PermissionServiceImpl implements PermissionService {
     public Integer delete(String id) {
         DeleteException deleteException; //删除异常
         String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
+        if (StringUtil.isEmpty(currentUsername)){
+            throw new CredentialsExpiredException("登录凭证已过期");
+        }
 
         if (StringUtil.isEmpty(id)) {
             deleteException = new DeleteException("删除失败，删除对象不能为空");
@@ -291,6 +301,9 @@ public class PermissionServiceImpl implements PermissionService {
 
         //获取当前登录用户
         String currentUsername = SysResourcesUtils.getCurrentUsername();
+        if (StringUtil.isEmpty(currentUsername)){
+            throw new CredentialsExpiredException("登录凭证已过期");
+        }
         LogUtil.info(this, "权限批量删除", "用户：【" + currentUsername + "】正在批量删除IDS为：【" + ids + "】的权限");
 
         String[] arr = ids.split(",");  //分割成数组

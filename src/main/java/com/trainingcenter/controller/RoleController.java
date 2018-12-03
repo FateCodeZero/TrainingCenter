@@ -1,17 +1,13 @@
 package com.trainingcenter.controller;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import com.trainingcenter.bean.Permission;
 import com.trainingcenter.bean.Role;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.controller.validation.TC_Add;
-import com.trainingcenter.exception.FindConditionMapException;
-import com.trainingcenter.exception.GrantException;
 import com.trainingcenter.service.PermissionService;
 import com.trainingcenter.service.RoleService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
-import com.trainingcenter.utils.FindConditionUtils;
 import com.trainingcenter.utils.StringUtil;
 import com.trainingcenter.utils.SysResourcesUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -19,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -238,7 +233,6 @@ public class RoleController {
 
     /**
      * 通过 id 获取权限对象
-     *
      * @param id
      * @return
      */
@@ -331,8 +325,8 @@ public class RoleController {
         }
 
         String roleId = (String) grantData.get("roleId");   //授权角色id
-        String resourceIds = (String) grantData.get("resourceIds");
-        String permissionIds = (String) grantData.get("permissionIds");
+        String resourceIds = (String) grantData.get("resourceIds"); //角色含有权限的所有菜单
+        Map<String,Object> permissionData = (Map<String, Object>) grantData.get("permissionData"); //当前菜单的授权信息
 
         if (StringUtil.isEmpty(roleId)) {
             ajaxJson.setCode(0);
@@ -341,86 +335,75 @@ public class RoleController {
         }
 
         //授权结果
-        Integer res;
+        Integer res = 0;
 
-        //取消一个角色的所有权限
-        if (StringUtil.isEmpty(resourceIds) && StringUtil.isEmpty(permissionIds)) {
+        //若授权信息为空，则是取消一个角色的所有权限
+        if (StringUtil.isEmpty(resourceIds)) {
             res = roleService.grantPermission(roleId, null);
         } else {
+            String currentResourceId = null; //当前授权页面的id
+            String currentPermissionIds = null; //当前授权页面的权限ids
+            if (permissionData !=null){
+                currentResourceId = (String) permissionData.get("resourceId");
+                currentPermissionIds = (String) permissionData.get("permissionIds");
+            }
 
-            //存储最新的权限ids，以便于统一授权,使用set防止重复授权
-            Set<String> newPermissionIds = Collections.synchronizedSet(new HashSet<>());
-
-            //先添加页面读权限的授权
+            //先添加当前角色在所接收页面中的所有权限信息
             if (StringUtil.isNotEmpty(resourceIds)) {
                 String[] rids = resourceIds.trim().split(",");
 
-                //获取所有被选中的页面,查询出这些页面的可读权限
-                List<Permission> readPermissions = Collections.synchronizedList(new ArrayList<>());
+                //读取所有被选中的页面,查询出当前角色在这些页面中含有的所有权限
+                Set<Permission> newPermissions = Collections.synchronizedSet(new HashSet<>());
                 for (String resourceId : rids) {
-                    Map<String, Object> condition = new ConcurrentHashMap<>();
-                    condition.put("state", 1);
-                    condition.put("resourceId", resourceId);
-                    condition.put("operations", Permission.READ);
-                    List<Permission> permissionList = permissionService.getPermissions(condition);
-                    readPermissions.addAll(permissionList);
-                }
-
-                //获取当前角色的所有权限信息
-                List<Permission> permissionList = permissionService.getPermissionsByRoleId(roleId);
-                //存储未被取消的旧权限
-                List<Permission> oldPermissions = Collections.synchronizedList(new ArrayList<>());
-
-                //先过滤掉已被取消的权限
-                for (Permission p : permissionList) {
-                    if (readPermissions.contains(p)) {
-                        oldPermissions.add(p);
-                    }
-                }
-
-                //放入未被取消的权限
-                for (Permission p : oldPermissions) {
-                    newPermissionIds.add(p.getId());
-                }
-
-                //加入之前没有，此次新增的权限
-                for (Permission p : readPermissions) {
-                    if (!oldPermissions.contains(p)) {
-                        newPermissionIds.add(p.getId());
-                    }
-                }
-            }
-
-            //再添加特定权限的授权
-            if (StringUtil.isNotEmpty(permissionIds)) {
-
-                //对此次的详细授权做操作
-                String[] pidArr = permissionIds.trim().split(",");
-                for (String pid : pidArr) {
-                    Permission permission = permissionService.getPermissionById(pid);
-                    if (permission == null){
-                        ajaxJson.setCode(0);
-                        ajaxJson.setMsg("授权保存失败，所授权限不存在或已被删除");
-                        return ajaxJson;
-                    }
-                    newPermissionIds.add(permission.getId());
-                }
-            }
-
-
-            StringBuffer ids = new StringBuffer();
-            if (newPermissionIds.size() > 0){
-                for (String id : newPermissionIds) {
-                    if (ids.length() == 0){
-                        ids.append(id);
+                    //存储当前页面的新权限信息
+                    if (StringUtil.isNotEmpty(currentResourceId) && resourceId.equals(currentResourceId)){
+                        if (StringUtil.isNotEmpty(currentPermissionIds)){
+                            String[] permissionIdArr = currentPermissionIds.split(",");
+                            for (String pid : permissionIdArr) {
+                                Permission permission = permissionService.getPermissionById(pid);
+                                newPermissions.add(permission);
+                            }
+                        }else {
+                            //当前页面被选中，而当前页面的却没有授予任何权限时，默认授予 READ 权限
+                            Map<String, Object> condition = new ConcurrentHashMap<>();
+                            condition.put("state", 1);
+                            condition.put("resourceId", resourceId);
+                            condition.put("operations",Permission.READ);
+                            List<Permission> permissions = permissionService.getPermissions(condition);
+                            newPermissions.addAll(permissions);
+                        }
                     }else {
-                        ids.append(",");
-                        ids.append(id);
+                        //存储其他页面的权限信息
+                        Map<String, Object> condition = new ConcurrentHashMap<>();
+                        condition.put("state", 1);
+                        condition.put("resourceId", resourceId);
+                        List<Permission> permissionList = permissionService.getPermissions(condition);
+                        //页面被选中了，但当前角色该页面中没有任何权限，默认授予 Read 权限
+                        if (permissionList.size() == 0){
+                            Map<String, Object> con = new ConcurrentHashMap<>();
+                            con.put("state",1);
+                            condition.put("resourceId", resourceId);
+                            con.put("operations",Permission.READ);
+                            List<Permission> ps = permissionService.getPermissions(con);
+                            permissionList.addAll(ps);
+                        }
+                        newPermissions.addAll(permissionList);
                     }
                 }
+
+                //遍历新权限，组成新权限ids
+                StringBuffer newPermissionIds = new StringBuffer();
+                for (Permission permission:newPermissions) {
+                    if (newPermissionIds.length() == 0){
+                        newPermissionIds.append(permission.getId());
+                    }else {
+                        newPermissionIds.append(",");
+                        newPermissionIds.append(permission.getId());
+                    }
+                }
+                //新权限授权
+                res = roleService.grantPermission(roleId,newPermissionIds.toString());
             }
-            /*执行统一授权*/
-            res = roleService.grantPermission(roleId,ids.toString());
         }
 
         if (res == 1) {

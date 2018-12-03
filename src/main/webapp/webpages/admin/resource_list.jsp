@@ -82,6 +82,8 @@
             table.render({
                 id: 'table1'
                 , elem: '#tableData'
+                , autoSort:true     /*自动排序*/
+                , initSort: 'orderNumber'  /*默认排序字段*/
                 , toolbar: '#table-head'
                 , title: '菜单管理'
                 , url: '${webRoot}/resource/list' //数据接口
@@ -102,8 +104,8 @@
                             }
                         }
                     }
-                    , {field: 'orderNumber', title: '排序顺序', width: 100, align: 'center'}
-                    , {field: 'level', title: '菜单层级', width: 100, align: 'center'}
+                    , {field: 'orderNumber', title: '排序顺序', width: 100, align: 'center',sort:true}
+                    , {field: 'level', title: '菜单层级', width: 100, align: 'center',sort:true}
                     , {field: 'iconStyle', title: '菜单图标', width: 100, align: 'center', templet: function (d) {
                         return '<i class="'+d.iconStyle+'"></i>'
                     }}

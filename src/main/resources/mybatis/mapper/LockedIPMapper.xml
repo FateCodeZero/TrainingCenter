@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.LockedIPMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+    <sql id="lockedIPColumns">
+        id,IP,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public LockedIP getLockedIPById(@Param("id") String id);
+        通过 id 获取锁定对象
+    -->
+    <select id="getLockedIPById" resultType="com.trainingcenter.bean.LockedIP">
+        SELECT
+        <include refid="lockedIPColumns"></include>
+        FROM tab_lock_ip
+        WHERE id = #{id}
+    </select>
+
+    <!-- public LockedIP getLockedIPByIP(@Param("IP") String IP);
+        通过 IP 获取锁定对象
+    -->
+    <select id="getLockedIPByIP" resultType="com.trainingcenter.bean.LockedIP">
+        SELECT
+        <include refid="lockedIPColumns"></include>
+        FROM tab_lock_ip
+        WHERE IP = #{IP}
+    </select>
+
+    <!--
+        public List<LockedIP> getLockedIPs(@Param("start") Integer start, @Param("number") Integer number,
+         @Param("condition") Map<String,Object> condition);
+         分页获取所有权限
+     -->
+    <select id="getLockedIPs" resultType="com.trainingcenter.bean.LockedIP">
+        SELECT
+        <include refid="lockedIPColumns"></include>
+        FROM tab_lock_ip
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null ">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;IP&quot; and value != null and value != '' ">
+                        and IP = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and (
+                        IP like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY create_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+        public Integer add(@Validated(value = {TC_Add.class}) @Param("lockedIP") LockedIP lockedIP);
+        数据添加
+    -->
+    <insert id="add">
+        INSERT INTO tab_lock_ip(<include refid="lockedIPColumns"></include>)
+        VALUES (#{lockedIP.id},#{lockedIP.IP},#{lockedIP.remarks},#{lockedIP.createUserId},#{lockedIP.createDate},
+        #{lockedIP.updateUserId},#{lockedIP.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Validated(value = {TC_Update.class}) @Param("lockedIP") LockedIP lockedIP);
+            更新数据信息
+            -->
+    <update id="update">
+        UPDATE tab_lock_ip
+        <trim prefix="set" suffixOverrides=",">
+            <if test="lockedIP.IP != null and lockedIP.IP != '' ">
+                IP = #{lockedIP.IP},
+            </if>
+            <if test="lockedIP.remarks != null and lockedIP.remarks != '' ">
+                remarks = #{lockedIP.remarks},
+            </if>
+            <if test="lockedIP.updateUserId != null and lockedIP.updateUserId != '' ">
+                update_user_id = #{lockedIP.updateUserId},
+            </if>
+            <if test="lockedIP.updateDate != null ">
+                update_date = #{lockedIP.updateDate},
+            </if>
+        </trim>
+        WHERE id = #{lockedIP.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除角色
+       -->
+    <delete id="delete">
+        DELETE FROM tab_lock_ip
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

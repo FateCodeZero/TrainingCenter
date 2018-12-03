@@ -72,7 +72,7 @@
                 </foreach>
             </if>
         </trim>
-        ORDER BY update_date DESC
+        ORDER BY order_number ASC,create_date ASC
         <if test="start != null and number != null">
             LIMIT #{start},#{number}
         </if>

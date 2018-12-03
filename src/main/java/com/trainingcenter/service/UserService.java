@@ -43,18 +43,35 @@ public interface UserService {
 
     /**
      * 获取所有数据
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回所有数据
      */
-    public List<User> getUsers();
+    public List<User> getUsers(Map<String,Object> condition);
 
     /**
      * 分页获取数据
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回当前页的数据集合
      */
-    public List<User> getUsers(Integer currentPage, Integer rows, String searchContent);
+    public List<User> getUsers(Integer currentPage, Integer rows, Map<String,Object> condition);
+
+    /**
+     * 获取所有管理员数据
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
+     * @return 返回所有数据
+     */
+    public List<User> getUsersForAdmin(Map<String,Object> condition);
+
+    /**
+     * 分页获取管理员数据
+     * @param currentPage：当前页
+     * @param rows：每页要显示的数据条数
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
+     * @return 返回当前页的数据集合
+     */
+    public List<User> getUsersForAdmin(Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 获取含有指定 角色 的所有用户

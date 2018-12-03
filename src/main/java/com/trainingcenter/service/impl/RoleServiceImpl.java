@@ -307,13 +307,13 @@ public class RoleServiceImpl implements RoleService {
     /**
      * 给角色授权，添加事务保证授权统一成功或失败
      *
-     * @param roleId        ：角色id
-     * @param permissionIds ：授予的权限id集
-     *                      返回授权成功的个数，0表示授权失败
+     * @param roleId ：角色id
+     * @param newPermissionIds ：授予的新权限id集
+     * @return 返回授权成功的个数，0表示授权失败
      */
     @Override
     @Transactional
-    public Integer grantPermission(String roleId, String permissionIds) {
+    public Integer grantPermission(String roleId, String newPermissionIds) {
         GrantException grantException;  //授权失败异常
         Integer result = 0;     //授权结果
         if (StringUtil.isEmpty(roleId)) {
@@ -321,6 +321,7 @@ public class RoleServiceImpl implements RoleService {
             throw grantException;
         }
 
+        //被授权的角色
         Role role = roleMapper.getRoleById(roleId);
         if (role == null) {
             grantException = new GrantException("授权失败，角色不存在或已被删除");
@@ -336,53 +337,100 @@ public class RoleServiceImpl implements RoleService {
         LogUtil.info(this, "角色授权", "用户：【" + currentUsername + "】正在给【" + role.getId() + "】授权……");
 
         //先回收该角色之前的所有权限，再逐一授权
-        //1、获取该角色的所有权限
-        List<Permission> permissions = permissionMapper.getPermissionsByRoleId(role.getId(), null, null, null);
-        //2、逐一回收权限
-        for (Permission permission : permissions) {
-            RolePermission rolePermission = rolePermissionMapper.getRolePermissionByRoleIdAndPermissionId(role.getId(), permission.getId());
-            if (rolePermission == null) {
-                grantException = new GrantException("授权失败，对象不存在或已被删除");
-                throw grantException;
-            }
-            result = rolePermissionMapper.delete(rolePermission.getId());
+        //1、获取该角色的所有旧权限
+        List<Permission> oldPermissions = permissionMapper.getPermissionsByRoleId(role.getId(),null, null, null);
 
-            //日志记录
-            LogUtil.info(this, "角色授权", "用户：【" + currentUsername + "】回收了【" + role.getName() + "】角色的【" + permission.getName() + "】授权……");
-
-            if (result == 0) {
-                grantException = new GrantException("授权失败，请稍后重试");
-                LogUtil.warn(this, "角色权限回收", "未知原因：权限存在，但删除失败");
-                throw grantException;
-            }
-        }
-
-        //授权不为空时再执行授权，否则就是取消当前角色的所有权限
-        if (StringUtil.isNotEmpty(permissionIds)) {
-            //逐一授权
-            String[] arr = permissionIds.split(",");
-            for (String permissionId : arr) {
-                Permission permission = permissionMapper.getPermissionById(permissionId);
-                //确保授予的权限存在
-                if (permission == null) {
-                    grantException = new GrantException("授权失败，所授权限不存在或已被删除");
+        //2、判断授予的新权限是否为空，为空便取消当前角色的所有权限信息
+        if (StringUtil.isEmpty(newPermissionIds)){
+            //遍历删除当前角色的所有已授权信息
+            for (Permission permission : oldPermissions) {
+                RolePermission rolePermission = rolePermissionMapper.getRolePermissionByRoleIdAndPermissionId(role.getId(), permission.getId());
+                if (rolePermission == null) {
+                    grantException = new GrantException("授权失败，对象不存在或已被删除");
                     throw grantException;
                 }
-
-                //授予角色授权
-                RolePermission rolePermission = new RolePermission();
-                rolePermission.setId(UUID.randomUUID().toString());
-                rolePermission.setRoleId(roleId);
-                rolePermission.setPermissionId(permissionId);
+                //删除授权对象
+                result = rolePermissionMapper.delete(rolePermission.getId());
 
                 //日志记录
-                LogUtil.info(this, "角色授权", "用户：【" + currentUsername + "】授予了【" + role.getName() + "】角色【" + permission.getName() + "】权限……");
+                LogUtil.info(this, "角色授权", "用户：【" + currentUsername + "】回收了【" + role.getName() + "】角色的【" + permission.getName() + "】授权……");
 
-                result = rolePermissionMapper.add(rolePermission);
                 if (result == 0) {
-                    grantException = new GrantException("授权失败，请重试");
-                    LogUtil.warn(this, "角色授权", "未知原因，给用户：【" + role.getName() + "】授权失败！");
+                    grantException = new GrantException("授权失败，请稍后重试");
+                    LogUtil.warn(this, "角色权限回收", "未知原因：权限存在，但删除失败");
                     throw grantException;
+                }
+            }
+        }else {
+            //3新授予权限不为空时，需判断是删除部分权限还是新增部分权限
+
+            //(1)、遍历旧权限，取出旧权限id，组成Set
+            Set<String> oldPermissionSet = Collections.synchronizedSet(new HashSet<>());
+            for (Permission permission : oldPermissions) {
+                oldPermissionSet.add(permission.getId());
+            }
+
+            //(2)、将新权限ids组装成Set
+            Set<String> newPermissionSet = Collections.synchronizedSet(new HashSet<>());
+            String[] idArr = newPermissionIds.split(",");
+            newPermissionSet.addAll(Arrays.asList(idArr));
+
+            //(3)、遍历旧权限，取出不在新授权集合中的权限进行删除
+            for (String oldId:oldPermissionSet) {
+                if (!newPermissionSet.contains(oldId)){
+                    //确保对应权限存在
+                    Permission permission = permissionMapper.getPermissionById(oldId);
+                    if (permission != null){
+                        RolePermission rolePermission = rolePermissionMapper.getRolePermissionByRoleIdAndPermissionId(roleId, permission.getId());
+                        //确保删除的权限存在
+                        if (rolePermission != null){
+                            //日志记录
+                            LogUtil.info(this, "角色授权", "用户：【" + currentUsername + "】回收了【" + role.getName() + "】角色的【" + permission.getName() + "】授权……");
+                            result = rolePermissionMapper.delete(rolePermission.getId());
+
+                            if (result == 0){
+                                grantException = new GrantException("授权失败，请重试");
+                                LogUtil.warn(this, "角色授权", "未知原因，给用户：【" + role.getName() + "】授权失败！");
+                                throw grantException;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //（4）、取出当前角色在删除了相关权限后的所有权限
+            List<Permission> tempPermissions = permissionMapper.getPermissionsByRoleId(roleId, null, null, null);
+
+            //当前角色在权限删除后，新权限授权前的所有权限id
+            Set<String> tempPermissionIds = Collections.synchronizedSet(new HashSet<>());
+            for (Permission temp :tempPermissions) {
+                tempPermissionIds.add(temp.getId());
+            }
+
+            //(5)、遍历新权限，对需要新增的权限进行授权
+            for (String newId :newPermissionSet) {
+                if (!tempPermissionIds.contains(newId)){
+
+                    Permission permission = permissionMapper.getPermissionById(newId);
+                    //确保授予的权限存在
+                    if (permission != null){
+                        RolePermission rolePermission = new RolePermission();
+                        rolePermission.setId(UUID.randomUUID().toString());
+                        rolePermission.setRoleId(roleId);
+                        rolePermission.setPermissionId(newId);
+
+                        //日志记录
+                        LogUtil.info(this, "角色授权", "用户：【" + currentUsername + "】授予了【" + role.getName() + "】角色【" + permission.getName() + "】权限……");
+
+                        //新增授权
+                        result = rolePermissionMapper.add(rolePermission);
+
+                        if (result == 0) {
+                            grantException = new GrantException("授权失败，请重试");
+                            LogUtil.warn(this, "角色授权", "未知原因，给用户：【" + role.getName() + "】授权失败！");
+                            throw grantException;
+                        }
+                    }
                 }
             }
         }

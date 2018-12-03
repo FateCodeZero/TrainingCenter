@@ -2,6 +2,7 @@ package com.trainingcenter.aop;
 
 import com.trainingcenter.bean.SysLog;
 import com.trainingcenter.bean.User;
+import com.trainingcenter.exception.*;
 import com.trainingcenter.service.SysLogService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.LogUtil;
@@ -15,6 +16,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -30,6 +32,7 @@ import java.util.UUID;
  * Date: 2018/11/19
  * Time: 15:14
  */
+
 /**
  * 日志切面
  * 使用SpringAOP进行粗略的日志记录
@@ -37,7 +40,7 @@ import java.util.UUID;
 @Order(1)
 @Aspect
 @Component
-public class LoggingAspect implements Serializable{
+public class LoggingAspect implements Serializable {
     @Qualifier("sysLogService")
     @Autowired
     private SysLogService sysLogService;
@@ -51,21 +54,22 @@ public class LoggingAspect implements Serializable{
      * execution：执行
      目标方法：修饰符+返回值+包名+接口名+方法名+参数个数和类型
      如：public int com.yangyi.spring.aop.impl.ArithmeticCalculator.add(int, int)
-        * com.yangyi.spring.aop.impl.*.*(..)
+     * com.yangyi.spring.aop.impl.*.*(..)
      第一个*表示任意修饰符合任意返回值，第二个*表示该包的所有类，第三个*表示对所有匹配的方法都起作用,
-        两个点表示匹配所有参数
+     两个点表示匹配所有参数
      */
 
     /**
-     *  拦截 *service.impl 包下的所有方法
-     *  不记录日志本身的添加、修改、删除……
-     *  不记录用户信息的修改……
+     * 拦截 *service.impl 包下的所有方法
+     * 不记录日志本身的添加、修改、删除……
+     * 不记录用户信息的修改……
      */
     @Pointcut("execution( * com.trainingcenter.service.impl..*(..)) " +
             " && !execution( * com.trainingcenter.service.impl.SysLogServiceImpl.*(..)) " +
             " && !execution( * com.trainingcenter.service.impl.UserServiceImpl.update(..)) " +
             " && !execution( * com.trainingcenter.service.impl.UserInfoServiceImpl.update(..))")
-    private static void serviceMethods(){}
+    private static void serviceMethods() {
+    }
 
 //    /**
 //     * 前置通知
@@ -126,10 +130,11 @@ public class LoggingAspect implements Serializable{
 
     /**
      * 环绕通知
+     *
      * @param pjd
      * @return
      */
-    @Around(value="serviceMethods()")
+    @Around(value = "serviceMethods()")
     public Object aroundMethod(ProceedingJoinPoint pjd) throws Throwable {
         Class<?> clazz = pjd.getTarget().getClass(); //目标对象
         String methodName = pjd.getSignature().getName(); //方法名
@@ -140,119 +145,132 @@ public class LoggingAspect implements Serializable{
         try {
             argsJsonStr = mapper.writeValueAsString(args);
         } catch (IOException e) {
-            LogUtil.error(this,"【Jackson】数据转换","对象转为转为Json字符串时失败",e);
+            LogUtil.error(this, "【Jackson】数据转换", "对象转为转为Json字符串时失败", e);
             e.printStackTrace();
         }
 
         //执行目标方法
         //前置通知
-        LogUtil.debug(clazz,"方法执行之前","【"+clazz+"类的【"+methodName+"】方法【即将执行】，方法参数为：\n【"+argsJsonStr+"】");
+        LogUtil.debug(clazz, "方法执行之前", "【" + clazz + "类的【" + methodName + "】方法【即将执行】，方法参数为：\n【" + argsJsonStr + "】");
 
         //数据库只记录添加、修改、删除的信息
-        if (methodName.equals("register") || methodName.equals("add") || methodName.equals("update") || methodName.equals("delete")){
-            beforeLogging(clazz,methodName,Arrays.asList(args));
+        if (methodName.equals("add") || methodName.equals("update") || methodName.equals("delete")) {
+            beforeLogging(clazz, methodName, Arrays.asList(args));
         }
 
-        //执行目标方法
-        result = pjd.proceed();     //异常直接上抛，使用统一从异常处理器处理
+        try {
+            //执行目标方法
+            result = pjd.proceed();
+        }catch (Exception e){
+            e.printStackTrace();
+            if (e instanceof InsertException){
+                LogUtil.debug(this, "添加异常", "【"+clazz.getName()+"】类的【"+methodName+"】方法数据【添加失败】，失败原因：\n，" + e.getMessage());
+            }else if (e instanceof UpdateException){
+                LogUtil.debug(this, "更新异常", "【"+clazz.getName()+"】类的【"+methodName+"】方法数据【更新失败】，失败原因：\n，" + e.getMessage());
+            }else if (e instanceof DeleteException){
+                LogUtil.debug(this, "删除异常", "【"+clazz.getName()+"】类的【"+methodName+"】方法数据【删除失败】，失败原因：\n，" + e.getMessage());
+            }else if (e instanceof FindException){
+                LogUtil.debug(this, "查询异常", "【"+clazz.getName()+"】类的【"+methodName+"】方法数据【查询失败】，失败原因：\n，" + e.getMessage());
+            }else if(e instanceof GrantException){
+                LogUtil.debug(this, "授权异常", "【"+clazz.getName()+"】类的【"+methodName+"】方法【授权失败】，失败原因：\n，" + e.getMessage());
+            }else {
+                LogUtil.warn(this, "未知异常", "【"+clazz.getName()+"】类的【"+methodName+"】执行出现【失败】，出现未知异常，异常信息为：\n，" + e.getMessage());
+            }
+            //异常继续上抛，使用统一从异常处理器处理
+            throw e;
+        }
 
         //返回通知
-        LogUtil.debug(clazz,"方法执行结果","获取【"+clazz+"类的【"+methodName+"】方法的【执行结果】，返回结果为：\n【"+mapper.writeValueAsString(result)+"】");
+        LogUtil.debug(clazz, "方法执行结果", "获取【" + clazz + "类的【" + methodName + "】方法的【执行结果】，返回结果为：\n【" + mapper.writeValueAsString(result) + "】");
 
         //后置通知
-        LogUtil.debug(clazz,"方法执行结束","【"+clazz+"类的【"+methodName+"】方法【执行结束】");
+        LogUtil.debug(clazz, "方法执行结束", "【" + clazz + "类的【" + methodName + "】方法【执行结束】");
 
         return result;
     }
 
     /**
      * 操作类型为 添加 的日志记录
+     *
      * @param methodName：方法名
      * @param args：方法参数
      * @param clazz：方法所属的类
      */
-    private void beforeLogging(Class<?> clazz,String methodName,List<Object> args){
-        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+    private void beforeLogging(Class<?> clazz, String methodName, List<Object> args) {
         StringBuffer title;   //日志标题
         StringBuffer content; //日志类容
         SysLog sysLog = new SysLog();  //日志对象
         User currentUser;  //当前登录对象
 
-        if (StringUtil.isNotEmpty(currentUsername)){
-            currentUser = userService.getUserByUsername(currentUsername); //当前登录对象
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        currentUser = userService.getUserByUsername(currentUsername); //当前登录对象
+        if (StringUtil.isEmpty(currentUsername) || currentUser == null) {
+            throw new CredentialsExpiredException("登录凭证已过期");
+        }
 
-            //避免空指针异常
-            if (currentUser != null){
-                sysLog.setId(UUID.randomUUID().toString());
-                sysLog.setOpUserId(currentUser.getId());
-                sysLog.setOpTime(new Date());
+        //添加日志对象信息
+        sysLog.setId(UUID.randomUUID().toString());
+        sysLog.setOpUserId(currentUser.getId());
+        sysLog.setOpTime(new Date());
+
+        if (methodName.equals("add")) {
+            sysLog.setOpType("添加");
+            title = new StringBuffer("数据添加");
+            content = new StringBuffer("用户：【");
+            content.append(currentUsername);
+            content.append("】正在添加数据，数据信息为：\n");
+            try {
+                content.append(mapper.writeValueAsString(args));
+            } catch (IOException e) {
+                LogUtil.error(this, "【Jackson】数据转换", "对象转为json字符串时失败", e);
+                e.printStackTrace();
             }
 
-            if (methodName.equals("add")){
-                sysLog.setOpType("添加");
-                title = new StringBuffer("数据添加");
-                content = new StringBuffer("用户：【");
-                content.append(currentUsername);
-                content.append("】正在添加数据，数据信息为：\n");
-                try {
-                    content.append(mapper.writeValueAsString(args));
-                } catch (IOException e) {
-                    LogUtil.error(this,"【Jackson】数据转换","对象转为json字符串时失败",e);
-                    e.printStackTrace();
-                }
+            sysLog.setOpContent(content.toString());
+            //文件日志记录
+            LogUtil.info(clazz, title.toString(), content.toString());
+            //数据库日志记录
+            sysLogService.add(sysLog);
+        }
 
-                sysLog.setOpContent(content.toString());
-                //文件日志记录
-                LogUtil.info(clazz,title.toString(),content.toString());
-                //数据库日志记录
-                if (currentUser != null){   //数据库日志的操作人不能为空
-                    sysLogService.add(sysLog);
-                }
+        if (methodName.equals("update")) {
+            sysLog.setOpType("更新");
+            title = new StringBuffer("数据更新");
+            content = new StringBuffer("用户：【");
+            content.append(currentUsername);
+            content.append("】正在更新数据，数据信息为：\n");
+            try {
+                content.append(mapper.writeValueAsString(args));
+            } catch (IOException e) {
+                LogUtil.error(this, "【Jackson】数据转换", "对象转为json字符串时失败", e);
+                e.printStackTrace();
             }
 
-            if (methodName.equals("update")){
-                sysLog.setOpType("更新");
-                title = new StringBuffer("数据更新");
-                content = new StringBuffer("用户：【");
-                content.append(currentUsername);
-                content.append("】正在更新数据，数据信息为：\n");
-                try {
-                    content.append(mapper.writeValueAsString(args));
-                } catch (IOException e) {
-                    LogUtil.error(this,"【Jackson】数据转换","对象转为json字符串时失败",e);
-                    e.printStackTrace();
-                }
+            sysLog.setOpContent(content.toString());
+            //文件日志记录
+            LogUtil.info(clazz, title.toString(), content.toString());
+            //数据库日志记录
+            sysLogService.add(sysLog);
+        }
 
-                sysLog.setOpContent(content.toString());
-                //文件日志记录
-                LogUtil.info(clazz,title.toString(),content.toString());
-                //数据库日志记录
-                if (currentUser != null){   //数据库日志的操作人不能为空
-                    sysLogService.add(sysLog);
-                }
+        if (methodName.equals("delete")) {
+            sysLog.setOpType("删除");
+            title = new StringBuffer("数据删除");
+            content = new StringBuffer("用户：【");
+            content.append(currentUsername);
+            content.append("】正在删除数据，删除对象ID为：\n");
+            try {
+                content.append(mapper.writeValueAsString(args));
+            } catch (IOException e) {
+                LogUtil.error(this, "【Jackson】数据转换", "对象转为json字符串时失败", e);
+                e.printStackTrace();
             }
 
-            if (methodName.equals("delete")){
-                sysLog.setOpType("删除");
-                title = new StringBuffer("数据删除");
-                content = new StringBuffer("用户：【");
-                content.append(currentUsername);
-                content.append("】正在删除数据，删除对象ID为：\n");
-                try {
-                    content.append(mapper.writeValueAsString(args));
-                } catch (IOException e) {
-                    LogUtil.error(this,"【Jackson】数据转换","对象转为json字符串时失败",e);
-                    e.printStackTrace();
-                }
-
-                sysLog.setOpContent(content.toString());
-                //文件日志记录
-                LogUtil.info(clazz,title.toString(),content.toString());
-                //数据库日志记录
-                if (currentUser != null){   //数据库日志的操作人不能为空
-                    sysLogService.add(sysLog);
-                }
-            }
+            sysLog.setOpContent(content.toString());
+            //文件日志记录
+            LogUtil.info(clazz, title.toString(), content.toString());
+            //数据库日志记录
+            sysLogService.add(sysLog);
         }
     }
 }

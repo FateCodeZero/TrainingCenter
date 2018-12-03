@@ -60,23 +60,98 @@
         WHERE username = #{username}
     </select>
 
-    <!-- public List<User> getUsers(@Param("start") Integer start, @Param("number") Integer number, @Param("searchContent") String searchContent);
-        分页查询
+    <!-- public List<User> getUsers(@Param("start") Integer start, @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
+        分页查询，condition：自定义条件查询
     -->
     <select id="getUsers" resultType="com.trainingcenter.bean.User">
         SELECT
-        <include refid="userColumns"></include>
+        id,username,login_IP,unlocked_flag,state,register_time,last_login_time
         FROM tab_user
         <trim prefix="WHERE" prefixOverrides="and">
-            <if test="searchContent != null and searchContent != '' ">
-                and(
-                username like CONCAT('%',#{searchContent},'%')
-                OR login_IP like CONCAT('%',#{searchContent},'%')
-                OR state = #{searchContent}
-                OR unlocked_flag = #{searchContent}
-                )
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;id&quot; and value != null and value != '' ">
+                        and id = #{value}
+                    </if>
+                    <if test="key == &quot;username&quot; and value != null and value != '' ">
+                        and username = #{value}
+                    </if>
+                    <if test="(key == &quot;login_IP&quot; or key == &quot;loginIP&quot;) and value != null and value != '' ">
+                        and login_IP = #{value}
+                    </if>
+                    <if test="(key == &quot;unlocked_flag&quot; or key == &quot;unlockedFlag&quot;) and value != null and value != '' ">
+                        and unlocked_flag = #{value}
+                    </if>
+                    <if test="key == &quot;state&quot; and value != null and value != '' ">
+                        and state = #{value}
+                    </if>
+                    <if test="(key == &quot;register_time&quot; or key == &quot;registerTime&quot;) and value != null and value != '' ">
+                        and register_time = #{value}
+                    </if>
+                    <if test="(key == &quot;last_login_time&quot; or key == &quot;lastLoginTime&quot;) and value != null and value != '' ">
+                        and last_login_time = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and(
+                        username like CONCAT('%',#{value},'%')
+                        OR login_IP like CONCAT('%',#{value},'%')
+                        OR state = #{value}
+                        OR unlocked_flag = #{value}
+                        )
+                    </if>
+                </foreach>
             </if>
         </trim>
+        ORDER BY register_time DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--public List<User> getUsersForAdmin(@Param("start") Integer start, @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
+          获取管理员数据
+    -->
+    <select id="getUsersForAdmin" resultType="com.trainingcenter.bean.User">
+        SELECT
+        u.id,u.username,u.login_IP,u.unlocked_flag,u.state,u.register_time,u.last_login_time
+        FROM tab_user u,tab_user_role ur,tab_role r
+        <trim prefix="WHERE" prefixOverrides="and">
+            u.id = ur.user_id and ur.role_id = r.id and (r.name = 'ADMIN' or r.name = 'MANAGE')
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;id&quot; and value != null and value != '' ">
+                        and u.id = #{value}
+                    </if>
+                    <if test="key == &quot;username&quot; and value != null and value != '' ">
+                        and u.username = #{value}
+                    </if>
+                    <if test="(key == &quot;login_IP&quot; or key == &quot;loginIP&quot;) and value != null and value != '' ">
+                        and u.login_IP = #{value}
+                    </if>
+                    <if test="(key == &quot;unlocked_flag&quot; or key == &quot;unlockedFlag&quot;) and value != null and value != '' ">
+                        and u.unlocked_flag = #{value}
+                    </if>
+                    <if test="key == &quot;state&quot; and value != null and value != '' ">
+                        and u.state = #{value}
+                    </if>
+                    <if test="(key == &quot;register_time&quot; or key == &quot;registerTime&quot;) and value != null and value != '' ">
+                        and u.register_time = #{value}
+                    </if>
+                    <if test="(key == &quot;last_login_time&quot; or key == &quot;lastLoginTime&quot;) and value != null and value != '' ">
+                        and u.last_login_time = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and(
+                        u.username like CONCAT('%',#{value},'%')
+                        OR u.login_IP like CONCAT('%',#{value},'%')
+                        OR u.state = #{value}
+                        OR u.unlocked_flag = #{value}
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY u.register_time DESC
         <if test="start != null and number != null">
             LIMIT #{start},#{number}
         </if>
