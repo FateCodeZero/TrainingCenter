@@ -39,7 +39,7 @@
                     <a href="" id="CT-index">首页</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="#">留言咨询</a>
+                    <a href="#">关于我们</a>
                 </li>
                 <li class="layui-nav-item">
                     <a href="#">特色课程</a>
@@ -70,7 +70,7 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="#">关于我们</a>
+                    <a href="#">留言咨询</a>
                 </li>
 
                 <c:if test="${not empty user}">
