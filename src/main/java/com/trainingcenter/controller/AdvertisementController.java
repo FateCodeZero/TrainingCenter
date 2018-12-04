@@ -100,38 +100,33 @@ public class AdvertisementController {
     }
 
     /**
-     * 进入添加页面
+     * 通过 id 获取资源对象
      *
-     * @return loginPage
+     * @return
      */
-    @RequestMapping(value = "/addPage", method = RequestMethod.GET)
-    public ModelAndView addPage(HttpServletRequest request) {
-        String id = request.getParameter("advertisementId");
-        ModelAndView modelAndView =new ModelAndView();
-        if(StringUtil.isNotEmpty(id)){
-            String viewName = "admin/Ad_addPage";
-            modelAndView.addObject("advertisement",advertisementService.getAdvertisementById(id));
-            modelAndView.setViewName(viewName);
-
+    @ResponseBody
+    @RequestMapping("/getAdvertisementById")
+    public AjaxJson getAdvertisementById(@RequestParam("id") String id) {
+        AjaxJson ajaxJson = new AjaxJson();
+        if (StringUtil.isEmpty(id)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("请先选择要查询的对象");
+            return ajaxJson;
         }
-        return modelAndView;
-    }
 
-    /**
-     * 进入更新页面
-     *
-     * @return loginPage
-     */
-    @RequestMapping(value = "/updatePage", method = RequestMethod.GET)
-    public ModelAndView updatePage(HttpServletRequest request) {
-        String id = request.getParameter("advertisementId");
-        ModelAndView modelAndView =new ModelAndView();
-        if(StringUtil.isNotEmpty(id)){
-            String viewName = "admin/Ad_updatePage";
-            modelAndView.addObject("advertisement",advertisementService.getAdvertisementById(id));
-            modelAndView.setViewName(viewName);
+        Advertisement resource = advertisementService.getAdvertisementById(id);
+        if (resource == null) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("对象不存在或已被删除");
+            return ajaxJson;
+        } else {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("获取成功");
+            Map<String, Object> map = new ConcurrentHashMap<>();
+            map.put("advertisement", resource);
+            ajaxJson.setData(map);
+            return ajaxJson;
         }
-        return modelAndView;
     }
 
     @RequestMapping(value = "/update",method = RequestMethod.GET)

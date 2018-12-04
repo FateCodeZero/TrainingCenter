@@ -76,13 +76,13 @@
             <if test="studentMien.createUserId != null and studentMien.createUserId != '' ">
                 create_user_id = #{studentMien.createUserId},
             </if>
-            <if test="studentMien.createDate != null and studentMien.createDate != '' ">
+            <if test="studentMien.createDate != null' ">
                 create_date = #{studentMien.createDate},
             </if>
             <if test="studentMien.updateUserId != null and studentMien.updateUserId != '' ">
                 update_user_id = #{studentMien.updateUserId},
             </if>
-            <if test="studentMien.updateDate != null and studentMien.updateDate != '' ">
+            <if test="studentMien.updateDate != null  ">
                 update_date = #{studentMien.updateDate},
             </if>
 

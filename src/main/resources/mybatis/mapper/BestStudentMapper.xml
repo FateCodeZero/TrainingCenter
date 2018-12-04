@@ -72,7 +72,7 @@
             <if test="bestStudent.createUserId != null and bestStudent.createUserId != '' ">
                 create_user_id = #{bestStudent.createUserId},
             </if>
-            <if test="bestStudent.createDate != null and bestStudent.createDate != '' ">
+            <if test="bestStudent.createDate != null ">
                 create_date = #{bestStudent.createDate},
             </if>
             <if test="bestStudent.updateUserId != null and bestStudent.updateUserId != '' ">

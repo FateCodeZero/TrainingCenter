@@ -72,13 +72,13 @@
             <if test="communicationTeaching.createUserId != null and communicationTeaching.createUserId != '' ">
                 create_user_id = #{communicationTeaching.createUserId},
             </if>
-            <if test="communicationTeaching.createDate != null and communicationTeaching.createDate != '' ">
+            <if test="communicationTeaching.createDate != null">
                 create_date = #{communicationTeaching.createDate},
             </if>
             <if test="communicationTeaching.updateUserId != null and communicationTeaching.updateUserId != '' ">
                 update_user_id = #{communicationTeaching.updateUserId},
             </if>
-            <if test="communicationTeaching.updateDate != null and communicationTeaching.updateDate != '' ">
+            <if test="communicationTeaching.updateDate != null">
                 update_date = #{communicationTeaching.updateDate},
             </if>
 

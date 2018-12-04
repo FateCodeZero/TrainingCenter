@@ -72,13 +72,13 @@
             <if test="experientialTeaching.createUserId != null and experientialTeaching.createUserId != '' ">
                 create_user_id = #{experientialTeaching.createUserId},
             </if>
-            <if test="experientialTeaching.createDate != null and experientialTeaching.createDate != '' ">
+            <if test="experientialTeaching.createDate != null">
                 create_date = #{experientialTeaching.createDate},
             </if>
             <if test="experientialTeaching.updateUserId != null and experientialTeaching.updateUserId != '' ">
                 update_user_id = #{experientialTeaching.updateUserId},
             </if>
-            <if test="experientialTeaching.updateDate != null and experientialTeaching.updateDate != '' ">
+            <if test="experientialTeaching.updateDate != null ">
                 update_date = #{experientialTeaching.updateDate},
             </if>
 

@@ -72,38 +72,33 @@ public class StudentMienController {
     }
 
     /**
-     * 进入添加页面
+     * 通过 id 获取资源对象
      *
-     * @return loginPage
+     * @return
      */
-    @RequestMapping(value = "/addPage", method = RequestMethod.GET)
-    public ModelAndView addPage(HttpServletRequest request) {
-        String id = request.getParameter("studentMineId");
-        ModelAndView modelAndView =new ModelAndView();
-        if(StringUtil.isNotEmpty(id)){
-            String viewName = "admin/studentMine_addPage";
-            modelAndView.addObject("studentMine",studentMienService.getStudentMienById(id));
-            modelAndView.setViewName(viewName);
-
+    @ResponseBody
+    @RequestMapping("/getStudentMienById")
+    public AjaxJson getStudentMienById(@RequestParam("id") String id) {
+        AjaxJson ajaxJson = new AjaxJson();
+        if (StringUtil.isEmpty(id)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("请先选择要查询的对象");
+            return ajaxJson;
         }
-        return modelAndView;
-    }
 
-    /**
-     * 进入更新页面
-     *
-     * @return loginPage
-     */
-    @RequestMapping(value = "/updatePage", method = RequestMethod.GET)
-    public ModelAndView updatePage(HttpServletRequest request) {
-        String id = request.getParameter("studentMineId");
-        ModelAndView modelAndView =new ModelAndView();
-        if(StringUtil.isNotEmpty(id)){
-            String viewName = "admin/studentMine_updatePage";
-            modelAndView.addObject("studentMine",studentMienService.getStudentMienById(id));
-            modelAndView.setViewName(viewName);
+        StudentMien resource = studentMienService.getStudentMienById(id);
+        if (resource == null) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("对象不存在或已被删除");
+            return ajaxJson;
+        } else {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("获取成功");
+            Map<String, Object> map = new ConcurrentHashMap<>();
+            map.put("studentMien", resource);
+            ajaxJson.setData(map);
+            return ajaxJson;
         }
-        return modelAndView;
     }
 
     @RequestMapping(value = "/update",method = RequestMethod.GET)
@@ -194,7 +189,7 @@ public class StudentMienController {
         return ajaxJson;
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete")
     public AjaxJson delete(@PathVariable("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 

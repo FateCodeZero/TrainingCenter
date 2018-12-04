@@ -72,13 +72,13 @@
             <if test="videoTeaching.createUserId != null and videoTeaching.createUserId != '' ">
                 create_user_id = #{videoTeaching.createUserId},
             </if>
-            <if test="videoTeaching.createDate != null and videoTeaching.createDate != '' ">
+            <if test="videoTeaching.createDate != null ">
                 create_date = #{videoTeaching.createDate},
             </if>
             <if test="videoTeaching.updateUserId != null and videoTeaching.updateUserId != '' ">
                 update_user_id = #{videoTeaching.updateUserId},
             </if>
-            <if test="videoTeaching.updateDate != null and videoTeaching.updateDate != '' ">
+            <if test="videoTeaching.updateDate != null ">
                 update_date = #{videoTeaching.updateDate},
             </if>
 

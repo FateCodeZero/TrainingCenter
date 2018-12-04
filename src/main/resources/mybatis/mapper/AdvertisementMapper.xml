@@ -77,13 +77,13 @@
             <if test="advertisement.createUserId != null and advertisement.createUserId != '' ">
                 create_user_id = #{advertisement.createUserId},
             </if>
-            <if test="advertisement.createDate != null and advertisement.createDate != '' ">
+            <if test="advertisement.createDate != null ">
                 create_date = #{advertisement.createDate},
             </if>
             <if test="advertisement.updateUserId != null and advertisement.updateUserId != '' ">
                 update_user_id = #{advertisement.updateUserId},
             </if>
-            <if test="advertisement.updateDate != null and advertisement.updateDate != '' ">
+            <if test="advertisement.updateDate != null ">
                 update_date = #{advertisement.updateDate},
             </if>
 

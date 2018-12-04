@@ -72,13 +72,13 @@
             <if test="interviewTeaching.createUserId != null and interviewTeaching.createUserId != '' ">
                 create_user_id = #{interviewTeaching.createUserId},
             </if>
-            <if test="interviewTeaching.createDate != null and interviewTeaching.createDate != '' ">
+            <if test="interviewTeaching.createDate != null  ">
                 create_date = #{interviewTeaching.createDate},
             </if>
             <if test="interviewTeaching.updateUserId != null and interviewTeaching.updateUserId != '' ">
                 update_user_id = #{interviewTeaching.updateUserId},
             </if>
-            <if test="interviewTeaching.updateDate != null and interviewTeaching.updateDate != '' ">
+            <if test="interviewTeaching.updateDate != null ">
                 update_date = #{interviewTeaching.updateDate},
             </if>
 

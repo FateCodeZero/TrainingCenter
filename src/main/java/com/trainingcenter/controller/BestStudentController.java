@@ -69,39 +69,35 @@ public class BestStudentController {
         return ajaxJson;
     }
 
-    /**
-     * 进入添加页面
-     *
-     * @return loginPage
-     */
-    @RequestMapping(value = "/addPage", method = RequestMethod.GET)
-    public ModelAndView addPage(HttpServletRequest request) {
-        String id = request.getParameter("bestStudentId");
-        ModelAndView modelAndView =new ModelAndView();
-        if(StringUtil.isNotEmpty(id)){
-            String viewName = "admin/bestStudent_addPage";
-            modelAndView.addObject("bestStudent",bestStudentService.getBestStudentById(id));
-            modelAndView.setViewName(viewName);
-
-        }
-        return modelAndView;
-    }
 
     /**
-     * 进入更新页面
+     * 通过 id 获取资源对象
      *
-     * @return loginPage
+     * @return
      */
-    @RequestMapping(value = "/updatePage", method = RequestMethod.GET)
-    public ModelAndView updatePage(HttpServletRequest request) {
-        String id = request.getParameter("bestStudentId");
-        ModelAndView modelAndView =new ModelAndView();
-        if(StringUtil.isNotEmpty(id)){
-            String viewName = "admin/bestStudent_updatePage";
-            modelAndView.addObject("bestStudent",bestStudentService.getBestStudentById(id));
-            modelAndView.setViewName(viewName);
+    @ResponseBody
+    @RequestMapping("/getBestStudentById")
+    public AjaxJson getBestStudentById(@RequestParam("id") String id) {
+        AjaxJson ajaxJson = new AjaxJson();
+        if (StringUtil.isEmpty(id)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("请先选择要查询的对象");
+            return ajaxJson;
         }
-        return modelAndView;
+
+        BestStudent resource = bestStudentService.getBestStudentById(id);
+        if (resource == null) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("对象不存在或已被删除");
+            return ajaxJson;
+        } else {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("获取成功");
+            Map<String, Object> map = new ConcurrentHashMap<>();
+            map.put("bestStudent", resource);
+            ajaxJson.setData(map);
+            return ajaxJson;
+        }
     }
 
     @RequestMapping(value = "/update",method = RequestMethod.GET)
@@ -191,8 +187,8 @@ public class BestStudentController {
 
         return ajaxJson;
     }
-
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @ResponseBody
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public AjaxJson delete(@PathVariable("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 

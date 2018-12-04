@@ -72,13 +72,13 @@
             <if test="newsInfo.createUserId != null and newsInfo.createUserId != '' ">
                 create_user_id = #{newsInfo.createUserId},
             </if>
-            <if test="newsInfo.createDate != null and newsInfo.createDate != '' ">
+            <if test="newsInfo.createDate != null">
                 create_date = #{newsInfo.createDate},
             </if>
             <if test="newsInfo.updateUserId != null and newsInfo.updateUserId != '' ">
                 update_user_id = #{newsInfo.updateUserId},
             </if>
-            <if test="newsInfo.updateDate != null and newsInfo.updateDate != '' ">
+            <if test="newsInfo.updateDate != null">
                 update_date = #{newsInfo.updateDate},
             </if>
 

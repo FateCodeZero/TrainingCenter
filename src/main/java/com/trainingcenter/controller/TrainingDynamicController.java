@@ -99,40 +99,34 @@ public class TrainingDynamicController {
     }
 
     /**
-     * 进入添加页面
+     * 通过 id 获取资源对象
      *
-     * @return loginPage
+     * @return
      */
-    @RequestMapping(value = "/addPage", method = RequestMethod.GET)
-    public ModelAndView addPage(HttpServletRequest request) {
-        String id = request.getParameter("trainingDynamicId");
-        ModelAndView modelAndView =new ModelAndView();
-        if(StringUtil.isNotEmpty(id)){
-            String viewName = "admin/TD_addPage";
-            modelAndView.addObject("trainingDynamic",trainingDynamicService.getTrainingDynamicById(id));
-            modelAndView.setViewName(viewName);
-
+    @ResponseBody
+    @RequestMapping("/getTrainingDynamicById")
+    public AjaxJson getTrainingDynamicById(@RequestParam("id") String id) {
+        AjaxJson ajaxJson = new AjaxJson();
+        if (StringUtil.isEmpty(id)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("请先选择要查询的对象");
+            return ajaxJson;
         }
-        return modelAndView;
-    }
 
-    /**
-     * 进入更新页面
-     *
-     * @return loginPage
-     */
-    @RequestMapping(value = "/updatePage", method = RequestMethod.GET)
-    public ModelAndView updatePage(HttpServletRequest request) {
-        String id = request.getParameter("trainingDynamicId");
-        ModelAndView modelAndView =new ModelAndView();
-        if(StringUtil.isNotEmpty(id)){
-            String viewName = "admin/TD_updatePage";
-            modelAndView.addObject("trainingDynamic",trainingDynamicService.getTrainingDynamicById(id));
-            modelAndView.setViewName(viewName);
+        TrainingDynamic resource = trainingDynamicService.getTrainingDynamicById(id);
+        if (resource == null) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("对象不存在或已被删除");
+            return ajaxJson;
+        } else {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("获取成功");
+            Map<String, Object> map = new ConcurrentHashMap<>();
+            map.put("trainingDynamic", resource);
+            ajaxJson.setData(map);
+            return ajaxJson;
         }
-        return modelAndView;
     }
-
     @RequestMapping(value = "/update",method = RequestMethod.GET)
     @ResponseBody
     public AjaxJson update(@Validated(value = {TC_Update.class}) TrainingDynamic trainingDynamic){
@@ -223,7 +217,7 @@ public class TrainingDynamicController {
 
         return ajaxJson;
     }
-
+    @ResponseBody
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();

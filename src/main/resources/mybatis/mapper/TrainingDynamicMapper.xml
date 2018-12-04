@@ -72,13 +72,13 @@
             <if test="trainingDynamic.createUserId != null and trainingDynamic.createUserId != '' ">
                 create_user_id = #{trainingDynamic.createUserId},
             </if>
-            <if test="trainingDynamic.createDate != null and trainingDynamic.createDate != '' ">
+            <if test="trainingDynamic.createDate != null ">
                 create_date = #{trainingDynamic.createDate},
             </if>
             <if test="trainingDynamic.updateUserId != null and trainingDynamic.updateUserId != '' ">
                 update_user_id = #{trainingDynamic.updateUserId},
             </if>
-            <if test="trainingDynamic.updateDate != null and trainingDynamic.updateDate != '' ">
+            <if test="trainingDynamic.updateDate != null ">
                 update_date = #{trainingDynamic.updateDate},
             </if>
 
