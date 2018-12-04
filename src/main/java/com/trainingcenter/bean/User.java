@@ -33,7 +33,7 @@ public class User implements Serializable,UserDetails {
     /**
      * 用户名，对应数据库（username）字段
      */
-    @NotBlank(message = "账号不能为空",groups = {TC_Find.class,TC_Add.class,TC_Update.class})
+    @NotBlank(message = "账号不能为空",groups = {TC_Add.class,TC_Update.class})
     private String username;
 
     /**

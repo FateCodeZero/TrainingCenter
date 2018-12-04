@@ -3,10 +3,12 @@ package com.trainingcenter.controller;
 import com.trainingcenter.bean.LockedIP;
 import com.trainingcenter.bean.Permission;
 import com.trainingcenter.bean.User;
+import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.service.LockedIPService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.*;
+import org.apache.ibatis.annotations.Param;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,22 +34,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 17:32
  */
 
-/**
- * 本次项目需使用Rest风格的URL
- * <p>
- * 新增：/order			POST
- * 获取：/order/id		GET
- * 修改：/order/id		PUT
- * 删除：/order/id		DELETE
- * <p>
- * 表单中如何发送 PUT 和 DELETE 请求?
- * 1、需要配置HiddenHttpMethodFilter
- * 2、需要发送POST请求
- * 3、需要在发送POST请求时，携带一个隐藏域，name="_method"，value=DELETE 或是 PUT 或是 POST、GET
- * <p>
- * 如何在 SpringMVC 的目标方法中得到 id?
- * 使用@PathVariable 注解获取
- */
 @RequestMapping("/user")
 @Controller
 public class UserController {
@@ -208,7 +194,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public AjaxJson register(@RequestParam("username") String username, @RequestParam("password") String password,
-                             @RequestParam("rePassword") String rePassword, HttpServletRequest request) {
+                             @RequestParam("rePassword") String rePassword) {
         AjaxJson ajaxJson = new AjaxJson();
 
         //非空验证
@@ -238,14 +224,10 @@ public class UserController {
             return ajaxJson;
         }
 
-        //添加注册信息
-        String ipAddress = HTTPUtils.getClientIpAddress(request);
-
         User user = new User();
         user.setId(UUID.randomUUID().toString());
         user.setUsername(username);
         user.setPassword(MD5Util.md5Encrypt(password));
-        user.setLoginIP(ipAddress);
         user.setUnlockedFlag(1);
         user.setState(1);
         user.setRegisterTime(new Date());
@@ -573,6 +555,66 @@ public class UserController {
         }else {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("授权保存失败，请稍后重试");
+        }
+        return ajaxJson;
+    }
+
+    /**
+     * 添加管理员
+     * @param roleIds：添加管理员时授给该管理员用户的角色
+     */
+    @ResponseBody
+    @RequestMapping(value = "/adminAdd")
+    public AjaxJson adminAdd(@RequestParam("username") String username, @RequestParam("password") String password,
+                             @RequestParam("rePassword") String rePassword, @Param("roleIds") String roleIds){
+        AjaxJson ajaxJson = new AjaxJson();
+
+        //非空验证
+        if (StringUtil.isEmpty(username) || StringUtil.isEmpty(password)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("用户名或密码不能为空");
+            return ajaxJson;
+        }
+
+        //账号可用性验证
+        if (!StringUtil.checkEmail(username) && !StringUtil.checkMobileNumber(username)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("账号格式不是一个正确的邮箱或手机号");
+            return ajaxJson;
+        }
+
+        boolean exist = userService.checkUsername(username);
+        if (exist) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("用户名已存在");
+            return ajaxJson;
+        }
+
+        //重复密码一致性验证
+        if (!rePassword.equals(password)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("两次密码输入不一致!");
+            return ajaxJson;
+        }
+
+        User user = new User();
+        user.setId(UUID.randomUUID().toString());
+        user.setUsername(username);
+        user.setPassword(MD5Util.md5Encrypt(password));
+        user.setUnlockedFlag(1); //IP锁定状态
+        user.setState(1);       //使用状态
+        user.setRegisterTime(new Date());
+        user.setLastLoginTime(new Date());
+
+        //异常抛给 SpringMVC 统一异常处理器处理
+        Integer res = userService.add(user,roleIds);
+
+        if (res > 0) {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("添加成功");
+        } else {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("添加成功，请重试");
         }
         return ajaxJson;
     }

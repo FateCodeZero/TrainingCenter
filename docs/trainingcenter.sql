@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2018-12-04 19:04:53
+Date: 2018-12-04 21:38:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -74,8 +74,10 @@ CREATE TABLE `tab_log` (
 -- ----------------------------
 -- Records of tab_log
 -- ----------------------------
+INSERT INTO `tab_log` VALUES ('00d7133f-3ba8-45e1-bb45-8f45f01ab56a', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在删除数据，删除对象ID为：\n[\"382fb5ec-31b8-41eb-84a7-4ec874bf7585\"]', '删除', '2018-12-04 21:31:05');
 INSERT INTO `tab_log` VALUES ('014039a6-554a-447d-8dbc-d5f4c7d77a2f', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543658519097,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543658519097,\"id\":\"d3f2fd52-487e-4d37-8560-435f9e7eca81\",\"name\":\"管理系统首页（增）\",\"resourceId\":\"f87236f6-edf5-4b21-9739-0cdc0472fc5c\",\"operations\":\"CREATE\",\"state\":1,\"describe\":\"\",\"operationList\":[\"CREATE\"]}]', '添加', '2018-12-01 18:01:59');
 INSERT INTO `tab_log` VALUES ('05a18655-6152-4239-b017-8d37b8afe430', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543675902000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543826022132,\"id\":\"03fc5466-eedf-4444-be87-312d5a71245a\",\"name\":\"信息管理\",\"url\":\"\",\"state\":1,\"parentId\":\"f87236f6-edf5-4b21-9739-0cdc0472fc5c\",\"orderNumber\":5,\"level\":1,\"iconStyle\":\"glyphicon glyphicon-send\",\"describe\":\"\"}]', '更新', '2018-12-03 16:33:42');
+INSERT INTO `tab_log` VALUES ('10997f9a-e771-449a-b32e-e4b24f3059e8', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"id\":\"43fbea5a-d1e0-44d0-b0cf-95b3897463ef\",\"username\":\"admin_test@qq.com\",\"password\":\"63a9f0ea7bb98050796b649e85481845\",\"loginIP\":null,\"unlockedFlag\":1,\"state\":1,\"registerTime\":1543929810751,\"lastLoginTime\":1543929810751,\"authorities\":null,\"enabled\":true,\"accountNonExpired\":true,\"accountNonLocked\":true,\"credentialsNonExpired\":true},\"c09b1a67-1ab6-43fc-b1b6-7cd48ad21336,7e0ee84f-216f-41d3-b3b0-832eaea51e79\"]', '添加', '2018-12-04 21:24:18');
 INSERT INTO `tab_log` VALUES ('11377012-9b66-49b5-a367-cbc3d33867c6', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543576642138,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543576642138,\"id\":\"7d4b041c-c0c0-49d7-b959-f650194fd236\",\"name\":\"角色管理\",\"url\":\"/webpages/admin/role_list.jsp\",\"state\":1,\"parentId\":\"9ef51893-2a55-4029-b3c1-7890220c90bc\",\"orderNumber\":4,\"level\":2,\"iconStyle\":\"\",\"describe\":\"\"}]', '添加', '2018-11-30 19:17:22');
 INSERT INTO `tab_log` VALUES ('1e12b9e6-43b2-407f-8b18-cd13cbd2ea52', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"test\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543313452000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543313759899,\"id\":\"54f83d8a-c087-4870-a68c-ae585d4e3d25\",\"name\":\"TEST\",\"state\":0,\"describe\":\"test\",\"permissions\":null,\"authority\":\"ROLE_TEST\"}]', '更新', '2018-11-27 18:16:00');
 INSERT INTO `tab_log` VALUES ('1f6fbe34-2742-405f-95d2-ccdba0908dce', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543576391000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543578178286,\"id\":\"9ef51893-2a55-4029-b3c1-7890220c90bc\",\"name\":\"系统管理\",\"url\":\"\",\"state\":1,\"parentId\":\"f87236f6-edf5-4b21-9739-0cdc0472fc5c\",\"orderNumber\":1,\"level\":1,\"iconStyle\":\"layui-icon-set-fill\",\"describe\":\"\"}]', '更新', '2018-11-30 19:42:58');
@@ -150,6 +152,7 @@ INSERT INTO `tab_log` VALUES ('eba31f5b-b2e6-42e9-8587-011a76b48ec5', 'd6a00d9d-
 INSERT INTO `tab_log` VALUES ('ed108d79-b78b-443b-8d3e-8baa9535d4c6', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"test\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543399955000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543399960453,\"id\":\"cfcab4d4-7cb5-413c-8315-be34d1a05755\",\"name\":\"test\",\"resourceId\":\"396f9846-d0fc-42b0-b267-d8be114e4786\",\"operations\":\"READ,CREATE,UPDATE\",\"state\":0,\"describe\":\"test\",\"operationList\":[\"READ\",\"CREATE\",\"UPDATE\"]}]', '更新', '2018-11-28 18:12:40');
 INSERT INTO `tab_log` VALUES ('f1a7e7bf-cdb6-4b1e-a7fa-406f4f6903de', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543580221557,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543580221557,\"id\":\"f0e4a234-32b7-40d9-8ad6-2a24aa4af58c\",\"name\":\"权限管理（读）\",\"resourceId\":\"828b5970-ee7a-4ee9-a5d7-bda06480056f\",\"operations\":\"READ\",\"state\":1,\"describe\":\"\",\"operationList\":[\"READ\"]}]', '添加', '2018-11-30 20:17:02');
 INSERT INTO `tab_log` VALUES ('f5afd00f-e75d-4aeb-9fc3-3ae58571f759', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543832434000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543921307233,\"id\":\"854d6f60-5a15-4525-8b78-bfb4d6055265\",\"name\":\"普通用户管理\",\"url\":\"/webpages/admin/user_list.jsp\",\"state\":1,\"parentId\":\"50774cdc-ebc0-43db-aa45-a8d078d84730\",\"orderNumber\":8,\"level\":2,\"iconStyle\":\"layui-icon layui-icon-user\",\"describe\":\"\"}]', '更新', '2018-12-04 19:01:47');
+INSERT INTO `tab_log` VALUES ('f82379d6-dd08-49fe-9b58-3985f180e1c0', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":null,\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543930260056,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543930260056,\"id\":\"382fb5ec-31b8-41eb-84a7-4ec874bf7585\",\"ip\":\"0:0:0:0:0:0:0:1\"}]', '添加', '2018-12-04 21:31:00');
 INSERT INTO `tab_log` VALUES ('f8e8be82-33dd-4929-98cd-db52b08d3ea7', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"测试用户\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543313906000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543677364439,\"id\":\"3edb62ca-376c-485c-9132-c1b44f22effe\",\"name\":\"TEST\",\"state\":0,\"describe\":\"测试用户\",\"permissions\":null,\"authority\":\"ROLE_TEST\"}]', '更新', '2018-12-01 23:16:04');
 INSERT INTO `tab_log` VALUES ('fb04a327-33ad-4f8a-a099-0f20dee25a9e', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543578539645,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543578539645,\"id\":\"28f948b5-b5fa-4ebc-b964-87a5488adbc8\",\"name\":\"系统管理（读）\",\"resourceId\":\"9ef51893-2a55-4029-b3c1-7890220c90bc\",\"operations\":\"READ\",\"state\":1,\"describe\":\"\",\"operationList\":[\"READ\"]}]', '添加', '2018-11-30 19:49:00');
 
@@ -334,7 +337,8 @@ CREATE TABLE `tab_user` (
 -- ----------------------------
 -- Records of tab_user
 -- ----------------------------
-INSERT INTO `tab_user` VALUES ('d6a00d9d-2801-45c3-a99f-326e2949e2f2', 'admin@qq.com', '63a9f0ea7bb98050796b649e85481845', '0:0:0:0:0:0:0:1', '1', '1', '2018-11-18 00:00:00', '2018-12-04 19:00:57');
+INSERT INTO `tab_user` VALUES ('43fbea5a-d1e0-44d0-b0cf-95b3897463ef', 'admin_test@qq.com', '63a9f0ea7bb98050796b649e85481845', null, '1', '1', '2018-12-04 21:23:31', '2018-12-04 21:23:31');
+INSERT INTO `tab_user` VALUES ('d6a00d9d-2801-45c3-a99f-326e2949e2f2', 'admin@qq.com', '63a9f0ea7bb98050796b649e85481845', '0:0:0:0:0:0:0:1', '1', '1', '2018-11-18 00:00:00', '2018-12-04 21:30:28');
 INSERT INTO `tab_user` VALUES ('f40b6507-7561-4fa6-b3a7-749ce67d200c', 'test@qq.com', '63a9f0ea7bb98050796b649e85481845', '0:0:0:0:0:0:0:1', '1', '1', '2018-12-04 19:00:42', '2018-12-04 19:00:42');
 
 -- ----------------------------
@@ -368,6 +372,7 @@ CREATE TABLE `tab_user_info` (
 -- ----------------------------
 INSERT INTO `tab_user_info` VALUES ('abb5531d-84f2-4f8c-a279-ff094036e04c', 'admin@qq.com', 'admin@qq.com', null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
 INSERT INTO `tab_user_info` VALUES ('b2f4d5c3-21ac-4e8e-8580-70263800cc2b', 'test@qq.com', 'test@qq.com', null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `tab_user_info` VALUES ('b945bd29-97dc-4f9b-9087-adf6a1dba981', 'admin_test@qq.com', 'admin_test@qq.com', null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for tab_user_role
@@ -384,6 +389,8 @@ CREATE TABLE `tab_user_role` (
 -- ----------------------------
 -- Records of tab_user_role
 -- ----------------------------
+INSERT INTO `tab_user_role` VALUES ('5204008e-6668-4f5f-971a-0abb6b0d8512', '43fbea5a-d1e0-44d0-b0cf-95b3897463ef', '7e0ee84f-216f-41d3-b3b0-832eaea51e79');
+INSERT INTO `tab_user_role` VALUES ('78c776ef-a23b-42a7-925d-8df7981b31eb', '43fbea5a-d1e0-44d0-b0cf-95b3897463ef', 'c09b1a67-1ab6-43fc-b1b6-7cd48ad21336');
 INSERT INTO `tab_user_role` VALUES ('a53ccb57-ca3d-4d76-a1a0-40efa11ce340', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '7e0ee84f-216f-41d3-b3b0-832eaea51e79');
 INSERT INTO `tab_user_role` VALUES ('a53ccb57-ca3d-4d76-a1a0-40efa11ce347', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', 'c09b1a67-1ab6-43fc-b1b6-7cd48ad21336');
 INSERT INTO `tab_user_role` VALUES ('373c4430-049c-4033-babe-7912365f863b', 'f40b6507-7561-4fa6-b3a7-749ce67d200c', '7e0ee84f-216f-41d3-b3b0-832eaea51e79');

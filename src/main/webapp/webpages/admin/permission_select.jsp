@@ -25,7 +25,7 @@
                 <div id="treeView-checkbox" class=""></div>
             </div>
             <div class="col-sm-8 text-center layui-tab-content">
-                <div class="text-center" style="color: #FF5722">菜单详细授权，此处勾选后记得保存哟~</div>
+                <div class="text-center" style="color: #FF5722;font-size: larger">菜单详细授权，此处勾选后记得保存哟~</div>
                 <table id="tableData" lay-filter="table-filter"></table>
             </div>
         </div>

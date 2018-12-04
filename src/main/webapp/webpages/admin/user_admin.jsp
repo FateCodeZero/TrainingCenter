@@ -36,10 +36,10 @@
 <script type="text/html" id="table-head">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="add" title="添加菜单"><i
-                class="layui-icon layui-icon-add-circle"></i> 添加
+                class="layui-icon layui-icon-add-circle"></i> 添加管理员
         </button>
         <button class="layui-btn layui-btn-sm" lay-event="update" title="编辑菜单"><i
-                class="layui-icon layui-icon-edit"></i> 编辑
+                class="layui-icon layui-icon-edit"></i> 编辑管理员
         </button>
         <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="delete" title="批量删除菜单"><i
                 class="layui-icon layui-icon-delete"></i> 批量删除
@@ -61,6 +61,10 @@
     var searchContent = $("#searchContent").val(); //模糊查询内容
     var table;  //layui table
 
+    $(document).ready(function () {
+        tableData();    //加载数据表格
+    });
+
     //JavaScript代码区域
     layui.use('element', function () {
         var element = layui.element;
@@ -79,205 +83,208 @@
         element.render('tab');
     });
 
-    //layui数据表格
-    layui.use('table', function () {
-        table = layui.table;
-        //渲染
-        table.render({
-            id: 'table1'
-            , elem: '#tableData'
-            , toolbar: '#table-head'
-            , title: '用户管理'
-            , url: '${webRoot}/user/list_admin' //数据接口
-            , page: true //开启分页
-            , limit: 10 //每页显示多少条数据
-            , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
-                , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
-                , {field: 'id', title: 'ID', hide: true, width: 100, align: 'center'}
-                , {field: 'username', title: '用户账号', width: 150, align: 'center'}
-                , {field: 'loginIP', title: '登录IP', width: 150, align: 'center'}
-                , {
-                    field: 'unlockedFlag', title: 'IP锁定状态', width: 100, align: 'center', templet: function (d) {
-                        if (d.unlockedFlag === 1) {
-                            return '<span class="layui-btn layui-btn-normal layui-btn-xs">正常</span>'
-                        }
-                        if (d.unlockedFlag === 0) {
-                            return '<span class="layui-btn layui-btn-danger layui-btn-xs">锁定</span>'
-                        }
-                    }
-                }
-                , {
-                    field: 'state', title: '使用状态', width: 100, align: 'center', templet: function (d) {
-                        if (d.state === 1) {
-                            return '<span class="layui-btn layui-btn-xs">已启用</span>'
-                        }
-                        if(d.state === 0){
-                            return '<span class="layui-btn layui-btn-danger layui-btn-xs">已禁用</span>'
-                        }
-                        if(d.state === -1){
-                            return '<span class="layui-btn layui-btn-disabled layui-btn-xs">已删除</span>'
-                        }
-                    }
-                }
-                , {
-                    field: 'registerTime', title: '注册时间', sort: true, width: 150, align: 'center', templet: function (d) {
-                        return new Date(d.registerTime).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
-                    }
-                }
-                , {
-                    field: 'lastLoginTime', title: '最后登录时间', sort: true, width: 180, align: 'center', templet: function (d) {
-                        return new Date(d.lastLoginTime).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
-                    }
-                }
-                <%--<sec:authorize access="hasPermission('/webpages/admin/resource_list.jsp','UPDATE')">--%>
-                , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 270, align: 'center'} //这里的toolbar值是模板元素的选择器
-                <%--</sec:authorize>--%>
-            ]]
-            , where: {//接口需要的其它参数
-                condition: JSON.stringify({searchContent:searchContent})
-            }
-            , parseData: function (res) { //res 即为原始返回的数据
-                var code = res.code === 1 ? 0 : 1;
-                var msg = res.msg;
-                var data = null;
-                if (code === 0){
-                    data = res.data.items;
-                }
-                var count = 0;
-                if (data !== null) {
-                    count = data.total;
-                }
-                return {
-                    "code": code, //解析接口状态，layui的0为成功
-                    "msg": msg, //解析提示文本
-                    "count": count, //解析数据长度
-                    "data": data //解析数据列表
-                };
-            }
-            , request: { //用于对分页请求的参数：page、limit重新设定名称
-                pageName: 'currentPage' //页码的参数名称，默认：page
-                , limitName: 'rows' //每页数据量的参数名，默认：limit
-            }
-            , done: function (res, curr, count) { //渲染完毕后回调
-                //如果是异步请求数据方式，res即为你接口返回的信息。
-                //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-                //table.render();
-            }
-        });
-
-        //头部工具栏监听事件
-        table.on('toolbar(table-filter)', function (obj) {
-            //var checkStatus = table.checkStatus(obj.config.id);
-
-            //获取被选中数据
-            var checkStatus = table.checkStatus('table1');
-            var data = checkStatus.data;
-
-            if (data.length === 0 && obj.event !== 'add') {
-                layer.alert('请先选择要操作的数据', {
-                    time: 3000,
-                    icon: 2
-                });
-                return false;
-            } else {
-                switch (obj.event) {
-                    case 'add':     //添加
-                        addData();
-                        break;
-                    case 'delete':  //删除
-
-                        var ids = '';
-                        var cnt = 0;
-                        $.each(data, function (index, d) { //拼装ids
-                            if (index === 0) {
-                                ids += d.id;
-                            } else {
-                                ids += ",";
-                                ids += d.id;
+    function tableData() {
+        //layui数据表格
+        layui.use('table', function () {
+            table = layui.table;
+            //渲染
+            table.render({
+                id: 'table1'
+                , elem: '#tableData'
+                , height: 450
+                , toolbar: '#table-head'
+                , title: '用户管理'
+                , url: '${webRoot}/user/list_admin' //数据接口
+                , page: true //开启分页
+                , limit: 10 //每页显示多少条数据
+                , cols: [[ //表头
+                    {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
+                    , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
+                    , {field: 'id', title: 'ID', hide: true, width: 100, align: 'center'}
+                    , {field: 'username', title: '用户账号', width: 150, align: 'center'}
+                    , {field: 'loginIP', title: '登录IP', width: 150, align: 'center'}
+                    , {
+                        field: 'unlockedFlag', title: 'IP锁定状态', width: 100, align: 'center', templet: function (d) {
+                            if (d.unlockedFlag === 1) {
+                                return '<span class="layui-btn layui-btn-normal layui-btn-xs">正常</span>'
                             }
-                            cnt += 1;
-                        });
-                        deleteData(ids, cnt); //删除数据
-                        break;
-                    case 'update':  //编辑
-                        if (data.length > 1) {
-                            layer.alert('一次只能编辑一条数据', {
-                                time: 3000,
-                                icon: 2
-                            });
-                            return false;
-                        } else {
-                            editData(data[0].id);
+                            if (d.unlockedFlag === 0) {
+                                return '<span class="layui-btn layui-btn-danger layui-btn-xs">锁定</span>'
+                            }
                         }
-                        break;
-                    case 'detail':
-                        if (data.length > 1) {
-                            layer.alert('一次只能查看一条数据', {
-                                time: 3000,
-                                icon: 2
-                            });
-                            return false;
-                        } else {
-                            layer.msg("ID:【" + data[0].id + "】的查看操作");
-                        }
-                        break;
-                }
-            }
-        });
-
-        //监听表格复选框选择
-        table.on('checkbox(table-filter)', function (obj) {
-            console.log(obj)
-        });
-
-        //监听工具条
-        table.on('tool(table-filter)', function (obj) {
-            var data = obj.data;
-            var id = data.id;/*操作的数据Id*/
-
-            var state = 1;/*启/禁用操作（1：启用，0：禁用）*/
-            var locked = 1;/*IP锁定操作（1：锁定，0：正常）*/
-
-            if (obj.event === 'enable') {    //启用
-                state = 1;
-                enableOpt(data, state);
-            } else if (obj.event === 'unEnable') {  //禁用
-                state = 0;
-                enableOpt(data,state);
-            }else if (obj.event === 'lock') {  /*锁定IP*/
-                locked = 0;
-                IPLockedOpt(data,locked);
-            } else if (obj.event === 'unlock') {  /*解锁IP*/
-                locked = 1;
-                IPLockedOpt(data,locked);
-            } else if (obj.event === 'grant'){ //授权
-                layer.open({
-                    title: '角色授权',
-                    type: 2,
-                    area: ['1000px', '450px'],
-                    fix: false, //不固定
-                    maxmin: true,
-                    content: '${webRoot}/webpages/admin/role_select.jsp?id='+id,
-                    success: function (layero, index) {
-                        layer_window = layero;   //获取弹出窗口的窗口对象
-                    },
-                    end: function () {
-                        location.reload(); //回调函数，刷新页面
                     }
-                });
-            }
+                    , {
+                        field: 'state', title: '使用状态', width: 100, align: 'center', templet: function (d) {
+                            if (d.state === 1) {
+                                return '<span class="layui-btn layui-btn-xs">已启用</span>'
+                            }
+                            if(d.state === 0){
+                                return '<span class="layui-btn layui-btn-danger layui-btn-xs">已禁用</span>'
+                            }
+                            if(d.state === -1){
+                                return '<span class="layui-btn layui-btn-disabled layui-btn-xs">已删除</span>'
+                            }
+                        }
+                    }
+                    , {
+                        field: 'registerTime', title: '注册时间', sort: true, width: 150, align: 'center', templet: function (d) {
+                            return new Date(d.registerTime).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
+                        }
+                    }
+                    , {
+                        field: 'lastLoginTime', title: '最后登录时间', sort: true, width: 180, align: 'center', templet: function (d) {
+                            return new Date(d.lastLoginTime).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
+                        }
+                    }
+                    <%--<sec:authorize access="hasPermission('/webpages/admin/resource_list.jsp','UPDATE')">--%>
+                    , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 270, align: 'center'} //这里的toolbar值是模板元素的选择器
+                    <%--</sec:authorize>--%>
+                ]]
+                , where: {//接口需要的其它参数
+                    condition: JSON.stringify({searchContent:searchContent})
+                }
+                , parseData: function (res) { //res 即为原始返回的数据
+                    var code = res.code === 1 ? 0 : 1;
+                    var msg = res.msg;
+                    var data = null;
+                    if (code === 0){
+                        data = res.data.items;
+                    }
+                    var count = 0;
+                    if (data !== null) {
+                        count = data.total;
+                    }
+                    return {
+                        "code": code, //解析接口状态，layui的0为成功
+                        "msg": msg, //解析提示文本
+                        "count": count, //解析数据长度
+                        "data": data //解析数据列表
+                    };
+                }
+                , request: { //用于对分页请求的参数：page、limit重新设定名称
+                    pageName: 'currentPage' //页码的参数名称，默认：page
+                    , limitName: 'rows' //每页数据量的参数名，默认：limit
+                }
+                , done: function (res, curr, count) { //渲染完毕后回调
+                    //如果是异步请求数据方式，res即为你接口返回的信息。
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    //table.render();
+                }
+            });
+
+            //头部工具栏监听事件
+            table.on('toolbar(table-filter)', function (obj) {
+                //var checkStatus = table.checkStatus(obj.config.id);
+
+                //获取被选中数据
+                var checkStatus = table.checkStatus('table1');
+                var data = checkStatus.data;
+
+                if (data.length === 0 && obj.event !== 'add') {
+                    layer.alert('请先选择要操作的数据', {
+                        time: 3000,
+                        icon: 2
+                    });
+                    return false;
+                } else {
+                    switch (obj.event) {
+                        case 'add':     //添加
+                            addData();
+                            break;
+                        case 'delete':  //删除
+
+                            var ids = '';
+                            var cnt = 0;
+                            $.each(data, function (index, d) { //拼装ids
+                                if (index === 0) {
+                                    ids += d.id;
+                                } else {
+                                    ids += ",";
+                                    ids += d.id;
+                                }
+                                cnt += 1;
+                            });
+                            deleteData(ids, cnt); //删除数据
+                            break;
+                        case 'update':  //编辑
+                            if (data.length > 1) {
+                                layer.alert('一次只能编辑一条数据', {
+                                    time: 3000,
+                                    icon: 2
+                                });
+                                return false;
+                            } else {
+                                editData(data[0].id);
+                            }
+                            break;
+                        case 'detail':
+                            if (data.length > 1) {
+                                layer.alert('一次只能查看一条数据', {
+                                    time: 3000,
+                                    icon: 2
+                                });
+                                return false;
+                            } else {
+                                layer.msg("ID:【" + data[0].id + "】的查看操作");
+                            }
+                            break;
+                    }
+                }
+            });
+
+            //监听表格复选框选择
+            table.on('checkbox(table-filter)', function (obj) {
+                console.log(obj)
+            });
+
+            //监听工具条
+            table.on('tool(table-filter)', function (obj) {
+                var data = obj.data;
+                var id = data.id;/*操作的数据Id*/
+
+                var state = 1;/*启/禁用操作（1：启用，0：禁用）*/
+                var locked = 1;/*IP锁定操作（1：锁定，0：正常）*/
+
+                if (obj.event === 'enable') {    //启用
+                    state = 1;
+                    enableOpt(data, state);
+                } else if (obj.event === 'unEnable') {  //禁用
+                    state = 0;
+                    enableOpt(data,state);
+                }else if (obj.event === 'lock') {  /*锁定IP*/
+                    locked = 0;
+                    IPLockedOpt(data,locked);
+                } else if (obj.event === 'unlock') {  /*解锁IP*/
+                    locked = 1;
+                    IPLockedOpt(data,locked);
+                } else if (obj.event === 'grant'){ //授权
+                    layer.open({
+                        title: '角色授权',
+                        type: 2,
+                        area: ['1000px', '450px'],
+                        fix: false, //不固定
+                        maxmin: true,
+                        content: '${webRoot}/webpages/admin/role_grant.jsp?id='+id,
+                        success: function (layero, index) {
+                            layer_window = layero;   //获取弹出窗口的窗口对象
+                        },
+                        end: function () {
+                            location.reload(); //回调函数，刷新页面
+                        }
+                    });
+                }
+            });
         });
-    });
+    }
 
     function addData() {
         layer.open({
-            title: '添加用户',
+            title: '添加管理员',
             type: 2,
-            area: ['1000px', '450px'],
+            area: ['1000px', '500px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/webpages/admin/role_add.jsp',
+            content: '${webRoot}/webpages/admin/user_admin_add.jsp',
             success: function (layero, index) {
                 layer_window = layero;   //获取弹出窗口的窗口对象
             },
@@ -305,9 +312,9 @@
     }
 
     //获取弹出窗口返回的json格式的数据
-    function getBackPermissionData(JsonData) {		//返回权限数据
+    function getBackRoleData(JsonData) {		//返回权限数据
         var resourceSelectWindow = window[layer_window.find('iframe')[0]['name']];	//获取子窗口的窗口对象
-        resourceSelectWindow.window.setPermissionData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
+        resourceSelectWindow.window.setRoleData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
     }
 
     //删除

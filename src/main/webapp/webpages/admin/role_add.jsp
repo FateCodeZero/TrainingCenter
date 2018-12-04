@@ -11,7 +11,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>添加菜单</title>
+    <title>添加角色</title>
 
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css">
@@ -83,7 +83,7 @@
         var describe = $("#describe").val();
         var remarks = $("#remarks").val();
 
-        if (name == null || name == "") {
+        if (name === null || name === "") {
             layer.msg("请填写角色名称！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -95,7 +95,7 @@
             $("#name").css("border", "1px solid #009688");
             $("#name").blur();      //失去焦点
         }
-        if (state == null || state == "") {
+        if (state === null || state === '') {
             layer.msg("请选择角色使用状态！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -124,7 +124,7 @@
                 var jsonData = eval(data);   //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code == 1) {
+                if (code === 1) {
                     layer.alert(msg, {
                         time: 3000,
                         icon: 1

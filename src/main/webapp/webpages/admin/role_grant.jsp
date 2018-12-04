@@ -5,32 +5,31 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>资源菜单选择</title>
+    <title>角色授予</title>
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css" charset="UTF-8">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css" charset="UTF-8">
 
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js" charset="UTF-8"></script>
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js" charset="UTF-8"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js" charset="UTF-8"></script>
-    <script src="${webRoot}/plug-in/js/bootstrap-treeview.min.js" charset="UTF-8"></script>
+    <script src="${webRoot}/plug-in/js/utils.js"></script>
 </head>
 
 <body>
 <div class="layui-tab layui-tab-brief" lay-filter="demoTitle">
-    <div class="row">
-        <div class="text-left col-sm-12">
-            <div class="col-sm-4">
-                <div id="treeview-selectable" class=""></div>
-            </div>
-            <div class="col-sm-8 text-center layui-tab-content">
+    <div class="layui-tab-content">
+        <div class="row">
+            <%--<div class="col-sm-1"></div>--%>
+            <div class="text-left col-sm-12">
                 <table id="tableData" lay-filter="table-filter"></table>
             </div>
+            <%--<div class="col-sm-1"></div>--%>
         </div>
     </div>
     <footer style="z-index: 999">
         <div class="row">
             <div class="col-sm-offset-2 col-sm-12 text-center">
-                <button type="button" class="layui-btn col-sm-4" id="submit">确认选择</button>
+                <button type="button" class="layui-btn col-sm-4" id="submit">保存授权</button>
                 <button type="button" class="layui-btn layui-btn-normal col-sm-4" id="close">关闭并回返</button>
             </div>
         </div>
@@ -39,99 +38,50 @@
 </body>
 
 <script type="text/javascript">
+    var searchContent = $("#searchContent").val(); //模糊查询内容
     var table = null;  //layui table
+    var userId = null;  /*要授权的用户对象ID*/
+    var roleData = null; /*该用户已有的角色数据*/
 
     $(document).ready(function () {
-        var resourceData = getResourceData();
-        var treeData = buildTreeData(resourceData);
-        initSelectableTree(treeData);
+        /*从URL获取对象ID*/
+        userId = getUrlParam('id');
+        roleData = getRolesByUserId(userId);
+        tableData();    //加载数据表格
     });
 
     /**
-     * 获取菜单数据
+     * 获取指定用户所含有的所有角色
      * */
-    function getResourceData() {
-        var returnData = null;
+    function getRolesByUserId(userId) {
+        var roles = null;
+        var data = {
+            userId:userId
+        };
         $.ajax({
-            url: "${webRoot}/resource/tree",
-            type: "get",
+            url: "${webRoot}/role/getRolesByUserId",
+            type: "post",
             async: false,    //关闭异步请求
-            data: null,
+            data: data,
             dataType: "json",
             success: function (data) {
-                var jsonData = eval(data); //数据解析
+                var jsonData = eval(data);
                 var code = jsonData.code;
                 var msg = jsonData.msg;
                 if (code === 1) {
-                    returnData = jsonData.data.items;
+                    roles = jsonData.data.items;
                 } else {
                     layer.alert(msg, {
                         time: 3000,
                         icon: 2
                     });
-                    return false;
                 }
             }
         });
-        return returnData;
+        return roles;
     }
 
-    /*构建树形数据*/
-    function buildTreeData(data) {
-        var tree = [];
-        $.each(data, function (index, item) {
-            var id = item.id;   /*本节点菜单id*/
-            var name = item.name;   /*本节点菜单名称*/
-            var parentId = item.parentId;   /*本节点的父节点菜单id*/
-            var order = item.order; /*本节点排序，可忽略*/
-            var level = item.level; /*本节点层级*/
-            var url = item.data.url;   /*本节点url*/
-            var iconStyle = item.data.iconStyle;  /*本节点iocn*/
-            var children = item.children;   /*子节点*/
-
-            //使用递归方式解析数据
-            tree[index] = {
-                id: id,
-                pid: parentId,
-                order: order,
-                text: name,
-                icon:iconStyle,  /*当前节点上的图标*/
-                selectedIcon:iconStyle,  /*当前节点被选择后的图标*/
-                href:"${webRoot}/"+url,
-                tags: level,
-                nodes: buildTreeData(children)
-            };
-        });
-        return tree;
-    }
-
-    /*初始化选择树*/
-    function initSelectableTree(data) {
-        return $('#treeview-selectable').treeview({
-            data: data,
-            showIcon: true,    /*开启节点图标*/
-            enableLinks:false,  /*不启用当前节点的超链接*/
-            multiSelect: $('#chk-select-multi').is(':checked'),
-            onNodeSelected: function (event, node) {
-                console.log(node);
-                /*$('#selectable-output').prepend('<p>' + node.text + '</p>');*/
-                var id = node.id; //节点数据id
-                var parentId = node.pid; //当前节点的父节点数据id
-                var condition = {parentId: parentId}; //自定义查询条件
-
-                //数据表格
-                tableData(JSON.stringify(condition));
-            },
-            onNodeUnselected: function (event, node) {
-                /*取消节点选中事件*/
-            }
-        });
-    }
-
-    /**数据表格
-    * condition：json字符串查询条件
-    * */
-    function tableData(condition) {
+    function tableData() {
         //layui数据表格
         layui.use('table', function () {
             table = layui.table;
@@ -140,30 +90,51 @@
                 id: 'table1'
                 , elem: '#tableData'
                 , title: '菜单管理'
-                , url: '${webRoot}/resource/select' //数据接口
+                , url: '${webRoot}/role/select' //数据接口
                 , page: true //开启分页
                 , limit: 10 //每页显示多少条数据
                 , cols: [[ //表头
-                    {type: 'checkbox', fixed: 'left', align: 'center'}
-                    , {title: '序号', type: 'numbers', fixed: 'left', align: 'center'}
+                    {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
+                    , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
                     , {field: 'id', title: 'ID', hide: true, align: 'center'}
-                    , {field: 'name', title: '菜单名称', align: 'center'}
-                    , {field: 'url', title: '对应URL', align: 'center'}
+                    , {field: 'name', title: '角色名称', align: 'center'}
+                    , {field: 'describe', title: '角色描述', align: 'center'}
+                    , {field: 'remarks', title: '备注', align: 'center'}
                 ]]
                 , where: {//接口需要的其它参数
-                    condition: condition
+                    condition: JSON.stringify({
+                        searchContent:searchContent
+                    })
                 }
                 , parseData: function (res) { //res 即为原始返回的数据
                     var code = res.code === 1 ? 0 : 1;
                     var msg = res.msg;
                     var data = null;
-                    if (code === 0) {
+                    if (code === 0){
                         data = res.data.items;
                     }
                     var count = 0;
                     if (data !== null) {
                         count = data.total;
                     }
+                    /*让用户已有的角色处于被选中状态*/
+                    var roleIds = '';
+                    $.each(roleData,function (index, role) {
+                       if (index === 0){
+                           roleIds += role.id;
+                       }else {
+                           roleIds += ",";
+                           roleIds += role.id;
+                       }
+                    });
+                    $.each(data, function (index, item) {
+                        var id = item.id;
+                        if (roleIds.indexOf(id) !== -1) {
+                            /*让数据处于被选中状态*/
+                            data[index].LAY_CHECKED = true;
+                        }
+                    });
+                    //返回要渲染的数据
                     return {
                         "code": code, //解析接口状态，layui的0为成功
                         "msg": msg, //解析提示文本
@@ -189,7 +160,7 @@
         });
     }
 
-    //执行数据返回操作
+    //执行角色授予操作
     $("#submit").click(function () {
         if (table === null || table === '') {
             layer.alert('请先选择数据', {
@@ -205,39 +176,57 @@
         var length = items.length;
 
         if (length === 0) {
-            layer.alert('请先选择权限对应的资源', {
+            layer.alert('请先选择要授予用户的角色', {
                 time: 3000,
                 icon: 2
             });
             return false;
         }
-        if (length > 1) {
-            layer.alert('一个权限只能对应一个资源', {
-                time: 3000,
-                icon: 2
-            });
-            return false;
-        }
-        //选中的数据
-        var selectedData = {
-            id: items[0].id,
-            name: items[0].name
-        };
-        returnData(selectedData);
-    });
 
-    //返回被选中的数据
-    function returnData(data) {
-        if (data === null) {
-            layer.msg("请先选择数据", {
-                icon: 2,
-                time: 2000 //2秒关闭（如果不配置，默认是3秒）
-            });
-        } else {
-            parent.getBackResourceData(data);	//将Json数据传给父窗口
-        }
-        closeView();
-    }
+        /*将选中的数据拼接成ids*/
+        var roleIds = '';
+        $.each(items,function (index, item) {
+            if (index === 0){
+                roleIds += item.id;
+            }else {
+                roleIds += ',';
+                roleIds += item.id;
+            }
+        });
+
+        var grantData = {
+            userId: userId,
+            roleIds: roleIds
+        };
+
+        var data = {
+            grantData: JSON.stringify(grantData)
+        };
+        console.log(grantData);
+
+        $.ajax({
+            url: "${webRoot}/user/grant",
+            type: "post",
+            data: data,
+            dataType: "json",
+            success: function (data) {
+                var jsonData = eval(data);
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+                if (code === 1) {
+                    layer.alert(msg, {
+                        time: 3000,
+                        icon: 1
+                    });
+                } else {
+                    layer.alert(msg, {
+                        time: 3000,
+                        icon: 2
+                    });
+                }
+            }
+        });
+    });
 
     //关闭
     $("#close").click(function () {
@@ -249,7 +238,6 @@
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index); //再执行关闭
     }
-
 </script>
 
 </html>

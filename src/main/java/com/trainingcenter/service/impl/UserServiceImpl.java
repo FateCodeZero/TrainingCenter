@@ -210,18 +210,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Integer result;     //注册结果状态
         RegisterException registerException;    //注册异常
 
-        if (user == null) {
-            registerException = new RegisterException("注册失败，注册对象的信息不能为空");
-            LogUtil.warn(this, "用户注册", "注册失败，注册对象的信息为空，可能存在【系统漏洞】！");
-            throw registerException;
-        }
-        String username = user.getUsername();
-        if (StringUtil.isEmpty(username)) {
+        if (user == null || StringUtil.isEmpty(user.getUsername())) {
             registerException = new RegisterException("注册失败，账号不能为空");
             LogUtil.warn(this, "用户注册", "注册失败，注册对象的账号为空，效验规则没有起到应有的作用！");
             throw registerException;
         }
-
+        String username = user.getUsername();
         if (checkUsername(username)) {
             registerException = new RegisterException("注册失败，用户名已被使用");
             throw registerException;
@@ -280,6 +274,97 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             //日志记录
             LogUtil.warn(this, "用户注册", "未知原因，给用户：【" + username + "】授USER权限【失败】");
             throw registerException;
+        }
+        return result;
+    }
+
+    /**
+     * 添加管理员
+     * @param user：添加的管理员对象
+     * @param roleIds：添加管理员时授给该管理员用户的角色
+     * @return 返回操作成功的数量，0表示操作失败
+     * @Transactional 添加事务：保证用户账号密码与用户信息同时生成，只要其中一个失败便回滚
+     */
+    @Transactional
+    @Override
+    public Integer add(@Validated(value = {TC_Add.class}) User user,String roleIds) {
+        Integer result;     //注册结果状态
+        RegisterException registerException;    //注册异常
+        String currentUsername = SysResourcesUtils.getCurrentUsername();
+
+        if (user == null || StringUtil.isEmpty(user.getUsername())) {
+            registerException = new RegisterException("添加失败，账号不能为空");
+            LogUtil.warn(this, "添加管理员", "添加失败，注册对象的账号为空，效验规则没有起到应有的作用！");
+            throw registerException;
+        }
+        String username = user.getUsername();
+        if (checkUsername(username)) {
+            registerException = new RegisterException("添加失败，用户名已被使用");
+            throw registerException;
+        }
+
+        //日志记录
+        LogUtil.info(this, "添加管理员", "用户【"+currentUsername+"】正在添加用户：【" + username + "】登录信息……");
+        //1、添加登录信息
+        result = userMapper.add(user);
+        if (result == 0) {
+            registerException = new RegisterException("添加失败，请重试");
+            //日志记录
+            LogUtil.warn(this, "添加管理员", "未知错误，用户【"+currentUsername+"】添加用户：【" + username + "】的登录信息【失败】！");
+            throw registerException;
+        }
+
+        //2、设置用户基本信息：id、账号等默认信息
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(UUID.randomUUID().toString());
+        userInfo.setUsername(username);
+        userInfo.setNickname(username); //昵称默认为username
+        userInfo.setGender(1);  //性别默认为男
+
+        //日志记录
+        LogUtil.info(this, "添加管理员", "用户【"+currentUsername+"】正在添加用户：【" + username + "】的基本信息……");
+
+        result = userInfoMapper.add(userInfo);
+        if (result == 0) {
+            registerException = new RegisterException("添加失败，请重试");
+            //日志记录
+            LogUtil.warn(this, "添加管理员", "未知错误，用户【"+currentUsername+"】添加用户：【" + username + "】的基本信息【失败】！");
+            throw registerException;
+        }
+
+        //3、若添加该管理员用户时，授予的权限ids为空，则默认授予它 USER 权限
+        if (StringUtil.isEmpty(roleIds)){
+            Role role = roleMapper.getRoleByName("USER");
+            if (role == null) {
+                registerException = new RegisterException("添加失败，请重试");
+
+                LogUtil.warn(this, "添加管理员", "添加失败，获取【USER】角色【失败】，数据库中可能缺失USER角色！");
+                throw registerException;
+            }
+            roleIds = role.getId();
+        }
+
+        //4、给添加的管理员用户授权
+        String[] idArr = roleIds.trim().split(",");
+        for (String id :idArr) {
+            Role role = roleMapper.getRoleById(id);
+            if (role != null){
+                UserRole userRole = new UserRole();
+                userRole.setId(UUID.randomUUID().toString());
+                userRole.setUserId(user.getId());
+                userRole.setRoleId(role.getId());
+
+                //日志记录
+                LogUtil.info(this, "添加管理员", "用户【"+currentUsername+"】正在给用户：【" + username + "】授【"+role.getName()+"】权限……");
+
+                result = userRoleMapper.add(userRole);
+                if (result == 0) {
+                    registerException = new RegisterException("添加管理员失败，请重试");
+                    //日志记录
+                    LogUtil.warn(this, "添加管理员", "未知原因，用户【"+currentUsername+"】给用户：【" + username + "】授【"+role.getName()+"】权限【失败】");
+                    throw registerException;
+                }
+            }
         }
         return result;
     }

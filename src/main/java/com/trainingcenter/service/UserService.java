@@ -98,6 +98,14 @@ public interface UserService {
     public Integer register(@Validated(value = {TC_Add.class}) User user);
 
     /**
+     * 添加管理员用户
+     * @param user:添加的管理员对象
+     * @param roleIds：添加管理员时授给该管理员用户的角色
+     * @return 返回操作成功的个数，0表示操作失败
+     */
+    public Integer add(@Validated(value = {TC_Add.class}) User user,String roleIds);
+
+    /**
      * 修改
      * @param user：被修改的对象
      * @return 返回操作成功的个数，0表示操作失败

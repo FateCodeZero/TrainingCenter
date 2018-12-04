@@ -29,7 +29,7 @@
     <footer style="z-index: 999">
         <div class="row">
             <div class="col-sm-offset-2 col-sm-12 text-center">
-                <button type="button" class="layui-btn col-sm-4" id="submit">保存授权</button>
+                <button type="button" class="layui-btn col-sm-4" id="submit">确认选择</button>
                 <button type="button" class="layui-btn layui-btn-normal col-sm-4" id="close">关闭并回返</button>
             </div>
         </div>
@@ -183,50 +183,39 @@
             return false;
         }
 
-        /*将选中的数据拼接成ids*/
-        var roleIds = '';
+        var ids = '';
+        var names = '';
         $.each(items,function (index, item) {
             if (index === 0){
-                roleIds += item.id;
+                ids += item.id;
+                names += item.name;
             }else {
-                roleIds += ',';
-                roleIds += item.id;
+                ids += ",";
+                ids += item.id;
+                names += ",";
+                names += item.name;
             }
         });
-
-        var grantData = {
-            userId: userId,
-            roleIds: roleIds
+        var selectedData = {
+            id:ids,
+            name:names
         };
 
-        var data = {
-            grantData: JSON.stringify(grantData)
-        };
-        console.log(grantData);
-
-        $.ajax({
-            url: "${webRoot}/user/grant",
-            type: "post",
-            data: data,
-            dataType: "json",
-            success: function (data) {
-                var jsonData = eval(data);
-                var code = jsonData.code;
-                var msg = jsonData.msg;
-                if (code === 1) {
-                    layer.alert(msg, {
-                        time: 3000,
-                        icon: 1
-                    });
-                } else {
-                    layer.alert(msg, {
-                        time: 3000,
-                        icon: 2
-                    });
-                }
-            }
-        });
+        returnData(selectedData);
     });
+
+    //返回被选中的数据
+    function returnData(data) {
+        if (data === null) {
+            layer.msg("请先选择数据", {
+                icon: 2,
+                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+            });
+        } else {
+            parent.getBackRoleData(data);	//将Json数据传给父窗口
+        }
+        closeView();
+    }
 
     //关闭
     $("#close").click(function () {

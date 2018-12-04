@@ -78,50 +78,79 @@
     $(document).ready( function(){
         /*验证用户名*/
         $("#username").blur(function () {
-            if ($("#username").val() == '') {
+            var username = $("#username").val();
+            if (username === null || username === '') {
                 $("#usernameMsg").html("<span style='color:#FF5722'>账号不能为空！</span>");
-                $("#username").focus(); //获取焦点
+                $("#username").css("border", "1px solid red");
             } else {
                 $("#usernameMsg").html("");
                 if(!checkPhone($("#username").val().trim()) && !checkEmail($("#username").val().trim()))
                 {
                     $("#usernameMsg").html("<span style='color:#FF5722'>账号必须为手机号或者邮箱！</span>");
-                    $("#username").focus(); //获取焦点
+                    $("#username").css("border", "1px solid red");
                 }else {
                     $("#usernameMsg").html("");
-                }
+                    $("#username").css("border", "1px solid #009688");
 
+                    var data = {
+                        username:username
+                    };
+                    $.ajax({
+                        url: "${webRoot}/user/usernameCheck",
+                        type: "post",
+                        data: data,
+                        dataType: "json",
+                        success: function (data) {
+                            var jsonData = eval(data);   //数据解析
+                            var code = jsonData.code;
+                            var msg = jsonData.msg;
+
+                            if (code === 1) {
+                                $("#usernameMsg").html('<span style="color:#009688">'+msg+'</span>');
+                                $("#username").css("border", "1px solid #009688");
+                            }else {
+                                $("#usernameMsg").html('<span style="color:#FF5722">'+msg+'</span>');
+                                $("#username").css("border", "1px solid red");
+                            }
+                        }
+                    });
+                }
             }
-        })
+        });
 
         /*验证密码不能为空*/
         $("#password").blur(function () {
             if ($("#password").val() == "") {
                 $("#passwordMsg").html("<span style='color:#FF5722'>密码不能为空！</span>");
-                $("#password").focus(); //获取焦点
+                $("#password").css("border", "1px solid red");
             } else {
                 $("#passwordMsg").html("");
+                $("#password").css("border", "1px solid #009688");
             }
-        })
+        });
         /*验证重复密码不能为空*/
         $("#rePassword").blur(function () {
             if ($("#rePassword").val() == "") {
                 $("#rePasswordMsg").html("<span style='color:#FF5722'>密码不能为空！</span>");
-                $("#rePassword").focus(); //获取焦点
+                $("#rePassword").css("border", "1px solid red");
             } else {
                 $("#rePasswordMsg").html("");
+                $("#rePassword").css("border", "1px solid #009688");
             }
-        })
+        });
 
         /*密码一致性验证*/
         $("#rePassword").blur(function () {
             if ($("#rePassword").val() !== $("#password").val() ) {
                 $("#rePasswordMsg").html("<span style='color:#FF5722'>两次密码输入不一致！</span>");
-                $("#rePassword").focus(); //获取焦点
+                $("#password").css("border", "1px solid red");
+                $("#rePassword").css("border", "1px solid red");
             } else {
                 $("#rePasswordMsg").html("");
+                $("#password").css("border", "1px solid #009688");
+                $("#rePassword").css("border", "1px solid #009688");
             }
-        })
+        });
     });
 
     //提交
@@ -129,6 +158,40 @@
         var username = $("#username").val();
         var password = $("#password").val();
         var rePassword = $("#rePassword").val();
+
+        if (username === null || username === "") {
+            layer.msg("请添加管理员账号！", {
+                icon: 2,
+                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+            });
+            $("#username").css("border", "1px solid red");
+            return false;
+        } else {
+            $("#username").css("border", "1px solid #009688");
+        }
+        if (password === null || password === "") {
+            layer.msg("请填写管理员密码！", {
+                icon: 2,
+                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+            });
+            $("#password").css("border", "1px solid red");
+            return false;
+        } else {
+            $("#password").css("border", "1px solid #009688");
+        }
+
+        if (password !== rePassword) {
+            layer.msg("两次密码输入不一致！", {
+                icon: 2,
+                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+            });
+            $("#password").css("border", "1px solid red");
+            $("#rePassword").css("border", "1px solid red");
+            return false;
+        } else {
+            $("#password").css("border", "1px solid #009688");
+            $("#rePassword").css("border", "1px solid #009688");
+        }
 
         //Restful风格的get请求
         var data = {
@@ -148,13 +211,13 @@
                 var code = jsonData.code;
                 var msg = jsonData.msg;
 
-                if (code == 1) {
+                if (code === 1) {
                     layer.alert(msg, {
                         time: 3000,
                         icon: 1
                     });
                     window.location="${webRoot}/user/goLogin";
-                }else if (code == 0) {
+                }else if (code === 0) {
                     layer.alert(msg, {
                         time: 3000,
                         icon: 2
@@ -162,8 +225,7 @@
                     $("#username").css("border", "1px solid #cccccc");
                     $("#password").css("border", "1px solid #cccccc");
                     $("#rePassword").css("border", "1px solid #cccccc");
-                }
-                else {
+                } else {
                     $("#username").css("border", "1px solid #cccccc");
                     $("#password").css("border", "1px solid #cccccc");
                     $("#rePassword").css("border", "1px solid #cccccc");
