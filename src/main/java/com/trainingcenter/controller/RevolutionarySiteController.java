@@ -1,13 +1,10 @@
 package com.trainingcenter.controller;
 
-import com.trainingcenter.bean.StudentMien;
-import com.trainingcenter.bean.StudentMien;
+import com.trainingcenter.bean.RevolutionarySite;
 import com.trainingcenter.bean.User;
-import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.exception.UpdateException;
-import com.trainingcenter.service.StudentMienService;
-import com.trainingcenter.service.StudentMienService;
+import com.trainingcenter.service.RevolutionarySiteService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.StringUtil;
@@ -16,10 +13,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +30,14 @@ import static com.trainingcenter.utils.SysResourcesUtils.getCurrentUsername;
  * @author Liutingwei
  * @date 2018-11-9 19:45
  */
-@RequestMapping("/studentMien")
+@RequestMapping("/revolutionarySite")
 @Controller
-public class StudentMienController {
+public class RevolutionarySiteController {
 
 
-    @Qualifier("studentMienService")
+    @Qualifier("revolutionarySiteService")
     @Autowired
-    private StudentMienService studentMienService;
+    private RevolutionarySiteService revolutionarySiteService;
 
     @Qualifier("userService")
     @Autowired
@@ -53,10 +51,10 @@ public class StudentMienController {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("参数异常");
             return ajaxJson;        }
-        List<StudentMien> studentMiens = studentMienService.getStudentMiens(currentPage, rows, searchContent);
-        Integer total = studentMienService.getStudentMiens().size();
+        List<RevolutionarySite> revolutionarySites = revolutionarySiteService.getRevolutionarySites(currentPage, rows, searchContent);
+        Integer total = revolutionarySiteService.getRevolutionarySites().size();
 
-        if (studentMiens.size() == 0){
+        if (revolutionarySites.size() == 0){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("暂无数据");
         }else {
@@ -66,8 +64,38 @@ public class StudentMienController {
 
         Map<String,Object> data = new ConcurrentHashMap<>();
         data.put("total",total);
-        data.put("items",studentMiens);
+        data.put("items",revolutionarySites);
         ajaxJson.setData(data);
+        return ajaxJson;
+    }
+
+    /**
+     * 进入详细页面
+     *
+     * @return loginPage
+     */
+    @RequestMapping(value = "/detailsPage", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxJson detailsPage(@RequestParam("id") String id) {
+        AjaxJson ajaxJson = new AjaxJson();
+        if(StringUtil.isNotEmpty(id)){
+            RevolutionarySite revolutionarySite = revolutionarySiteService.getRevolutionarySiteById(id);
+            if (revolutionarySite == null){
+                ajaxJson.setCode(1);
+                ajaxJson.setMsg("暂无数据");
+                return ajaxJson;
+            }else{
+                ajaxJson.setCode(1);
+                ajaxJson.setMsg("請求成功");
+                Map<String, Object> map = new ConcurrentHashMap<>(); //返回携带的数据
+                map.put("items",revolutionarySite);
+                ajaxJson.setData(map);
+                return ajaxJson;
+            }
+        }else {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("id异常请检查");
+        }
         return ajaxJson;
     }
 
@@ -77,8 +105,8 @@ public class StudentMienController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getStudentMienById")
-    public AjaxJson getStudentMienById(@RequestParam("id") String id) {
+    @RequestMapping("/getRevolutionarySiteById")
+    public AjaxJson getRevolutionarySiteById(@RequestParam("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
         if (StringUtil.isEmpty(id)) {
             ajaxJson.setCode(0);
@@ -86,7 +114,7 @@ public class StudentMienController {
             return ajaxJson;
         }
 
-        StudentMien resource = studentMienService.getStudentMienById(id);
+        RevolutionarySite resource = revolutionarySiteService.getRevolutionarySiteById(id);
         if (resource == null) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("对象不存在或已被删除");
@@ -95,15 +123,14 @@ public class StudentMienController {
             ajaxJson.setCode(1);
             ajaxJson.setMsg("获取成功");
             Map<String, Object> map = new ConcurrentHashMap<>();
-            map.put("studentMien", resource);
+            map.put("revolutionarySite", resource);
             ajaxJson.setData(map);
             return ajaxJson;
         }
     }
-
     @RequestMapping(value = "/update",method = RequestMethod.GET)
     @ResponseBody
-    public AjaxJson update(@Validated(value = {TC_Update.class}) StudentMien studentMine){
+    public AjaxJson update(@Validated(value = {TC_Update.class}) RevolutionarySite revolutionarySite){
         AjaxJson ajaxJson = new AjaxJson();
         Integer res;    //操作结果 flag
 
@@ -116,35 +143,25 @@ public class StudentMienController {
             throw new CredentialsExpiredException("登录凭证已过期");
         }
 
-        if (studentMine == null){
+        if (revolutionarySite == null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("操作失败，对象不能为空");
             return ajaxJson;
 
         }
         //更新操作
-        //当前ID
-        StudentMien newAd = studentMienService.getStudentMienById(studentMine.getId());
-        if (newAd == null){
+        RevolutionarySite newTD = revolutionarySiteService.getRevolutionarySiteById(revolutionarySite.getId());
+        if (newTD == null){
             throw new UpdateException("更新失败，对象不存在或已被删除");
-        }else {
-            if (StringUtil.isNotEmpty(studentMine.getImgs())) {
-                newAd.setImgs(studentMine.getImgs());
-            }
-            if (StringUtil.isNotEmpty(studentMine.getRemarks())) {
-                newAd.setRemarks(studentMine.getRemarks());
-            }
-            if (StringUtil.isNotEmpty(studentMine.getContent())) {
-                newAd.setContent(studentMine.getContent());
-            }
-            if(StringUtil.isNotEmpty(studentMine.getTitle())){
-                newAd.setTitle(studentMine.getTitle());
-            }
-            newAd.setUpdateUserId(user.getId());
-            newAd.setUpdateDate(new Date());
-
-            res = studentMienService.update(newAd);
         }
+        newTD.setTitle(revolutionarySite.getTitle());
+        newTD.setRemarks(revolutionarySite.getRemarks());
+        newTD.setContent(revolutionarySite.getContent());
+        newTD.setImgs(revolutionarySite.getImgs());
+        newTD.setUpdateDate(new Date());
+        newTD.setUpdateUserId(user.getId());
+
+        res=revolutionarySiteService.update(newTD);
         if (res == 0){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("操作失败，请重试");
@@ -157,9 +174,8 @@ public class StudentMienController {
     }
 
 
-    @RequestMapping(value = "/add",method = RequestMethod.GET)
-    @ResponseBody
-    public AjaxJson add(@Validated(value = {TC_Add.class}) StudentMien newsInfo){
+    public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
+            , @RequestParam("content") String content, String remarks){
         AjaxJson ajaxJson = new AjaxJson();
 
         //获取当前用户
@@ -168,16 +184,30 @@ public class StudentMienController {
         User user = userService.getUserByUsername(currentName);
 
         //非空验证
-        if(newsInfo==null){
+        if (StringUtil.isEmpty(title)) {
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("操作对象为空，操作失败");
+            ajaxJson.setMsg("标题不能为空");
+            return ajaxJson;
+        }
+        if (StringUtil.isEmpty(imgs)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("图片不能为空");
+            return ajaxJson;
+        }
+        if (StringUtil.isEmpty(content)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("内容不能为空");
+            return ajaxJson;
         }
         //资料添加
-
-        newsInfo.setId(UUID.randomUUID().toString());
-        newsInfo.setCreateUserId(user.getId());
-        newsInfo.setCreateDate(new Date());
-        Integer add = studentMienService.add(newsInfo);
+        RevolutionarySite revolutionarySite = new RevolutionarySite();
+        revolutionarySite.setId(UUID.randomUUID().toString());
+        revolutionarySite.setImgs(imgs);
+        revolutionarySite.setContent(content);
+        revolutionarySite.setRemarks(remarks);
+        revolutionarySite.setCreateUserId(user.getId());
+        revolutionarySite.setCreateDate(new Date());
+        Integer add = revolutionarySiteService.add(revolutionarySite);
         if (add==1){
             ajaxJson.setCode(1);
             ajaxJson.setMsg("添加成功");
@@ -188,10 +218,9 @@ public class StudentMienController {
 
         return ajaxJson;
     }
-
     @ResponseBody
-    @RequestMapping(value = "/delete")
-    public AjaxJson delete(@PathVariable("ids") String ids) {
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 
         if (StringUtil.isEmpty(ids)){
@@ -200,8 +229,8 @@ public class StudentMienController {
             return ajaxJson;
         }
 
-        Integer delete = studentMienService.batchDelete(ids);
-        if (delete == 1){
+        Integer delete = revolutionarySiteService.batchDelete(ids);
+        if (delete==1){
             ajaxJson.setCode(1);
             ajaxJson.setMsg("删除成功");
         }else {

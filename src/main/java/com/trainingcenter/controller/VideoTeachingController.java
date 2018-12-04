@@ -227,6 +227,7 @@ public class VideoTeachingController {
         return ajaxJson;
     }
 
+    @ResponseBody
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();

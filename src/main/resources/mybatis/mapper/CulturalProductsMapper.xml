@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.CulturalProductsMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="culturalProductscolumns">
+      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+    </sql>
+
+    <!-- public CulturalProducts getCulturalProductsById(@Param("id") String id);
+        通过id获取动态培训
+    -->
+    <select id="getCulturalProductsById" resultType="com.trainingcenter.bean.CulturalProducts">
+        SELECT <include refid="culturalProductscolumns"></include>
+        FROM tab_cultural_products
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<CulturalProducts> getCulturalProductss(Integer start, Integer number, String searchContent);
+        分页查询所有动态培训
+    -->
+    <select id="getCulturalProductss" resultType="com.trainingcenter.bean.CulturalProducts">
+        SELECT <include refid="culturalProductscolumns"></include>
+        FROM tab_cultural_products
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and (
+                title like CONCAT('%',#{searchContent},'%') OR
+                content like CONCAT('%',#{searchContent},'%') OR
+                remarks like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("culturalProducts") CulturalProducts culturalProducts;
+    动态培训添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.CulturalProducts">
+        INSERT INTO tab_cultural_products(<include refid="culturalProductscolumns"></include>)
+        VALUES (#{culturalProducts.id},#{culturalProducts.title},#{culturalProducts.imgs},#{culturalProducts.content},#{culturalProducts.remarks},#{culturalProducts.createUserId},#{culturalProducts.createDate},
+        #{culturalProducts.updateUserId},#{culturalProducts.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("culturalProducts") CulturalProducts culturalProducts);
+            更新动态培训信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.CulturalProducts">
+        UPDATE tab_cultural_products
+        <trim prefix="set" suffixOverrides=",">
+            <if test="culturalProducts.title != null and culturalProducts.title != '' ">
+                title = #{culturalProducts.title},
+            </if>
+            <if test="culturalProducts.imgs != null and culturalProducts.imgs != '' ">
+                imgs = #{culturalProducts.imgs},
+            </if>
+            <if test="culturalProducts.content != null and culturalProducts.content != '' ">
+                content = #{culturalProducts.content},
+            </if>
+            <if test="culturalProducts.remarks != null and culturalProducts.remarks != '' ">
+                remarks = #{culturalProducts.remarks},
+            </if>
+            <if test="culturalProducts.createUserId != null and culturalProducts.createUserId != '' ">
+                create_user_id = #{culturalProducts.createUserId},
+            </if>
+            <if test="culturalProducts.createDate != null ">
+                create_date = #{culturalProducts.createDate},
+            </if>
+            <if test="culturalProducts.updateUserId != null and culturalProducts.updateUserId != '' ">
+                update_user_id = #{culturalProducts.updateUserId},
+            </if>
+            <if test="culturalProducts.updateDate != null ">
+                update_date = #{culturalProducts.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{culturalProducts.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除动态培训
+       -->
+    <delete id="delete">
+        DELETE FROM tab_cultural_products
+        WHERE id = #{id}
+    </delete>
+</mapper>

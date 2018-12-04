@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.RevolutionarySiteMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="revolutionarySitecolumns">
+      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+    </sql>
+
+    <!-- public RevolutionarySite getRevolutionarySiteById(@Param("id") String id);
+        通过id获取动态培训
+    -->
+    <select id="getRevolutionarySiteById" resultType="com.trainingcenter.bean.RevolutionarySite">
+        SELECT <include refid="revolutionarySitecolumns"></include>
+        FROM tab_training_dynamic
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<RevolutionarySite> getRevolutionarySites(Integer start, Integer number, String searchContent);
+        分页查询所有动态培训
+    -->
+    <select id="getRevolutionarySites" resultType="com.trainingcenter.bean.RevolutionarySite">
+        SELECT <include refid="revolutionarySitecolumns"></include>
+        FROM tab_training_dynamic
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and (
+                title like CONCAT('%',#{searchContent},'%') OR
+                content like CONCAT('%',#{searchContent},'%') OR
+                remarks like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("revolutionarySite") RevolutionarySite revolutionarySite;
+    动态培训添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.RevolutionarySite">
+        INSERT INTO tab_training_dynamic(<include refid="revolutionarySitecolumns"></include>)
+        VALUES (#{revolutionarySite.id},#{revolutionarySite.title},#{revolutionarySite.imgs},#{revolutionarySite.content},#{revolutionarySite.remarks},#{revolutionarySite.createUserId},#{revolutionarySite.createDate},
+        #{revolutionarySite.updateUserId},#{revolutionarySite.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("revolutionarySite") RevolutionarySite revolutionarySite);
+            更新动态培训信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.RevolutionarySite">
+        UPDATE tab_training_dynamic
+        <trim prefix="set" suffixOverrides=",">
+            <if test="revolutionarySite.title != null and revolutionarySite.title != '' ">
+                title = #{revolutionarySite.title},
+            </if>
+            <if test="revolutionarySite.imgs != null and revolutionarySite.imgs != '' ">
+                imgs = #{revolutionarySite.imgs},
+            </if>
+            <if test="revolutionarySite.content != null and revolutionarySite.content != '' ">
+                content = #{revolutionarySite.content},
+            </if>
+            <if test="revolutionarySite.remarks != null and revolutionarySite.remarks != '' ">
+                remarks = #{revolutionarySite.remarks},
+            </if>
+            <if test="revolutionarySite.createUserId != null and revolutionarySite.createUserId != '' ">
+                create_user_id = #{revolutionarySite.createUserId},
+            </if>
+            <if test="revolutionarySite.createDate != null ">
+                create_date = #{revolutionarySite.createDate},
+            </if>
+            <if test="revolutionarySite.updateUserId != null and revolutionarySite.updateUserId != '' ">
+                update_user_id = #{revolutionarySite.updateUserId},
+            </if>
+            <if test="revolutionarySite.updateDate != null ">
+                update_date = #{revolutionarySite.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{revolutionarySite.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除动态培训
+       -->
+    <delete id="delete">
+        DELETE FROM tab_training_dynamic
+        WHERE id = #{id}
+    </delete>
+</mapper>
