@@ -47,7 +47,7 @@
     <insert id="add" parameterType="com.trainingcenter.bean.TrainingDynamic">
         INSERT INTO tab_training_dynamic(<include refid="trainingdynamiccolumns"></include>)
         VALUES (#{trainingDynamic.id},#{trainingDynamic.title},#{trainingDynamic.imgs},#{trainingDynamic.content},#{trainingDynamic.remarks},#{trainingDynamic.createUserId},#{trainingDynamic.createDate},
-        #{trainingDynamic.updateUserId},#{trainingDynamic.updateDate}
+        #{trainingDynamic.updateUserId},#{trainingDynamic.updateDate})
     </insert>
 
     <!--

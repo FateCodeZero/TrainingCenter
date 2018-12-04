@@ -47,7 +47,7 @@
     <insert id="add" parameterType="com.trainingcenter.bean.NewsInfo">
         INSERT INTO tab_news_info(<include refid="newsInfocolumns"></include>)
         VALUES (#{newsInfo.id},#{newsInfo.title},#{newsInfo.imgs},#{newsInfo.content},#{newsInfo.remarks},#{newsInfo.createUserId},#{newsInfo.createDate},
-        #{newsInfo.updateUserId},#{newsInfo.updateDate}
+        #{newsInfo.updateUserId},#{newsInfo.updateDate})
     </insert>
 
     <!--

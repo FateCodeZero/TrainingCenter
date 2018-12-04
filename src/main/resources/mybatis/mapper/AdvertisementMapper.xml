@@ -46,7 +46,7 @@
     <insert id="add" parameterType="com.trainingcenter.bean.Advertisement">
         INSERT INTO tab_advertisement(<include refid="advertisementcolumns"></include>)
         VALUES (#{advertisement.id},#{advertisement.imgs},#{advertisement.describe},#{advertisement.url},#{advertisement.start},#{advertisement.end},#{advertisement.remarks},#{advertisement.createUserId},#{advertisement.createDate},
-        #{advertisement.updateUserId},#{advertisement.updateDate}
+        #{advertisement.updateUserId},#{advertisement.updateDate})
     </insert>
 
     <!--

@@ -227,9 +227,9 @@ public class AdvertisementController {
         return ajaxJson;
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxJson delete(@PathVariable("ids") String ids) {
+    public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 
         if (StringUtil.isEmpty(ids)){
