@@ -232,7 +232,6 @@
     /**
      * 通过id获取权限
      * @param id
-     * @returns {boolean}
      */
     function getPermissionById(id) {
         if (id === null || id === '') {
@@ -240,7 +239,7 @@
                 time: 3000,
                 icon: 2
             });
-            return false;
+            return null;
         }
         var data = {id: id};
         var permission = null;
@@ -261,7 +260,7 @@
                         time: 3000,
                         icon: 2
                     });
-                    return false;
+                    return null;
                 }
             }
         });
@@ -278,7 +277,7 @@
                 time: 3000,
                 icon: 2
             });
-            return false;
+            return null;
         }
         $("#id").val(permission.id);
         $("#name").val(permission.name);
@@ -317,7 +316,6 @@
     /**
      * 通过 id 获取资源
      * @param id
-     * @returns {*}
      */
     function getResourceById(id) {
         if (id === null || id === '') {
@@ -325,7 +323,7 @@
                 time: 3000,
                 icon: 2
             });
-            return false;
+            return null;
         }
         var resource = null;
         var data = {id: id};
@@ -346,7 +344,7 @@
                         time: 3000,
                         icon: 2
                     });
-                    return false;
+                    return null;
                 }
             }
         });

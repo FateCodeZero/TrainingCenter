@@ -50,7 +50,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         if (userDetails == null){
             throw new UsernameNotFoundException("用户名或密码错误");
         }else if (!userDetails.isEnabled()){
-            throw new DisabledException("该用户已被禁用");
+            throw new DisabledException("用户已被禁用或已注销");
         }else if (!userDetails.isAccountNonExpired()) {
             throw new AccountExpiredException("账号已过期");
         }else if (!userDetails.isAccountNonLocked()) {

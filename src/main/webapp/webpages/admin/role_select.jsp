@@ -40,46 +40,10 @@
 <script type="text/javascript">
     var searchContent = $("#searchContent").val(); //模糊查询内容
     var table = null;  //layui table
-    var userId = null;  /*要授权的用户对象ID*/
-    var roleData = null; /*该用户已有的角色数据*/
 
     $(document).ready(function () {
-        /*从URL获取对象ID*/
-        userId = getUrlParam('id');
-        roleData = getRolesByUserId(userId);
         tableData();    //加载数据表格
     });
-
-    /**
-     * 获取指定用户所含有的所有角色
-     * */
-    function getRolesByUserId(userId) {
-        var roles = null;
-        var data = {
-            userId:userId
-        };
-        $.ajax({
-            url: "${webRoot}/role/getRolesByUserId",
-            type: "post",
-            async: false,    //关闭异步请求
-            data: data,
-            dataType: "json",
-            success: function (data) {
-                var jsonData = eval(data);
-                var code = jsonData.code;
-                var msg = jsonData.msg;
-                if (code === 1) {
-                    roles = jsonData.data.items;
-                } else {
-                    layer.alert(msg, {
-                        time: 3000,
-                        icon: 2
-                    });
-                }
-            }
-        });
-        return roles;
-    }
 
     function tableData() {
         //layui数据表格
@@ -102,9 +66,7 @@
                     , {field: 'remarks', title: '备注', align: 'center'}
                 ]]
                 , where: {//接口需要的其它参数
-                    condition: JSON.stringify({
-                        searchContent:searchContent
-                    })
+                    condition: null
                 }
                 , parseData: function (res) { //res 即为原始返回的数据
                     var code = res.code === 1 ? 0 : 1;
@@ -117,23 +79,6 @@
                     if (data !== null) {
                         count = data.total;
                     }
-                    /*让用户已有的角色处于被选中状态*/
-                    var roleIds = '';
-                    $.each(roleData,function (index, role) {
-                       if (index === 0){
-                           roleIds += role.id;
-                       }else {
-                           roleIds += ",";
-                           roleIds += role.id;
-                       }
-                    });
-                    $.each(data, function (index, item) {
-                        var id = item.id;
-                        if (roleIds.indexOf(id) !== -1) {
-                            /*让数据处于被选中状态*/
-                            data[index].LAY_CHECKED = true;
-                        }
-                    });
                     //返回要渲染的数据
                     return {
                         "code": code, //解析接口状态，layui的0为成功
@@ -190,9 +135,9 @@
                 ids += item.id;
                 names += item.name;
             }else {
-                ids += ",";
+                ids += ',';
                 ids += item.id;
-                names += ",";
+                names += ',';
                 names += item.name;
             }
         });

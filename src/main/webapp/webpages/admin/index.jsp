@@ -75,7 +75,7 @@
     <div class="layui-body" id="LAY_app_body">
         <div class="layadmin-tabsbody-item layui-show">
             <iframe id="index-body" src="" class="layadmin-iframe" frameborder="0" width="100%"
-                    height="800px"></iframe>
+                    height="600px"></iframe>
         </div>
     </div>
     <!-- 辅助元素，一般用于移动设备下遮罩 -->

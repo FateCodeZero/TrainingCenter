@@ -295,26 +295,30 @@
     }
 
     function editData(id) {
-        layer.open({
+        layer.alert('此功能尚有缺陷，暂不能用哟亲~', {
+            time: 3000,
+            icon: 2
+        });
+        /*layer.open({
             title: '编辑角色',
             type: 2,
             area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/webpages/admin/role_edit.jsp?id=' + id,
+            content: '${webRoot}/webpages/admin/user_admin_edit.jsp?id=' + id,
             success: function (layero, index) {
                 layer_window = layero;   //获取弹出窗口的窗口对象
             },
             end: function () {
                 location.reload(); //回调函数，刷新页面
             }
-        });
+        });*/
     }
 
     //获取弹出窗口返回的json格式的数据
     function getBackRoleData(JsonData) {		//返回权限数据
-        var resourceSelectWindow = window[layer_window.find('iframe')[0]['name']];	//获取子窗口的窗口对象
-        resourceSelectWindow.window.setRoleData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
+        var roleSelectWindow = window[layer_window.find('iframe')[0]['name']];	//获取子窗口的窗口对象
+        roleSelectWindow.window.setRoleData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
     }
 
     //删除
@@ -331,7 +335,7 @@
                     ids: ids
                 };
                 $.ajax({
-                    url: "${webRoot}/role/delete",
+                    url: "${webRoot}/user/delete",
                     type: "post",
                     data: data,
                     dataType: "json",

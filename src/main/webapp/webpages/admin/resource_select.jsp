@@ -39,6 +39,7 @@
 </body>
 
 <script type="text/javascript">
+    var searchContent = $("#searchContent").val(); //模糊查询内容
     var table = null;  //layui table
 
     $(document).ready(function () {

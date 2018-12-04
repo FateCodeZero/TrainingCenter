@@ -351,8 +351,9 @@ public class UserController {
      * @return 返回操作成功的数目与操作失败的对象及消息提示
      */
     /*@PreAuthorize("hasPermission('/webpages/user/update.jsp','DELETE')")*/
-    @RequestMapping(value = "/user/{ids}", method = RequestMethod.DELETE)
-    public AjaxJson delete(@PathVariable("ids") String ids) {
+    @ResponseBody
+    @RequestMapping(value = "/delete")
+    public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 
         if (StringUtil.isEmpty(ids)) {

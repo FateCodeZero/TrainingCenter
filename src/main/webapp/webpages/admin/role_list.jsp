@@ -395,7 +395,7 @@
      * @returns {*}
      */
     function getUserById(id) {
-        if (id == null || id == '') {
+        if (id === null || id === '') {
             layer.alert('id不能为空！', {
                 time: 3000,
                 icon: 2
@@ -414,7 +414,7 @@
                 var jsonData = eval(data); //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code == 1) {
+                if (code === 1) {
                     user = jsonData.data.user;
                 } else {
                     layer.alert(msg, {
