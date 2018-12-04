@@ -41,126 +41,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3 text-center">
-                    <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student1.jpg);">
-                            <ul class="fh5co-social">
-                                <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                <li><a href="#"><i class="icon-github"></i></a></li>
-                            </ul>
-                        </div>
-                        <span>Health Teacher</span>
-                        <h3><a href="#">Mike Smith</a></h3>
-                        <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 animate-box text-center">
-                    <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student2.jpg);">
-                            <ul class="fh5co-social">
-                                <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                <li><a href="#"><i class="icon-github"></i></a></li>
-                            </ul>
-                        </div>
-                        <span>Health Teacher</span>
-                        <h3><a href="#">Mike Smith</a></h3>
-                        <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 animate-box text-center">
-                    <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student3.jpg);">
-                            <ul class="fh5co-social">
-                                <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                <li><a href="#"><i class="icon-github"></i></a></li>
-                            </ul>
-                        </div>
-                        <span>Health Teacher</span>
-                        <h3><a href="#">Mike Smith</a></h3>
-                        <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 animate-box text-center">
-                    <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student4.jpg);">
-                            <ul class="fh5co-social">
-                                <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                <li><a href="#"><i class="icon-github"></i></a></li>
-                            </ul>
-                        </div>
-                        <span>Health Teacher</span>
-                        <h3><a href="#">Mike Smith</a></h3>
-                        <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 animate-box text-center">
-                    <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student4.jpg);">
-                            <ul class="fh5co-social">
-                                <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                <li><a href="#"><i class="icon-github"></i></a></li>
-                            </ul>
-                        </div>
-                        <span>Health Teacher</span>
-                        <h3><a href="#">Mike Smith</a></h3>
-                        <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 animate-box text-center">
-                    <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student3.jpg);">
-                            <ul class="fh5co-social">
-                                <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                <li><a href="#"><i class="icon-github"></i></a></li>
-                            </ul>
-                        </div>
-                        <span>Health Teacher</span>
-                        <h3><a href="#">Mike Smith</a></h3>
-                        <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 animate-box text-center">
-                    <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student2.jpg);">
-                            <ul class="fh5co-social">
-                                <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                <li><a href="#"><i class="icon-github"></i></a></li>
-                            </ul>
-                        </div>
-                        <span>Health Teacher</span>
-                        <h3><a href="#">Mike Smith</a></h3>
-                        <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 animate-box text-center">
-                    <div class="staff">
-                        <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/student1.jpg);">
-                            <ul class="fh5co-social">
-                                <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                <li><a href="#"><i class="icon-github"></i></a></li>
-                            </ul>
-                        </div>
-                        <span>Health Teacher</span>
-                        <h3><a href="#">Mike Smith</a></h3>
-                        <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                    </div>
-                </div>
+                <div id="student_story"></div>
             </div>
         </div>
     </div>
@@ -168,4 +49,75 @@
 
 
 </body>
+
+<script>
+    $(document).ready(function loading(){
+
+        //加载往期学员故事列表
+        $.ajax({
+            type: 'GET',
+            url: "${webRoot}/studentStory/listPage",
+            data: {currentPage:1,rows:8},
+            dataType: "json",
+            success: function (data) {
+                var jsonData = eval(data);
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+                if(code == 1){
+                    var studentStories = jsonData.data.items;
+                    $.each(studentStories,function (index,studentstory) {
+                        var id = studentstory.id;
+                        var title = studentstory.title;
+                        var content = studentstory.content;
+                        var imgs = studentstory.imgs;
+                        var remarks = studentstory.remarks;
+                        var createUserId = studentstory.createUserId;
+                        var createData = studentstory.createData;
+                        var updateUserId = studentstory.updateUserId;
+                        var updateData = studentstory.updateData;
+
+                        /*截取字符串，p标签里面的文字长度必须一样长，否则页面会乱码*/
+                        if(title.length > 20 ){
+                            title = title.substring(0,20);
+                        }
+                        if(content.length > 60 ){
+                            content = content.substring(0,60);
+                        }
+
+                        var story_div = '<div id="'+id+'" class="col-md-3 animate-box text-center">\n' +
+                            '                    <div class="staff">\n' +
+                            '                        <div class="staff-img" style="background-image: url('+imgs+');">\n' +
+                            '                            <ul class="fh5co-social">\n' +
+                            '                                <li><a href="#"><i class="icon-facebook2"></i></a></li>\n' +
+                            '                                <li><a href="#"><i class="icon-twitter2"></i></a></li>\n' +
+                            '                                <li><a href="#"><i class="icon-dribbble2"></i></a></li>\n' +
+                            '                                <li><a href="#"><i class="icon-github"></i></a></li>\n' +
+                            '                            </ul>\n' +
+                            '                        </div>\n' +
+                            '                        <span>Health Teacher</span>\n' +
+                            '                        <h3><a href="#">'+title+'</a></h3>\n' +
+                            '                        <p>'+content+'</p>\n' +
+                            '                    </div>\n' +
+                            '                </div>';
+
+
+                        if (index == 0) {
+                            $("#student_story").html(story_div);
+                        }else {
+                            $("#student_story").append(story_div);
+                        }
+
+                    });
+
+                    //再次计算高度，包含ajax新增的数据流
+                    IFrameResize();
+                }else {
+                    $("#student_story").html('<h3 class="col-md-12 text-center">暂无数据</h3>');
+                }
+            }
+        });
+    });
+
+</script>
+
 </html>

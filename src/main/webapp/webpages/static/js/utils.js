@@ -3,7 +3,7 @@
  */
 function IFrameResize(){
 
-    //alert("父页面高度"+parent.document.getElementById("IF-body").offsetHeight); //弹出当前页面的高度
+    //alert("父页面高度"+parent.document.getElementById("IF-body").offsetHeight); //弹出父页面的高度
     var obj = parent.document.getElementById("IF-body"); //取得父页面IFrame对象
     //alert(parent.document.getElementById("IF-body").height); //弹出父页面中IFrame中设置的高度
     //alert("当前页面高度"+ $(document.body).height());

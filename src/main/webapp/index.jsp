@@ -134,22 +134,22 @@
                 loadUrl = "${webRoot}/webpages/static/allExperientialTeaching.jsp";
             }
             if (text === '访谈教学') {
-                loadUrl = "${webRoot}/webpages/static/interviewTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/allInterviewTeaching.jsp";
             }
             if (text === '现场讲解') {
-                loadUrl = "${webRoot}/webpages/static/spotTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/allSpotTeaching.jsp";
             }
             if (text === '影音教学') {
-                loadUrl = "${webRoot}/webpages/static/videoTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/allVideoTeaching.jsp";
             }
             if (text === '与创业名人/团队交流调研') {
-                loadUrl = "${webRoot}/webpages/static/communicationTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/allCommunicationTeaching.jsp";
             }
             if (text === '学员学习照') {
                 loadUrl = "${webRoot}/webpages/static/studentPhotos.jsp";
             }
             if (text === '最佳学员') {
-                loadUrl = "${webRoot}/webpages/static/bastStudent.jsp";
+                loadUrl = "${webRoot}/webpages/static/bestStudent.jsp";
             }
             if(text === '往期学员故事'){
                 loadUrl = "${webRoot}/webpages/static/studentStory.jsp";

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.BestStudentMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="bestStudentcolumns">
+      id,title,content,imgs,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public bestStudent getbestStudentById(@Param("id") String id);
+        通过id获取学院风采
+    -->
+    <select id="getBestStudentById" resultType="com.trainingcenter.bean.BestStudent">
+        SELECT <include refid="bestStudentcolumns"></include>
+        FROM tab_best_student
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<bestStudent> getbestStudents(Integer start, Integer number, String searchContent);
+        分页查询所有学院风采
+    -->
+    <select id="getBestStudents" resultType="com.trainingcenter.bean.BestStudent">
+        SELECT <include refid="bestStudentcolumns"></include>
+        FROM tab_best_student
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and (
+                title like CONCAT('%',#{searchContent},'%') OR
+                content like CONCAT('%',#{searchContent},'%') OR
+                remarks like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("bestStudent") bestStudent bestStudent;
+    学院风采添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.BestStudent">
+        INSERT INTO tab_best_student(<include refid="bestStudentcolumns"></include>)
+        VALUES (#{bestStudent.id},#{bestStudent.title},#{bestStudent.content},#{bestStudent.imgs},#{bestStudent.remarks},#{bestStudent.createUserId},#{bestStudent.createDate},
+        #{bestStudent.updateUserId},#{bestStudent.updateDate}
+    </insert>
+
+    <!--
+            public Integer update(@Param("bestStudent") bestStudent bestStudent);
+            更新学院风采信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.BestStudent">
+        UPDATE tab_best_student
+        <trim prefix="set" suffixOverrides=",">
+            <if test="bestStudent.title != null and bestStudent.title != '' ">
+                title = #{bestStudent.title},
+            </if>
+            <if test="bestStudent.content != null and bestStudent.content != '' ">
+                content = #{bestStudent.content},
+            </if>
+            <if test="bestStudent.imgs != null and bestStudent.imgs != '' ">
+                imgs = #{bestStudent.imgs},
+            </if>
+            <if test="bestStudent.remarks != null and bestStudent.remarks != '' ">
+                remarks = #{bestStudent.remarks},
+            </if>
+            <if test="bestStudent.createUserId != null and bestStudent.createUserId != '' ">
+                create_user_id = #{bestStudent.createUserId},
+            </if>
+            <if test="bestStudent.createDate != null and bestStudent.createDate != '' ">
+                create_date = #{bestStudent.createDate},
+            </if>
+            <if test="bestStudent.updateUserId != null and bestStudent.updateUserId != '' ">
+                update_user_id = #{bestStudent.updateUserId},
+            </if>
+            <if test="bestStudent.updateDate != null and bestStudent.updateDate != '' ">
+                update_date = #{bestStudent.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{bestStudent.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除学院风采
+       -->
+    <delete id="delete">
+        DELETE FROM tab_best_student
+        WHERE id = #{id}
+    </delete>
+</mapper>
