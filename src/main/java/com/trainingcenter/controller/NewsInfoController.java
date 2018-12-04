@@ -100,39 +100,35 @@ public class NewsInfoController {
     }
 
     /**
-     * 进入添加页面
+     * 通过 id 获取资源对象
      *
-     * @return loginPage
+     * @return
      */
-    @RequestMapping(value = "/addPage", method = RequestMethod.GET)
-    public ModelAndView addPage(HttpServletRequest request) {
-        String id = request.getParameter("newsInfoId");
-        ModelAndView modelAndView =new ModelAndView();
-        if(StringUtil.isNotEmpty(id)){
-            String viewName = "admin/newsInfo_addPage";
-            modelAndView.addObject("newsInfo",newsInfoService.getNewsInfoById(id));
-            modelAndView.setViewName(viewName);
-
+    @ResponseBody
+    @RequestMapping("/getNewsInfoById")
+    public AjaxJson getStudentMienById(@RequestParam("id") String id) {
+        AjaxJson ajaxJson = new AjaxJson();
+        if (StringUtil.isEmpty(id)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("请先选择要查询的对象");
+            return ajaxJson;
         }
-        return modelAndView;
+
+        NewsInfo resource = newsInfoService.getNewsInfoById(id);
+        if (resource == null) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("对象不存在或已被删除");
+            return ajaxJson;
+        } else {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("获取成功");
+            Map<String, Object> map = new ConcurrentHashMap<>();
+            map.put("newsInfo", resource);
+            ajaxJson.setData(map);
+            return ajaxJson;
+        }
     }
 
-    /**
-     * 进入更新页面
-     *
-     * @return loginPage
-     */
-    @RequestMapping(value = "/updatePage", method = RequestMethod.GET)
-    public ModelAndView updatePage(HttpServletRequest request) {
-        String id = request.getParameter("newsInfoId");
-        ModelAndView modelAndView =new ModelAndView();
-        if(StringUtil.isNotEmpty(id)){
-            String viewName = "admin/newsInfo_updatePage";
-            modelAndView.addObject("newsInfo",newsInfoService.getNewsInfoById(id));
-            modelAndView.setViewName(viewName);
-        }
-        return modelAndView;
-    }
 
     @RequestMapping(value = "/update",method = RequestMethod.GET)
     @ResponseBody
@@ -223,6 +219,7 @@ public class NewsInfoController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @ResponseBody
     public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 
