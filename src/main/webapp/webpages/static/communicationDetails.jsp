@@ -10,7 +10,7 @@
 <%@include file="/context/mytags.jsp" %>
 <html>
 <head>
-    <title>培训动态详情</title>
+    <title>与创业名人/团队交流调研详情</title>
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/dynamic.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/animate.css">
@@ -25,14 +25,12 @@
     <script type="text/javascript" src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
-    <script type="text/javascript" src="${webRoot}/webpages/static/js/dynamic.js"></script>
     <script type="text/javascript" src="${webRoot}/webpages/static/js/utils.js"></script>
 </head>
 <body onload="IFrameResize()">
 
-
 <div  id="fh5co-about">
-    <div id="dynamic_details" class="container"></div>
+    <div id="communication_details" class="container"></div>
     <div class="col-md-12" style="height: 100px;"></div>
 </div>
 </body>
@@ -44,7 +42,7 @@
         var id = $.Request('id');
         $.ajax({
             type: 'GET',
-            url: "${webRoot}/trainingDynamic/detailsPage",
+            url: "${webRoot}/communicationTeaching/detailsPage",
             data: {id:id},
             dataType: "json",
             success:function (data) {
@@ -53,21 +51,21 @@
                 var msg = jsonData.msg;
 
                 if(code == 1){
-                    var dynamic_details = jsonData.data.items;
-                    var id = dynamic_details.id;
-                    var title = dynamic_details.title;
-                    var content = dynamic_details.content;
-                    var imgs = dynamic_details.imgs;
+                    var details = jsonData.data.items;
+                    var id = details.id;
+                    var title = details.title;
+                    var content = details.content;
+                    var imgs = details.imgs;
 
-                    var dynamic_details_div = '    <div id="'+id+' " class="container">' +
+                    var communication_div = '    <div id="'+id+' " class="container">' +
                         '        <div class="row animate-box">' +
                         '            <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">' +
-                        '                <h2>培训动态详情</h2>' +
+                        '                <h2>与创业名人/团队交流调研详情</h2>' +
                         '                <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>\n' +
                         '            </div>' +
                         '        </div>' +
                         '        <div class="col-md-6 animate-box">' +
-                        '            <span>About Our University</span>' +
+                        '            <span>About Our Class</span>' +
                         '            <h2>'+title+'</h2>' +
                         '            <p>'+content+'</p>' +
                         '        </div>\n' +
@@ -76,19 +74,17 @@
                         '        </div>' +
                         '    </div>';
 
-                    $("#dynamic_details").html(dynamic_details_div);
+                    $("#communication_details").html(communication_div);
                     IFrameResize();
 
                 }else {
-                    alert(msg);
+                    $("#communication_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
-
             },
             error:function (msg) {
-                alert(msg);
+                $("#communication_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
             }
         })
-
     })
 
 </script>

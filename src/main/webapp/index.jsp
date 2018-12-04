@@ -131,19 +131,19 @@
                 loadUrl = "${webRoot}/webpages/static/contact.jsp";
             }
             if (text === '体验式教学') {
-                loadUrl = "${webRoot}/webpages/static/allExperientialTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/experientialTeaching.jsp";
             }
             if (text === '访谈教学') {
-                loadUrl = "${webRoot}/webpages/static/allInterviewTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/interviewTeaching.jsp";
             }
             if (text === '现场讲解') {
-                loadUrl = "${webRoot}/webpages/static/allSpotTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/spotTeaching.jsp";
             }
             if (text === '影音教学') {
-                loadUrl = "${webRoot}/webpages/static/allVideoTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/videoTeaching.jsp";
             }
             if (text === '与创业名人/团队交流调研') {
-                loadUrl = "${webRoot}/webpages/static/allCommunicationTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/communicationTeaching.jsp";
             }
             if (text === '学员学习照') {
                 loadUrl = "${webRoot}/webpages/static/studentPhotos.jsp";
