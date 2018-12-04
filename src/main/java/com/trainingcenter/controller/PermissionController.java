@@ -47,11 +47,11 @@ public class PermissionController {
      * 分页获取权限数据（获取全部，（已启用 + 已禁用 + 已删除（软删除）），供管理用）
      * @param currentPage：当前页
      * @param rows：每页展示的数据条数
-     * @param searchContent：模糊查询
+     * @param request: HttpServletRequest
      */
     @ResponseBody
-    @RequestMapping("/list")
-    public AjaxJson getPermissions_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
+    @RequestMapping(value = "/list")
+    public AjaxJson getPermissions_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request){
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null){
             ajaxJson.setCode(0);
@@ -59,11 +59,12 @@ public class PermissionController {
             return ajaxJson;
         }else {
             //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
-            Map<String,Object> condition = new ConcurrentHashMap<>();
-            // 此处注意：ConcurrentHashMap 不允许 NULL 值
-            if (StringUtil.isNotEmpty(searchContent)){
-                condition.put("searchContent",searchContent);
+            Map<String, Object> condition = new ConcurrentHashMap<>();
+            String conditionStr = request.getParameter("condition");
+            if (StringUtil.isNotEmpty(conditionStr)){
+                condition = FindConditionUtils.findConditionBuild(Permission.class,conditionStr);
             }
+
             //获取当前查询条件下的所有数据条数，分页用
             Integer total = permissionService.getPermissions(condition).size();
             //获取当前页的数据
@@ -88,6 +89,7 @@ public class PermissionController {
      * 分页获取权限数据（获取只获取已启用的，供选择用）
      * @param currentPage：当前页
      * @param rows：每页展示的数据条数
+     * @param request: HttpServletRequest
      */
     @ResponseBody
     @RequestMapping("/select")
@@ -195,7 +197,7 @@ public class PermissionController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/update")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public AjaxJson update(@Validated(value = {TC_Add.class}) Permission permission){
         String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
         User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
@@ -263,7 +265,7 @@ public class PermissionController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/getPermissionById",method = RequestMethod.GET)
+    @RequestMapping(value = "/getPermissionById")
     public AjaxJson getPermissionById(@RequestParam("id") String id){
         AjaxJson ajaxJson = new AjaxJson();
         if (StringUtil.isEmpty(id)){
@@ -293,7 +295,7 @@ public class PermissionController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/delete")
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public AjaxJson delete(@RequestParam("ids") String ids){
         AjaxJson ajaxJson = new AjaxJson();
         if (StringUtil.isEmpty(ids)){

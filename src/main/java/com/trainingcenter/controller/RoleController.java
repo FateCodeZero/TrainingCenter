@@ -8,6 +8,7 @@ import com.trainingcenter.service.PermissionService;
 import com.trainingcenter.service.RoleService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
+import com.trainingcenter.utils.FindConditionUtils;
 import com.trainingcenter.utils.StringUtil;
 import com.trainingcenter.utils.SysResourcesUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -50,11 +51,11 @@ public class RoleController {
      *
      * @param currentPage：当前页
      * @param rows：每页展示的数据条数
-     * @param searchContent：模糊查询
+     * @param request：传过来的其他参数
      */
     @ResponseBody
     @RequestMapping("/list")
-    public AjaxJson getRoles_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent) {
+    public AjaxJson getRoles_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null) {
             ajaxJson.setCode(0);
@@ -64,11 +65,11 @@ public class RoleController {
 
             //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
             Map<String, Object> condition = new ConcurrentHashMap<>();
-
-            // 此处注意：ConcurrentHashMap 不允许 NULL 值
-            if (StringUtil.isNotEmpty(searchContent)) {
-                condition.put("searchContent", searchContent);
+            String conditionStr = request.getParameter("condition");
+            if (StringUtil.isNotEmpty(conditionStr)){
+                condition = FindConditionUtils.findConditionBuild(Role.class,conditionStr);
             }
+
             Integer total = roleService.getRoles(condition).size();
             List<Role> roles = roleService.getRoles(currentPage, rows, condition);
 
@@ -92,11 +93,11 @@ public class RoleController {
      *
      * @param currentPage：当前页
      * @param rows：每页展示的数据条数
-     * @param searchContent：模糊查询
+     * @param request：传过来的其他参数
      */
     @ResponseBody
     @RequestMapping("/select")
-    public AjaxJson getRoles_select(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent) {
+    public AjaxJson getRoles_select(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null) {
             ajaxJson.setCode(0);
@@ -105,15 +106,15 @@ public class RoleController {
         } else {
             //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
             Map<String, Object> condition = new ConcurrentHashMap<>();
-
-            condition.put("state", 1);   //只查询已启用的
-
-            // 此处注意：ConcurrentHashMap 不允许 NULL 值
-            if (StringUtil.isNotEmpty(searchContent)) {
-                condition.put("searchContent", searchContent);
+            String conditionStr = request.getParameter("condition");
+            if (StringUtil.isNotEmpty(conditionStr)){
+                condition = FindConditionUtils.findConditionBuild(Role.class,conditionStr);
             }
+            condition.put("state", 1);   //只查询已启用的数据
 
+            //获取当前查询条件下的所有数据条数，分页用
             Integer total = roleService.getRoles(condition).size();
+            //获取当前页的数据
             List<Role> roles = roleService.getRoles(currentPage, rows, condition);
 
             ajaxJson.setCode(1);
@@ -237,7 +238,7 @@ public class RoleController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/getRoleById", method = RequestMethod.GET)
+    @RequestMapping(value = "/getRoleById")
     public AjaxJson getRoleById(@RequestParam("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
         if (StringUtil.isEmpty(id)) {
@@ -290,7 +291,6 @@ public class RoleController {
 
     /**
      * 角色授权方法
-     *
      * @param request
      * @return
      */
@@ -416,8 +416,26 @@ public class RoleController {
         return ajaxJson;
     }
 
+    /**
+     * 获取指定用户所含有的所有角色
+     * @param userId：指定用户id
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getRolesByUserId")
     public AjaxJson getRolesByUserId(@RequestParam("userId") String userId){
         AjaxJson ajaxJson = new AjaxJson();
+        if (StringUtil.isEmpty(userId)){
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("请先选择查询对象");
+            return ajaxJson;
+        }
+        List<Role> roles = roleService.getRolesByUserId(userId, null);
+        ajaxJson.setCode(1);
+        ajaxJson.setMsg("数据获取成功");
+        Map<String,Object> data = new ConcurrentHashMap<>();
+        data.put("items",roles);
+        ajaxJson.setData(data);
+
         return ajaxJson;
     }
 } 

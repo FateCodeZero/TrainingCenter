@@ -34,7 +34,7 @@ public interface UserMapper {
     public User getUserByUsername(@Param("username") String username);
 
     /**
-     * 分页获取数据
+     * 分页查询普通用户
      * @param start：从第几条数据开始查
      * @param number：查询多少条数据
      * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
@@ -43,7 +43,7 @@ public interface UserMapper {
     public List<User> getUsers(@Param("start") Integer start, @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
 
     /**
-     * 分页获取数据
+     * 分页查询管理员用户
      * @param start：从第几条数据开始查
      * @param number：查询多少条数据
      * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent

@@ -12,6 +12,7 @@ import com.trainingcenter.utils.StringUtil;
 import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     /**
-     * 获取所有数据
+     * 查询所有普通用户
      *@param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return
      */
@@ -102,8 +103,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     /**
-     * 分页获取数据
-     *
+     * 分页查询普通用户
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
      * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     /**
-     * 分页获取管理员数据
+     * 分页查询管理员用户
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
      * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
@@ -446,75 +446,117 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public Integer grantRoles(String userId, String roleIds) {
         GrantException grantException;  //授权异常
-        DeleteException deleteException; //删除异常
-        Integer result = 0;
+        Integer result = 0;  //授权结果
 
         //获取当前登录用户
         String currentUsername = SysResourcesUtils.getCurrentUsername();
+        if (currentUsername == null) {
+            throw new CredentialsExpiredException("登录凭证已过期");
+        }
 
         if (StringUtil.isEmpty(userId)) {
-            grantException = new GrantException("授予失败，请先选择授权对象");
+            grantException = new GrantException("授权保存失败，请先选择授权对象");
             throw grantException;
         }
 
         User user = userMapper.getUserById(userId);
         //确保授权对象存在
         if (user == null) {
-            grantException = new GrantException("授予失败，用户不存在或已被删除");
+            grantException = new GrantException("授权保存失败，被授权用户不存在或已被删除");
             throw grantException;
         }
 
         LogUtil.info(this,"用户授权","用户：【"+currentUsername+"】在给用户【"+user.getUsername()+"】授权……");
 
-        //授权之前，先回收该用户之前的角色，再重新授予
+        //获取当前用户的所有角色
         List<Role> roles = roleMapper.getRolesByUserId(user.getId(), null, null, null);
+        //遍历当前用户所拥有的角色，组装成旧角色IDS
+        Set<String> oldRoleIds = Collections.synchronizedSet(new HashSet<>());
         for (Role role : roles) {
-            //逐一清除该用户之前的角色
-            UserRole userRole = userRoleMapper.getUserRoleByUserIdAndRoleId(user.getId(), role.getId());
-            if (userRole == null){
-                grantException = new GrantException("授权失败，对象不存在或已被删除");
-                throw grantException;
+            oldRoleIds.add(role.getId());
+        }
+
+        //若授权的角色IDS为空，则表示回收该用户的所有已授权角色
+        if (StringUtil.isEmpty(roleIds)){
+            for (String roleId : oldRoleIds) {
+                UserRole userRole = userRoleMapper.getUserRoleByUserIdAndRoleId(userId,roleId);
+                //删除授权信息
+                if (userRole != null){
+                    result = userRoleMapper.delete(userRole.getId());
+
+                    if (result == 0){
+                        grantException = new GrantException("授权保存失败，请重试");
+                        LogUtil.warn(this,"用户角色回收","未知原因：角色存在，但删除失败");
+                        throw grantException;
+                    }
+                }
             }
-            result = userRoleMapper.delete(userRole.getId());
+        }else {
+            //若授权的角色IDS不为空，需要做判断是新增角色授权还是回收角色授权
 
-            //日志记录
-            LogUtil.info(this,"用户授权","用户：【"+currentUsername+"】回收了【"+user.getUsername()+"】用户的【"+role.getName()+"】角色……");
+            //组装当前要授权的角色新IDS
+            String[] idArr = roleIds.trim().split(",");
+            Set<String> newRoleIds = Collections.synchronizedSet(new HashSet<>());
+            for (String id : idArr) {
+                //保证要授权的角色存在
+                Role role = roleMapper.getRoleById(id);
+                if (role != null){
+                    newRoleIds.add(role.getId());
+                }
+            }
 
-            if (result == 0) {
-                deleteException = new DeleteException("授权失败，请重试");
-                LogUtil.warn(this,"用户角色回收","未知原因：权限存在，但删除失败");
-                throw deleteException;
+            //遍历旧角色IDS，删除掉不存在于新角色IDS集合中的角色（不能存在表示该角色已经被取消授权）
+            for (String roleId :oldRoleIds) {
+                if (!newRoleIds.contains(roleId)){
+                    UserRole userRole = userRoleMapper.getUserRoleByUserIdAndRoleId(userId, roleId);
+                    if (userRole != null){
+                        result = userRoleMapper.delete(userRole.getId());
+
+                        if (result == 0){
+                            grantException = new GrantException("授权保存失败，请重试");
+                            LogUtil.warn(this,"用户角色回收","未知原因：角色存在，但删除失败");
+                            throw grantException;
+                        }
+                    }
+                }
+            }
+            //取出当前用户经过之前删除后的所有角色对象
+            List<Role> tempRoles = roleMapper.getRolesByUserId(userId, null, null, null);
+            //遍历这些中间角色，组成中间角色IDS
+            Set<String> tempRoleIds = Collections.synchronizedSet(new HashSet<>());
+            for (Role tempRole :tempRoles) {
+                tempRoleIds.add(tempRole.getId());
+            }
+
+            //遍历新授权角色IDS集合，将不存在于中间角色IDS中的角色进行新增授权
+            for (String newRoleId :newRoleIds) {
+                if (!tempRoleIds.contains(newRoleId)){
+                    Role newRole = roleMapper.getRoleById(newRoleId);
+                    //确保被授权角色存在
+                    if (newRole == null){
+                        grantException = new GrantException("授权保存失败，授予的角色不存在或已被删除");
+                        throw grantException;
+                    }
+                    UserRole userRole = new UserRole();
+                    userRole.setId(UUID.randomUUID().toString());
+                    userRole.setUserId(userId);
+                    userRole.setRoleId(newRole.getId());
+
+                    //日志记录
+                    LogUtil.info(this,"用户授权","用户：【"+currentUsername+"】授予了【"+user.getUsername()+"】用户【"+newRole.getName()+"】角色……");
+
+                    //执行授权
+                    result = userRoleMapper.add(userRole);
+
+                    if (result == 0){
+                        grantException = new GrantException("授权保存失败，请重试");
+                        LogUtil.warn(this,"用户授权","未知原因，给用户：【"+user.getUsername()+"】授予【"+newRole.getName()+"】角色时失败！");
+                        throw grantException;
+                    }
+                }
             }
         }
 
-        if (StringUtil.isNotEmpty(roleIds)){
-            //逐一授权
-            String[] arr = roleIds.split(",");
-            for (String roleId : arr) {
-                Role role = roleMapper.getRoleById(roleId);
-                //确保被授角色存在
-                if (role == null) {
-                    grantException = new GrantException("授权失败，所授角色不存在或已被删除");
-                    throw grantException;
-                }
-
-                //授予用户角色
-                UserRole userRole = new UserRole();
-                userRole.setId(UUID.randomUUID().toString());
-                userRole.setUserId(userId);
-                userRole.setRoleId(roleId);
-
-                //日志记录
-                LogUtil.info(this,"用户授权","用户：【"+currentUsername+"】授予了【"+user.getUsername()+"】用户【"+role.getName()+"】角色……");
-
-                result = userRoleMapper.add(userRole);
-                if (result == 0) {
-                    grantException = new GrantException("授予用户角色失败，请重试");
-                    LogUtil.warn(this,"用户授权","未知原因，给用户：【"+user.getUsername()+"】授角色失败！");
-                    throw grantException;
-                }
-            }
-        }
         return result;
     }
 }

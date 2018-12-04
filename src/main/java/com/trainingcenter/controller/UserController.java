@@ -7,6 +7,7 @@ import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.service.LockedIPService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.*;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -92,11 +94,12 @@ public class UserController {
 
     /**
      * 进入后台管理系统首页
+     *
      * @return
      */
 //    @PreAuthorize(value = "hasPermission('/webpages/admin/index.jsp','READ')")
-    @RequestMapping(value = "/admin",method = RequestMethod.GET)
-    public ModelAndView adminIndex(){
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    public ModelAndView adminIndex() {
         return new ModelAndView("admin/index");
     }
 
@@ -271,7 +274,7 @@ public class UserController {
     /*@PreAuthorize("hasPermission('/webpages/user/update.jsp','UPDATE')")*/
     @ResponseBody
     @RequestMapping(value = "/update")
-    public AjaxJson update(@Validated(value = {TC_Update.class}) User user,HttpServletRequest request) {
+    public AjaxJson update(@Validated(value = {TC_Update.class}) User user, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
 
         //更新结果
@@ -292,47 +295,47 @@ public class UserController {
 
         //最后登录时间与登录IP在登录成功后修改
         String password = user.getPassword();
-        if (StringUtil.isNotEmpty(password)){
+        if (StringUtil.isNotEmpty(password)) {
             oldUser.setPassword(MD5Util.md5Encrypt(password));
         }
         //维护IP锁定表
         Integer unlockedFlag = user.getUnlockedFlag();
-        if (unlockedFlag != null){
+        if (unlockedFlag != null) {
             String loginIP = user.getLoginIP();
-            if (StringUtil.isEmpty(loginIP)){
+            if (StringUtil.isEmpty(loginIP)) {
                 user.setLoginIP(HTTPUtils.getClientIpAddress(request));
             }
             //封禁IP的对象
             LockedIP lockedIP = lockedIPService.getLockedIPByIP(user.getLoginIP());
 
             //解锁被封禁的IP
-            if (unlockedFlag == 1){
+            if (unlockedFlag == 1) {
                 //被封禁则删除该封禁对象进行解封
-                if (lockedIP != null){
+                if (lockedIP != null) {
                     res = lockedIPService.delete(lockedIP.getId());
-                    if (res == 0){
+                    if (res == 0) {
                         ajaxJson.setCode(0);
                         ajaxJson.setMsg("操作失败，请重试");
                         return ajaxJson;
                     }
                 }
-            }else {
+            } else {
                 //若该IP已被封禁，则不进行操作了
-                if (lockedIP == null){
+                if (lockedIP == null) {
                     String currentUsername = SysResourcesUtils.getCurrentUsername();
                     User currentUser = userService.getUserByUsername(currentUsername);
 
                     LockedIP locked = new LockedIP();
                     locked.setId(UUID.randomUUID().toString());
                     locked.setIP(user.getLoginIP());
-                    if (currentUser != null){
+                    if (currentUser != null) {
                         locked.setCreateUserId(currentUser.getId());
                         locked.setCreateDate(new Date());
                         locked.setUpdateUserId(currentUser.getId());
                         locked.setUpdateDate(new Date());
                     }
                     res = lockedIPService.add(locked);
-                    if (res == 0){
+                    if (res == 0) {
                         ajaxJson.setCode(0);
                         ajaxJson.setMsg("操作失败，请重试");
                         return ajaxJson;
@@ -343,7 +346,7 @@ public class UserController {
             oldUser.setUnlockedFlag(unlockedFlag);
         }
         Integer state = user.getState();
-        if (state != null){
+        if (state != null) {
             oldUser.setState(state);
         }
 
@@ -370,17 +373,17 @@ public class UserController {
     public AjaxJson delete(@PathVariable("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 
-        if (StringUtil.isEmpty(ids)){
+        if (StringUtil.isEmpty(ids)) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("删除失败，请先选择要删除的对象");
             return ajaxJson;
         }
 
         Integer delete = userService.batchDelete(ids);
-        if (delete == 1){
+        if (delete == 1) {
             ajaxJson.setCode(1);
             ajaxJson.setMsg("删除成功");
-        }else {
+        } else {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("删除失败，请稍后重试");
         }
@@ -400,42 +403,43 @@ public class UserController {
 
     /**
      * 通过id获取用户
+     *
      * @param id：用户id
      * @return 返回用户对象，只包含 id 与 username
      */
     @ResponseBody
     @RequestMapping(value = "/getUserById", method = RequestMethod.GET)
-    public AjaxJson getUserById(@RequestParam("id") String id){
+    public AjaxJson getUserById(@RequestParam("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
-        if (StringUtil.isEmpty(id)){
+        if (StringUtil.isEmpty(id)) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("请先选择要查询的对象");
             return ajaxJson;
         }
 
         User user = userService.getUserById(id);
-        if (user == null){
+        if (user == null) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("对象不存在或已被删除");
             return ajaxJson;
-        }else {
+        } else {
             ajaxJson.setCode(1);
             ajaxJson.setMsg("获取成功");
-            Map<String,Object> data = new ConcurrentHashMap<>();
+            Map<String, Object> data = new ConcurrentHashMap<>();
 
             //为保用户数据安全，只返回用户的id与username
-            Map<String,Object> u = new ConcurrentHashMap<>();
-            u.put("id",user.getId());
-            u.put("username",user.getUsername());
+            Map<String, Object> u = new ConcurrentHashMap<>();
+            u.put("id", user.getId());
+            u.put("username", user.getUsername());
 
-            data.put("user",u);
+            data.put("user", u);
             ajaxJson.setData(data);
             return ajaxJson;
         }
     }
 
     /**
-     * 分页获取用户数据（获取全部，（已启用 + 已禁用 + 已删除（软删除）），供管理用）
+     * 分页获取普通用户数据（获取全部，（已启用 + 已禁用 + 已删除（软删除）），供管理用）
      *
      * @param currentPage：当前页
      * @param rows：每页展示的数据条数
@@ -444,7 +448,7 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping("/list")
-    public AjaxJson list(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request){
+    public AjaxJson list(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null) {
             ajaxJson.setCode(0);
@@ -455,29 +459,29 @@ public class UserController {
             //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
             Map<String, Object> condition = new ConcurrentHashMap<>();
             String conditionStr = request.getParameter("condition");
-            if (StringUtil.isNotEmpty(conditionStr)){
-                condition = FindConditionUtils.findConditionBuild(User.class,conditionStr);
+            if (StringUtil.isNotEmpty(conditionStr)) {
+                condition = FindConditionUtils.findConditionBuild(User.class, conditionStr);
             }
             //获取当前查询条件下的所有数据条数，分页用
             Integer total = userService.getUsers(condition).size();
             //获取当前页的数据
             List<User> users = userService.getUsers(currentPage, rows, condition);
             ajaxJson.setCode(1);
-            if (users.size() == 0){
+            if (users.size() == 0) {
                 ajaxJson.setMsg("暂无数据Ծ‸Ծ");
-            }else {
+            } else {
                 ajaxJson.setMsg("数据获取成功");
             }
-            Map<String,Object> data = new ConcurrentHashMap<>();
-            data.put("total",total);
-            data.put("items",users);
+            Map<String, Object> data = new ConcurrentHashMap<>();
+            data.put("total", total);
+            data.put("items", users);
             ajaxJson.setData(data);
             return ajaxJson;
         }
     }
 
     /**
-     * 分页获取管理员数据（获取全部，（已启用 + 已禁用 + 已删除（软删除）），供管理用）
+     * 分页获取管理员用户数据（获取全部，（已启用 + 已禁用 + 已删除（软删除）），供管理用）
      *
      * @param currentPage：当前页
      * @param rows：每页展示的数据条数
@@ -486,7 +490,7 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping("/list_admin")
-    public AjaxJson list_admin(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request){
+    public AjaxJson list_admin(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null) {
             ajaxJson.setCode(0);
@@ -497,24 +501,79 @@ public class UserController {
             //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
             Map<String, Object> condition = new ConcurrentHashMap<>();
             String conditionStr = request.getParameter("condition");
-            if (StringUtil.isNotEmpty(conditionStr)){
-                condition = FindConditionUtils.findConditionBuild(User.class,conditionStr);
+            if (StringUtil.isNotEmpty(conditionStr)) {
+                condition = FindConditionUtils.findConditionBuild(User.class, conditionStr);
             }
             //获取当前查询条件下的所有数据条数，分页用
             Integer total = userService.getUsersForAdmin(condition).size();
             //获取当前页的数据
             List<User> users = userService.getUsersForAdmin(currentPage, rows, condition);
             ajaxJson.setCode(1);
-            if (users.size() == 0){
+            if (users.size() == 0) {
                 ajaxJson.setMsg("暂无数据Ծ‸Ծ");
-            }else {
+            } else {
                 ajaxJson.setMsg("数据获取成功");
             }
-            Map<String,Object> data = new ConcurrentHashMap<>();
-            data.put("total",total);
-            data.put("items",users);
+            Map<String, Object> data = new ConcurrentHashMap<>();
+            data.put("total", total);
+            data.put("items", users);
             ajaxJson.setData(data);
             return ajaxJson;
         }
+    }
+
+    /**
+     * 用户授权方法
+     *
+     * @param request：HttpServletRequest
+     */
+    @ResponseBody
+    @RequestMapping("/grant")
+    public AjaxJson grant(HttpServletRequest request) {
+        AjaxJson ajaxJson = new AjaxJson();
+        String grantDataStr = request.getParameter("grantData");
+
+        if (StringUtil.isEmpty(grantDataStr)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("授权失败，授权数据不能为空");
+            return ajaxJson;
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> grantData;
+        try {
+            grantData = mapper.readValue(grantDataStr, ConcurrentHashMap.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("授权保存失败，json转换异常");
+            return ajaxJson;
+        }
+
+        if (grantData == null || grantData.size() == 0) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("授权保存失败，授权数据不能为空");
+            return ajaxJson;
+        }
+
+        String userId = (String) grantData.get("userId");
+        String roleIds = (String) grantData.get("roleIds");
+
+        if (StringUtil.isEmpty(userId)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("授权保存失败，授权对象不能为空");
+            return ajaxJson;
+        }
+        //角色数据为空，表示回收当前用户的所有角色
+        Integer res = userService.grantRoles(userId, roleIds);
+        if (res > 0){
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("授权保存成功");
+        }else {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("授权保存失败，请稍后重试");
+        }
+        return ajaxJson;
     }
 }

@@ -33,7 +33,7 @@
             <if test="condition != null">
                 <foreach collection="condition" index="key" item="value">
                     <if test="key == &quot;name&quot; and value != null and value != '' ">
-                        and name = #{value}
+                        and `name` = #{value}
                     </if>
                     <if test="key == &quot;state&quot; and value != null ">
                         and state = #{value}

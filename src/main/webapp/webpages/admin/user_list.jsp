@@ -119,7 +119,7 @@
                     }
                 }
                 , {
-                    field: 'registerTime', title: '注册时间', width: 150, align: 'center', templet: function (d) {
+                    field: 'registerTime', title: '注册时间', sort: true, width: 150, align: 'center', templet: function (d) {
                         return new Date(d.registerTime).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
                     }
                 }
@@ -172,11 +172,11 @@
         //监听工具条
         table.on('tool(table-filter)', function (obj) {
             var data = obj.data;
-            var id = data.id;
-            /*操作的数据Id*/
-            var state = 1;
-            var locked = 1;
-            /*操作（1：启用，0：禁用）*/
+            var id = data.id;/*操作的数据Id*/
+
+            var state = 1;/*启/禁用操作（1：启用，0：禁用）*/
+            var locked = 1;/*IP锁定操作（1：锁定，0：正常）*/
+
             if (obj.event === 'enable') {    //启用
                 state = 1;
                 enableOpt(data, state);

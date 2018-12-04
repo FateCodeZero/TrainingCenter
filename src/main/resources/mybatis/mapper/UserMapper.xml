@@ -61,7 +61,7 @@
     </select>
 
     <!-- public List<User> getUsers(@Param("start") Integer start, @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
-        分页查询，condition：自定义条件查询
+        分页查询普通用户，condition：自定义条件查询
     -->
     <select id="getUsers" resultType="com.trainingcenter.bean.User">
         SELECT
@@ -101,6 +101,11 @@
                     </if>
                 </foreach>
             </if>
+            and id NOT IN(
+                SELECT u.id
+                FROM tab_user u,tab_user_role ur,tab_role r
+                WHERE u.id = ur.user_id and ur.role_id = r.id and FIND_IN_SET(r.name,'ADMIN,MANAGER') > 0
+            )
         </trim>
         ORDER BY register_time DESC
         <if test="start != null and number != null">
@@ -109,14 +114,14 @@
     </select>
 
     <!--public List<User> getUsersForAdmin(@Param("start") Integer start, @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
-          获取管理员数据
+          分页查询管理员用户，condition：自定义条件查询
     -->
     <select id="getUsersForAdmin" resultType="com.trainingcenter.bean.User">
         SELECT
         u.id,u.username,u.login_IP,u.unlocked_flag,u.state,u.register_time,u.last_login_time
         FROM tab_user u,tab_user_role ur,tab_role r
         <trim prefix="WHERE" prefixOverrides="and">
-            u.id = ur.user_id and ur.role_id = r.id and (r.name = 'ADMIN' or r.name = 'MANAGE')
+            u.id = ur.user_id and ur.role_id = r.id and FIND_IN_SET(r.name,'ADMIN,MANAGER') > 0
             <if test="condition != null">
                 <foreach collection="condition" index="key" item="value">
                     <if test="key == &quot;id&quot; and value != null and value != '' ">

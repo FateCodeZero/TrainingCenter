@@ -101,10 +101,12 @@ public class RoleServiceImpl implements RoleService {
      * 获取指定登录用户所含有的全部角色
      *
      * @param loginInfoId 用户登录信息id
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回该用户所拥有的所有角色
      */
-    public List<Role> getRolesByUserId(String loginInfoId) {
-        return getRolesByUserId(loginInfoId, null, null, null);
+    public List<Role> getRolesByUserId(String loginInfoId, Map<String,Object> condition) {
+
+        return getRolesByUserId(loginInfoId, null, null, condition);
     }
 
     /**
@@ -113,11 +115,11 @@ public class RoleServiceImpl implements RoleService {
      * @param userId：用户登录信息id
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
-     * @return 返回该用户所拥有的所有角色，支持分页、模糊查询
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
+     * @return 返回该用户所拥有的所有角色，支持分页、自定义条件查询
      */
     @Override
-    public List<Role> getRolesByUserId(String userId, Integer currentPage, Integer rows, String searchContent) {
+    public List<Role> getRolesByUserId(String userId, Integer currentPage, Integer rows, Map<String,Object> condition) {
         if (StringUtil.isEmpty(userId)) {
             return null;
         }
@@ -126,10 +128,10 @@ public class RoleServiceImpl implements RoleService {
                 return null;
             } else {
                 Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
-                return roleMapper.getRolesByUserId(userId, start, rows, searchContent);
+                return roleMapper.getRolesByUserId(userId, start, rows, condition);
             }
         } else {
-            return roleMapper.getRolesByUserId(userId, null, null, searchContent);
+            return roleMapper.getRolesByUserId(userId, null, null, condition);
         }
     }
 
@@ -137,10 +139,11 @@ public class RoleServiceImpl implements RoleService {
      * 获取含有指定权限的所有角色
      *
      * @param permissionId ：指定权限id
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回含有该权限的所有角色
      */
-    public List<Role> getRolesByPermissionId(String permissionId) {
-        return getRolesByPermissionId(permissionId, null, null, null);
+    public List<Role> getRolesByPermissionId(String permissionId, Map<String,Object> condition) {
+        return getRolesByPermissionId(permissionId, null, null, condition);
     }
 
     /**
@@ -149,11 +152,11 @@ public class RoleServiceImpl implements RoleService {
      * @param permissionId         ：指定权限id
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return ：返回含有该权限的所有角色，支持分页
      */
     @Override
-    public List<Role> getRolesByPermissionId(String permissionId, Integer currentPage, Integer rows, String searchContent) {
+    public List<Role> getRolesByPermissionId(String permissionId, Integer currentPage, Integer rows, Map<String,Object> condition) {
         if (StringUtil.isEmpty(permissionId)) {
             return null;
         }
@@ -162,10 +165,10 @@ public class RoleServiceImpl implements RoleService {
                 return null;
             } else {
                 Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
-                return roleMapper.getRolesByPermissionId(permissionId, start, rows, searchContent);
+                return roleMapper.getRolesByPermissionId(permissionId, start, rows, condition);
             }
         } else {
-            return roleMapper.getRolesByPermissionId(permissionId, null, null, searchContent);
+            return roleMapper.getRolesByPermissionId(permissionId, null, null, condition);
         }
     }
 

@@ -69,11 +69,11 @@ public interface RoleMapper {
      * @param userId：用户登录信息id
      * @param start：从第几条数据开始
      * @param number：要获取多少条数据
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回该用户所拥有的所有角色，支持分页、模糊查询
      */
     public List<Role> getRolesByUserId(@Param("userId") String userId,@Param("start") Integer start,
-                                                 @Param("number") Integer number, @Param("searchContent") String searchContent);
+                                                 @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
 
     /**
      * 获取含有指定权限的所有角色
@@ -81,10 +81,10 @@ public interface RoleMapper {
      * @param permissionId ：指定权限id
      * @param start：从第几条数据开始
      * @param number：要获取多少条数据
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return ：返回含有该权限的所有角色，支持分页
      */
     public List<Role> getRolesByPermissionId(@Param("permissionId") String permissionId, @Param("start") Integer start,
-                                                         @Param("number") Integer number, @Param("searchContent") String searchContent);
+                                                         @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
 
 } 

@@ -43,31 +43,32 @@
 
 <script type="text/javascript">
     var table = null;  //layui table
-    var roleId = '';
     /*当前要授权的角色id*/
-    var resourceData = null;
+    var roleId = '';
     /*菜单数据*/
-    var permissionData = null;
+    var resourceData = null;
     /*权限数据*/
-    var treeData = null;
+    var permissionData = null;
     /*菜单树所需要的数据*/
-    var currentResouceId = null;
+    var treeData = null;
     /*当前授权的页面菜单id*/
+    var currentResouceId = null;
+
     $(document).ready(function () {
-        /*从URL获取对象ID*/
+        /*从URL获取对象ID,获取当前要授权的角色对象id*/
         roleId = getUrlParam('id');
-        /*获取当前要授权的角色对象id*/
-        resourceData = getResourceData();
         /*获取菜单数据*/
-        permissionData = getPermissionsByRoleId(roleId);
+        resourceData = getResourceData();
         /*获取当前角色所含有的所有权限数据*/
-        var resourceIds = getResourceIdsByPermissions(permissionData);
+        permissionData = getPermissionsByRoleId(roleId);
         /*提取权限数据中的菜单id*/
-        treeData = buildTreeData(resourceData, resourceIds);
+        var resourceIds = getResourceIdsByPermissions(permissionData);
         /*构建菜单树所需要的数据*/
-        console.log(treeData);
-        initCheckboxTree(treeData);
+        treeData = buildTreeData(resourceData, resourceIds);
+
+        /*console.log(treeData);*/
         /*初始化Checkbox菜单树*/
+        initCheckboxTree(treeData);
     });
 
     /*获取菜单资源*/
@@ -90,7 +91,6 @@
                         time: 3000,
                         icon: 2
                     });
-                    return false;
                 }
             }
         });
@@ -121,7 +121,6 @@
                             time: 3000,
                             icon: 2
                         });
-                        return false;
                     }
                 }
             });
@@ -152,22 +151,22 @@
     function buildTreeData(resourceData, permissionResourceIds) {
         var tree = [];
         $.each(resourceData, function (index, item) {
-            var id = item.id;
             /*本节点菜单id*/
-            var name = item.name;
+            var id = item.id;
             /*本节点菜单名称*/
-            var parentId = item.parentId;
+            var name = item.name;
             /*本节点的父节点菜单id*/
+            var parentId = item.parentId;
+            /*本节点排序*/
             var order = item.order;
-            /*本节点排序，可忽略*/
-            var level = item.level;
             /*本节点层级*/
-            var url = item.data.url;
+            var level = item.level;
             /*本节点url*/
-            var iconStyle = item.data.iconStyle;
+            var url = item.data.url;
             /*本节点iocn*/
-            var children = item.children;
+            var iconStyle = item.data.iconStyle;
             /*子节点*/
+            var children = item.children;
 
             var checked = false;  //是否处于checked状态
             /*若当前菜单在处在当前角色的权限集合中，则让其处于被选中状态*/
@@ -344,8 +343,8 @@
                     $.each(data, function (index, item) {
                         var id = item.id;
                         if (permissionIds.indexOf(id) !== -1) {
-                            data[index].LAY_CHECKED = true;
                             /*让数据处于被选中状态*/
+                            data[index].LAY_CHECKED = true;
                         }
                     });
                     //返回要渲染的数据
@@ -403,9 +402,9 @@
 
         //遍历获取被选中数据的id
         $.each(items, function (index, item) {
-            if(index === 0){
+            if (index === 0) {
                 permissionIds += item.id;
-            }else {
+            } else {
                 permissionIds += ',';
                 permissionIds += item.id;
             }
@@ -503,12 +502,12 @@
      * @returns {*}
      */
     function getResourceById(id) {
-        if (id == null || id == '') {
-            layer.alert('id不能为空！', {
+        if (id === null || id === '') {
+            layer.alert('查询对象不能为空！', {
                 time: 3000,
                 icon: 2
             });
-            return false;
+            return null;
         }
         var resource = null;
         var data = {id: id};
@@ -529,7 +528,6 @@
                         time: 3000,
                         icon: 2
                     });
-                    return false;
                 }
             }
         });

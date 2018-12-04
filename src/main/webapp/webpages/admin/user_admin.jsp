@@ -50,8 +50,10 @@
 <%--表格操作--%>
 <script type="text/html" id="table-opt">
     <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="grant">授权</a>
-    <a class="layui-btn layui-btn-xs" lay-event="enable">启用</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="unEnable">禁用</a>
+    <a class="layui-btn layui-btn-xs" lay-event="enable" title="启用用户">启用</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="unEnable" title="禁用用户">禁用</a>
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="lock" title="锁定用户IP">锁IP</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="unlock" title="解锁用户IP">解锁</a>
 </script>
 
 <script type="text/javascript">
@@ -98,13 +100,10 @@
                 , {
                     field: 'unlockedFlag', title: 'IP锁定状态', width: 100, align: 'center', templet: function (d) {
                         if (d.unlockedFlag === 1) {
-                            return '<span class="layui-btn layui-btn-xs">已启用</span>'
+                            return '<span class="layui-btn layui-btn-normal layui-btn-xs">正常</span>'
                         }
-                        if(d.unlockedFlag === 0){
-                            return '<span class="layui-btn layui-btn-danger layui-btn-xs">已禁用</span>'
-                        }
-                        if(d.unlockedFlag === -1){
-                            return '<span class="layui-btn layui-btn-disabled layui-btn-xs">已删除</span>'
+                        if (d.unlockedFlag === 0) {
+                            return '<span class="layui-btn layui-btn-danger layui-btn-xs">锁定</span>'
                         }
                     }
                 }
@@ -122,17 +121,17 @@
                     }
                 }
                 , {
-                    field: 'registerTime', title: '注册时间', width: 150, align: 'center', templet: function (d) {
+                    field: 'registerTime', title: '注册时间', sort: true, width: 150, align: 'center', templet: function (d) {
                         return new Date(d.registerTime).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
                     }
                 }
                 , {
-                    field: 'lastLoginTime', title: '创建时间', sort: true, width: 180, align: 'center', templet: function (d) {
+                    field: 'lastLoginTime', title: '最后登录时间', sort: true, width: 180, align: 'center', templet: function (d) {
                         return new Date(d.lastLoginTime).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
                     }
                 }
                 <%--<sec:authorize access="hasPermission('/webpages/admin/resource_list.jsp','UPDATE')">--%>
-                , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 180, align: 'center'} //这里的toolbar值是模板元素的选择器
+                , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 270, align: 'center'} //这里的toolbar值是模板元素的选择器
                 <%--</sec:authorize>--%>
             ]]
             , where: {//接口需要的其它参数
@@ -235,24 +234,31 @@
         //监听工具条
         table.on('tool(table-filter)', function (obj) {
             var data = obj.data;
-            var id = data.id;
-            /*操作的数据Id*/
-            var state = 1;
-            /*操作（1：启用，0：禁用）*/
+            var id = data.id;/*操作的数据Id*/
+
+            var state = 1;/*启/禁用操作（1：启用，0：禁用）*/
+            var locked = 1;/*IP锁定操作（1：锁定，0：正常）*/
+
             if (obj.event === 'enable') {    //启用
                 state = 1;
                 enableOpt(data, state);
             } else if (obj.event === 'unEnable') {  //禁用
                 state = 0;
                 enableOpt(data,state);
-            }else if (obj.event === 'grant'){ //授权
+            }else if (obj.event === 'lock') {  /*锁定IP*/
+                locked = 0;
+                IPLockedOpt(data,locked);
+            } else if (obj.event === 'unlock') {  /*解锁IP*/
+                locked = 1;
+                IPLockedOpt(data,locked);
+            } else if (obj.event === 'grant'){ //授权
                 layer.open({
                     title: '角色授权',
                     type: 2,
                     area: ['1000px', '450px'],
                     fix: false, //不固定
                     maxmin: true,
-                    content: '${webRoot}/webpages/admin/permission_select.jsp?id='+id,
+                    content: '${webRoot}/webpages/admin/role_select.jsp?id='+id,
                     success: function (layero, index) {
                         layer_window = layero;   //获取弹出窗口的窗口对象
                     },
@@ -344,7 +350,7 @@
     }
 
     //启/禁用操作
-    function enableOpt(obj,state) {
+    function enableOpt(obj, state) {
         if (obj.id === null || obj.id === '' || state === null || state === '') {
             layer.alert('请先选择要操作的数据', {
                 time: 3000,
@@ -355,12 +361,54 @@
             /*将更新所必须的字段一起传过去*/
             var data = {
                 id: obj.id,
-                name: obj.name,
-                state: state,
-                resourceId: obj.resourceId
+                username: obj.username,
+                state: state
             };
             $.ajax({
-                url: "${webRoot}/role/update",
+                url: "${webRoot}/user/update",
+                type: "post",
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                    var jsonData = eval(data);
+                    var code = jsonData.code;
+                    var msg = jsonData.msg;
+                    if (code === 1) {
+                        layer.msg(msg);
+                    } else {
+                        layer.alert(msg, {
+                            time: 3000,
+                            icon: 2
+                        });
+                    }
+                    location.reload(); //操作后刷新页面
+                }
+            });
+        }
+    }
+
+    /*IP锁定/解锁操作*/
+    /**
+     * @return {boolean}
+     */
+    function IPLockedOpt(obj, locked) {
+        if (obj.id === null || obj.id === '' || locked === null || locked === '') {
+            layer.alert('请先选择要操作的数据', {
+                time: 3000,
+                icon: 2
+            });
+            return false;
+        } else {
+            /*将更新所必须的字段一起传过去*/
+            var data = {
+                id: obj.id,
+                username: obj.username,
+                state: obj.state,
+                unlockedFlag:locked,
+                loginIP:obj.loginIP
+            };
+            $.ajax({
+                url: "${webRoot}/user/update",
                 type: "post",
                 data: data,
                 dataType: "json",
