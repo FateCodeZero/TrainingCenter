@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.SpotTeachingMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="spotTeachingcolumns">
+      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+    </sql>
+
+    <!-- public SpotTeaching getSpotTeachingById(@Param("id") String id);
+        通过id获取动态培训
+    -->
+    <select id="getSpotTeachingById" resultType="com.trainingcenter.bean.SpotTeaching">
+        SELECT <include refid="spotTeachingcolumns"></include>
+        FROM tab_spot_teaching
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<SpotTeaching> getSpotTeachings(Integer start, Integer number, String searchContent);
+        分页查询所有动态培训
+    -->
+    <select id="getSpotTeachings" resultType="com.trainingcenter.bean.SpotTeaching">
+        SELECT <include refid="spotTeachingcolumns"></include>
+        FROM tab_spot_teaching
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and (
+                title like CONCAT('%',#{searchContent},'%') OR
+                content like CONCAT('%',#{searchContent},'%') OR
+                remarks like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("spotTeaching") SpotTeaching spotTeaching;
+    动态培训添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.SpotTeaching">
+        INSERT INTO tab_spot_teaching(<include refid="spotTeachingcolumns"></include>)
+        VALUES (#{spotTeaching.id},#{spotTeaching.title},#{spotTeaching.imgs},#{spotTeaching.content},#{spotTeaching.remarks},#{spotTeaching.createUserId},#{spotTeaching.createDate},
+        #{spotTeaching.updateUserId},#{spotTeaching.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("spotTeaching") SpotTeaching spotTeaching);
+            更新动态培训信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.SpotTeaching">
+        UPDATE tab_spot_teaching
+        <trim prefix="set" suffixOverrides=",">
+            <if test="spotTeaching.title != null and spotTeaching.title != '' ">
+                title = #{spotTeaching.title},
+            </if>
+            <if test="spotTeaching.imgs != null and spotTeaching.imgs != '' ">
+                imgs = #{spotTeaching.imgs},
+            </if>
+            <if test="spotTeaching.content != null and spotTeaching.content != '' ">
+                content = #{spotTeaching.content},
+            </if>
+            <if test="spotTeaching.remarks != null and spotTeaching.remarks != '' ">
+                remarks = #{spotTeaching.remarks},
+            </if>
+            <if test="spotTeaching.createUserId != null and spotTeaching.createUserId != '' ">
+                create_user_id = #{spotTeaching.createUserId},
+            </if>
+            <if test="spotTeaching.createDate != null and spotTeaching.createDate != '' ">
+                create_date = #{spotTeaching.createDate},
+            </if>
+            <if test="spotTeaching.updateUserId != null and spotTeaching.updateUserId != '' ">
+                update_user_id = #{spotTeaching.updateUserId},
+            </if>
+            <if test="spotTeaching.updateDate != null and spotTeaching.updateDate != '' ">
+                update_date = #{spotTeaching.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{spotTeaching.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除动态培训
+       -->
+    <delete id="delete">
+        DELETE FROM tab_spot_teaching
+        WHERE id = #{id}
+    </delete>
+</mapper>

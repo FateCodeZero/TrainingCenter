@@ -1,31 +1,27 @@
 package com.trainingcenter.service.impl;
 
-import com.trainingcenter.bean.TrainingDynamic;
-import com.trainingcenter.dao.TrainingDynamicMapper;
+import com.trainingcenter.bean.SpotTeaching;
+import com.trainingcenter.dao.SpotTeachingMapper;
 import com.trainingcenter.exception.DeleteException;
-import com.trainingcenter.exception.FindException;
-import com.trainingcenter.service.TrainingDynamicService;
-import com.trainingcenter.utils.LogUtil;
+import com.trainingcenter.service.SpotTeachingService;
 import com.trainingcenter.utils.StringUtil;
-import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Liutingwei
  * @date 2018-11-6 21:44
  */
-@Service("trainingDynamicService")
-public class TrainingDynamicIServiceImpl implements TrainingDynamicService {
-    @Qualifier("trainingDynamicMapper")
+@Service("spotTeachingService")
+public class SpotTeachingServiceImpl implements SpotTeachingService {
+    @Qualifier("spotTeachingMapper")
     @Autowired
-    private TrainingDynamicMapper trainingDynamicMapper;
+    private SpotTeachingMapper spotTeachingMapper;
 
     /**
      *通过id获取培训动态
@@ -33,13 +29,13 @@ public class TrainingDynamicIServiceImpl implements TrainingDynamicService {
      * @return 返回对应的培训动态对象
      */
     @Override
-    public TrainingDynamic getTrainingDynamicById(String id) {
-        return StringUtil.isEmpty(id)?null:trainingDynamicMapper.getTrainingDynamicById(id);
+    public SpotTeaching getSpotTeachingById(String id) {
+        return StringUtil.isEmpty(id)?null:spotTeachingMapper.getSpotTeachingById(id);
     }
 
     @Override
-    public List<TrainingDynamic> getTrainingDynamics() {
-        return getTrainingDynamics(null, null, null);
+    public List<SpotTeaching> getSpotTeachings() {
+        return getSpotTeachings(null, null, null);
     }
     /**
      *分页获取所以培训动态
@@ -49,37 +45,37 @@ public class TrainingDynamicIServiceImpl implements TrainingDynamicService {
      * @return
      */
     @Override
-    public List<TrainingDynamic> getTrainingDynamics(Integer currentPage, Integer rows, String searchContent) {
+    public List<SpotTeaching> getSpotTeachings(Integer currentPage, Integer rows, String searchContent) {
             if(currentPage != null && rows != null) {
                 if (currentPage < 0 || rows < 0) {
                     return null;
                 }
                 Integer start = (currentPage - 1) * rows;
-                return trainingDynamicMapper.getTrainingDynamics(start, rows, searchContent);
+                return spotTeachingMapper.getSpotTeachings(start, rows, searchContent);
             }
             else {
-                return trainingDynamicMapper.getTrainingDynamics(null,null,searchContent);
+                return spotTeachingMapper.getSpotTeachings(null,null,searchContent);
             }
     }
 
     /**
      * 培训动态添加方法
-     * @param trainingDynamic：要添加的培训动态
+     * @param spotTeaching：要添加的培训动态
      * @return 返回值大于0表示操作成功，否则操作失败
      */
     @Override
-    public Integer add(@Valid TrainingDynamic trainingDynamic) {
-        return trainingDynamic == null ? 0:trainingDynamicMapper.add(trainingDynamic);
+    public Integer add(@Valid SpotTeaching spotTeaching) {
+        return spotTeaching == null ? 0:spotTeachingMapper.add(spotTeaching);
     }
 
     /**
      * 培训动态更新方法
-     * @param trainingDynamic:要更新的培训动态
+     * @param spotTeaching:要更新的培训动态
      * @return 返回值大于0表示操作成功，否则操作失败
      */
     @Override
-    public Integer update(@Valid TrainingDynamic trainingDynamic) {
-        return trainingDynamic == null ? 0:trainingDynamicMapper.update(trainingDynamic);
+    public Integer update(@Valid SpotTeaching spotTeaching) {
+        return spotTeaching == null ? 0:spotTeachingMapper.update(spotTeaching);
     }
 
     /**
@@ -92,8 +88,8 @@ public class TrainingDynamicIServiceImpl implements TrainingDynamicService {
     public Integer delete(String id) throws DeleteException {
         Integer result = 0;
         if (StringUtil.isNotEmpty(id)){
-            if (this.getTrainingDynamicById(id) != null){//确保要删除对象存在
-                result = trainingDynamicMapper.delete(id);
+            if (this.getSpotTeachingById(id) != null){//确保要删除对象存在
+                result = spotTeachingMapper.delete(id);
                 if (result == 0){
                     throw new DeleteException("删除失败，请稍后重试！");
                 }

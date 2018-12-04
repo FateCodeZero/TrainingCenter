@@ -1,10 +1,10 @@
 package com.trainingcenter.controller;
 
-import com.trainingcenter.bean.TrainingDynamic;
+import com.trainingcenter.bean.CommunicationTeaching;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.exception.UpdateException;
-import com.trainingcenter.service.TrainingDynamicService;
+import com.trainingcenter.service.CommunicationTeachingService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.StringUtil;
@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,14 +32,14 @@ import static com.trainingcenter.utils.SysResourcesUtils.getCurrentUsername;
  * @author Liutingwei
  * @date 2018-11-9 19:45
  */
-@RequestMapping("/trainingDynamic")
+@RequestMapping("/communicationTeaching")
 @Controller
-public class TrainingDynamicController {
+public class CommunicationTeachingController {
 
 
-    @Qualifier("trainingDynamicService")
+    @Qualifier("communicationTeachingService")
     @Autowired
-    private TrainingDynamicService trainingDynamicService;
+    private CommunicationTeachingService communicationTeachingService;
 
     @Qualifier("userService")
     @Autowired
@@ -50,10 +53,10 @@ public class TrainingDynamicController {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("参数异常");
             return ajaxJson;        }
-        List<TrainingDynamic> trainingDynamics = trainingDynamicService.getTrainingDynamics(currentPage, rows, searchContent);
-        Integer total = trainingDynamicService.getTrainingDynamics().size();
+        List<CommunicationTeaching> communicationTeachings = communicationTeachingService.getCommunicationTeachings(currentPage, rows, searchContent);
+        Integer total = communicationTeachingService.getCommunicationTeachings().size();
 
-        if (trainingDynamics.size() == 0){
+        if (communicationTeachings.size() == 0){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("暂无数据");
         }else {
@@ -63,7 +66,7 @@ public class TrainingDynamicController {
 
         Map<String,Object> data = new ConcurrentHashMap<>();
         data.put("total",total);
-        data.put("items",trainingDynamics);
+        data.put("items",communicationTeachings);
         ajaxJson.setData(data);
         return ajaxJson;
     }
@@ -78,8 +81,8 @@ public class TrainingDynamicController {
     public AjaxJson detailsPage(@RequestParam("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
         if(StringUtil.isNotEmpty(id)){
-            TrainingDynamic trainingDynamic = trainingDynamicService.getTrainingDynamicById(id);
-            if (trainingDynamic == null){
+            CommunicationTeaching communicationTeaching = communicationTeachingService.getCommunicationTeachingById(id);
+            if (communicationTeaching == null){
                 ajaxJson.setCode(1);
                 ajaxJson.setMsg("暂无数据");
                 return ajaxJson;
@@ -87,7 +90,7 @@ public class TrainingDynamicController {
                 ajaxJson.setCode(1);
                 ajaxJson.setMsg("請求成功");
                 Map<String, Object> map = new ConcurrentHashMap<>(); //返回携带的数据
-                map.put("items",trainingDynamic);
+                map.put("items",communicationTeaching);
                 ajaxJson.setData(map);
                 return ajaxJson;
             }
@@ -105,11 +108,11 @@ public class TrainingDynamicController {
      */
     @RequestMapping(value = "/addPage", method = RequestMethod.GET)
     public ModelAndView addPage(HttpServletRequest request) {
-        String id = request.getParameter("trainingDynamicId");
+        String id = request.getParameter("communicationTeachingId");
         ModelAndView modelAndView =new ModelAndView();
         if(StringUtil.isNotEmpty(id)){
             String viewName = "admin/TD_addPage";
-            modelAndView.addObject("trainingDynamic",trainingDynamicService.getTrainingDynamicById(id));
+            modelAndView.addObject("communicationTeaching",communicationTeachingService.getCommunicationTeachingById(id));
             modelAndView.setViewName(viewName);
 
         }
@@ -123,11 +126,11 @@ public class TrainingDynamicController {
      */
     @RequestMapping(value = "/updatePage", method = RequestMethod.GET)
     public ModelAndView updatePage(HttpServletRequest request) {
-        String id = request.getParameter("trainingDynamicId");
+        String id = request.getParameter("communicationTeachingId");
         ModelAndView modelAndView =new ModelAndView();
         if(StringUtil.isNotEmpty(id)){
             String viewName = "admin/TD_updatePage";
-            modelAndView.addObject("trainingDynamic",trainingDynamicService.getTrainingDynamicById(id));
+            modelAndView.addObject("communicationTeaching",communicationTeachingService.getCommunicationTeachingById(id));
             modelAndView.setViewName(viewName);
         }
         return modelAndView;
@@ -135,7 +138,7 @@ public class TrainingDynamicController {
 
     @RequestMapping(value = "/update",method = RequestMethod.GET)
     @ResponseBody
-    public AjaxJson update(@Validated(value = {TC_Update.class}) TrainingDynamic trainingDynamic){
+    public AjaxJson update(@Validated(value = {TC_Update.class}) CommunicationTeaching communicationTeaching){
         AjaxJson ajaxJson = new AjaxJson();
         Integer res;    //操作结果 flag
 
@@ -148,25 +151,25 @@ public class TrainingDynamicController {
             throw new CredentialsExpiredException("登录凭证已过期");
         }
 
-        if (trainingDynamic == null){
+        if (communicationTeaching == null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("操作失败，对象不能为空");
             return ajaxJson;
 
         }
         //更新操作
-        TrainingDynamic newTD = trainingDynamicService.getTrainingDynamicById(trainingDynamic.getId());
+        CommunicationTeaching newTD = communicationTeachingService.getCommunicationTeachingById(communicationTeaching.getId());
         if (newTD == null){
             throw new UpdateException("更新失败，对象不存在或已被删除");
         }
-        newTD.setTitle(trainingDynamic.getTitle());
-        newTD.setRemarks(trainingDynamic.getRemarks());
-        newTD.setContent(trainingDynamic.getContent());
-        newTD.setImgs(trainingDynamic.getImgs());
+        newTD.setTitle(communicationTeaching.getTitle());
+        newTD.setRemarks(communicationTeaching.getRemarks());
+        newTD.setContent(communicationTeaching.getContent());
+        newTD.setImgs(communicationTeaching.getImgs());
         newTD.setUpdateDate(new Date());
         newTD.setUpdateUserId(user.getId());
 
-        res=trainingDynamicService.update(newTD);
+        res=communicationTeachingService.update(newTD);
         if (res == 0){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("操作失败，请重试");
@@ -205,14 +208,14 @@ public class TrainingDynamicController {
             return ajaxJson;
         }
         //资料添加
-        TrainingDynamic trainingDynamic = new TrainingDynamic();
-        trainingDynamic.setId(UUID.randomUUID().toString());
-        trainingDynamic.setImgs(imgs);
-        trainingDynamic.setContent(content);
-        trainingDynamic.setRemarks(remarks);
-        trainingDynamic.setCreateUserId(user.getId());
-        trainingDynamic.setCreateDate(new Date());
-        Integer add = trainingDynamicService.add(trainingDynamic);
+        CommunicationTeaching communicationTeaching = new CommunicationTeaching();
+        communicationTeaching.setId(UUID.randomUUID().toString());
+        communicationTeaching.setImgs(imgs);
+        communicationTeaching.setContent(content);
+        communicationTeaching.setRemarks(remarks);
+        communicationTeaching.setCreateUserId(user.getId());
+        communicationTeaching.setCreateDate(new Date());
+        Integer add = communicationTeachingService.add(communicationTeaching);
         if (add==1){
             ajaxJson.setCode(1);
             ajaxJson.setMsg("添加成功");
@@ -234,7 +237,7 @@ public class TrainingDynamicController {
             return ajaxJson;
         }
 
-        Integer delete = trainingDynamicService.batchDelete(ids);
+        Integer delete = communicationTeachingService.batchDelete(ids);
         if (delete==1){
             ajaxJson.setCode(1);
             ajaxJson.setMsg("删除成功");

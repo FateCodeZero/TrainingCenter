@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.VideoTeachingMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="videoTeachingcolumns">
+      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+    </sql>
+
+    <!-- public VideoTeaching getVideoTeachingById(@Param("id") String id);
+        通过id获取动态培训
+    -->
+    <select id="getVideoTeachingById" resultType="com.trainingcenter.bean.VideoTeaching">
+        SELECT <include refid="videoTeachingcolumns"></include>
+        FROM tab_video_teaching
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<VideoTeaching> getVideoTeachings(Integer start, Integer number, String searchContent);
+        分页查询所有动态培训
+    -->
+    <select id="getVideoTeachings" resultType="com.trainingcenter.bean.VideoTeaching">
+        SELECT <include refid="videoTeachingcolumns"></include>
+        FROM tab_video_teaching
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and (
+                title like CONCAT('%',#{searchContent},'%') OR
+                content like CONCAT('%',#{searchContent},'%') OR
+                remarks like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("videoTeaching") VideoTeaching videoTeaching;
+    动态培训添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.VideoTeaching">
+        INSERT INTO tab_video_teaching(<include refid="videoTeachingcolumns"></include>)
+        VALUES (#{videoTeaching.id},#{videoTeaching.title},#{videoTeaching.imgs},#{videoTeaching.content},#{videoTeaching.remarks},#{videoTeaching.createUserId},#{videoTeaching.createDate},
+        #{videoTeaching.updateUserId},#{videoTeaching.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("videoTeaching") VideoTeaching videoTeaching);
+            更新动态培训信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.VideoTeaching">
+        UPDATE tab_video_teaching
+        <trim prefix="set" suffixOverrides=",">
+            <if test="videoTeaching.title != null and videoTeaching.title != '' ">
+                title = #{videoTeaching.title},
+            </if>
+            <if test="videoTeaching.imgs != null and videoTeaching.imgs != '' ">
+                imgs = #{videoTeaching.imgs},
+            </if>
+            <if test="videoTeaching.content != null and videoTeaching.content != '' ">
+                content = #{videoTeaching.content},
+            </if>
+            <if test="videoTeaching.remarks != null and videoTeaching.remarks != '' ">
+                remarks = #{videoTeaching.remarks},
+            </if>
+            <if test="videoTeaching.createUserId != null and videoTeaching.createUserId != '' ">
+                create_user_id = #{videoTeaching.createUserId},
+            </if>
+            <if test="videoTeaching.createDate != null and videoTeaching.createDate != '' ">
+                create_date = #{videoTeaching.createDate},
+            </if>
+            <if test="videoTeaching.updateUserId != null and videoTeaching.updateUserId != '' ">
+                update_user_id = #{videoTeaching.updateUserId},
+            </if>
+            <if test="videoTeaching.updateDate != null and videoTeaching.updateDate != '' ">
+                update_date = #{videoTeaching.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{videoTeaching.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除动态培训
+       -->
+    <delete id="delete">
+        DELETE FROM tab_video_teaching
+        WHERE id = #{id}
+    </delete>
+</mapper>
