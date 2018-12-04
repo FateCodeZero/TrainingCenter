@@ -16,7 +16,7 @@
     -->
     <select id="getRevolutionarySiteById" resultType="com.trainingcenter.bean.RevolutionarySite">
         SELECT <include refid="revolutionarySitecolumns"></include>
-        FROM tab_training_dynamic
+        FROM tab_revolutionary_site
         WHERE id = #{id}
     </select>
 
@@ -25,7 +25,7 @@
     -->
     <select id="getRevolutionarySites" resultType="com.trainingcenter.bean.RevolutionarySite">
         SELECT <include refid="revolutionarySitecolumns"></include>
-        FROM tab_training_dynamic
+        FROM tab_revolutionary_site
         <trim prefix="WHERE" prefixOverrides="and">
             <if test="searchContent != null and searchContent != ''">
                 and (
@@ -45,7 +45,7 @@
     动态培训添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
     -->
     <insert id="add" parameterType="com.trainingcenter.bean.RevolutionarySite">
-        INSERT INTO tab_training_dynamic(<include refid="revolutionarySitecolumns"></include>)
+        INSERT INTO tab_revolutionary_site(<include refid="revolutionarySitecolumns"></include>)
         VALUES (#{revolutionarySite.id},#{revolutionarySite.title},#{revolutionarySite.imgs},#{revolutionarySite.content},#{revolutionarySite.remarks},#{revolutionarySite.createUserId},#{revolutionarySite.createDate},
         #{revolutionarySite.updateUserId},#{revolutionarySite.updateDate})
     </insert>
@@ -55,7 +55,7 @@
             更新动态培训信息
             -->
     <update id="update" parameterType="com.trainingcenter.bean.RevolutionarySite">
-        UPDATE tab_training_dynamic
+        UPDATE tab_revolutionary_site
         <trim prefix="set" suffixOverrides=",">
             <if test="revolutionarySite.title != null and revolutionarySite.title != '' ">
                 title = #{revolutionarySite.title},
@@ -91,7 +91,7 @@
        通过id删除动态培训
        -->
     <delete id="delete">
-        DELETE FROM tab_training_dynamic
+        DELETE FROM tab_revolutionary_site
         WHERE id = #{id}
     </delete>
 </mapper>
