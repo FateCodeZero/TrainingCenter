@@ -51,7 +51,7 @@
     <insert id="add" parameterType="com.trainingcenter.bean.StudentMien">
         INSERT INTO tab_student_mien(<include refid="studentmiencolumns"></include>)
         VALUES (#{studentMien.id},#{studentMien.title},#{studentMien.content},#{studentMien.imgs},#{studentMien.remarks},#{studentMien.createUserId},#{studentMien.createDate},
-        #{studentMien.updateUserId},#{studentMien.updateDate}
+        #{studentMien.updateUserId},#{studentMien.updateDate})
     </insert>
 
     <!--
