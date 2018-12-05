@@ -47,7 +47,7 @@
     <insert id="add" parameterType="com.trainingcenter.bean.BestStudent">
         INSERT INTO tab_best_student(<include refid="bestStudentcolumns"></include>)
         VALUES (#{bestStudent.id},#{bestStudent.title},#{bestStudent.content},#{bestStudent.imgs},#{bestStudent.remarks},#{bestStudent.createUserId},#{bestStudent.createDate},
-        #{bestStudent.updateUserId},#{bestStudent.updateDate}
+        #{bestStudent.updateUserId},#{bestStudent.updateDate})
     </insert>
 
     <!--

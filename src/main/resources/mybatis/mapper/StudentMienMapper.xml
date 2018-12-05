@@ -58,17 +58,17 @@
             public Integer update(@Param("studentmien") StudentMien studentmien);
             更新学院风采信息
             -->
-    <update id="update" parameterType="com.trainingcenter.bean.StudentMien">
+    <update id="update" parameterType="com.trainingcenter.bean.NewsInfo">
         UPDATE tab_student_mien
         <trim prefix="set" suffixOverrides=",">
             <if test="studentMien.title != null and studentMien.title != '' ">
                 title = #{studentMien.title},
             </if>
-            <if test="studentMien.content != null and studentMien.content != '' ">
-                content = #{studentMien.content},
-            </if>
             <if test="studentMien.imgs != null and studentMien.imgs != '' ">
                 imgs = #{studentMien.imgs},
+            </if>
+            <if test="studentMien.content != null and studentMien.content != '' ">
+                content = #{studentMien.content},
             </if>
             <if test="studentMien.remarks != null and studentMien.remarks != '' ">
                 remarks = #{studentMien.remarks},
@@ -76,13 +76,13 @@
             <if test="studentMien.createUserId != null and studentMien.createUserId != '' ">
                 create_user_id = #{studentMien.createUserId},
             </if>
-            <if test="studentMien.createDate != null' ">
+            <if test="studentMien.createDate != null">
                 create_date = #{studentMien.createDate},
             </if>
             <if test="studentMien.updateUserId != null and studentMien.updateUserId != '' ">
                 update_user_id = #{studentMien.updateUserId},
             </if>
-            <if test="studentMien.updateDate != null  ">
+            <if test="studentMien.updateDate != null">
                 update_date = #{studentMien.updateDate},
             </if>
 
