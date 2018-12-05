@@ -256,19 +256,27 @@ public class UserController {
     /*@PreAuthorize("hasPermission('/webpages/user/update.jsp','UPDATE')")*/
     @ResponseBody
     @RequestMapping(value = "/update")
-    public AjaxJson update(@Validated(value = {TC_Update.class}) User user, HttpServletRequest request) {
+    public AjaxJson update(User user, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
 
         //更新结果
         Integer res;
-        if (user == null || StringUtil.isEmpty(user.getId()) || StringUtil.isEmpty(user.getUsername())) {
+        //id与username不能都为空
+        if (user == null || (StringUtil.isEmpty(user.getId()) && StringUtil.isEmpty(user.getUsername()))) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("更新失败，请先选择更新对象");
             return ajaxJson;
         }
 
         //从数据库读取旧的对象进行更新
-        User oldUser = userService.getUserByUsername(user.getUsername());
+        User oldUser;
+        if (StringUtil.isNotEmpty(user.getId())){
+            //按id查找
+            oldUser = userService.getUserById(user.getId());
+        }else {
+            //按 username 查找
+            oldUser = userService.getUserByUsername(user.getUsername());
+        }
         if (oldUser == null) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("更新失败，对象不存在或已被删除");

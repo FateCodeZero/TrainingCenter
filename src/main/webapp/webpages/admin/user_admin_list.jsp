@@ -295,11 +295,7 @@
     }
 
     function editData(id) {
-        layer.alert('此功能尚有缺陷，暂不能用哟亲~', {
-            time: 3000,
-            icon: 2
-        });
-        /*layer.open({
+        layer.open({
             title: '编辑角色',
             type: 2,
             area: ['1000px', '450px'],
@@ -312,7 +308,7 @@
             end: function () {
                 location.reload(); //回调函数，刷新页面
             }
-        });*/
+        });
     }
 
     //获取弹出窗口返回的json格式的数据

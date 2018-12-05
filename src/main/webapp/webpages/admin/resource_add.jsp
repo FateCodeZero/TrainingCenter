@@ -26,19 +26,7 @@
     <div class="col-sm-1"></div>
     <div class="text-left col-sm-10 panel panel-primary">
         <br>
-        <form class="form-horizontal" role="form" action="">
-            <div class="form-group">
-                <label for="parentId" class="col-sm-2 control-label">父级菜单</label>
-                <div class="col-sm-8">
-                    <input type="hidden" name="parentId" id="parentId"/>
-                    <input type="text" class="form-control" name="parentName" id="parentName" value=""
-                           disabled="disabled"
-                           placeholder="选择父级菜单，顶级菜单为管理系统首页">
-                </div>
-                <div class="col-sm-2">
-                    <button id="parentResource_btn" class="layui-btn layui-btn-sm">选择父级菜单</button>
-                </div>
-            </div>
+        <div class="form-horizontal">
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">菜单名称</label>
                 <div class="col-sm-10">
@@ -49,6 +37,18 @@
                 <label for="url" class="col-sm-2 control-label">URL</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" name="url" id="url" value="" placeholder="请填写菜单URL">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="parentId" class="col-sm-2 control-label">父级菜单</label>
+                <div class="col-sm-8">
+                    <input type="hidden" name="parentId" id="parentId"/>
+                    <input type="text" class="form-control" name="parentName" id="parentName" value=""
+                           disabled="disabled"
+                           placeholder="选择父级菜单，顶级菜单为管理系统首页">
+                </div>
+                <div class="col-sm-2">
+                    <button id="parentResource_btn" class="layui-btn layui-btn-sm">选择父级菜单</button>
                 </div>
             </div>
             <div class="form-group">
@@ -97,7 +97,7 @@
                     <button type="button" class="layui-btn layui-btn-normal col-sm-4" id="close">关闭并回返</button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
     <div class="col-sm-1"></div>
 </div>

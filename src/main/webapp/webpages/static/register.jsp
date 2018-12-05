@@ -44,113 +44,74 @@
     </div>
 </body>
 <script type="text/javascript">
-    /**
-     邮箱： 第一部分@第二部分
-     第一部分 ： 由字母、数字、下划线、短线 - 、点号 . 组成
-     第二部分： 域名，域名由字母、数字、短线 - 域名后缀组成
-     * */
-    //验证邮箱
-    function checkEmail(str) {
-        var emailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-        if (emailReg.test(str)){
-            return true;
-        }else {
-            return false;
-        }
-    }
-
-    /**
-     ^ 1 以数字1 开头
-     [3-578] 手机号第二位允许是 3 、4 、5、6、7、8 中的任意一位
-     \d{9} 任意9位数字组合
-     $ 只能以数字作为结尾
-     **/
-    //验证手机号
-    function checkPhone(str) {
-        var phoneReg = /^1[345678]\d{9}$/;
-        if (phoneReg.test(str)){
-            return true;
-        }else {
-            return false;
-        }
-    }
 
     $(document).ready( function(){
-        /*验证用户名*/
-        $("#username").blur(function () {
-            var username = $("#username").val();
-            if (username === null || username === '') {
-                $("#usernameMsg").html("<span style='color:#FF5722'>账号不能为空！</span>");
+    });
+
+    /*验证用户名*/
+    $("#username").blur(function () {
+        var username = $("#username").val();
+        var msg = '';
+        if (username === null || username === '') {
+            msg = '账号不能为空';
+            $("#usernameMsg").html("<span style='color:#FF5722'>"+msg+"</span>");
+            $("#username").css("border", "1px solid red");
+        } else {
+            $("#usernameMsg").html("");
+            msg = '账号不是合法的手机号或者邮箱';
+
+            if(!usernameCheck(username.trim())) {
+                $("#usernameMsg").html("<span style='color:#FF5722'>"+msg+"</span>");
                 $("#username").css("border", "1px solid red");
-            } else {
+            }else {
                 $("#usernameMsg").html("");
-                if(!checkPhone($("#username").val().trim()) && !checkEmail($("#username").val().trim()))
-                {
-                    $("#usernameMsg").html("<span style='color:#FF5722'>账号必须为手机号或者邮箱！</span>");
-                    $("#username").css("border", "1px solid red");
-                }else {
-                    $("#usernameMsg").html("");
-                    $("#username").css("border", "1px solid #009688");
 
-                    var data = {
-                        username:username
-                    };
-                    $.ajax({
-                        url: "${webRoot}/user/usernameCheck",
-                        type: "post",
-                        data: data,
-                        dataType: "json",
-                        success: function (data) {
-                            var jsonData = eval(data);   //数据解析
-                            var code = jsonData.code;
-                            var msg = jsonData.msg;
+                var data = {
+                    username:username
+                };
+                $.ajax({
+                    url: "${webRoot}/user/usernameCheck",
+                    type: "get",
+                    data: data,
+                    dataType: "json",
+                    success: function (data) {
+                        var jsonData = eval(data);   //数据解析
+                        var code = jsonData.code;
+                        var msg = jsonData.msg;
 
-                            if (code === 1) {
-                                $("#usernameMsg").html('<span style="color:#009688">'+msg+'</span>');
-                                $("#username").css("border", "1px solid #009688");
-                            }else {
-                                $("#usernameMsg").html('<span style="color:#FF5722">'+msg+'</span>');
-                                $("#username").css("border", "1px solid red");
-                            }
+                        if (code === 1) {
+                            $("#usernameMsg").html('<span style="color:#009688">'+msg+'</span>');
+                            $("#username").css("border", "1px solid #009688");
+                        }else {
+                            $("#usernameMsg").html('<span style="color:#FF5722">'+msg+'</span>');
+                            $("#username").css("border", "1px solid red");
                         }
-                    });
-                }
+                    }
+                });
             }
-        });
+        }
+    });
 
-        /*验证密码不能为空*/
-        $("#password").blur(function () {
-            if ($("#password").val() == "") {
-                $("#passwordMsg").html("<span style='color:#FF5722'>密码不能为空！</span>");
+    /*验证密码*/
+    $("#password").blur(function () {
+        var password = $("#password").val();
+        var msg = '';
+        if (password === null || password === '') {
+            msg = '密码不能为空';
+            $("#passwordMsg").html("<span style='color:#FF5722'>"+msg+"</span>");
+            $("#password").css("border", "1px solid red");
+        } else {
+            $("#passwordMsg").html("");
+            msg = '密码需以字母开头，且长度是6~18位,只能包含字母、数字和下划线';
+
+            if(!passwordCheck(password.trim())) {
+                $("#passwordMsg").html("<span style='color:#FF5722'>"+msg+"</span>");
                 $("#password").css("border", "1px solid red");
-            } else {
+            }else {
                 $("#passwordMsg").html("");
                 $("#password").css("border", "1px solid #009688");
             }
-        });
-        /*验证重复密码不能为空*/
-        $("#rePassword").blur(function () {
-            if ($("#rePassword").val() == "") {
-                $("#rePasswordMsg").html("<span style='color:#FF5722'>密码不能为空！</span>");
-                $("#rePassword").css("border", "1px solid red");
-            } else {
-                $("#rePasswordMsg").html("");
-                $("#rePassword").css("border", "1px solid #009688");
-            }
-        });
-
-        /*密码一致性验证*/
-        $("#rePassword").blur(function () {
-            if ($("#rePassword").val() !== $("#password").val() ) {
-                $("#rePasswordMsg").html("<span style='color:#FF5722'>两次密码输入不一致！</span>");
-                $("#password").css("border", "1px solid red");
-                $("#rePassword").css("border", "1px solid red");
-            } else {
-                $("#rePasswordMsg").html("");
-                $("#password").css("border", "1px solid #009688");
-                $("#rePassword").css("border", "1px solid #009688");
-            }
-        });
+        }
     });
 
     //提交
@@ -159,38 +120,73 @@
         var password = $("#password").val();
         var rePassword = $("#rePassword").val();
 
+        var msg = null;
         if (username === null || username === "") {
-            layer.msg("请添加管理员账号！", {
+            msg = '<span style="color: #FF5722;">请先填写管理员账号</span>';
+            layer.msg(msg, {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
             });
+            $("#usernameMsg").html(msg);
             $("#username").css("border", "1px solid red");
             return false;
         } else {
-            $("#username").css("border", "1px solid #009688");
+            $("#usernameMsg").html('');
+            if(!usernameCheck(username.trim())) {
+                msg = '<span style="color: #FF5722;">账号不是合法的手机号或者邮箱</span>';
+                layer.msg(msg, {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                $("#usernameMsg").html(msg);
+                $("#username").css("border", "1px solid red");
+                return false;
+            }else {
+                $("#usernameMsg").html('');
+                $("#username").css("border", "1px solid #009688");
+            }
         }
         if (password === null || password === "") {
-            layer.msg("请填写管理员密码！", {
+            msg = '<span style="color: #FF5722;">密码不能为空</span>';
+            layer.msg(msg, {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
             });
+            $("#passwordMsg").html(msg);
             $("#password").css("border", "1px solid red");
             return false;
         } else {
-            $("#password").css("border", "1px solid #009688");
+            $("#passwordMsg").html('');
+            if(!passwordCheck(password.trim())) {
+                msg = '<span style="font-size: large">密码格式不安全</span>';
+                layer.msg(msg, {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                var tip = '<span style="color: #FF5722">密码需以字母开头，且长度是6~18位,只能包含字母、数字和下划线</span>'
+                $("#passwordMsg").html(tip);
+                $("#password").css("border", "1px solid red");
+                return false;
+            }else {
+                $("#passwordMsg").html('');
+                $("#password").css("border", "1px solid #009688");
+            }
         }
 
         if (password !== rePassword) {
-            layer.msg("两次密码输入不一致！", {
+            msg = '<span style="color: #FF5722;">两次密码输入不一致</span>';
+            layer.msg(msg, {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
             });
             $("#password").css("border", "1px solid red");
             $("#rePassword").css("border", "1px solid red");
+            $("#rePasswordMsg").html(msg);
             return false;
         } else {
             $("#password").css("border", "1px solid #009688");
             $("#rePassword").css("border", "1px solid #009688");
+            $("#rePasswordMsg").html('');
         }
 
         //Restful风格的get请求
@@ -241,5 +237,58 @@
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index); //再执行关闭
     });
+
+    /**
+     * 账号合法性验证
+     * */
+    function usernameCheck(username) {
+        if (!(checkEmail(username) || checkPhone(username))){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 密码合法性验证
+     * 以字母开头，长度在6-18之间，只能包含字符、数字和下划线。
+     * */
+    function passwordCheck(password) {
+        var usernameReg = /^[a-zA-Z]\w{5,17}$/;
+        if (usernameReg.test(password)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     邮箱验证： 第一部分@第二部分
+     第一部分 ： 由字母、数字、下划线、短线 - 、点号 . 组成
+     第二部分： 域名，域名由字母、数字、短线 - 域名后缀组成
+     * */
+    function checkEmail(str) {
+        var emailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        if (emailReg.test(str)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * 手机号验证：
+     ^ 1 以数字1 开头
+     [3-578] 手机号第二位允许是 3 、4 、5、6、7、8 中的任意一位
+     \d{9} 任意9位数字组合
+     $ 只能以数字作为结尾
+     **/
+    function checkPhone(str) {
+        var phoneReg = /^1[345678]\d{9}$/;
+        if (phoneReg.test(str)){
+            return true;
+        }else {
+            return false;
+        }
+    }
 </script>
 </html>

@@ -27,7 +27,13 @@
     <div class="col-sm-1"></div>
     <div class="text-left col-sm-10 panel panel-primary">
         <br>
-        <form class="form-horizontal" role="form" action="">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">权限名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="name" id="name" value="" placeholder="请填写权限名称">
+                </div>
+            </div>
             <div class="form-group">
                 <label for="resourceId" class="col-sm-2 control-label">权限对应资源</label>
                 <div class="col-sm-8">
@@ -36,12 +42,6 @@
                 </div>
                 <div class="col-sm-2">
                     <button id="selectResource_btn" class="layui-btn layui-btn-sm">选择资源</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="name" class="col-sm-2 control-label">权限名称</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="name" id="name" value="" placeholder="请填写权限名称">
                 </div>
             </div>
             <div class="form-group">
@@ -87,7 +87,7 @@
                     <button type="button" class="layui-btn layui-btn-normal col-sm-4" id="close">关闭并回返</button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
     <div class="col-sm-1"></div>
 </div>

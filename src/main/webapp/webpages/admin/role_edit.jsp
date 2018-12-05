@@ -27,7 +27,7 @@
     <div class="col-sm-1"></div>
     <div class="text-left col-sm-10 panel panel-primary">
         <br>
-        <form class="form-horizontal" role="form" action="">
+        <div class="form-horizontal" role="form" action="">
             <input type="hidden" value="" name="id" id="id">
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">角色名称</label>
@@ -66,7 +66,7 @@
                     <button type="button" class="layui-btn layui-btn-normal col-sm-4" id="close">关闭并回返</button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
     <div class="col-sm-1"></div>
 </div>

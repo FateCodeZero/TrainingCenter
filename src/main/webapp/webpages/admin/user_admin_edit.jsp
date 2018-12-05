@@ -28,18 +28,8 @@
     <div class="col-sm-1"></div>
     <div class="text-left col-sm-10 panel panel-primary">
         <br>
-        <form class="form-horizontal" role="form" action="">
-            <div class="form-group">
-                <label for="roleIds" class="col-sm-2 control-label">管理员角色</label>
-                <div class="col-sm-8">
-                    <input type="hidden" name="roleIds" id="roleIds"/>
-                    <input class="form-control" name="roleNames" id="roleNames" disabled="disabled"/>
-                    <div id="roleNamesMsg"></div>
-                </div>
-                <div class="col-sm-2">
-                    <button id="selectRole_btn" class="layui-btn layui-btn-sm">选择管理员角色</button>
-                </div>
-            </div>
+        <div class="form-horizontal">
+            <input type="hidden" id="id">
             <div class="form-group">
                 <label for="username" class="col-sm-2 control-label">管理员账号</label>
                 <div class="col-sm-10">
@@ -68,7 +58,7 @@
                     <button type="button" class="layui-btn layui-btn-normal col-sm-4" id="close">关闭并回返</button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
     <div class="col-sm-1"></div>
 </div>
@@ -92,86 +82,127 @@
         editDataInitialization(user,roles);
     });
 
-    /*选择角色*/
-    $("#selectRole_btn").click(function () {
-        parent.layer.open({		//从本页的父页面打开
-            title: '选择角色',
-            type: 2,
-            area: ['1000px', '500px'],
-            fix: false, //不固定
-            maxmin: true,
-            content: '${webRoot}/webpages/admin/role_select.jsp',
-            success: function (layero, index) {
-                /*初始化编辑数据*/
-                editDataInitialization(user,roles);
+    /*验证密码*/
+    $("#password").blur(function () {
+        var password = $("#password").val();
+        var msg = '';
+        if (password === null || password === '') {
+            msg = '密码不能为空';
+            $("#passwordMsg").html("<span style='color:#FF5722'>"+msg+"</span>");
+            $("#password").css("border", "1px solid red");
+        } else {
+            $("#passwordMsg").html("");
+            msg = '密码需以字母开头，且长度是6~18位,只能包含字母、数字和下划线';
+
+            if(!passwordCheck(password.trim())) {
+                $("#passwordMsg").html("<span style='color:#FF5722'>"+msg+"</span>");
+                $("#password").css("border", "1px solid red");
+            }else {
+                $("#passwordMsg").html("");
+                $("#password").css("border", "1px solid #009688");
             }
-        });
+        }
     });
-    //设置资源的值，此方法由该弹出窗口的父窗口调用
-    function setRoleData(jsonData) {
-        $("#roleIds").val(jsonData.id);
-        $("#roleNames").val(jsonData.name);
-    }
 
     //提交
     $("#submit").click(function () {
+        var id = $("#id").val();
         var roleIds = $("#roleIds").val();
         var username = $("#username").val();
         var password = $("#password").val();
         var rePassword = $("#rePassword").val();
 
+        var msg = null;
         if (roleIds === null || roleIds === "") {
-            layer.msg("请先选择要授给该管理员的角色！", {
+            msg = '<span style="color: #FF5722;">请先选择要授给该管理员的角色</span>';
+            layer.msg(msg, {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
             });
+            $("#roleNamesMsg").html(msg);
             $("#roleNames").css("border", "1px solid red");  //输入错误，输入框变红
             return false;
         } else {
+            $("#roleNamesMsg").html('');
             $("#roleNames").css("border", "1px solid #009688");
         }
         if (username === null || username === "") {
-            layer.msg("请添加管理员账号！", {
+            msg = '<span style="color: #FF5722;">请先填写管理员账号</span>';
+            layer.msg(msg, {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
             });
+            $("#usernameMsg").html(msg);
             $("#username").css("border", "1px solid red");
             return false;
         } else {
-            $("#username").css("border", "1px solid #009688");
+            $("#usernameMsg").html('');
+            if(!usernameCheck(username.trim())) {
+                msg = '<span style="color: #FF5722;">账号不是合法的手机号或者邮箱</span>';
+                layer.msg(msg, {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                $("#usernameMsg").html(msg);
+                $("#username").css("border", "1px solid red");
+                return false;
+            }else {
+                $("#usernameMsg").html('');
+                $("#username").css("border", "1px solid #009688");
+            }
         }
         if (password === null || password === "") {
-            layer.msg("请填写管理员密码！", {
+            msg = '<span style="color: #FF5722;">密码不能为空</span>';
+            layer.msg(msg, {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
             });
+            $("#passwordMsg").html(msg);
             $("#password").css("border", "1px solid red");
             return false;
         } else {
-            $("#password").css("border", "1px solid #009688");
+            $("#passwordMsg").html('');
+            if(!passwordCheck(password.trim())) {
+                msg = '<span style="font-size: large">密码格式不安全</span>';
+                layer.msg(msg, {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                var tip = '<span style="color: #FF5722">密码需以字母开头，且长度是6~18位,只能包含字母、数字和下划线</span>'
+                $("#passwordMsg").html(tip);
+                $("#password").css("border", "1px solid red");
+                return false;
+            }else {
+                $("#passwordMsg").html('');
+                $("#password").css("border", "1px solid #009688");
+            }
         }
 
         if (password !== rePassword) {
-            layer.msg("两次密码输入不一致！", {
+            msg = '<span style="color: #FF5722;">两次密码输入不一致</span>';
+            layer.msg(msg, {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
             });
             $("#password").css("border", "1px solid red");
             $("#rePassword").css("border", "1px solid red");
+            $("#rePasswordMsg").html(msg);
             return false;
         } else {
             $("#password").css("border", "1px solid #009688");
             $("#rePassword").css("border", "1px solid #009688");
+            $("#rePasswordMsg").html('');
         }
 
         var data = {
+            id:id,
             roleIds: roleIds,
             username: username,
             password: password,
             rePassword: rePassword
         };
         $.ajax({
-            url: "${webRoot}/user/adminAdd",
+            url: "${webRoot}/user/update",
             type: "post",
             data: data,
             dataType: "json",
@@ -314,53 +345,34 @@
         $("#roleNames").val(roleNames);
     }
 
-    /*验证用户名*/
-    $("#username").blur(function () {
-        var username = $("#username").val();
-        if (username === null || username === '') {
-            $("#usernameMsg").html("<span style='color:#FF5722'>账号不能为空！</span>");
-            $("#username").css("border", "1px solid red");
-        } else {
-            $("#usernameMsg").html("");
-            if(!checkPhone($("#username").val().trim()) && !checkEmail($("#username").val().trim()))
-            {
-                $("#usernameMsg").html("<span style='color:#FF5722'>账号必须为手机号或者邮箱！</span>");
-                $("#username").css("border", "1px solid red");
-            }else {
-                $("#usernameMsg").html("");
-
-                var data = {
-                    username:username
-                };
-                $.ajax({
-                    url: "${webRoot}/user/usernameCheck",
-                    type: "get",
-                    data: data,
-                    dataType: "json",
-                    success: function (data) {
-                        var jsonData = eval(data);   //数据解析
-                        var code = jsonData.code;
-                        var msg = jsonData.msg;
-
-                        if (code === 1) {
-                            $("#usernameMsg").html('<span style="color:#009688">'+msg+'</span>');
-                            $("#username").css("border", "1px solid #009688");
-                        }else {
-                            $("#usernameMsg").html('<span style="color:#FF5722">'+msg+'</span>');
-                            $("#username").css("border", "1px solid red");
-                        }
-                    }
-                });
-            }
+    /**
+     * 账号合法性验证
+     * */
+    function usernameCheck(username) {
+        if (!(checkEmail(username) || checkPhone(username))){
+            return false;
         }
-    });
+        return true;
+    }
 
     /**
-     邮箱： 第一部分@第二部分
+     * 密码合法性验证
+     * 以字母开头，长度在6-18之间，只能包含字符、数字和下划线。
+     * */
+    function passwordCheck(password) {
+        var usernameReg = /^[a-zA-Z]\w{5,17}$/;
+        if (usernameReg.test(password)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     邮箱验证： 第一部分@第二部分
      第一部分 ： 由字母、数字、下划线、短线 - 、点号 . 组成
      第二部分： 域名，域名由字母、数字、短线 - 域名后缀组成
      * */
-    //验证邮箱
     function checkEmail(str) {
         var emailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
         if (emailReg.test(str)){
@@ -371,12 +383,12 @@
     }
 
     /**
+     * 手机号验证：
      ^ 1 以数字1 开头
      [3-578] 手机号第二位允许是 3 、4 、5、6、7、8 中的任意一位
      \d{9} 任意9位数字组合
      $ 只能以数字作为结尾
      **/
-    //验证手机号
     function checkPhone(str) {
         var phoneReg = /^1[345678]\d{9}$/;
         if (phoneReg.test(str)){
@@ -385,7 +397,6 @@
             return false;
         }
     }
-
 </script>
 
 </html>
