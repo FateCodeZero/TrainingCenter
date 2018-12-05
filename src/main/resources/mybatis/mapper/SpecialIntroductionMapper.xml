@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.SpecialIntroductionMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="trainingdynamiccolumns">
+      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+    </sql>
+
+    <!-- public SpecialIntroduction getSpecialIntroductionById(@Param("id") String id);
+        通过id获取动态培训
+    -->
+    <select id="getSpecialIntroductionById" resultType="com.trainingcenter.bean.SpecialIntroduction">
+        SELECT <include refid="trainingdynamiccolumns"></include>
+        FROM tab_special_introduction
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<SpecialIntroduction> getSpecialIntroductions(Integer start, Integer number, String searchContent);
+        分页查询所有动态培训
+    -->
+    <select id="getSpecialIntroductions" resultType="com.trainingcenter.bean.SpecialIntroduction">
+        SELECT <include refid="trainingdynamiccolumns"></include>
+        FROM tab_special_introduction
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and (
+                title like CONCAT('%',#{searchContent},'%') OR
+                content like CONCAT('%',#{searchContent},'%') OR
+                remarks like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("specialIntroduction") SpecialIntroduction specialIntroduction;
+    动态培训添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.SpecialIntroduction">
+        INSERT INTO tab_special_introduction(<include refid="trainingdynamiccolumns"></include>)
+        VALUES (#{specialIntroduction.id},#{specialIntroduction.title},#{specialIntroduction.imgs},#{specialIntroduction.content},#{specialIntroduction.remarks},#{specialIntroduction.createUserId},#{specialIntroduction.createDate},
+        #{specialIntroduction.updateUserId},#{specialIntroduction.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("specialIntroduction") SpecialIntroduction specialIntroduction);
+            更新动态培训信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.SpecialIntroduction">
+        UPDATE tab_special_introduction
+        <trim prefix="set" suffixOverrides=",">
+            <if test="specialIntroduction.title != null and specialIntroduction.title != '' ">
+                title = #{specialIntroduction.title},
+            </if>
+            <if test="specialIntroduction.imgs != null and specialIntroduction.imgs != '' ">
+                imgs = #{specialIntroduction.imgs},
+            </if>
+            <if test="specialIntroduction.content != null and specialIntroduction.content != '' ">
+                content = #{specialIntroduction.content},
+            </if>
+            <if test="specialIntroduction.remarks != null and specialIntroduction.remarks != '' ">
+                remarks = #{specialIntroduction.remarks},
+            </if>
+            <if test="specialIntroduction.createUserId != null and specialIntroduction.createUserId != '' ">
+                create_user_id = #{specialIntroduction.createUserId},
+            </if>
+            <if test="specialIntroduction.createDate != null ">
+                create_date = #{specialIntroduction.createDate},
+            </if>
+            <if test="specialIntroduction.updateUserId != null and specialIntroduction.updateUserId != '' ">
+                update_user_id = #{specialIntroduction.updateUserId},
+            </if>
+            <if test="specialIntroduction.updateDate != null ">
+                update_date = #{specialIntroduction.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{specialIntroduction.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除动态培训
+       -->
+    <delete id="delete">
+        DELETE FROM tab_special_introduction
+        WHERE id = #{id}
+    </delete>
+</mapper>

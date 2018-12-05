@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.AboutMeMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="trainingdynamiccolumns">
+      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+    </sql>
+
+    <!-- public AboutMe getAboutMeById(@Param("id") String id);
+        通过id获取动态培训
+    -->
+    <select id="getAboutMeById" resultType="com.trainingcenter.bean.AboutMe">
+        SELECT <include refid="trainingdynamiccolumns"></include>
+        FROM tab_about_me
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<AboutMe> getAboutMes(Integer start, Integer number, String searchContent);
+        分页查询所有动态培训
+    -->
+    <select id="getAboutMes" resultType="com.trainingcenter.bean.AboutMe">
+        SELECT <include refid="trainingdynamiccolumns"></include>
+        FROM tab_about_me
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="searchContent != null and searchContent != ''">
+                and (
+                title like CONCAT('%',#{searchContent},'%') OR
+                content like CONCAT('%',#{searchContent},'%') OR
+                remarks like CONCAT('%',#{searchContent},'%')
+                )
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("aboutMe") AboutMe aboutMe;
+    动态培训添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.AboutMe">
+        INSERT INTO tab_about_me(<include refid="trainingdynamiccolumns"></include>)
+        VALUES (#{aboutMe.id},#{aboutMe.title},#{aboutMe.imgs},#{aboutMe.content},#{aboutMe.remarks},#{aboutMe.createUserId},#{aboutMe.createDate},
+        #{aboutMe.updateUserId},#{aboutMe.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("aboutMe") AboutMe aboutMe);
+            更新动态培训信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.AboutMe">
+        UPDATE tab_about_me
+        <trim prefix="set" suffixOverrides=",">
+            <if test="aboutMe.title != null and aboutMe.title != '' ">
+                title = #{aboutMe.title},
+            </if>
+            <if test="aboutMe.imgs != null and aboutMe.imgs != '' ">
+                imgs = #{aboutMe.imgs},
+            </if>
+            <if test="aboutMe.content != null and aboutMe.content != '' ">
+                content = #{aboutMe.content},
+            </if>
+            <if test="aboutMe.remarks != null and aboutMe.remarks != '' ">
+                remarks = #{aboutMe.remarks},
+            </if>
+            <if test="aboutMe.createUserId != null and aboutMe.createUserId != '' ">
+                create_user_id = #{aboutMe.createUserId},
+            </if>
+            <if test="aboutMe.createDate != null ">
+                create_date = #{aboutMe.createDate},
+            </if>
+            <if test="aboutMe.updateUserId != null and aboutMe.updateUserId != '' ">
+                update_user_id = #{aboutMe.updateUserId},
+            </if>
+            <if test="aboutMe.updateDate != null ">
+                update_date = #{aboutMe.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{aboutMe.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除动态培训
+       -->
+    <delete id="delete">
+        DELETE FROM tab_about_me
+        WHERE id = #{id}
+    </delete>
+</mapper>
