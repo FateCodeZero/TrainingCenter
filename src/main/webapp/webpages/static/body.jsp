@@ -39,21 +39,21 @@
                 <div style="background-image: url(${webRoot}/webpages/static/images/img_bg1.PNG)" class="scroll_map">
                         <div class="scrolls_map_text text-center">
                             <h1 class="myh1">梦  润，  知  识  从  未  如  此  有  趣</h1>
-                            <h3 class="myh3">卓越人生，从梦润起航，梦润新世界 <a href="${webRoot}/webpages/static/pages/characteristicCourses/experientialTeaching.jsp" class="myh3 a_study">全新的学习方式</a></h3>
-                            <p><a class="btn btn-primary btn-lg btn-learn btn_study" href="${webRoot}/webpages/static/pages/characteristicCourses/experientialTeaching.jsp">开 启 学 习！</a></p>
+                            <h3 class="myh3">卓越人生，从梦润起航，梦润新世界 <a href="${webRoot}/webpages/static/experientialTeaching.jsp" class="myh3 a_study">全新的学习方式</a></h3>
+                            <p><a class="btn btn-primary btn-lg btn-learn btn_study" href="${webRoot}/webpages/static/experientialTeaching.jsp">开 启 学 习！</a></p>
                         </div>
                 </div>
                 <div style="background-image: url(${webRoot}/webpages/static/images/img_bg3.PNG)" class="scroll_map">
                     <div class="scrolls_map_text text-center">
                         <h1 class="myh1">赋  能  人  才，从  这  里  开  始</h1>
-                        <h3 class="myh3">卓越人生，从梦润起航，梦润新世界  <a href="${webRoot}/webpages/static/pages/characteristicCourses/experientialTeaching.jsp" class="myh3 a_study">全新的学习方式</a></h3>
+                        <h3 class="myh3">卓越人生，从梦润起航，梦润新世界  <a href="${webRoot}/webpages/static/experientialTeaching.jsp" class="myh3 a_study">全新的学习方式</a></h3>
                         <p><a class="btn btn-primary btn-lg btn-learn btn_study" href="#">开 启 学 习！</a></p>
                     </div>
                 </div>
                 <div style="background-image: url(${webRoot}/webpages/static/images/img_bg2.PNG)" class="scroll_map">
                     <div class="scrolls_map_text text-center">
                         <h1 class="myh1">梦  润， 最  新  潮  的  培  养  方  案</h1>
-                        <h3 class="myh3">遇见梦润，遇见一个超乎想象的你   <a href="${webRoot}/webpages/static/pages/characteristicCourses/experientialTeaching.jsp" class="myh3 a_study" >全新的学习方式</a></h3>
+                        <h3 class="myh3">遇见梦润，遇见一个超乎想象的你   <a href="${webRoot}/webpages/static/experientialTeaching.jsp" class="myh3 a_study" >全新的学习方式</a></h3>
                         <p><a class="btn btn-primary btn-lg btn-learn btn_study" href="#">开 启 学 习！</a></p>
                     </div>
                 </div>
@@ -105,8 +105,7 @@
                                 <!-- <p class="pricing__sentence">Up to 5 users</p> -->
                             </div>
                             <div class="pricing__price">
-                        <span class="pricing__anim pricing__anim--1">
-								<span class="pricing__currency"> &amp; </span>79
+                        <span id="noticeTotal" class="pricing__anim pricing__anim--1">
                         </span>
                                 <span class="pricing__anim pricing__anim--2">
 								<span class="pricing__period">条公告</span>
@@ -114,13 +113,7 @@
                             </div>
                             <div class="wrap-price">
                                 <ul class="pricing__feature-list">
-                                    <a href=""><li class="pricing__feature">获得全国森林康养基地试点建设基地</li></a>
-                                    <a href=""><li class="pricing__feature">公告1……</li></a>
-                                    <a href=""><li class="pricing__feature">公告2……</li></a>
-                                    <a href=""><li class="pricing__feature">公告3……</li></a>
-                                    <a href=""><li class="pricing__feature">公告4……</li></a>
-                                    <a href=""><li class="pricing__feature">公告5……</li></a>
-                                    <a href=""><li class="pricing__feature">公告6……</li></a>
+                                    <a id="notices"></a>
                                 </ul>
                                 <a href="${webRoot}/webpages/static/allNotice.jsp">
                                     <button class="pricing__action">全部公告</button>
@@ -182,6 +175,7 @@
         });
 
         $(document).ready(function loading(){
+            getNotices();
             getNews();
             getDynamicListPage();
             getAdvertisement();
@@ -381,6 +375,54 @@
                         });
                     }else {
                         $("#newsInfo").html('<h3>暂无数据</h3>');
+                    }
+                }
+            });
+        }
+        /*获取公告*/
+        function getNotices() {
+            $.ajax({
+                type: 'GET',
+                url: "${webRoot}/annunciation/listPage",
+                data: {currentPage:1,rows:7},
+                dataType: "json",
+                success: function (data) {
+                    var jsonData = eval(data);
+                    var code = jsonData.code;
+                    var msg = jsonData.msg;
+                    if(code == 1){
+                        var notice = jsonData.data.items;
+
+                        $.each(notice,function (index,notices) {
+                            var id = notices.id;
+                            var notice_title = notices.title;
+                            var noticeTotal = Math.ceil(jsonData.data.total);
+
+                            if(notice_title.length > 25 ){
+                                notice_title = notice_title.substring(0,25) +"…";
+                            }
+
+                            //alert("数据id:"+news_id+"标题："+news_title);
+                            var noticeTotal_div = '<span class="pricing__currency"> &amp; </span>'+noticeTotal+'';
+                            var notice_div = '<li id="'+id+'" target="noticeContent" class="pricing__feature">'+notice_title+'</li>';
+
+                            if (index == 0) {
+                                $("#notices").html(notice_div);
+                            }else {
+                                $("#notices").append(notice_div);
+                            }
+
+                            $("#noticeTotal").html(noticeTotal_div);
+
+                            $("li[target='noticeContent']").on('click',function () {
+                                //获取当前被点击的条数ID，携带ID跳转到新闻详情页面
+                                var notice_id = $(this).attr("id");
+                                window.location.href = "notice.jsp?id="+notice_id+"";
+                            });
+
+                        });
+                    }else {
+                        $("#notices").html('<h3>暂无数据</h3>');
                     }
                 }
             });

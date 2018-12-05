@@ -87,10 +87,11 @@
             , url: '${webRoot}/newsInfo/listPage' //数据接口
             , page: true //开启分页
             , limit: 10 //每页显示多少条数据
+            ,height:550
             , cols: [[ //表头
                 {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
                 , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
-                , {field: 'id', title: '序号', hide: true, width: 100, align: 'center'}
+                , {field: 'id', title: 'id', hide: true, width: 100, align: 'center'}
                 , {field: 'title', title: '标题', width: 200, align: 'center'}
                 , {field: 'content', title: '新闻内容', width: 200, align: 'center'}
                 , {field: 'imgs', title: '图片', width: 150}
