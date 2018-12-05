@@ -159,32 +159,37 @@ public class StudentMienController {
 
     @RequestMapping(value = "/add",method = RequestMethod.GET)
     @ResponseBody
-    public AjaxJson add(@Validated(value = {TC_Add.class}) StudentMien newsInfo){
+    public AjaxJson add(@Validated(value = {TC_Add.class}) StudentMien studentMien){
         AjaxJson ajaxJson = new AjaxJson();
+            //获取当前用户
+            String currentName = getCurrentUsername();
 
-        //获取当前用户
-        String currentName = getCurrentUsername();
+            User user = userService.getUserByUsername(currentName);
 
-        User user = userService.getUserByUsername(currentName);
+            //非空验证
+            if (studentMien == null) {
+                ajaxJson.setCode(0);
+                ajaxJson.setMsg("操作对象为空，操作失败");
+            }
+            //资料添加
 
-        //非空验证
-        if(newsInfo==null){
+            studentMien.setId(UUID.randomUUID().toString());
+            studentMien.setCreateUserId(user.getId());
+            studentMien.setCreateDate(new Date());
+
+            if(StringUtil.length(studentMien.getContent())>100) {
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("操作对象为空，操作失败");
-        }
-        //资料添加
-
-        newsInfo.setId(UUID.randomUUID().toString());
-        newsInfo.setCreateUserId(user.getId());
-        newsInfo.setCreateDate(new Date());
-        Integer add = studentMienService.add(newsInfo);
-        if (add==1){
-            ajaxJson.setCode(1);
-            ajaxJson.setMsg("添加成功");
-        }else {
-            ajaxJson.setCode(0);
-            ajaxJson.setMsg("添加失败，请稍后重试");
-        }
+            ajaxJson.setMsg("内容过长，请重新编辑");
+            return ajaxJson;
+            }
+            Integer add = studentMienService.add(studentMien);
+            if (add == 1) {
+                ajaxJson.setCode(1);
+                ajaxJson.setMsg("添加成功");
+            } else {
+                ajaxJson.setCode(0);
+                ajaxJson.setMsg("添加失败，请稍后重试");
+            }
 
         return ajaxJson;
     }
