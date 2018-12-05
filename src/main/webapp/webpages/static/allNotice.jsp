@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="pricing pricing--rabten">
 
-                    <div class="col-md-10  animate-box">
+                    <div class="col-md-6 animate-box">
                         <div class="pricing__item">
                             <div class="wrap-price">
                                 <!-- <div class="icon icon-store"></div> -->
@@ -36,25 +36,15 @@
                                 <!-- <p class="pricing__sentence">Up to 5 users</p> -->
                             </div>
                             <div class="pricing__price">
-                            <span class="pricing__anim pricing__anim--1">
-                                    <span class="pricing__currency"> &amp; </span>79
-                            </span>
+                        <span id="noticeTotal" class="pricing__anim pricing__anim--1">
+                        </span>
                                 <span class="pricing__anim pricing__anim--2">
-                                    <span class="pricing__period">条公告</span>
-                            </span>
+								<span class="pricing__period">条公告</span>
+                        </span>
                             </div>
                             <div class="wrap-price">
                                 <ul class="pricing__feature-list">
-                                    <a href=""><li class="pricing__feature">获得全国森林康养基地试点建设基地</li></a>
-                                    <a href=""><li class="pricing__feature">公告2……</li></a>
-                                    <a href=""><li class="pricing__feature">公告3……</li></a>
-                                    <a href=""><li class="pricing__feature">公告4……</li></a>
-                                    <a href=""><li class="pricing__feature">公告5……</li></a>
-                                    <a href=""><li class="pricing__feature">公告6……</li></a>
-                                    <a href=""><li class="pricing__feature">公告7……</li></a>
-                                    <a href=""><li class="pricing__feature">公告8……</li></a>
-                                    <a href=""><li class="pricing__feature">公告9……</li></a>
-                                    <a href=""><li class="pricing__feature">公告10……</li></a>
+                                    <a id="notices"></a>
                                 </ul>
                                 <div id="notice_pagination"></div>
                             </div>
@@ -69,37 +59,96 @@
 
 </body>
 <script>
-
-
-
-
-
-
-
     //使用 layui 分页模块
     layui.use('laypage', function () {
         var laypage = layui.laypage;
 
-
-        //执行一个laypage实例
-        laypage.render({
-            elem: 'notice_pagination'      //注意，这里的 test1 是 ID，不用加 # 号
-            , count: 200        //数据总数，从服务端得到
-            , limit: 10              //每页显示数据条数
-            , limits: [4, 8, 16, 32, 64]
-            , groups: 3             //连续出现的页码数
-            , theme: '#437be2'           //自定义主题颜色
-            , jump: function (obj, first) {    //页码切换回调
-                //obj包含了当前分页的所有参数，比如：
-//                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-//                console.log(obj.limit); //得到每页显示的条数
-
-
-            }
+        $(document).ready(function loading(){
+            getNotices();
+            IFrameResize();
         });
 
 
+        /*获取notices数据，完成DIV追加，返回总条数*/
+        function getNotices(currentPage) {
+            //首次加载，当前页为第一页时传入参数为空
+            if (currentPage == null){
+                currentPage = 1;
+            }
+            $.ajax({
+                type: 'GET',
+                url: "${webRoot}/annunciation/listPage",
+                data: {currentPage:currentPage,rows:10},
+                dataType: "json",
+                success: function (data) {
+                    var jsonData = eval(data);
+                    var code = jsonData.code;
+                    var msg = jsonData.msg;
+                    if(code == 1){
+                        var notice = jsonData.data.items;
+                        var noticeTotal = Math.ceil((jsonData.data.total)/10);
 
+                        $.each(notice,function (index,notices) {
+                            var id = notices.id;
+                            var notice_title = notices.title;
+                            var noticeTotal = Math.ceil(jsonData.data.total);
+
+                            if(notice_title.length > 25 ){
+                                notice_title = notice_title.substring(0,25) +"…";
+                            }
+
+                            //alert("数据id:"+news_id+"标题："+news_title);
+                            var noticeTotal_div = '<span class="pricing__currency"> &amp; </span>'+noticeTotal+'';
+                            var notice_div = '<li id="'+id+'" target="noticeContent" class="pricing__feature">'+notice_title+'</li>';
+
+                            if (index == 0) {
+                                $("#notices").html(notice_div);
+                            }else {
+                                $("#notices").append(notice_div);
+                            }
+                            $("#noticeTotal").html(noticeTotal_div);
+
+                            $("li[target='noticeContent']").on('click',function () {
+                                //获取当前被点击的条数ID，携带ID跳转到新闻详情页面
+                                var notice_id = $(this).attr("id");
+                                window.location.href = "notice.jsp?id="+notice_id+"";
+                            });
+
+                        });
+                        //生成分页
+                        createlayPage(noticeTotal,currentPage);
+                        //再次计算高度，包含ajax新增的数据流
+                        IFrameResize();
+                    }else {
+                        $("#notices").html('<h3>暂无数据</h3>');
+                    }
+                }
+            });
+        }
+
+        /*生成分页*/
+        function createlayPage(noticeTotal,currentPage) {
+
+            var laypage = layui.laypage;
+            laypage.render({
+                elem: 'notice_pagination'      //div的ID
+                , count: noticeTotal        //数据总数，从服务端得到
+                , limit: 1              //每页显示数据条数
+                , groups: 3             //连续出现的页码数
+                , theme: '#437be2'           //自定义主题颜色
+                ,curr:currentPage             //当前页
+                , jump: function (obj, first) {
+                    //页码切换回调
+                    if(!first){
+                        //重新获取新分页数据
+                        getNotices(obj.curr);
+                    }
+
+                }
+            });
+        }
+
+        IFrameResize();
     });
 </script>
 </html>
