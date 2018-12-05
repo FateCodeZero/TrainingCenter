@@ -485,7 +485,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             List<LockedIP> lockedIPs = lockedIPService.getLockedIPs(null);
             Set<String> ips = Collections.synchronizedSet(new HashSet<>());
             for (LockedIP lockedIP:lockedIPs) {
-                ips.add(lockedIP.getIP());
+                ips.add(lockedIP.getIp());
             }
             if (ips.contains(user.getLoginIP())){
                 if (user.getUnlockedFlag() == 1){

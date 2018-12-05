@@ -71,7 +71,6 @@
     $(document).ready(function () {
         //页面加载完成
         //……
-
         /*从URL获取对象ID*/
         userId = getUrlParam('id');
         /*通过ID获取对象信息*/
@@ -343,59 +342,6 @@
         }
         $("#roleIds").val(roleIds);
         $("#roleNames").val(roleNames);
-    }
-
-    /**
-     * 账号合法性验证
-     * */
-    function usernameCheck(username) {
-        if (!(checkEmail(username) || checkPhone(username))){
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 密码合法性验证
-     * 以字母开头，长度在6-18之间，只能包含字符、数字和下划线。
-     * */
-    function passwordCheck(password) {
-        var usernameReg = /^[a-zA-Z]\w{5,17}$/;
-        if (usernameReg.test(password)){
-            return true;
-        }else {
-            return false;
-        }
-    }
-
-    /**
-     邮箱验证： 第一部分@第二部分
-     第一部分 ： 由字母、数字、下划线、短线 - 、点号 . 组成
-     第二部分： 域名，域名由字母、数字、短线 - 域名后缀组成
-     * */
-    function checkEmail(str) {
-        var emailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-        if (emailReg.test(str)){
-            return true;
-        }else {
-            return false;
-        }
-    }
-
-    /**
-     * 手机号验证：
-     ^ 1 以数字1 开头
-     [3-578] 手机号第二位允许是 3 、4 、5、6、7、8 中的任意一位
-     \d{9} 任意9位数字组合
-     $ 只能以数字作为结尾
-     **/
-    function checkPhone(str) {
-        var phoneReg = /^1[345678]\d{9}$/;
-        if (phoneReg.test(str)){
-            return true;
-        }else {
-            return false;
-        }
     }
 </script>
 

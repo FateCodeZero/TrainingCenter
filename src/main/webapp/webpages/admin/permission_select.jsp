@@ -227,7 +227,7 @@
                 var parentId = node.pid; //当前节点的父节点数据id
                 var condition = {resourceId: id}; //自定义查询条件
                 currentResouceId = id;  //设置当前页面菜单id
-                tableData(JSON.stringify(condition));
+                tableData(condition);
             }
         });
     }
@@ -316,7 +316,7 @@
                     }
                 ]]
                 , where: {//接口需要的其它参数
-                    condition: condition
+                    condition: JSON.stringify(condition)
                 }
                 , parseData: function (res) { //数据转换，layui-2.4及以后支持，res 即为原始返回的数据
                     var code = res.code === 1 ? 0 : 1;

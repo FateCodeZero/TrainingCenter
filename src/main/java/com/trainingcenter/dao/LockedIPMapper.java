@@ -28,7 +28,7 @@ public interface LockedIPMapper {
      * 通过 IP 获取锁定对象
      * @return
      */
-    public LockedIP getLockedIPByIP(@Param("IP") String IP);
+    public LockedIP getLockedIPByIP(@Param("ip") String ip);
 
     /**
      * 分页获取所有数据

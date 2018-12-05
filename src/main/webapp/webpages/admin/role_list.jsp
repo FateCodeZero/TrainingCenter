@@ -142,7 +142,7 @@
                     <%--</sec:authorize>--%>
                 ]]
                 , where: {//接口需要的其它参数
-                    searchContent: searchContent
+                    condition: JSON.stringify({searchContent:searchContent})
                 }
                 , parseData: function (res) { //res 即为原始返回的数据
                     var code = res.code === 1 ? 0 : 1;

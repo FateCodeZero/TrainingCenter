@@ -115,7 +115,7 @@
      */
     function getRoleById(id) {
         if (id === null || id === '') {
-            layer.alert('id不能为空！', {
+            layer.alert('请先选择要查询的数据', {
                 time: 3000,
                 icon: 2
             });

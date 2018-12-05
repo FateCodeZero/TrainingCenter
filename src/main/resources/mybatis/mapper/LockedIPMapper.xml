@@ -7,7 +7,7 @@
     <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
 
     <sql id="lockedIPColumns">
-        id,IP,remarks,create_user_id,create_date,update_user_id,update_date
+        id,ip,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public LockedIP getLockedIPById(@Param("id") String id);
@@ -20,14 +20,14 @@
         WHERE id = #{id}
     </select>
 
-    <!-- public LockedIP getLockedIPByIP(@Param("IP") String IP);
-        通过 IP 获取锁定对象
+    <!-- public LockedIP getLockedIPByIP(@Param("ip") String ip);
+        通过 ip 获取锁定对象
     -->
     <select id="getLockedIPByIP" resultType="com.trainingcenter.bean.LockedIP">
         SELECT
         <include refid="lockedIPColumns"></include>
         FROM tab_lock_ip
-        WHERE IP = #{IP}
+        WHERE ip = #{ip}
     </select>
 
     <!--
@@ -42,8 +42,8 @@
         <trim prefix="WHERE" prefixOverrides="and">
             <if test="condition != null ">
                 <foreach collection="condition" index="key" item="value">
-                    <if test="key == &quot;IP&quot; and value != null and value != '' ">
-                        and IP = #{value}
+                    <if test="(key == &quot;ip&quot; or key == &quot;IP&quot;) and value != null and value != '' ">
+                        and ip = #{value}
                     </if>
                     <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
                         and create_user_id = #{value}
@@ -53,7 +53,7 @@
                     </if>
                     <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
                         and (
-                        IP like CONCAT('%',#{value},'%')
+                        ip like CONCAT('%',#{value},'%')
                         )
                     </if>
                 </foreach>
@@ -71,7 +71,7 @@
     -->
     <insert id="add">
         INSERT INTO tab_lock_ip(<include refid="lockedIPColumns"></include>)
-        VALUES (#{lockedIP.id},#{lockedIP.IP},#{lockedIP.remarks},#{lockedIP.createUserId},#{lockedIP.createDate},
+        VALUES (#{lockedIP.id},#{lockedIP.ip},#{lockedIP.remarks},#{lockedIP.createUserId},#{lockedIP.createDate},
         #{lockedIP.updateUserId},#{lockedIP.updateDate})
     </insert>
 
@@ -82,8 +82,8 @@
     <update id="update">
         UPDATE tab_lock_ip
         <trim prefix="set" suffixOverrides=",">
-            <if test="lockedIP.IP != null and lockedIP.IP != '' ">
-                IP = #{lockedIP.IP},
+            <if test="lockedIP.ip != null and lockedIP.ip != '' ">
+                ip = #{lockedIP.ip},
             </if>
             <if test="lockedIP.remarks != null and lockedIP.remarks != '' ">
                 remarks = #{lockedIP.remarks},

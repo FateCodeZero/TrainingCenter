@@ -7,7 +7,6 @@ package com.trainingcenter.controller;
  * Time: 22:33
  */
 
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import com.trainingcenter.bean.LockedIP;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.controller.validation.TC_Add;
@@ -38,7 +37,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * IP封禁Controller
  */
-@Controller("/lockedIP")
+@Controller
+@RequestMapping("lockedIP")
 public class LockedIPController {
     @Qualifier("lockedIPService")
     @Autowired
@@ -66,16 +66,16 @@ public class LockedIPController {
             //获取当前查询条件下的所有数据条数，分页用
             Integer total = lockedIPService.getLockedIPs(condition).size();
             //获取当前页的数据
-            List<LockedIP> users = lockedIPService.getLockedIPs(currentPage, rows, condition);
+            List<LockedIP> lockedIPS = lockedIPService.getLockedIPs(currentPage, rows, condition);
             ajaxJson.setCode(1);
-            if (users.size() == 0){
+            if (lockedIPS.size() == 0){
                 ajaxJson.setMsg("暂无数据Ծ‸Ծ");
             }else {
                 ajaxJson.setMsg("数据获取成功");
             }
             Map<String,Object> data = new ConcurrentHashMap<>();
             data.put("total",total);
-            data.put("items",users);
+            data.put("items",lockedIPS);
             ajaxJson.setData(data);
             return ajaxJson;
         }
@@ -135,9 +135,9 @@ public class LockedIPController {
             ajaxJson.setMsg("更新失败，对象不存在或已被删除");
             return ajaxJson;
         }
-        String ip = lockedIP.getIP();
+        String ip = lockedIP.getIp();
         if (StringUtil.isNotEmpty(ip)){
-            oldLockedIP.setIP(ip);
+            oldLockedIP.setIp(ip);
         }
         String remarks = lockedIP.getRemarks();
         if (StringUtil.isNotEmpty(remarks)){
@@ -160,7 +160,6 @@ public class LockedIPController {
 
     /**
      * 删除权限，支持批量删除
-     *
      * @param ids
      * @return
      */

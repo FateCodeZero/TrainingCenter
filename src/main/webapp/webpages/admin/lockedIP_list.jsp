@@ -5,14 +5,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>资源菜单管理</title>
+    <title>IP锁定管理</title>
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css" charset="UTF-8">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css" charset="UTF-8">
 
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js" charset="UTF-8"></script>
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js" charset="UTF-8"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js" charset="UTF-8"></script>
-
 </head>
 
 <body>
@@ -37,21 +36,15 @@
 <script type="text/html" id="table-head">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="add" title="添加菜单"><i
-                class="layui-icon layui-icon-add-circle"></i> 添加
+                class="layui-icon layui-icon-add-circle"></i> 添加封禁IP
         </button>
         <button class="layui-btn layui-btn-sm" lay-event="update" title="编辑菜单"><i
-                class="layui-icon layui-icon-edit"></i> 编辑
+                class="layui-icon layui-icon-edit"></i> 编辑封禁IP
         </button>
         <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="delete" title="批量删除菜单"><i
                 class="layui-icon layui-icon-delete"></i> 批量删除
         </button>
     </div>
-</script>
-
-<%--表格操作--%>
-<script type="text/html" id="table-opt">
-    <a class="layui-btn layui-btn-xs" lay-event="enable">启用</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="unEnable">禁用</a>
 </script>
 
 <script type="text/javascript">
@@ -60,7 +53,8 @@
     var table;  //layui table
 
     $(document).ready(function () {
-        tableData(); //加载页面数据
+        //加载表格数据
+        tableData();
     });
 
     //JavaScript代码区域
@@ -70,6 +64,13 @@
         element.on('tab', function (data) {
             var lay_id = this.getAttribute('lay-id');
             console.log(lay_id); //当前Tab标题所在的原始DOM元素
+            /*if (lay_id === 'enable'){
+                table.reload('table1',{
+                    where: {//接口需要的其它参数
+                        searchContent: 1
+                    }
+                });
+            }*/
         });
         element.render('tab');
     });
@@ -82,61 +83,25 @@
             table.render({
                 id: 'table1'
                 , elem: '#tableData'
-                , autoSort:true     /*自动排序*/
-                , initSort: 'orderNumber'  /*默认排序字段*/
                 , toolbar: '#table-head'
                 , title: '菜单管理'
-                , url: '${webRoot}/resource/list' //数据接口
+                , url: '${webRoot}/lockedIP/list' //数据接口
                 , page: true //开启分页
                 , limit: 10 //每页显示多少条数据
                 , cols: [[ //表头
                     {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
                     , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
                     , {field: 'id', title: 'ID', hide: true, width: 100, align: 'center'}
-                    , {field: 'name', title: '菜单名称', width: 100, align: 'center'}
-                    , {field: 'url', title: '对应URL', width: 150, align: 'center'}
-                    , {
-                        field: 'parentId', title: '父级菜单', width: 150, align: 'center', templet: function (d) {
-                            if (d.parentId === '0'){
-                                return d.name;
-                            }else {
-                                return getResourceById(d.parentId).name;
-                            }
-                        }
-                    }
-                    , {field: 'orderNumber', title: '排序顺序', width: 100, align: 'center',sort:true}
-                    , {field: 'level', title: '菜单层级', width: 100, align: 'center',sort:true}
-                    , {field: 'iconStyle', title: '菜单图标', width: 100, align: 'center', templet: function (d) {
-                        return '<i class="'+d.iconStyle+'"></i>'
-                    }}
-                    , {field: 'describe', title: '资源描述', width: 150, align: 'center'}
+                    , {field: 'ip', title: '被锁定IP', width: 150, align: 'center'}
                     , {field: 'remarks', title: '备注', width: 150, align: 'center'}
                     , {
-                        field: 'state', title: '使用状态', width: 100, align: 'center', templet: function (d) {
-                            if (d.state === 1) {
-                                return '<span class="layui-btn layui-btn-xs">已启用</span>'
-                            }
-                            if (d.state === 0) {
-                                return '<span class="layui-btn layui-btn-danger layui-btn-xs">已禁用</span>'
-                            }
-                            if (d.state === -1) {
-                                return '<span class="layui-btn layui-btn-disabled layui-btn-xs">已删除</span>'
-                            }
-                        }
-                    }
-                    , {
-                        field: 'createUserId', title: '创建人', width: 150, align: 'center', templet: function (d) {
+                        field: 'createUserId', title: '执行人', width: 150, align: 'center', templet: function (d) {
                             var user = getUserById(d.createUserId);
                             return user.username;
                         }
                     }
                     , {
-                        field: 'createDate',
-                        title: '创建时间',
-                        sort: true,
-                        width: 180,
-                        align: 'center',
-                        templet: function (d) {
+                        field: 'createDate', title: '执行时间', sort: true, width: 180, align: 'center', templet: function (d) {
                             return new Date(d.createDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
                         }
                     }
@@ -147,18 +112,10 @@
                         }
                     }
                     , {
-                        field: 'updateDate',
-                        title: '更新时间',
-                        sort: true,
-                        width: 180,
-                        align: 'center',
-                        templet: function (d) {
+                        field: 'updateDate', title: '更新时间', sort: true, width: 180, align: 'center', templet: function (d) {
                             return new Date(d.updateDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
                         }
                     }
-                    <%--<sec:authorize access="hasPermission('/webpages/admin/resource_list.jsp','UPDATE')">--%>
-                    , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 150, align: 'center'} //这里的toolbar值是模板元素的选择器
-                    <%--</sec:authorize>--%>
                 ]]
                 , where: {//接口需要的其它参数
                     condition: JSON.stringify({searchContent:searchContent})
@@ -167,7 +124,7 @@
                     var code = res.code === 1 ? 0 : 1;
                     var msg = res.msg;
                     var data = null;
-                    if (code === 0) {
+                    if (code === 0){
                         data = res.data.items;
                     }
                     var count = 0;
@@ -186,6 +143,9 @@
                     , limitName: 'rows' //每页数据量的参数名，默认：limit
                 }
                 , done: function (res, curr, count) { //渲染完毕后回调
+                    //如果是异步请求数据方式，res即为你接口返回的信息。
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    //table.render();
                 }
             });
 
@@ -266,7 +226,22 @@
                     enableOpt(data, state);
                 } else if (obj.event === 'unEnable') {  //禁用
                     state = 0;
-                    enableOpt(data, state);
+                    enableOpt(data,state);
+                }else if (obj.event === 'grant'){ //授权
+                    layer.open({
+                        title: '角色授权',
+                        type: 2,
+                        area: ['1000px', '450px'],
+                        fix: false, //不固定
+                        maxmin: true,
+                        content: '${webRoot}/webpages/admin/permission_select.jsp?id='+id,
+                        success: function (layero, index) {
+                            layer_window = layero;   //获取弹出窗口的窗口对象
+                        },
+                        end: function () {
+                            location.reload(); //回调函数，刷新页面
+                        }
+                    });
                 }
             });
         });
@@ -274,12 +249,12 @@
 
     function addData() {
         layer.open({
-            title: '添加菜单',
+            title: '添加封禁IP',
             type: 2,
             area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/webpages/admin/resource_add.jsp',
+            content: '${webRoot}/webpages/admin/lockedIP_add.jsp',
             success: function (layero, index) {
                 layer_window = layero;   //获取弹出窗口的窗口对象
             },
@@ -291,12 +266,12 @@
 
     function editData(id) {
         layer.open({
-            title: '编辑菜单',
+            title: '编辑角色',
             type: 2,
             area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/webpages/admin/resource_edit.jsp?id=' + id,
+            content: '${webRoot}/webpages/admin/lockedIP_edit.jsp?id=' + id,
             success: function (layero, index) {
                 layer_window = layero;   //获取弹出窗口的窗口对象
             },
@@ -304,6 +279,12 @@
                 location.reload(); //回调函数，刷新页面
             }
         });
+    }
+
+    //获取弹出窗口返回的json格式的数据
+    function getBackPermissionData(JsonData) {		//返回权限数据
+        var resourceSelectWindow = window[layer_window.find('iframe')[0]['name']];	//获取子窗口的窗口对象
+        resourceSelectWindow.window.setPermissionData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
     }
 
     //删除
@@ -320,7 +301,7 @@
                     ids: ids
                 };
                 $.ajax({
-                    url: "${webRoot}/resource/delete",
+                    url: "${webRoot}/lockedIP/delete",
                     type: "post",
                     data: data,
                     dataType: "json",
@@ -346,7 +327,7 @@
     }
 
     //启/禁用操作
-    function enableOpt(obj, state) {
+    function enableOpt(obj,state) {
         if (obj.id === null || obj.id === '' || state === null || state === '') {
             layer.alert('请先选择要操作的数据', {
                 time: 3000,
@@ -354,15 +335,15 @@
             });
             return false;
         } else {
-            //传入必须的参数
+            /*将更新所必须的字段一起传过去*/
             var data = {
                 id: obj.id,
                 name: obj.name,
-                url: obj.url,
-                state: state
+                state: state,
+                resourceId: obj.resourceId
             };
             $.ajax({
-                url: "${webRoot}/resource/update",
+                url: "${webRoot}/role/update",
                 type: "post",
                 data: data,
                 dataType: "json",
@@ -397,7 +378,7 @@
             });
             return false;
         }
-        var user = '';
+        var user = null;
         var data = {id: id};
         $.ajax({
             url: "${webRoot}/user/getUserById",
@@ -409,7 +390,7 @@
                 var jsonData = eval(data); //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code == 1) {
+                if (code === 1) {
                     user = jsonData.data.user;
                 } else {
                     layer.alert(msg, {
@@ -422,52 +403,6 @@
         });
         return user;
     }
-
-    /**
-     * 通过 id 获取资源
-     * @param id
-     * @returns {*}
-     */
-    function getResourceById(id) {
-        if (id == null || id == '') {
-            layer.alert('id不能为空！', {
-                time: 3000,
-                icon: 2
-            });
-            return false;
-        }
-        var resource = null;
-        var data = {id: id};
-        $.ajax({
-            url: "${webRoot}/resource/getResourceById",
-            type: "get",
-            async: false,    //关闭异步请求
-            data: data,
-            dataType: "json",
-            success: function (data) {
-                var jsonData = eval(data); //数据解析
-                var code = jsonData.code;
-                var msg = jsonData.msg;
-                if (code == 1) {
-                    resource = jsonData.data.resource;
-                } else {
-                    layer.alert(msg, {
-                        time: 3000,
-                        icon: 2
-                    });
-                    return false;
-                }
-            }
-        });
-        return resource;
-    }
-
-    //获取弹出窗口返回的json格式的数据
-    function getBackResourceData(JsonData) {		//返回资源数据
-        var resourceSelectWindow = window[layer_window.find('iframe')[0]['name']];	//获取子窗口的窗口对象
-        resourceSelectWindow.window.setResourceData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
-    }
-
 </script>
 
 </html>

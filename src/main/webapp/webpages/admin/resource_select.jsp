@@ -121,7 +121,7 @@
                 var condition = {parentId: parentId}; //自定义查询条件
 
                 //数据表格
-                tableData(JSON.stringify(condition));
+                tableData(condition);
             },
             onNodeUnselected: function (event, node) {
                 /*取消节点选中事件*/
@@ -152,7 +152,7 @@
                     , {field: 'url', title: '对应URL', align: 'center'}
                 ]]
                 , where: {//接口需要的其它参数
-                    condition: condition
+                    condition: JSON.stringify(condition)
                 }
                 , parseData: function (res) { //res 即为原始返回的数据
                     var code = res.code === 1 ? 0 : 1;

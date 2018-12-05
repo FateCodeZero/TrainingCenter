@@ -1,10 +1,7 @@
 package com.trainingcenter.controller;
 
 import com.trainingcenter.bean.LockedIP;
-import com.trainingcenter.bean.Permission;
 import com.trainingcenter.bean.User;
-import com.trainingcenter.controller.validation.TC_Add;
-import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.service.LockedIPService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.*;
@@ -14,12 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -317,7 +312,7 @@ public class UserController {
 
                     LockedIP locked = new LockedIP();
                     locked.setId(UUID.randomUUID().toString());
-                    locked.setIP(user.getLoginIP());
+                    locked.setIp(user.getLoginIP());
                     if (currentUser != null) {
                         locked.setCreateUserId(currentUser.getId());
                         locked.setCreateDate(new Date());

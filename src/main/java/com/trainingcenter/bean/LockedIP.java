@@ -8,8 +8,6 @@ package com.trainingcenter.bean;
  */
 
 import com.trainingcenter.controller.validation.TC_Add;
-import com.trainingcenter.controller.validation.TC_Delete;
-import com.trainingcenter.controller.validation.TC_Find;
 import com.trainingcenter.controller.validation.TC_Update;
 
 import javax.validation.constraints.NotBlank;
@@ -26,10 +24,10 @@ public class LockedIP extends BaseEntity implements Serializable{
     private String id;
 
     /**
-     * 被锁定IP地址，对应数据库（IP）
+     * 被锁定IP地址，对应数据库（ip）
      */
-    @NotBlank(message = "iP不能为空",groups = {TC_Add.class,TC_Update.class})
-    private String IP;
+    @NotBlank(message = "ip不能为空",groups = {TC_Add.class,TC_Update.class})
+    private String ip;
 
     public String getId() {
         return id;
@@ -39,11 +37,11 @@ public class LockedIP extends BaseEntity implements Serializable{
         this.id = id;
     }
 
-    public String getIP() {
-        return IP;
+    public String getIp() {
+        return ip;
     }
 
-    public void setIP(String IP) {
-        this.IP = IP;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

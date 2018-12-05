@@ -10,10 +10,31 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2018-12-04 21:38:20
+Date: 2018-12-05 17:18:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for tab_about_me
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_about_me`;
+CREATE TABLE `tab_about_me` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '关于我们的标题',
+  `imgs` text COMMENT '关于我们的图片',
+  `content` text COMMENT '关于我们内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '关于我们备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_about_me
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for tab_advertisement
@@ -37,6 +58,247 @@ CREATE TABLE `tab_advertisement` (
 -- ----------------------------
 -- Records of tab_advertisement
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for tab_best_college
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_best_college`;
+CREATE TABLE `tab_best_college` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '最佳学院标题',
+  `content` text COMMENT '最佳学院内容',
+  `imgs` text COMMENT '最佳学院图片',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '最佳学院备注',
+  `create_user_id` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `create_date` date DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `update_date` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_best_college
+-- ----------------------------
+INSERT INTO `tab_best_college` VALUES ('1', 'text1', 'text1', 'text1', 'text1', null, null, null, null);
+INSERT INTO `tab_best_college` VALUES ('2', 'text1', 'text1', 'text1', 'text1', null, null, null, null);
+INSERT INTO `tab_best_college` VALUES ('3', 'text1', 'text1', 'text1', 'text1', null, null, null, null);
+
+-- ----------------------------
+-- Table structure for tab_best_student
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_best_student`;
+CREATE TABLE `tab_best_student` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '最佳学生标题',
+  `content` text COMMENT '最佳学生内容',
+  `imgs` text COMMENT '最佳学生图片',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '最佳学生备注',
+  `create_user_id` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `create_date` date DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `update_date` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_best_student
+-- ----------------------------
+INSERT INTO `tab_best_student` VALUES ('1', 'test1', 'test1test1test1', 'https://goss.veer.com/creative/vcg/veer/800water/veer-303342183.jpg', 'test1', '', '2018-12-10', null, null);
+INSERT INTO `tab_best_student` VALUES ('2', 'test2', 'test2test2test2test2test2', 'https://goss.veer.com/creative/vcg/veer/800water/veer-303342183.jpg', 'test2', null, '2018-12-11', null, null);
+
+-- ----------------------------
+-- Table structure for tab_communication_teaching
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_communication_teaching`;
+CREATE TABLE `tab_communication_teaching` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '动态培训的标题',
+  `imgs` text COMMENT '动态培训的图片',
+  `content` text COMMENT '培训内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '培训备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_communication_teaching
+-- ----------------------------
+INSERT INTO `tab_communication_teaching` VALUES ('1', '培训1', 'https://goss.veer.com/creative/vcg/veer/800water/veer-155063993.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训1', '培训1', '2018-11-05', '培训1', '2018-11-29');
+INSERT INTO `tab_communication_teaching` VALUES ('2', '培训2', 'https://goss.veer.com/creative/vcg/veer/800water/veer-303342183.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训2', '培训2', '2018-11-05', '培训2', '2018-11-29');
+INSERT INTO `tab_communication_teaching` VALUES ('3', '培训3', 'https://goss.veer.com/creative/vcg/veer/800water/veer-302222696.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训3', '培训3', '2018-11-06', '培训3', '2018-11-14');
+INSERT INTO `tab_communication_teaching` VALUES ('4', '培训4', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147418763.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训4', '培训4', '2018-11-05', '培训4', '2018-11-20');
+INSERT INTO `tab_communication_teaching` VALUES ('5', '培训5', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147424398.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训5', '培训5', '2018-11-06', '培训5', '2018-11-22');
+
+-- ----------------------------
+-- Table structure for tab_course
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_course`;
+CREATE TABLE `tab_course` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT '课程ID',
+  `name` varchar(36) DEFAULT NULL COMMENT '课程名字',
+  `code` varchar(36) NOT NULL COMMENT '课程代码',
+  `describe` text COMMENT '课程描述',
+  `course_type_ids` varchar(36) DEFAULT NULL COMMENT '课程类型ID',
+  `remarks` text COMMENT '课程备注',
+  `create_user_id` varchar(36) DEFAULT NULL COMMENT '创建人id',
+  `create_date` date DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` varchar(36) DEFAULT NULL COMMENT '更新人id',
+  `update_date` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of tab_course
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tab_course_type
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_course_type`;
+CREATE TABLE `tab_course_type` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT '课程类型ID',
+  `name` varchar(36) DEFAULT NULL COMMENT '课程类型名字',
+  `describe` text COMMENT '课程类型描述',
+  `course_ids` varchar(36) DEFAULT NULL COMMENT '课程ID',
+  `remarks` text COMMENT '课程类型备注',
+  `create_user_id` varchar(36) DEFAULT NULL COMMENT '创建人id',
+  `create_date` date DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` varchar(36) DEFAULT NULL COMMENT '更新人id',
+  `update_date` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of tab_course_type
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tab_cultural_products
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_cultural_products`;
+CREATE TABLE `tab_cultural_products` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '文化产品的标题',
+  `imgs` text COMMENT '文化产品的图片',
+  `content` text COMMENT '文化产品内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '文化产品备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_cultural_products
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tab_culture_teaching_point
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_culture_teaching_point`;
+CREATE TABLE `tab_culture_teaching_point` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '文化教学点的标题',
+  `imgs` text COMMENT '文化教学点的图片',
+  `content` text COMMENT '文化教学点内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '文化教学点备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_culture_teaching_point
+-- ----------------------------
+INSERT INTO `tab_culture_teaching_point` VALUES ('1', '培训1', 'https://goss.veer.com/creative/vcg/veer/800water/veer-155063993.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训1', '培训1', '2018-11-05', '培训1', '2018-11-29');
+INSERT INTO `tab_culture_teaching_point` VALUES ('2', '培训2', 'https://goss.veer.com/creative/vcg/veer/800water/veer-303342183.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训2', '培训2', '2018-11-05', '培训2', '2018-11-29');
+INSERT INTO `tab_culture_teaching_point` VALUES ('3', '培训3', 'https://goss.veer.com/creative/vcg/veer/800water/veer-302222696.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训3', '培训3', '2018-11-06', '培训3', '2018-11-14');
+INSERT INTO `tab_culture_teaching_point` VALUES ('4', '培训4', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147418763.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训4', '培训4', '2018-11-05', '培训4', '2018-11-20');
+INSERT INTO `tab_culture_teaching_point` VALUES ('5', '培训5', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147424398.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训5', '培训5', '2018-11-06', '培训5', '2018-11-22');
+
+-- ----------------------------
+-- Table structure for tab_develop_teaching_point
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_develop_teaching_point`;
+CREATE TABLE `tab_develop_teaching_point` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '发展教学点的标题',
+  `imgs` text COMMENT '发展教学点的图片',
+  `content` text COMMENT '发展教学点内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '发展教学点备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_develop_teaching_point
+-- ----------------------------
+INSERT INTO `tab_develop_teaching_point` VALUES ('1', '培训1', 'https://goss.veer.com/creative/vcg/veer/800water/veer-155063993.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训1', '培训1', '2018-11-05', '培训1', '2018-11-29');
+INSERT INTO `tab_develop_teaching_point` VALUES ('2', '培训2', 'https://goss.veer.com/creative/vcg/veer/800water/veer-303342183.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训2', '培训2', '2018-11-05', '培训2', '2018-11-29');
+INSERT INTO `tab_develop_teaching_point` VALUES ('3', '培训3', 'https://goss.veer.com/creative/vcg/veer/800water/veer-302222696.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训3', '培训3', '2018-11-06', '培训3', '2018-11-14');
+INSERT INTO `tab_develop_teaching_point` VALUES ('4', '培训4', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147418763.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训4', '培训4', '2018-11-05', '培训4', '2018-11-20');
+INSERT INTO `tab_develop_teaching_point` VALUES ('5', '培训5', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147424398.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训5', '培训5', '2018-11-06', '培训5', '2018-11-22');
+
+-- ----------------------------
+-- Table structure for tab_experiential_teaching
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_experiential_teaching`;
+CREATE TABLE `tab_experiential_teaching` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '体验式教学的标题',
+  `imgs` text COMMENT '体验式教学的图片',
+  `content` text COMMENT '体验式教学内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '体验式教学备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_experiential_teaching
+-- ----------------------------
+INSERT INTO `tab_experiential_teaching` VALUES ('1', '培训1', 'https://goss.veer.com/creative/vcg/veer/800water/veer-155063993.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训1', '培训1', '2018-11-05', '培训1', '2018-11-29');
+INSERT INTO `tab_experiential_teaching` VALUES ('2', '培训2', 'https://goss.veer.com/creative/vcg/veer/800water/veer-303342183.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训2', '培训2', '2018-11-05', '培训2', '2018-11-29');
+INSERT INTO `tab_experiential_teaching` VALUES ('3', '培训3', 'https://goss.veer.com/creative/vcg/veer/800water/veer-302222696.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训3', '培训3', '2018-11-06', '培训3', '2018-11-14');
+INSERT INTO `tab_experiential_teaching` VALUES ('4', '培训4', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147418763.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训4', '培训4', '2018-11-05', '培训4', '2018-11-20');
+INSERT INTO `tab_experiential_teaching` VALUES ('5', '培训5', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147424398.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训5', '培训5', '2018-11-06', '培训5', '2018-11-22');
+
+-- ----------------------------
+-- Table structure for tab_interview_teaching
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_interview_teaching`;
+CREATE TABLE `tab_interview_teaching` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '动态培训的标题',
+  `imgs` text COMMENT '动态培训的图片',
+  `content` text COMMENT '培训内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '培训备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_interview_teaching
+-- ----------------------------
+INSERT INTO `tab_interview_teaching` VALUES ('1', '培训1', 'https://goss.veer.com/creative/vcg/veer/800water/veer-155063993.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训1', '培训1', '2018-11-05', '培训1', '2018-11-29');
+INSERT INTO `tab_interview_teaching` VALUES ('2', '培训2', 'https://goss.veer.com/creative/vcg/veer/800water/veer-303342183.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训2', '培训2', '2018-11-05', '培训2', '2018-11-29');
+INSERT INTO `tab_interview_teaching` VALUES ('3', '培训3', 'https://goss.veer.com/creative/vcg/veer/800water/veer-302222696.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训3', '培训3', '2018-11-06', '培训3', '2018-11-14');
+INSERT INTO `tab_interview_teaching` VALUES ('4', '培训4', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147418763.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训4', '培训4', '2018-11-05', '培训4', '2018-11-20');
+INSERT INTO `tab_interview_teaching` VALUES ('5', '培训5', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147424398.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训5', '培训5', '2018-11-06', '培训5', '2018-11-22');
 
 -- ----------------------------
 -- Table structure for tab_lock_ip
@@ -96,13 +358,16 @@ INSERT INTO `tab_log` VALUES ('4685dad3-5f97-4e7d-9ed6-08df83541266', 'd6a00d9d-
 INSERT INTO `tab_log` VALUES ('4f968e70-0c33-46c8-a01f-e823e903a8ef', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543580256692,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543580256692,\"id\":\"0a45e984-355b-4f6d-aca9-de5b4128bd78\",\"name\":\"角色管理（读）\",\"resourceId\":\"7d4b041c-c0c0-49d7-b959-f650194fd236\",\"operations\":\"READ\",\"state\":1,\"describe\":\"\",\"operationList\":[\"READ\"]}]', '添加', '2018-11-30 20:17:37');
 INSERT INTO `tab_log` VALUES ('5019bf78-19fb-421c-bd79-979165652a78', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"test\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543313321746,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543313321746,\"id\":\"c913a227-5142-46b0-bef1-1ef3bed0c020\",\"name\":\"test\",\"state\":1,\"describe\":\"test\",\"permissions\":null,\"authority\":\"ROLE_test\"}]', '添加', '2018-11-27 18:08:44');
 INSERT INTO `tab_log` VALUES ('51e2e28d-e970-4685-85e6-214cf6b1a3cc', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543828633000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543828810570,\"id\":\"047d43c2-19dd-4dbf-bf6b-316f6c69eb9e\",\"name\":\"管理员管理\",\"url\":\"/webpages/admin/user_list.jsp\",\"state\":1,\"parentId\":\"50774cdc-ebc0-43db-aa45-a8d078d84730\",\"orderNumber\":7,\"level\":2,\"iconStyle\":\"layui-icon layui-icon-friends\",\"describe\":\"\"}]', '更新', '2018-12-03 17:20:11');
+INSERT INTO `tab_log` VALUES ('5330d5db-ae45-449e-b541-cda2341a02ab', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543828633000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543932381334,\"id\":\"047d43c2-19dd-4dbf-bf6b-316f6c69eb9e\",\"name\":\"管理员管理\",\"url\":\"/webpages/admin/user_admin_list.jsp\",\"state\":1,\"parentId\":\"50774cdc-ebc0-43db-aa45-a8d078d84730\",\"orderNumber\":7,\"level\":2,\"iconStyle\":\"layui-icon layui-icon-friends\",\"describe\":\"\"}]', '更新', '2018-12-04 22:06:21');
 INSERT INTO `tab_log` VALUES ('54dcc6e0-75cd-41f9-a52f-4dfe2db249fa', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543576391000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543578217143,\"id\":\"9ef51893-2a55-4029-b3c1-7890220c90bc\",\"name\":\"系统管理\",\"url\":\"\",\"state\":1,\"parentId\":\"f87236f6-edf5-4b21-9739-0cdc0472fc5c\",\"orderNumber\":1,\"level\":1,\"iconStyle\":\"layui-icon layui-icon-set-fill\",\"describe\":\"\"}]', '更新', '2018-11-30 19:43:37');
 INSERT INTO `tab_log` VALUES ('571748ff-9e6d-4453-8c21-b36abdb701fe', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543576346420,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543576346420,\"id\":\"f87236f6-edf5-4b21-9739-0cdc0472fc5c\",\"name\":\"管理系统首页\",\"url\":\"/webpages/admin/index.jsp\",\"state\":1,\"parentId\":\"0\",\"orderNumber\":0,\"level\":0,\"iconStyle\":\"\",\"describe\":\"\"}]', '添加', '2018-11-30 19:12:26');
 INSERT INTO `tab_log` VALUES ('5ac7f2a0-d427-4dc8-9d24-376d8f3a6457', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"注：\\n1、菜单管理的主要作用是提供页面的启用与禁用功能，其他功能只是附带，非软件开发专业人员可不随意操作！\\n2、菜单管理实行的是软删除，无法真正删除系统菜单，菜单被删除后会进入已删除状态，作用同禁用。\\n3、菜单添加只能添加系统已经用代码实现了的页面，随意添加其他URL没有效果。\\n4、菜单编辑目前不提供URL的更改，URL关乎到页面的正常显示，不能修改可避免误操作。\\n5、修改菜单名称时，建议名称能有“见名知意”的效果。\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1542816000000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543397675589,\"id\":\"396f9846-d0fc-42b0-b267-d8be114e4786\",\"name\":\"菜单管理\",\"url\":\"/webpages/admin/resource_list.jsp\",\"state\":1,\"describe\":\"系统菜单管理，即系统页面管理，可管理系统中的所有前后端页面（启用/禁用）。\\n只有启用的页面才能授权给角色，禁用的页面所有角色对其都无权访问。\"}]', '更新', '2018-11-28 17:34:36');
+INSERT INTO `tab_log` VALUES ('5d2a3702-b697-404a-972d-03167811a3fd', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":null,\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543997727200,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543997727200,\"id\":\"65944a8f-be22-42b0-8158-812bb592e2e1\",\"ip\":\"0:0:0:0:0:0:0:1\"}]', '添加', '2018-12-05 16:15:27');
 INSERT INTO `tab_log` VALUES ('5e0f2e07-f3be-482c-9fbc-1e675506c8ff', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543826304000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543828713564,\"id\":\"50774cdc-ebc0-43db-aa45-a8d078d84730\",\"name\":\"用户管理\",\"url\":\"/webpages/admin/user_list.jsp\",\"state\":1,\"parentId\":\"f87236f6-edf5-4b21-9739-0cdc0472fc5c\",\"orderNumber\":6,\"level\":1,\"iconStyle\":\"layui-icon layui-icon-group\",\"describe\":\"\"}]', '更新', '2018-12-03 17:18:34');
 INSERT INTO `tab_log` VALUES ('5e6d07f0-6064-42a0-922c-714fcdee2f40', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543832434137,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543832434137,\"id\":\"854d6f60-5a15-4525-8b78-bfb4d6055265\",\"name\":\"用户管理\",\"url\":\"/webpages/admin/user_list.jsp\",\"state\":1,\"parentId\":\"50774cdc-ebc0-43db-aa45-a8d078d84730\",\"orderNumber\":8,\"level\":2,\"iconStyle\":\"layui-icon layui-icon-user\",\"describe\":\"\"}]', '添加', '2018-12-03 18:20:34');
 INSERT INTO `tab_log` VALUES ('6026957d-d60e-4cfe-9fa2-5f88705d7d7d', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543576436000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543671895894,\"id\":\"26449d80-ef15-4b4b-be91-e4f9f77e2afc\",\"name\":\"菜单管理\",\"url\":\"/webpages/admin\",\"state\":1,\"parentId\":\"9ef51893-2a55-4029-b3c1-7890220c90bc\",\"orderNumber\":2,\"level\":2,\"iconStyle\":\"layui-icon layui-icon-app\",\"describe\":\"\"}]', '更新', '2018-12-01 21:44:56');
 INSERT INTO `tab_log` VALUES ('67f93161-6089-4358-a343-18860a00894c', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"test\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543313452000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543313858813,\"id\":\"54f83d8a-c087-4870-a68c-ae585d4e3d25\",\"name\":\"TEST\",\"state\":1,\"describe\":\"test\",\"permissions\":null,\"authority\":\"ROLE_TEST\"}]', '更新', '2018-11-27 18:17:39');
+INSERT INTO `tab_log` VALUES ('6dbb0ec9-ef22-42e0-b74e-5c53d0434a4d', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543945105163,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543945105163,\"id\":\"2b2773bd-7d8a-4197-9ab3-2f09c9355c90\",\"name\":\"IP封禁管理\",\"url\":\"\",\"state\":1,\"parentId\":\"50774cdc-ebc0-43db-aa45-a8d078d84730\",\"orderNumber\":9,\"level\":2,\"iconStyle\":\"layui-icon layui-icon-unlink\",\"describe\":\"\"}]', '添加', '2018-12-05 01:38:25');
 INSERT INTO `tab_log` VALUES ('6fc56adc-f320-4fa4-86d5-80ae818db069', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"后台管理系统可对整个网站进行相关管理，对系统来说非常重要，所以只能是管理员才能进入后台管理系统。\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543308104299,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543308104299,\"id\":\"cdcdd7be-8927-4a99-b77b-daff72df72bf\",\"name\":\"后台管理系统首页（读）\",\"resourceId\":\"d2a220ae-3b26-4611-bd8b-8dee30f74de1\",\"operations\":\"READ\",\"state\":1,\"describe\":\"后台管理系统首页的读权限，即拥有此权限才能进入后台管理系统首页。\",\"operationList\":[\"READ\"]}]', '添加', '2018-11-27 16:41:44');
 INSERT INTO `tab_log` VALUES ('72983a0e-480b-475f-9e33-9d99feed6211', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"test\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543399955000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543399964844,\"id\":\"cfcab4d4-7cb5-413c-8315-be34d1a05755\",\"name\":\"test\",\"resourceId\":\"396f9846-d0fc-42b0-b267-d8be114e4786\",\"operations\":\"READ,CREATE,UPDATE\",\"state\":1,\"describe\":\"test\",\"operationList\":[\"READ\",\"CREATE\",\"UPDATE\"]}]', '更新', '2018-11-28 18:12:45');
 INSERT INTO `tab_log` VALUES ('72aba0bc-cc06-46c4-a3ee-80917e169759', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"可进入后台管理系统首页，后台管理系统可对网站各个部分进行管理，对网站非常重要，为了系统安全，后台管理系统只能是有管理员权限的人员才能进入！\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543307206000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543307437624,\"id\":\"d2a220ae-3b26-4611-bd8b-8dee30f74de1\",\"name\":\"后台管理系统首页\",\"url\":\"/webpages/admin/index.jsp\",\"state\":0,\"describe\":\"后台管理系统首页。\"}]', '更新', '2018-11-27 16:30:53');
@@ -122,10 +387,13 @@ INSERT INTO `tab_log` VALUES ('8e5c0072-5495-4f1c-85bb-6510a464d594', 'd6a00d9d-
 INSERT INTO `tab_log` VALUES ('8ee10111-0107-4246-b734-f1436ecfba64', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543580190618,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543580190618,\"id\":\"beae122d-2306-42a6-9000-9024bdd7553c\",\"name\":\"菜单管理（读）\",\"resourceId\":\"26449d80-ef15-4b4b-be91-e4f9f77e2afc\",\"operations\":\"READ\",\"state\":1,\"describe\":\"\",\"operationList\":[\"READ\"]}]', '添加', '2018-11-30 20:16:31');
 INSERT INTO `tab_log` VALUES ('9175c2c7-b5ae-43a4-95e4-2b052099a166', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"test\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543313451621,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543313451621,\"id\":\"54f83d8a-c087-4870-a68c-ae585d4e3d25\",\"name\":\"test\",\"state\":1,\"describe\":\"test\",\"permissions\":null,\"authority\":\"ROLE_test\"}]', '添加', '2018-11-27 18:10:53');
 INSERT INTO `tab_log` VALUES ('91858bbd-a678-4d9d-872c-8760fd8729fe', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"test\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543313452000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543313861660,\"id\":\"54f83d8a-c087-4870-a68c-ae585d4e3d25\",\"name\":\"TEST\",\"state\":0,\"describe\":\"test\",\"permissions\":null,\"authority\":\"ROLE_TEST\"}]', '更新', '2018-11-27 18:17:42');
+INSERT INTO `tab_log` VALUES ('944fe2f9-3164-41c8-a5ad-0e2f44b28156', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"测试123\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543998512000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543999933115,\"id\":\"a2417147-7b27-4519-b175-49c5db6e202c\",\"ip\":\"127.0.0.1\"}]', '更新', '2018-12-05 16:52:14');
+INSERT INTO `tab_log` VALUES ('9e8755bb-e949-4c36-92d3-e88ac245cd69', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在删除数据，删除对象ID为：\n[\"25bd607e-983d-46df-a87f-10ed26879848\"]', '删除', '2018-12-05 17:01:03');
 INSERT INTO `tab_log` VALUES ('a01dee0e-fcc0-41d6-a1c1-605e8876b98e', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":null,\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543853864262,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543853864262,\"id\":\"5cb9e45c-48d5-463b-a92e-d0a6eb4b6003\",\"ip\":\"0:0:0:0:0:0:0:1\"}]', '添加', '2018-12-04 00:17:44');
+INSERT INTO `tab_log` VALUES ('a1dca7ec-faeb-42c0-8f78-f2dd3100f0f0', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":null,\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1544000448519,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1544000448519,\"id\":\"25bd607e-983d-46df-a87f-10ed26879848\",\"ip\":\"0:0:0:0:0:0:0:1\"}]', '添加', '2018-12-05 17:00:49');
 INSERT INTO `tab_log` VALUES ('a21f826c-9333-4e21-a813-4c5be55628c5', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543576391000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543577928729,\"id\":\"9ef51893-2a55-4029-b3c1-7890220c90bc\",\"name\":\"系统管理\",\"url\":\"\",\"state\":1,\"parentId\":\"f87236f6-edf5-4b21-9739-0cdc0472fc5c\",\"orderNumber\":1,\"level\":1,\"iconStyle\":\"layui-icon-set-fill\",\"describe\":\"\"}]', '更新', '2018-11-30 19:38:49');
 INSERT INTO `tab_log` VALUES ('a2a67d54-b5ed-45db-8efd-fc6126042f36', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在删除数据，删除对象ID为：\n[\"76557876-b09b-4c66-9bcf-400400aad2c9\"]', '删除', '2018-12-04 00:12:33');
-INSERT INTO `tab_log` VALUES ('ab1a0b6f-39d3-459c-ae4f-af701d99cb6f', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543828633000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543832327517,\"id\":\"047d43c2-19dd-4dbf-bf6b-316f6c69eb9e\",\"name\":\"管理员管理\",\"url\":\"/webpages/admin/user_admin_list.jsp\",\"state\":1,\"parentId\":\"50774cdc-ebc0-43db-aa45-a8d078d84730\",\"orderNumber\":7,\"level\":2,\"iconStyle\":\"layui-icon layui-icon-friends\",\"describe\":\"\"}]', '更新', '2018-12-03 18:18:48');
+INSERT INTO `tab_log` VALUES ('ab1a0b6f-39d3-459c-ae4f-af701d99cb6f', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543828633000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543832327517,\"id\":\"047d43c2-19dd-4dbf-bf6b-316f6c69eb9e\",\"name\":\"管理员管理\",\"url\":\"/webpages/admin/user_admin.jsp\",\"state\":1,\"parentId\":\"50774cdc-ebc0-43db-aa45-a8d078d84730\",\"orderNumber\":7,\"level\":2,\"iconStyle\":\"layui-icon layui-icon-friends\",\"describe\":\"\"}]', '更新', '2018-12-03 18:18:48');
 INSERT INTO `tab_log` VALUES ('b031f627-c688-4be1-9aec-ff1c9a7d46e5', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"test\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543399955000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543498991308,\"id\":\"cfcab4d4-7cb5-413c-8315-be34d1a05755\",\"name\":\"test\",\"resourceId\":\"396f9846-d0fc-42b0-b267-d8be114e4786\",\"operations\":\"READ,CREATE,UPDATE\",\"state\":1,\"describe\":\"test\",\"operationList\":[\"READ\",\"CREATE\",\"UPDATE\"]}]', '更新', '2018-11-29 21:43:11');
 INSERT INTO `tab_log` VALUES ('b0b73047-e93e-462d-86d5-909ef0650058', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"后台管理系统可对整个网站进行相关管理，对系统来说非常重要，所以只能是管理员才能进入后台管理系统。\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543308104000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543402319637,\"id\":\"cdcdd7be-8927-4a99-b77b-daff72df72bf\",\"name\":\"后台管理系统首页（读）\",\"resourceId\":\"d2a220ae-3b26-4611-bd8b-8dee30f74de1\",\"operations\":\"READ\",\"state\":1,\"describe\":\"后台管理系统首页的读权限，即拥有此权限才能进入后台管理系统首页。\",\"operationList\":[\"READ\"]}]', '更新', '2018-11-28 18:52:00');
 INSERT INTO `tab_log` VALUES ('b0c2789a-d371-4622-92c6-5c3dbbc25ec3', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543578445886,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543578445886,\"id\":\"74203a7f-afe9-41ff-9371-808107003ab4\",\"name\":\"管理系统首页（读）\",\"resourceId\":\"f87236f6-edf5-4b21-9739-0cdc0472fc5c\",\"operations\":\"READ\",\"state\":1,\"describe\":\"\",\"operationList\":[\"READ\"]}]', '添加', '2018-11-30 19:47:26');
@@ -135,8 +403,10 @@ INSERT INTO `tab_log` VALUES ('b229b777-8f38-4f48-8b6c-4cd9fd588c4f', 'd6a00d9d-
 INSERT INTO `tab_log` VALUES ('b821404d-f05f-42e6-8350-17f4813e3b00', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543826304000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543828742217,\"id\":\"50774cdc-ebc0-43db-aa45-a8d078d84730\",\"name\":\"用户管理\",\"url\":\"null\",\"state\":1,\"parentId\":\"f87236f6-edf5-4b21-9739-0cdc0472fc5c\",\"orderNumber\":6,\"level\":1,\"iconStyle\":\"layui-icon layui-icon-group\",\"describe\":\"\"}]', '更新', '2018-12-03 17:19:02');
 INSERT INTO `tab_log` VALUES ('b83a5886-a0d9-4d35-90ae-7394b7f6fd07', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543576436000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543671876120,\"id\":\"26449d80-ef15-4b4b-be91-e4f9f77e2afc\",\"name\":\"菜单管理\",\"url\":\"/webpages/admin\",\"state\":1,\"parentId\":\"9ef51893-2a55-4029-b3c1-7890220c90bc\",\"orderNumber\":2,\"level\":2,\"iconStyle\":\"layui-icon-app\",\"describe\":\"\"}]', '更新', '2018-12-01 21:44:36');
 INSERT INTO `tab_log` VALUES ('be39f73c-ba6e-4a2e-bc9a-e84596243060', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543590990000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543590990000,\"id\":\"adb8731c-1f0f-4269-9d39-91696f040715\",\"name\":\"管理系统首页（添加）\",\"resourceId\":\"f87236f6-edf5-4b21-9739-0cdc0472fc5c\",\"operations\":\"READ,CREATE\",\"state\":1,\"describe\":\"\",\"operationList\":[\"READ\",\"CREATE\"]}]', '更新', '2018-11-30 23:23:45');
+INSERT INTO `tab_log` VALUES ('bf2dcbdc-99bb-4fd6-9b2d-440ed4f81193', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543945105000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543996412992,\"id\":\"2b2773bd-7d8a-4197-9ab3-2f09c9355c90\",\"name\":\"IP封禁管理\",\"url\":\"/webpages/admin/lockedIP_list.jsp\",\"state\":1,\"parentId\":\"50774cdc-ebc0-43db-aa45-a8d078d84730\",\"orderNumber\":9,\"level\":2,\"iconStyle\":\"layui-icon layui-icon-unlink\",\"describe\":\"\"}]', '更新', '2018-12-05 15:53:33');
 INSERT INTO `tab_log` VALUES ('c014e0c4-69aa-4cd6-a6d8-f47681287cf7', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543832434000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543832496245,\"id\":\"854d6f60-5a15-4525-8b78-bfb4d6055265\",\"name\":\"所有用户管理\",\"url\":\"/webpages/admin/user_list.jsp\",\"state\":1,\"parentId\":\"50774cdc-ebc0-43db-aa45-a8d078d84730\",\"orderNumber\":8,\"level\":2,\"iconStyle\":\"layui-icon layui-icon-user\",\"describe\":\"\"}]', '更新', '2018-12-03 18:21:36');
 INSERT INTO `tab_log` VALUES ('c6507286-8a22-46f8-a36b-4ab92f704fac', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"可进入后台管理系统首页，后台管理系统可对网站各个部分进行管理，对网站非常重要，为了系统安全，后台管理系统只能是有管理员权限的人员才能进入！\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543307206350,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543307207353,\"id\":\"d2a220ae-3b26-4611-bd8b-8dee30f74de1\",\"name\":\"后台管理系统首页\",\"url\":\"/webpages/admin/index.jsp\",\"state\":1,\"describe\":\"后台管理系统首页。\"}]', '添加', '2018-11-27 16:27:04');
+INSERT INTO `tab_log` VALUES ('d0671f35-1973-472d-aecc-5c76f1bedc4f', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":null,\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543997349495,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543997349496,\"id\":\"f5c293f1-c8e4-47da-a6b8-b3e176436e82\",\"ip\":\"0:0:0:0:0:0:0:1\"}]', '添加', '2018-12-05 16:09:10');
 INSERT INTO `tab_log` VALUES ('d5fdc5fb-12d4-4526-ab9f-55a128ebcda2', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543576642000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543671684526,\"id\":\"7d4b041c-c0c0-49d7-b959-f650194fd236\",\"name\":\"角色管理\",\"url\":\"/webpages/admin/role_list.jsp\",\"state\":1,\"parentId\":\"9ef51893-2a55-4029-b3c1-7890220c90bc\",\"orderNumber\":4,\"level\":2,\"iconStyle\":\"glyphicon glyphicon-user\",\"describe\":\"\"}]', '更新', '2018-12-01 21:41:25');
 INSERT INTO `tab_log` VALUES ('d6462f40-0a68-446c-a7d2-aa8365f4f51f', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":null,\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543906830289,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543906830289,\"id\":\"dcfd8026-5f94-4270-a271-40922db59ca9\",\"ip\":\"0:0:0:0:0:0:0:1\"}]', '添加', '2018-12-04 15:00:30');
 INSERT INTO `tab_log` VALUES ('d6db4e3b-49d7-42ac-b0b0-82528f3147e2', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"test\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543313102356,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543313102356,\"id\":\"7719c9b9-0f3d-42a7-979f-1ab04cf703a1\",\"name\":\"test\",\"state\":1,\"describe\":\"test\",\"permissions\":null,\"authority\":\"ROLE_test\"}]', '添加', '2018-11-27 18:05:24');
@@ -151,6 +421,7 @@ INSERT INTO `tab_log` VALUES ('ea174ef6-4d45-4596-9094-9aec401f998d', 'd6a00d9d-
 INSERT INTO `tab_log` VALUES ('eba31f5b-b2e6-42e9-8587-011a76b48ec5', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"test\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543313452000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543313530981,\"id\":\"54f83d8a-c087-4870-a68c-ae585d4e3d25\",\"name\":\"TEST\",\"state\":1,\"describe\":\"test\",\"permissions\":null,\"authority\":\"ROLE_TEST\"}]', '更新', '2018-11-27 18:12:11');
 INSERT INTO `tab_log` VALUES ('ed108d79-b78b-443b-8d3e-8baa9535d4c6', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"test\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543399955000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543399960453,\"id\":\"cfcab4d4-7cb5-413c-8315-be34d1a05755\",\"name\":\"test\",\"resourceId\":\"396f9846-d0fc-42b0-b267-d8be114e4786\",\"operations\":\"READ,CREATE,UPDATE\",\"state\":0,\"describe\":\"test\",\"operationList\":[\"READ\",\"CREATE\",\"UPDATE\"]}]', '更新', '2018-11-28 18:12:40');
 INSERT INTO `tab_log` VALUES ('f1a7e7bf-cdb6-4b1e-a7fa-406f4f6903de', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543580221557,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543580221557,\"id\":\"f0e4a234-32b7-40d9-8ad6-2a24aa4af58c\",\"name\":\"权限管理（读）\",\"resourceId\":\"828b5970-ee7a-4ee9-a5d7-bda06480056f\",\"operations\":\"READ\",\"state\":1,\"describe\":\"\",\"operationList\":[\"READ\"]}]', '添加', '2018-11-30 20:17:02');
+INSERT INTO `tab_log` VALUES ('f35a8c47-316b-40f0-965e-86a13f9b85cb', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":\"测试\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543998511891,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543998513235,\"id\":\"a2417147-7b27-4519-b175-49c5db6e202c\",\"ip\":\"127.0.0.1\"}]', '添加', '2018-12-05 16:28:38');
 INSERT INTO `tab_log` VALUES ('f5afd00f-e75d-4aeb-9fc3-3ae58571f759', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543832434000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543921307233,\"id\":\"854d6f60-5a15-4525-8b78-bfb4d6055265\",\"name\":\"普通用户管理\",\"url\":\"/webpages/admin/user_list.jsp\",\"state\":1,\"parentId\":\"50774cdc-ebc0-43db-aa45-a8d078d84730\",\"orderNumber\":8,\"level\":2,\"iconStyle\":\"layui-icon layui-icon-user\",\"describe\":\"\"}]', '更新', '2018-12-04 19:01:47');
 INSERT INTO `tab_log` VALUES ('f82379d6-dd08-49fe-9b58-3985f180e1c0', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在添加数据，数据信息为：\n[{\"remarks\":null,\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543930260056,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543930260056,\"id\":\"382fb5ec-31b8-41eb-84a7-4ec874bf7585\",\"ip\":\"0:0:0:0:0:0:0:1\"}]', '添加', '2018-12-04 21:31:00');
 INSERT INTO `tab_log` VALUES ('f8e8be82-33dd-4929-98cd-db52b08d3ea7', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '用户：【admin@qq.com】正在更新数据，数据信息为：\n[{\"remarks\":\"测试用户\",\"createUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"createDate\":1543313906000,\"updateUserId\":\"d6a00d9d-2801-45c3-a99f-326e2949e2f2\",\"updateDate\":1543677364439,\"id\":\"3edb62ca-376c-485c-9132-c1b44f22effe\",\"name\":\"TEST\",\"state\":0,\"describe\":\"测试用户\",\"permissions\":null,\"authority\":\"ROLE_TEST\"}]', '更新', '2018-12-01 23:16:04');
@@ -235,14 +506,62 @@ CREATE TABLE `tab_resource` (
 -- Records of tab_resource
 -- ----------------------------
 INSERT INTO `tab_resource` VALUES ('03fc5466-eedf-4444-be87-312d5a71245a', '信息管理', '', '1', 'f87236f6-edf5-4b21-9739-0cdc0472fc5c', '5', '1', 'glyphicon glyphicon-send', '', '', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-01 22:51:42', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-03 16:33:42');
-INSERT INTO `tab_resource` VALUES ('047d43c2-19dd-4dbf-bf6b-316f6c69eb9e', '管理员管理', '/webpages/admin/user_admin_list.jsp', '1', '50774cdc-ebc0-43db-aa45-a8d078d84730', '7', '2', 'layui-icon layui-icon-friends', '', '', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-03 17:17:13', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-03 18:18:48');
+INSERT INTO `tab_resource` VALUES ('047d43c2-19dd-4dbf-bf6b-316f6c69eb9e', '管理员管理', '/webpages/admin/user_admin_list.jsp', '1', '50774cdc-ebc0-43db-aa45-a8d078d84730', '7', '2', 'layui-icon layui-icon-friends', '', '', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-03 17:17:13', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-04 22:06:21');
 INSERT INTO `tab_resource` VALUES ('26449d80-ef15-4b4b-be91-e4f9f77e2afc', '菜单管理', '/webpages/admin/resource_list.jsp', '1', '9ef51893-2a55-4029-b3c1-7890220c90bc', '2', '2', 'layui-icon layui-icon-app', '', '', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-11-30 19:13:56', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-01 22:15:39');
+INSERT INTO `tab_resource` VALUES ('2b2773bd-7d8a-4197-9ab3-2f09c9355c90', 'IP封禁管理', '/webpages/admin/lockedIP_list.jsp', '1', '50774cdc-ebc0-43db-aa45-a8d078d84730', '9', '2', 'layui-icon layui-icon-unlink', '', '', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-05 01:38:25', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-05 15:53:33');
 INSERT INTO `tab_resource` VALUES ('50774cdc-ebc0-43db-aa45-a8d078d84730', '用户管理', 'null', '1', 'f87236f6-edf5-4b21-9739-0cdc0472fc5c', '6', '1', 'layui-icon layui-icon-group', '', '', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-03 16:38:24', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-03 17:19:02');
 INSERT INTO `tab_resource` VALUES ('7d4b041c-c0c0-49d7-b959-f650194fd236', '角色管理', '/webpages/admin/role_list.jsp', '1', '9ef51893-2a55-4029-b3c1-7890220c90bc', '4', '2', 'glyphicon glyphicon-user', '', '', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-11-30 19:17:22', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-01 21:41:25');
 INSERT INTO `tab_resource` VALUES ('828b5970-ee7a-4ee9-a5d7-bda06480056f', '权限管理', '/webpages/admin/permission_list.jsp', '1', '9ef51893-2a55-4029-b3c1-7890220c90bc', '3', '2', 'glyphicon glyphicon-lock', '', '', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-11-30 19:14:51', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-01 21:43:36');
 INSERT INTO `tab_resource` VALUES ('854d6f60-5a15-4525-8b78-bfb4d6055265', '普通用户管理', '/webpages/admin/user_list.jsp', '1', '50774cdc-ebc0-43db-aa45-a8d078d84730', '8', '2', 'layui-icon layui-icon-user', '', '', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-03 18:20:34', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-04 19:01:47');
 INSERT INTO `tab_resource` VALUES ('9ef51893-2a55-4029-b3c1-7890220c90bc', '系统管理', '', '1', 'f87236f6-edf5-4b21-9739-0cdc0472fc5c', '1', '1', 'glyphicon glyphicon-cog', '', '', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-11-30 19:13:11', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-01 21:39:22');
 INSERT INTO `tab_resource` VALUES ('f87236f6-edf5-4b21-9739-0cdc0472fc5c', '管理系统首页', '/webpages/admin/index.jsp', '1', '0', '0', '0', 'glyphicon glyphicon-home', '', '', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-11-30 19:12:26', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '2018-12-01 21:37:36');
+
+-- ----------------------------
+-- Table structure for tab_revolutionary_site
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_revolutionary_site`;
+CREATE TABLE `tab_revolutionary_site` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '红色圣地的标题',
+  `imgs` text COMMENT '红色圣地的图片',
+  `content` text COMMENT '红色圣地内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '红色圣地备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_revolutionary_site
+-- ----------------------------
+INSERT INTO `tab_revolutionary_site` VALUES ('1', '红色圣地1', 'https://goss.veer.com/creative/vcg/veer/800water/veer-309116182.jpg', '红色圣地1红色圣地1红色圣地1红色圣地1红色圣地1红色圣地1红色圣地1红色圣地1红色圣地1红色圣地1', null, null, null, null, null);
+INSERT INTO `tab_revolutionary_site` VALUES ('2', '红色圣地2', 'https://goss.veer.com/creative/vcg/veer/800water/veer-309116182.jpg', '红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2红色圣地2', null, null, null, null, null);
+INSERT INTO `tab_revolutionary_site` VALUES ('3', '红色圣地3', 'https://goss.veer.com/creative/vcg/veer/800water/veer-309116182.jpg', '红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3红色圣地3', null, null, null, null, null);
+INSERT INTO `tab_revolutionary_site` VALUES ('4', '红色圣地4', 'https://goss.veer.com/creative/vcg/veer/800water/veer-309116182.jpg', '红色圣地4红色圣地4红色圣地4红色圣地4红色圣地4红色圣地4红色圣地4红色圣地4红色圣地4红色圣地4红色圣地4红色圣地4红色圣地4红色圣地4红色圣地4红色圣地4', null, null, null, null, null);
+INSERT INTO `tab_revolutionary_site` VALUES ('5', '红色圣地5', 'https://goss.veer.com/creative/vcg/veer/800water/veer-309116182.jpg', '红色圣地5红色圣地5红色圣地5红色圣地5红色圣地5红色圣地5红色圣地5红色圣地5红色圣地5红色圣地5', null, null, null, null, null);
+
+-- ----------------------------
+-- Table structure for tab_revolution_site
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_revolution_site`;
+CREATE TABLE `tab_revolution_site` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '红色圣地的标题',
+  `imgs` text COMMENT '红色圣地的图片',
+  `content` text COMMENT '红色圣地内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '红色圣地备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_revolution_site
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for tab_role
@@ -291,6 +610,126 @@ INSERT INTO `tab_role_permission` VALUES ('f5a3eb22-2cf1-49c4-a72f-b5a628d78931'
 INSERT INTO `tab_role_permission` VALUES ('5e75b58b-078e-4d35-a6a6-d3f8f9a004ea', 'c09b1a67-1ab6-43fc-b1b6-7cd48ad21336', 'f0e4a234-32b7-40d9-8ad6-2a24aa4af58c');
 
 -- ----------------------------
+-- Table structure for tab_special_food
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_special_food`;
+CREATE TABLE `tab_special_food` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '特殊食物的标题',
+  `imgs` text COMMENT '特殊食物的图片',
+  `content` text COMMENT '特殊食物内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '特殊食物备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_special_food
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tab_special_introduction
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_special_introduction`;
+CREATE TABLE `tab_special_introduction` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '特此介绍的标题',
+  `imgs` text COMMENT '特此介绍的图片',
+  `content` text COMMENT '特此介绍内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '特此介绍备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_special_introduction
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tab_spot_teaching
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_spot_teaching`;
+CREATE TABLE `tab_spot_teaching` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '现场教学的标题',
+  `imgs` text COMMENT '现场教学的图片',
+  `content` text COMMENT '现场教学内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '现场教学备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_spot_teaching
+-- ----------------------------
+INSERT INTO `tab_spot_teaching` VALUES ('1', '培训1', 'https://goss.veer.com/creative/vcg/veer/800water/veer-155063993.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训1', '培训1', '2018-11-05', '培训1', '2018-11-29');
+INSERT INTO `tab_spot_teaching` VALUES ('2', '培训2', 'https://goss.veer.com/creative/vcg/veer/800water/veer-303342183.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训2', '培训2', '2018-11-05', '培训2', '2018-11-29');
+INSERT INTO `tab_spot_teaching` VALUES ('3', '培训3', 'https://goss.veer.com/creative/vcg/veer/800water/veer-302222696.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训3', '培训3', '2018-11-06', '培训3', '2018-11-14');
+INSERT INTO `tab_spot_teaching` VALUES ('4', '培训4', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147418763.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训4', '培训4', '2018-11-05', '培训4', '2018-11-20');
+INSERT INTO `tab_spot_teaching` VALUES ('5', '培训5', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147424398.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训5', '培训5', '2018-11-06', '培训5', '2018-11-22');
+
+-- ----------------------------
+-- Table structure for tab_student_mien
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_student_mien`;
+CREATE TABLE `tab_student_mien` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '学员风采标题',
+  `content` text COMMENT '学员风采内容',
+  `imgs` text COMMENT '学员风采图片',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '学员风采备注',
+  `create_user_id` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `create_date` date DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `update_date` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_student_mien
+-- ----------------------------
+INSERT INTO `tab_student_mien` VALUES ('1', '大数据', '大数据分析是指对规模巨大的数据进行分析。大数据可以概括为4个V， 数据量大(Volume)、速度快(Velocity)、类型多(Variety)、价值（Value）。\r\n大数据作为时下最火热的IT行业的词汇，随之而来的数据仓库、数据安全、数据分析、数据挖掘等等围绕大数据的商业价值的利用逐渐成为行业人士争相追捧的利润焦点。随着大数据时代的来临，大数据分析也应运而生。', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147424398.jpg', null, null, null, null, null);
+INSERT INTO `tab_student_mien` VALUES ('2', '云计算', '云计算云计算云计算云计算云计算', 'https://goss.veer.com/creative/vcg/veer/800water/veer-165157359.jpg', null, null, null, null, null);
+INSERT INTO `tab_student_mien` VALUES ('3', '物联网', '物联网物联网物联网物联网物联网物联网物联网物联网物联网物联网物联网物联网物联网', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147424398.jpg', null, null, null, null, null);
+INSERT INTO `tab_student_mien` VALUES ('4', '大数据', '大数据分析是指对规模巨大的数据进行分析。大数据可以概括为4个V， 数据量大(Volume)、速度快(Velocity)、类型多(Variety)、价值（Value）。\r\n大数据作为时下最火热的IT行业的词汇，随之而来的数据仓库、数据安全、数据分析、数据挖掘等等围绕大数据的商业价值的利用逐渐成为行业人士争相追捧的利润焦点。随着大数据时代的来临，大数据分析也应运而生。', 'https://goss.veer.com/creative/vcg/veer/800water/veer-165157359.jpg', null, null, null, null, null);
+INSERT INTO `tab_student_mien` VALUES ('5', '大数据', '大数据分析是指对规模巨大的数据进行分析。大数据可以概括为4个V， 数据量大(Volume)、速度快(Velocity)、类型多(Variety)、价值（Value）。\r\n大数据作为时下最火热的IT行业的词汇，随之而来的数据仓库、数据安全、数据分析、数据挖掘等等围绕大数据的商业价值的利用逐渐成为行业人士争相追捧的利润焦点。随着大数据时代的来临，大数据分析也应运而生。', 'https://goss.veer.com/creative/vcg/veer/800water/veer-165157359.jpg', null, null, null, null, null);
+INSERT INTO `tab_student_mien` VALUES ('6', '大数据', '大数据分析是指对规模巨大的数据进行分析。大数据可以概括为4个V， 数据量大(Volume)、速度快(Velocity)、类型多(Variety)、价值（Value）。\r\n大数据作为时下最火热的IT行业的词汇，随之而来的数据仓库、数据安全、数据分析、数据挖掘等等围绕大数据的商业价值的利用逐渐成为行业人士争相追捧的利润焦点。随着大数据时代的来临，大数据分析也应运而生。', 'https://goss.veer.com/creative/vcg/veer/800water/veer-121142840.jpg', null, null, null, null, null);
+INSERT INTO `tab_student_mien` VALUES ('7', '大数据', '大数据分析是指对规模巨大的数据进行分析。大数据可以概括为4个V， 数据量大(Volume)、速度快(Velocity)、类型多(Variety)、价值（Value）。\r\n大数据作为时下最火热的IT行业的词汇，随之而来的数据仓库、数据安全、数据分析、数据挖掘等等围绕大数据的商业价值的利用逐渐成为行业人士争相追捧的利润焦点。随着大数据时代的来临，大数据分析也应运而生。', 'https://goss.veer.com/creative/vcg/veer/800water/veer-165157359.jpg', null, null, null, null, null);
+INSERT INTO `tab_student_mien` VALUES ('8', '大数据', '大数据分析是指对规模巨大的数据进行分析。大数据可以概括为4个V， 数据量大(Volume)、速度快(Velocity)、类型多(Variety)、价值（Value）。\r\n大数据作为时下最火热的IT行业的词汇，随之而来的数据仓库、数据安全、数据分析、数据挖掘等等围绕大数据的商业价值的利用逐渐成为行业人士争相追捧的利润焦点。随着大数据时代的来临，大数据分析也应运而生。', 'https://goss.veer.com/creative/vcg/veer/800water/veer-121142840.jpg', null, null, null, null, null);
+
+-- ----------------------------
+-- Table structure for tab_student_story
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_student_story`;
+CREATE TABLE `tab_student_story` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '学院故事标题',
+  `content` text COMMENT '学院故事内容',
+  `imgs` text COMMENT '学院故事图片',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '备注',
+  `create_user_id` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `create_date` date DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `update_date` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_student_story
+-- ----------------------------
+INSERT INTO `tab_student_story` VALUES ('1', 'test1', 'test1test1test1test1test1test1test1test1test1test1test1test1test1test1', 'https://goss.veer.com/creative/vcg/veer/800water/veer-303342183.jpg', null, null, null, null, null);
+INSERT INTO `tab_student_story` VALUES ('2', 'test2', 'test2test2test2test2test2test2test2test2test2test2test2test2test2test2', 'https://goss.veer.com/creative/vcg/veer/800water/veer-303342183.jpg', null, null, null, null, null);
+
+-- ----------------------------
 -- Table structure for tab_training_dynamic
 -- ----------------------------
 DROP TABLE IF EXISTS `tab_training_dynamic`;
@@ -337,8 +776,8 @@ CREATE TABLE `tab_user` (
 -- ----------------------------
 -- Records of tab_user
 -- ----------------------------
-INSERT INTO `tab_user` VALUES ('43fbea5a-d1e0-44d0-b0cf-95b3897463ef', 'admin_test@qq.com', '63a9f0ea7bb98050796b649e85481845', null, '1', '1', '2018-12-04 21:23:31', '2018-12-04 21:23:31');
-INSERT INTO `tab_user` VALUES ('d6a00d9d-2801-45c3-a99f-326e2949e2f2', 'admin@qq.com', '63a9f0ea7bb98050796b649e85481845', '0:0:0:0:0:0:0:1', '1', '1', '2018-11-18 00:00:00', '2018-12-04 21:30:28');
+INSERT INTO `tab_user` VALUES ('43fbea5a-d1e0-44d0-b0cf-95b3897463ef', 'admin_test@qq.com', 'ff9830c42660c1dd1942844f8069b74a', null, '1', '-1', '2018-12-04 21:23:31', '2018-12-04 21:23:31');
+INSERT INTO `tab_user` VALUES ('d6a00d9d-2801-45c3-a99f-326e2949e2f2', 'admin@qq.com', '63a9f0ea7bb98050796b649e85481845', '0:0:0:0:0:0:0:1', '1', '1', '2018-11-18 00:00:00', '2018-12-05 17:00:28');
 INSERT INTO `tab_user` VALUES ('f40b6507-7561-4fa6-b3a7-749ce67d200c', 'test@qq.com', '63a9f0ea7bb98050796b649e85481845', '0:0:0:0:0:0:0:1', '1', '1', '2018-12-04 19:00:42', '2018-12-04 19:00:42');
 
 -- ----------------------------
@@ -389,8 +828,33 @@ CREATE TABLE `tab_user_role` (
 -- ----------------------------
 -- Records of tab_user_role
 -- ----------------------------
-INSERT INTO `tab_user_role` VALUES ('5204008e-6668-4f5f-971a-0abb6b0d8512', '43fbea5a-d1e0-44d0-b0cf-95b3897463ef', '7e0ee84f-216f-41d3-b3b0-832eaea51e79');
 INSERT INTO `tab_user_role` VALUES ('78c776ef-a23b-42a7-925d-8df7981b31eb', '43fbea5a-d1e0-44d0-b0cf-95b3897463ef', 'c09b1a67-1ab6-43fc-b1b6-7cd48ad21336');
 INSERT INTO `tab_user_role` VALUES ('a53ccb57-ca3d-4d76-a1a0-40efa11ce340', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', '7e0ee84f-216f-41d3-b3b0-832eaea51e79');
 INSERT INTO `tab_user_role` VALUES ('a53ccb57-ca3d-4d76-a1a0-40efa11ce347', 'd6a00d9d-2801-45c3-a99f-326e2949e2f2', 'c09b1a67-1ab6-43fc-b1b6-7cd48ad21336');
 INSERT INTO `tab_user_role` VALUES ('373c4430-049c-4033-babe-7912365f863b', 'f40b6507-7561-4fa6-b3a7-749ce67d200c', '7e0ee84f-216f-41d3-b3b0-832eaea51e79');
+
+-- ----------------------------
+-- Table structure for tab_video_teaching
+-- ----------------------------
+DROP TABLE IF EXISTS `tab_video_teaching`;
+CREATE TABLE `tab_video_teaching` (
+  `id` varchar(36) NOT NULL DEFAULT '' COMMENT 'ID',
+  `title` varchar(100) DEFAULT NULL COMMENT '影音教学的标题',
+  `imgs` text COMMENT '影音教学的图片',
+  `content` text COMMENT '影音教学内容',
+  `remarks` varchar(100) DEFAULT NULL COMMENT '影音教学备注',
+  `createUserId` varchar(36) DEFAULT NULL COMMENT '创始人ID',
+  `createDate` date DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updateDate` date DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of tab_video_teaching
+-- ----------------------------
+INSERT INTO `tab_video_teaching` VALUES ('1', '培训1', 'https://goss.veer.com/creative/vcg/veer/800water/veer-155063993.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训1', '培训1', '2018-11-05', '培训1', '2018-11-29');
+INSERT INTO `tab_video_teaching` VALUES ('2', '培训2', 'https://goss.veer.com/creative/vcg/veer/800water/veer-303342183.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训2', '培训2', '2018-11-05', '培训2', '2018-11-29');
+INSERT INTO `tab_video_teaching` VALUES ('3', '培训3', 'https://goss.veer.com/creative/vcg/veer/800water/veer-302222696.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训3', '培训3', '2018-11-06', '培训3', '2018-11-14');
+INSERT INTO `tab_video_teaching` VALUES ('4', '培训4', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147418763.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训4', '培训4', '2018-11-05', '培训4', '2018-11-20');
+INSERT INTO `tab_video_teaching` VALUES ('5', '培训5', 'https://goss.veer.com/creative/vcg/veer/800water/veer-147424398.jpg', '培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容', '培训5', '培训5', '2018-11-06', '培训5', '2018-11-22');
