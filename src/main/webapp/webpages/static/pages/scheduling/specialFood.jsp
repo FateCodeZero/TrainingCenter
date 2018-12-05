@@ -115,7 +115,7 @@
                             $("a[target='special_a']").on('click',function () {
                                 //获取当前被点击的条数ID，携带ID跳转到详情页面
                                 var special_id = $(this).attr("id");
-                                window.location.href = "specialFoodDetails.jsp?id="+special_id+"";
+                                window.location.href = "${webRoot}/webpages/static/pages/scheduling/specialFoodDetails.jsp?id="+special_id+"";
                             });
                         });
 

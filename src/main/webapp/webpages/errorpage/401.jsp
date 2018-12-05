@@ -25,8 +25,8 @@
             <p class="notFond1">401</p>
             <h1 class="notFond2">访问路径异常</h1>
             <h2 class="notFond3">非常抱歉，您的访问路径异常，您可以选择重新
-                <a  href="#" >&nbsp;登录&nbsp;</a>或者
-                <a href="#" >&nbsp;联系我们&nbsp;</a></h2>
+                <a  href="${webRoot}/webpages/static/login.jsp" >&nbsp;登录&nbsp;</a>或者
+                <a href="${webRoot}/webpages/static/contact.jsp" >&nbsp;联系我们&nbsp;</a></h2>
 
         </div>
         <div class="col-md-3"></div>

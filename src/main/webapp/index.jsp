@@ -133,43 +133,43 @@
                 loadUrl = "${webRoot}/webpages/static/contact.jsp";
             }
             if (text === '体验式教学') {
-                loadUrl = "${webRoot}/webpages/static/experientialTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/characteristicCourses/experientialTeaching.jsp";
             }
             if (text === '访谈教学') {
-                loadUrl = "${webRoot}/webpages/static/interviewTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/characteristicCourses/interviewTeaching.jsp";
             }
             if (text === '现场讲解') {
-                loadUrl = "${webRoot}/webpages/static/spotTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/characteristicCourses/spotTeaching.jsp";
             }
             if (text === '影音教学') {
-                loadUrl = "${webRoot}/webpages/static/videoTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/characteristicCourses/videoTeaching.jsp";
             }
             if (text === '与创业名人/团队交流调研') {
-                loadUrl = "${webRoot}/webpages/static/communicationTeaching.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/characteristicCourses/communicationTeaching.jsp";
             }
             if (text === '学员学习照') {
-                loadUrl = "${webRoot}/webpages/static/studentPhotos.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/studentStyle/studentPhotos.jsp";
             }
             if (text === '最佳学员') {
-                loadUrl = "${webRoot}/webpages/static/bestStudent.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/studentStyle/bestStudent.jsp";
             }
             if(text === '往期学员故事'){
-                loadUrl = "${webRoot}/webpages/static/studentStory.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/studentStyle/studentStory.jsp";
             }
             if(text === '红色圣地'){
-                loadUrl = "${webRoot}/webpages/static/revolutionarySite.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/scheduling/revolutionarySite.jsp";
             }
             if(text === '交通工具'){
-                loadUrl = "${webRoot}/webpages/static/transportation.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/scheduling/transportation.jsp";
             }
             if(text === '特色美食'){
-                loadUrl = "${webRoot}/webpages/static/specialFood.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/scheduling/specialFood.jsp";
             }
             if(text === '文化产品'){
-                loadUrl = "${webRoot}/webpages/static/culturalProducts.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/scheduling/culturalProducts.jsp";
             }
             if(text === '特此介绍'){
-                loadUrl = "${webRoot}/webpages/static/Introduce.jsp";
+                loadUrl = "${webRoot}/webpages/static/pages/scheduling/specialIntroduction.jsp";
             }
             if(text === '个人中心'){
                 loadUrl = "${webRoot}/webpages/static/personalCenter.jsp";

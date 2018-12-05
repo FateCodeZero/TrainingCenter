@@ -30,18 +30,18 @@
 </head>
 <body onload="IFrameResize()">
 
-<!-- 红色圣地 -->
+<!-- 文化产品 -->
 <div id="fh5co-course">
     <div class="container">
         <div class="row animate-box">
             <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">
-                <h2>红色圣地</h2>
+                <h2>文化产品</h2>
                 <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
             </div>
         </div>
         <div class="row">
-            <div id="revolutionary"></div>
-            <div id="revolutionary_pagination" class="col-md-12 text-center"></div>
+            <div id="cultural"></div>
+            <div id="cultural_pagination" class="col-md-12 text-center"></div>
 
         </div>
     </div>
@@ -66,7 +66,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: "${webRoot}/revolutionarySite/listPage",
+                url: "${webRoot}/culturalProducts/listPage",
                 data: {currentPage:currentPage,rows:3},
                 dataType: "json",
                 success: function (data) {
@@ -93,11 +93,11 @@
                                 content = content.substring(0,60)+"…";
                             }
 
-                            var revolutionary_div = '<div id="'+id+'" class="col-lg-4 col-md-4">\n' +
+                            var cultural_div = '<div id="'+id+'" class="col-lg-4 col-md-4">\n' +
                                 '                <div class="fh5co-blog animate-box">\n' +
                                 '                    <a href="#" class="blog-img-holder" style="background-image: url('+imgs+');"></a>\n' +
                                 '                    <div class="blog-text">\n' +
-                                '                        <h3><a id="'+id+'" target="revolutionary_a" >'+title+'</a></h3>\n' +
+                                '                        <h3><a id="'+id+'" target="cultural_a" >'+title+'</a></h3>\n' +
                                 '                        <span class="posted_on">March. 15th</span>\n' +
                                 '                        <span class="comment"><a href="">21<i class="icon-speech-bubble"></i></a></span>\n' +
                                 '                        <p>'+content+'</p>\n' +
@@ -107,15 +107,15 @@
 
 
                             if (index == 0) {
-                                $("#revolutionary").html(revolutionary_div);
+                                $("#cultural").html(cultural_div);
                             }else {
-                                $("#revolutionary").append(revolutionary_div);
+                                $("#cultural").append(cultural_div);
                             }
 
-                            $("a[target='revolutionary_a']").on('click',function () {
+                            $("a[target='cultural_a']").on('click',function () {
                                 //获取当前被点击的条数ID，携带ID跳转到详情页面
-                                var revolutionary_id = $(this).attr("id");
-                                window.location.href = "revolutionaryDetails.jsp?id="+revolutionary_id+"";
+                                var cultural_id = $(this).attr("id");
+                                window.location.href = "${webRoot}/webpages/static/pages/scheduling/culturalDetails.jsp?id="+cultural_id+"";
                             });
                         });
 
@@ -124,7 +124,7 @@
                         //再次计算高度，包含ajax新增的数据流
                         IFrameResize();
                     }else {
-                        $("#revolutionary").html('<h3 class="col-md-12 text-center">暂无数据</h3>');
+                        $("#cultural").html('<h3 class="col-md-12 text-center">暂无数据</h3>');
                     }
                 }
             });
@@ -136,7 +136,7 @@
 
             var laypage = layui.laypage;
             laypage.render({
-                elem: 'revolutionary_pagination'      //div的ID
+                elem: 'cultural_pagination'      //div的ID
                 , count: Total        //数据总数，从服务端得到
                 , limit: 1              //每页显示数据条数
                 , groups: 3             //连续出现的页码数

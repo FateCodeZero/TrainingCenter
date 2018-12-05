@@ -1,16 +1,10 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: YMM
-  Date: 2018/11/12
-  Time: 21:24
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@include file="/context/mytags.jsp" %>
 <html>
 <head>
-    <title>与创业名人/团队交流调研详情</title>
+    <title>特此介绍</title>
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/dynamic.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/animate.css">
@@ -30,7 +24,7 @@
 <body onload="IFrameResize()">
 
 <div  id="fh5co-about">
-    <div id="communication_details" class="container"></div>
+    <div id="introduction" class="container"></div>
     <div class="col-md-12" style="height: 100px;"></div>
 </div>
 </body>
@@ -39,11 +33,10 @@
 
     $(document).ready(function () {
 
-        var id = $.Request('id');
         $.ajax({
             type: 'GET',
-            url: "${webRoot}/communicationTeaching/detailsPage",
-            data: {id:id},
+            url: "${webRoot}/culturalProducts/detailsPage",
+            data: '',
             dataType: "json",
             success:function (data) {
                 var jsonData = eval(data);
@@ -57,10 +50,10 @@
                     var content = details.content;
                     var imgs = details.imgs;
 
-                    var communication_div = '    <div id="'+id+' " class="container">' +
+                    var introduction_div = '    <div id="'+id+' " class="container">' +
                         '        <div class="row animate-box">' +
                         '            <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">' +
-                        '                <h2>与创业名人/团队交流调研详情</h2>' +
+                        '                <h2>特此介绍</h2>' +
                         '                <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>\n' +
                         '            </div>' +
                         '        </div>' +
@@ -74,18 +67,19 @@
                         '        </div>' +
                         '    </div>';
 
-                    $("#communication_details").html(communication_div);
+                    $("#introduction").html(introduction_div);
                     IFrameResize();
 
                 }else {
-                    $("#communication_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                    $("#introduction").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
             },
             error:function (msg) {
-                $("#communication_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                $("#introduction").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
             }
         })
     })
 
 </script>
 </html>
+--%>

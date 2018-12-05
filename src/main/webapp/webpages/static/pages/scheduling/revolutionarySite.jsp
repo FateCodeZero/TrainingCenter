@@ -10,7 +10,7 @@
 <%@include file="/context/mytags.jsp" %>
 <html>
 <head>
-    <title>影音教学</title>
+    <title>红色圣地</title>
 
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
@@ -30,18 +30,19 @@
 </head>
 <body onload="IFrameResize()">
 
-<!-- 影音教学 -->
+<!-- 红色圣地 -->
 <div id="fh5co-course">
     <div class="container">
         <div class="row animate-box">
             <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">
-                <h2>影音教学</h2>
+                <h2>红色圣地</h2>
                 <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
             </div>
         </div>
         <div class="row">
-            <div id="videoTeaching"></div>
-            <div id="video_pagination" class="col-md-12 text-center"></div>
+            <div id="revolutionary"></div>
+            <div id="revolutionary_pagination" class="col-md-12 text-center"></div>
+
         </div>
     </div>
 </div>
@@ -56,8 +57,7 @@
             getListPage();
             IFrameResize();
         });
-
-        //getListPage，完成DIV追加，返回总条数
+        //获取ListPage数据，完成DIV追加，返回总条数
         function getListPage(currentPage){
             //首次加载，当前页为第一页时传入参数为空
             if (currentPage == null){
@@ -66,8 +66,8 @@
 
             $.ajax({
                 type: 'GET',
-                url: "${webRoot}/videoTeaching/listPage",
-                data: {currentPage:currentPage,rows:4},
+                url: "${webRoot}/revolutionarySite/listPage",
+                data: {currentPage:currentPage,rows:3},
                 dataType: "json",
                 success: function (data) {
                     var jsonData = eval(data);
@@ -75,7 +75,7 @@
                     var msg = jsonData.msg;
                     if(code == 1){
                         var ListPages = jsonData.data.items;
-                        var Total = Math.ceil((jsonData.data.total)/4);
+                        var Total = Math.ceil((jsonData.data.total)/3);
 
                         $.each(ListPages,function (index,ListPage) {
                             var id = ListPage.id;
@@ -93,37 +93,38 @@
                                 content = content.substring(0,60)+"…";
                             }
 
-                            var video_div = '<div id="'+id+'" class="col-md-6 animate-box">\n' +
-                                '                <div class="course">\n' +
-                                '                    <a href="#" class="course-img" style="background-image: url('+imgs+');">\n' +
-                                '                    </a>\n' +
-                                '                    <div class="desc">\n' +
-                                '                        <h3><a href="#">'+title+'</a></h3>\n' +
+                            var revolutionary_div = '<div id="'+id+'" class="col-lg-4 col-md-4">\n' +
+                                '                <div class="fh5co-blog animate-box">\n' +
+                                '                    <a href="#" class="blog-img-holder" style="background-image: url('+imgs+');"></a>\n' +
+                                '                    <div class="blog-text">\n' +
+                                '                        <h3><a id="'+id+'" target="revolutionary_a" >'+title+'</a></h3>\n' +
+                                '                        <span class="posted_on">March. 15th</span>\n' +
+                                '                        <span class="comment"><a href="">21<i class="icon-speech-bubble"></i></a></span>\n' +
                                 '                        <p>'+content+'</p>\n' +
-                                '                        <span><a id="'+id+'" target="video_a"  class="btn btn-primary btn-sm btn-course">&amp; 了解 更多</a></span>\n' +
                                 '                    </div>\n' +
                                 '                </div>\n' +
                                 '            </div>';
 
 
                             if (index == 0) {
-                                $("#videoTeaching").html(video_div);
+                                $("#revolutionary").html(revolutionary_div);
                             }else {
-                                $("#videoTeaching").append(video_div);
+                                $("#revolutionary").append(revolutionary_div);
                             }
 
-                            $("a[target='video_a']").on('click',function () {
-                                //获取当前被点击的条数ID，携带ID跳转到体验式教学详情页面
-                                var video_id = $(this).attr("id");
-                                window.location.href = "videoDetails.jsp?id="+video_id+"";
+                            $("a[target='revolutionary_a']").on('click',function () {
+                                //获取当前被点击的条数ID，携带ID跳转到详情页面
+                                var revolutionary_id = $(this).attr("id");
+                                window.location.href = "${webRoot}/webpages/static/pages/scheduling/revolutionaryDetails.jsp?id="+revolutionary_id+"";
                             });
                         });
+
                         //生成分页
                         createlayPage(Total,currentPage);
                         //再次计算高度，包含ajax新增的数据流
                         IFrameResize();
                     }else {
-                        $("#videoTeaching").html('<h3 class="col-md-12 text-center">暂无数据</h3>');
+                        $("#revolutionary").html('<h3 class="col-md-12 text-center">暂无数据</h3>');
                     }
                 }
             });
@@ -132,9 +133,10 @@
 
         /*生成分页*/
         function createlayPage(Total,currentPage) {
+
             var laypage = layui.laypage;
             laypage.render({
-                elem: 'video_pagination'      //div的ID
+                elem: 'revolutionary_pagination'      //div的ID
                 , count: Total        //数据总数，从服务端得到
                 , limit: 1              //每页显示数据条数
                 , groups: 3             //连续出现的页码数
