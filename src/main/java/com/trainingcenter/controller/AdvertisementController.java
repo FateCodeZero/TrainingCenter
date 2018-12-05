@@ -159,6 +159,7 @@ public class AdvertisementController {
             if (StringUtil.isNotEmpty(advertisement.getImgs())) {
                 newAd.setImgs(advertisement.getImgs());
             }
+
             if (StringUtil.isNotEmpty(advertisement.getUrl())) {
                 newAd.setUrl(advertisement.getUrl());  //注意：URL在上线时应不能更改
             }

@@ -56,22 +56,22 @@
     <update id="update" parameterType="com.trainingcenter.bean.Advertisement">
         UPDATE tab_advertisement
         <trim prefix="set" suffixOverrides=",">
-            <if test="advertisement.decribe != null and advertisement.decribe != '' ">
-                decribe = #{advertisement.decribe},
+            <if test="advertisement.describe != null and advertisement.describe != '' ">
+            `describe` = #{advertisement.describe},
             </if>
             <if test="advertisement.imgs != null and advertisement.imgs != '' ">
                 imgs = #{advertisement.imgs},
             </if>
             <if test="advertisement.url != null and advertisement.url != '' ">
-                content = #{advertisement.url},
+                url = #{advertisement.url},
             </if>
             <if test="advertisement.remarks != null and advertisement.remarks != '' ">
                 remarks = #{advertisement.remarks},
             </if>
-            <if test="advertisement.start != null and advertisement.start != '' ">
+            <if test="advertisement.start != null">
                 start = #{advertisement.start},
             </if>
-            <if test="advertisement.end != null and advertisement.end != '' ">
+            <if test="advertisement.end != null ">
                 `end` = #{advertisement.end},
             </if>
             <if test="advertisement.createUserId != null and advertisement.createUserId != '' ">

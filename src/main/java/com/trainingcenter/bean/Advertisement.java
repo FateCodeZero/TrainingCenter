@@ -35,13 +35,12 @@ public class Advertisement {
      * start: 广告开始时间
      */
     @NotBlank(message = "广告开始时间不能为空")
-    private Date start;
-
+    private String start;
     /**
      * end: 广告结束时间
      */
     @NotBlank(message = "广告结束时间不能为空")
-    private Date end;
+    private String end;
 
     /**
      *  remarks 广告备注
@@ -117,19 +116,19 @@ public class Advertisement {
         this.url = url;
     }
 
-    public Date getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 

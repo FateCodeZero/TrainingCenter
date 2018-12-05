@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  User: SJH
-  Date: 2018/12/3
-  Time: 19:44
+  User: Sky
+  Date: 2018/12/4
+  Time: 11:57
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -11,7 +11,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>编辑新闻</title>
+    <title>编辑广告</title>
 
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css">
@@ -20,16 +20,6 @@
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script src="${webRoot}/plug-in/js/utils.js"></script>
-    <script type="text/javascript" src="${webRoot}/plug-in/js/wangEditor.min.js"></script>
-    <style type="text/css">
-        .toolbar {
-            border: 1px solid #ccc;
-        }
-        .text {
-            border: 1px solid #ccc;
-            height: 300px;
-        }
-    </style>
 </head>
 <body>
 <br>
@@ -40,29 +30,38 @@
         <form class="form-horizontal" role="form" action="">
             <input type="hidden" value="" name="id" id="id">
             <div class="form-group">
-                <label for="title" class="col-sm-2 control-label">新闻标题</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="name" id="title" value="" placeholder="请输入新闻标题">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="content" class="col-sm-2 control-label">新闻内容</label>
-                <div class="col-sm-10">
-                    <div id="toolbar" class="toolbar"></div>
-                    <div id="content" class="text">
-                        <!--可使用 min-height 实现编辑区域自动增加高度-->
-                        <h4 >请在此编辑新闻内容</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="imgs" class="col-sm-2 control-label">新闻图片</label>
+                <label for="imgs" class="col-sm-2 control-label">广告图片</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" name="imgs" id="imgs" value="" placeholder="请给出图片链接">
                 </div>
             </div>
             <div class="form-group">
-                <label for="remark" class="col-sm-2 control-label">新闻备注</label>
+                <label for="describe" class="col-sm-2 control-label">图片描述</label>
+                <div class="col-sm-10">
+                    <textarea rows="3" class="form-control" name="describe" id="describe"
+                              placeholder="描述内容"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="url" class="col-sm-2 control-label">广告链接</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="url" id="url" value="" placeholder="请给出广告链接">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="start" class="col-sm-2 control-label">开始时间</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="start" id="start">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="end" class="col-sm-2 control-label">结束时间</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="end" id="end">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="remark" class="col-sm-2 control-label">广告备注</label>
                 <div class="col-sm-10">
                     <textarea rows="3" class="form-control" name="remark" id="remark"
                               placeholder="备注内容"></textarea>
@@ -82,51 +81,56 @@
 </body>
 
 <script type="text/javascript">
+    /*日期选择*/
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行选择日期实例
+        laydate.render({
+            elem: '#start' //指定元素
+        });
+        laydate.render({
+            elem: '#end' //指定元素
+        });
+    });
     $(document).ready(function () {
         //页面加载完成
         //……
-        /*富文本*/
-        wangEditorGet();
         /*从URL获取对象ID*/
-        var newsInfoId = getUrlParam('id');
+        var advertisementId = getUrlParam('id');
         /*通过ID获取对象信息*/
-        var news = getNewsById(newsInfoId);
+        var advertisement = getAdvertisementById(advertisementId);
         /*初始化编辑数据*/
-        editDataInitialization(news);
+        editDataInitialization(advertisement);
     });
 
-    /*创建富文本*/
-    function wangEditorGet() {
-        var E = window.wangEditor
-        var editor = new E('#toolbar','#content')
-        // 或者 var editor = new E( document.getElementById('editor') )
-        editor.create()
-    }
 
     /**
      * 编辑数据初始化
      * @param role：要编辑的角色对象
      */
-    function editDataInitialization(news) {
-        if (news === null || news === '') {
+    function editDataInitialization(advertisement) {
+        if (advertisement === null || advertisement === '') {
             layer.alert('数据初始化失败，对象不能为空', {
                 time: 3000,
                 icon: 2
             });
             return false;
         }
-        $("#id").val(news.id);
-        $("#title").val(news.title);
-        $("#content").html(news.content);
-        $("#imgs").val(news.imgs);
-        $("#remarks").val(news.remarks);
+        $("#id").val(advertisement.id);
+        $("#imgs").val(advertisement.imgs);
+        $("#describe").val(advertisement.describe);
+        $("#url").val(advertisement.url);
+        $("#start").val(advertisement.start);
+        $("#end").val(advertisement.end);
+        $("#remarks").html(advertisement.remarks);
     }
 
     /**
-     * 通过 id 获取新闻对象
-     * @param id 新闻id
+     * 通过 id 获取广告对象
+     * @param id 广告id
      */
-    function getNewsById(id) {
+    function getAdvertisementById(id) {
 
         if (id === null || id === '') {
             layer.alert('id不能为空！', {
@@ -135,10 +139,10 @@
             });
             return false;
         }
-        var newsInfo = null;
+        var advertisement = null;
         var data = {id: id};
         $.ajax({
-            url: "${webRoot}/newsInfo/getNewsInfoById",
+            url: "${webRoot}/advertisement/getAdvertisementById",
             type: "get",
             async: false,    //关闭异步请求
             data: data,
@@ -148,7 +152,7 @@
                 var code = jsonData.code;
                 var msg = jsonData.msg;
                 if (code === 1) {
-                    newsInfo = jsonData.data.newsInfo;
+                    advertisement = jsonData.data.advertisement;
                 } else {
                     layer.alert(msg, {
                         time: 3000,
@@ -158,19 +162,21 @@
                 }
             }
         });
-        return newsInfo;
+        return advertisement;
     }
 
     //提交
     $("#submit").click(function () {
         var id = $("#id").val();
-        var title = $("#title").val();
-        var content = $("#content").html();
         var imgs = $("#imgs").val();
+        var describe = $("#describe").val();
+        var url = $("#url").val();
+        var start = $("#start").val();
+        var end = $("#end").val();
         var remarks = $("#remarks").val();
 
         if (id === null || id === ''){
-            var msg = '<div style="text-align: center"><span style="color: #FF5722;font-size: large">新闻不存在或已被删除，</span><br>即将返回列表界面。</div>';
+            var msg = '<div style="text-align: center"><span style="color: #FF5722;font-size: large">广告不存在或已被删除，</span><br>即将返回列表界面。</div>';
             layer.confirm(msg, {
                     btn: ['确定', '取消']//按钮
                 }
@@ -182,53 +188,55 @@
             );
         }
 
-        if (title == null || title == "") {
-            layer.msg("请填写新闻标题！", {
-                icon: 2,
-                time: 2000 //2秒关闭（如果不配置，默认是3秒）
-            });
-            $("#title").css("border", "1px solid red");  //输入错误，输入框变红
-            $("#title").focus();
-            return false;
-        } else {
-            $("#title").css("border", "1px solid #009688");
-            $("#title").blur();      //失去焦点
-        }
-        if (content == null || content == "") {
-            layer.msg("请编辑新闻内容！", {
-                icon: 2,
-                time: 2000 //2秒关闭（如果不配置，默认是3秒）
-            });
-            $("#content").css("border", "1px solid red");
-            $("#content").focus();
-            return false;
-        } else {
-            $("#content").css("border", "1px solid #009688");
-            $("#content").blur();      //失去焦点
-        }
         if (imgs == null || imgs == "") {
-            layer.msg("请给出图片链接！", {
+            layer.msg("请输入图片链接！", {
                 icon: 2,
                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
             });
-            $("#imgs").css("border", "1px solid red");
+            $("#imgs").css("border", "1px solid red");  //输入错误，输入框变红
             $("#imgs").focus();
             return false;
         } else {
             $("#imgs").css("border", "1px solid #009688");
             $("#imgs").blur();      //失去焦点
         }
+        if (describe == null || describe == "") {
+            layer.msg("请编辑广告描述！", {
+                icon: 2,
+                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+            });
+            $("#describe").css("border", "1px solid red");
+            $("#describe").focus();
+            return false;
+        } else {
+            $("#describe").css("border", "1px solid #009688");
+            $("#describe").blur();      //失去焦点
+        }
+        if (url == null || url == "") {
+            layer.msg("请给出广告链接！", {
+                icon: 2,
+                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+            });
+            $("#url").css("border", "1px solid red");
+            $("#url").focus();
+            return false;
+        } else {
+            $("#url").css("border", "1px solid #009688");
+            $("#url").blur();      //失去焦点
+        }
 
         var data = {
             id: id,
-            title: title,
-            content: content,
             imgs: imgs,
+            describe: describe,
+            url: url,
+            start: start,
+            end: end,
             remarks: remarks
         };
 
         $.ajax({
-            url: "${webRoot}/newsInfo/update",
+            url: "${webRoot}/advertisement/update",
             type: "get",
             data: data,
             dataType: "json",
