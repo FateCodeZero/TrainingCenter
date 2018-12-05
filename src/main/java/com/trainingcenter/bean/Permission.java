@@ -68,11 +68,6 @@ public class Permission extends BaseEntity implements Serializable {
      */
     private String describe;
 
-    /**
-     * 对某资源含有的操作权限集合
-     */
-    private List<String> operationList;
-
     public String getId() {
         return id;
     }
@@ -119,9 +114,5 @@ public class Permission extends BaseEntity implements Serializable {
 
     public void setDescribe(String describe) {
         this.describe = describe;
-    }
-
-    public List<String> getOperationList() {
-        return Arrays.asList(this.operations.trim().split(","));
     }
 }

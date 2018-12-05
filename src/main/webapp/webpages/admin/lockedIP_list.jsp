@@ -84,6 +84,7 @@
             //渲染
             table.render({
                 id: 'table1'
+                , height: 550
                 , elem: '#tableData'
                 , toolbar: '#table-head'
                 , title: '菜单管理'

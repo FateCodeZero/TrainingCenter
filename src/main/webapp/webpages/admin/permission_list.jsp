@@ -89,6 +89,7 @@
             table.render({
                 id: 'table1'
                 , elem: '#tableData'
+                , height: 550
                 , autoSort:true     /*自动排序*/
                 , initSort: 'name'  /*默认排序字段*/
                 , toolbar: '#table-head'

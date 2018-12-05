@@ -39,8 +39,10 @@ public interface PermissionService {
 
     /**
      * 通过角色id 获取指定 角色 所含有的全部权限
+     * @param roleId 角色id
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      */
-    public List<Permission> getPermissionsByRoleId(String roleId);
+    public List<Permission> getPermissionsByRoleId(String roleId, Map<String,Object> condition);
 
     /**
      * 通过id 获取指定 角色 所含有的全部权限
@@ -48,17 +50,18 @@ public interface PermissionService {
      * @param roleId：角色id
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回该角色所拥有的所有权限，支持分页、模糊查询
      */
-    public List<Permission> getPermissionsByRoleId( String roleId, Integer currentPage, Integer rows, String searchContent);
+    public List<Permission> getPermissionsByRoleId( String roleId, Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 通过 角色名称 获取指定 角色 所含有的全部权限
      * @param roleName 角色名称
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return
      */
-    public List<Permission> getPermissionsByRoleName( String roleName);
+    public List<Permission> getPermissionsByRoleName( String roleName, Map<String,Object> condition);
 
     /**
      * 通过 角色名称 获取指定 角色 所含有的全部权限
@@ -66,10 +69,10 @@ public interface PermissionService {
      * @param roleName：角色名称
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回该角色所拥有的所有权限，支持分页、模糊查询
      */
-    public List<Permission> getPermissionsByRoleName( String roleName, Integer currentPage, Integer rows, String searchContent);
+    public List<Permission> getPermissionsByRoleName( String roleName, Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 权限添加方法

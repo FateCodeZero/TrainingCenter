@@ -78,7 +78,7 @@ public class UserController {
      *
      * @return
      */
-//    @PreAuthorize(value = "hasPermission('/webpages/admin/index.jsp','READ')")
+    @PreAuthorize(value = "hasPermission('/webpages/admin/index.jsp','READ')")
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public ModelAndView adminIndex() {
         return new ModelAndView("admin/index");

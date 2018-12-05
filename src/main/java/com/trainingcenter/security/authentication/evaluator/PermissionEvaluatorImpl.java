@@ -4,6 +4,7 @@ import com.trainingcenter.bean.Resource;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.bean.Permission;
 import com.trainingcenter.bean.Role;
+import com.trainingcenter.service.PermissionService;
 import com.trainingcenter.service.ResourceService;
 import com.trainingcenter.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,8 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,6 +26,9 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     @Qualifier("resourceService")
     @Autowired
     private ResourceService resourceService;
+    @Qualifier("permissionService")
+    @Autowired
+    private PermissionService permissionService;
 
     /**
      * 方法作用：验证用户是否有权执行某个资源（url）下的某个操作（即增删改查对应的方法）
@@ -46,30 +50,42 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
         // 2、获得loadUserByUsername()中注入的角色
         Collection<Role> roles = (Collection<Role>) user.getAuthorities();
 
-        //遍历所有角色
+        //3、遍历所有角色，获取每个角色所含有的所有权限
         for (Role role:roles) {
 
-            //3、获取到角色中的注入的所有权限
-            Collection<Permission> permissionList = role.getPermissions();
+            //获取到角色中的注入的所有权限
+            Collection<Permission> permissions = Collections.synchronizedCollection(role.getPermissions());
 
-            //遍历所有权限，提取里面的url与操作
-            for (Permission permission:permissionList) {
-                //权限的操作集合
-                List<String> operations = permission.getOperationList();
+            //4、遍历所有权限，提取每个权限对应的资源url进匹配验证
+            for (Permission permission:permissions) {
+                //提取权限对应的资源
                 String resourceId = permission.getResourceId();
-                if (StringUtil.isEmpty(resourceId)){
-                    return false;
-                }
+                if (StringUtil.isNotEmpty(resourceId)){
+                    //获取权限对应的资源
+                    Resource resource = resourceService.getResourceById(resourceId);
+                    if (resource != null){
+                        //提取资源的URL
+                        String url = resource.getUrl();
+                        //5、进行URL匹配，若是该URL与方法需要的URL一致，则对当前用户进行可操作权限验证
+                        if (targetUrl.equals(url)){
+                            Map<String,Object> condition = new ConcurrentHashMap<>();
+                            condition.put("state",1);
+                            condition.put("resourceId",resource.getId());
 
-                //获取权限对应的资源
-                Resource resource = resourceService.getResourceById(resourceId);
-                if (resource == null){
-                    return false;
-                }
+                            //6、查询当前用户在当前页面的所有权限
+                            List<Permission> permissionList = permissionService.getPermissionsByRoleId(role.getId(), condition);
 
-                // 4、认证url与操作权限，如果访问的Url和权限用户符合的话，返回true
-                if (targetUrl.equals(resource.getUrl()) && operations.contains(targetPermission.toString())){
-                    return true;
+                            //7、提取当前用户在当前页面的所有可操作权限
+                            Set<String> opts = Collections.synchronizedSet(new HashSet<>());
+                            for (Permission p: permissionList) {
+                                opts.add(p.getOperations());
+                            }
+                            //若是当前用户在当前页面所含有的可操作权限包含有当前方法需要的可操作权限，则放行
+                            if (opts.contains(targetPermission.toString())){
+                                return true;
+                            }
+                        }
+                    }
                 }
             }
         }

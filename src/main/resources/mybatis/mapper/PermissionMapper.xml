@@ -125,23 +125,48 @@
     </delete>
 
     <!--
-       public Collection<Permission> getPermissionsByRoleId(@Param("roleId") String roleId,@Param("start") Integer start,
-                                                 @Param("number") Integer number, @Param("searchContent") String searchContent);
+       public List<Permission> getPermissionsByRoleId(@Param("roleId") String roleId,@Param("start") Integer start,
+                                                 @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
         通过id 获取指定 角色 所含有的全部权限，支持分页与模糊查询
         -->
     <select id="getPermissionsByRoleId" resultType="com.trainingcenter.bean.Permission">
         SELECT
         p.id,p.name,p.resource_id,p.operations,p.state,p.describe,p.remarks,p.create_user_id,p.create_date,p.create_date,p.update_user_id,p.update_date
         FROM tab_permission p LEFT JOIN tab_role_permission rp ON p.id = rp.permission_id
-        WHERE rp.role_id = #{roleId}
-        <trim prefixOverrides="AND">
-            <if test="searchContent != null and searchContent != '' ">
-                and
-                (
-                (`name` like CONCAT('%',#{searchContent},'%')) OR FIND_IN_SET(#{searchContent},operations)>0
-                )
+        <trim prefix="WHERE" prefixOverrides="and">
+            rp.role_id = #{roleId}
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;name&quot; and value != null and value != '' ">
+                        and `name` = #{value}
+                    </if>
+                    <if test="key == &quot;state&quot; and value != null ">
+                        and state = #{value}
+                    </if>
+                    <if test="(key == &quot;resourceId&quot; or key == &quot;resource_id&quot;) and value != null ">
+                        and resource_id = #{value}
+                    </if>
+                    <if test="key == &quot;operations&quot; and value != null ">
+                        and FIND_IN_SET(#{value},operations)>0
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and (
+                        `name` like CONCAT('%',#{value},'%')
+                        OR state like CONCAT('%',#{value},'%')
+                        OR resource_id like CONCAT('%',#{value},'%')
+                        OR FIND_IN_SET(#{value},operations)>0
+                        )
+                    </if>
+                </foreach>
             </if>
         </trim>
+        ORDER BY update_date DESC
         <if test="start != null and number != null">
             LIMIT #{start},#{number}
         </if>

@@ -62,10 +62,9 @@ public interface PermissionMapper {
      * @param roleId：角色id
      * @param start：从第几条数据开始
      * @param number：要获取多少条数据
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回该角色所拥有的所有权限，支持分页、模糊查询
      */
     public List<Permission> getPermissionsByRoleId(@Param("roleId") String roleId,@Param("start") Integer start,
-                                                 @Param("number") Integer number, @Param("searchContent") String searchContent);
-
-} 
+                                                 @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
+}

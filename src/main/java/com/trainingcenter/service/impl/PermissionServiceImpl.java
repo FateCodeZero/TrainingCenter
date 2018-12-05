@@ -86,14 +86,13 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * 通过id 获取指定 角色 所含有的全部权限
-     *
+     * 通过角色id 获取指定 角色 所含有的全部权限
      * @param roleId 角色id
-     * @return
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      */
     @Override
-    public List<Permission> getPermissionsByRoleId(String roleId) {
-        return getPermissionsByRoleId(roleId,null,null,null);
+    public List<Permission> getPermissionsByRoleId(String roleId, Map<String,Object> condition) {
+        return getPermissionsByRoleId(roleId,null,null,condition);
     }
 
     /**
@@ -102,11 +101,11 @@ public class PermissionServiceImpl implements PermissionService {
      * @param roleId：角色id
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回该角色所拥有的所有权限，支持分页、模糊查询
      */
     @Override
-    public List<Permission> getPermissionsByRoleId(String roleId, Integer currentPage, Integer rows, String searchContent) {
+    public List<Permission> getPermissionsByRoleId(String roleId, Integer currentPage, Integer rows, Map<String,Object> condition) {
         FindException findException;
 
         if (StringUtil.isEmpty(roleId)){
@@ -120,19 +119,19 @@ public class PermissionServiceImpl implements PermissionService {
                 throw findException;
             }
             Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
-            return permissionMapper.getPermissionsByRoleId(roleId,start, rows, searchContent);
+            return permissionMapper.getPermissionsByRoleId(roleId,start, rows, condition);
         }else {
-            return permissionMapper.getPermissionsByRoleId(roleId,null, null, searchContent);
+            return permissionMapper.getPermissionsByRoleId(roleId,null, null, condition);
         }
     }
 
     /**
      * 通过 角色名称 获取指定 角色 所含有的全部权限
      * @param roleName 角色名称
-     * @return
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      */
-    public List<Permission> getPermissionsByRoleName( String roleName){
-        return getPermissionsByRoleName(roleName,null,null,null);
+    public List<Permission> getPermissionsByRoleName( String roleName, Map<String,Object> condition){
+        return getPermissionsByRoleName(roleName,null,null,condition);
     }
 
     /**
@@ -141,11 +140,11 @@ public class PermissionServiceImpl implements PermissionService {
      * @param roleName：角色名称
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回该角色所拥有的所有权限，支持分页、模糊查询
      */
     @Override
-    public List<Permission> getPermissionsByRoleName(String roleName, Integer currentPage, Integer rows, String searchContent) {
+    public List<Permission> getPermissionsByRoleName(String roleName, Integer currentPage, Integer rows, Map<String,Object> condition) {
 
         if (StringUtil.isEmpty(roleName)) {
             return null;
@@ -154,7 +153,7 @@ public class PermissionServiceImpl implements PermissionService {
         if (role == null) {
             return null;
         }
-        return this.getPermissionsByRoleId(role.getId(),currentPage,rows,searchContent);
+        return this.getPermissionsByRoleId(role.getId(),currentPage,rows,condition);
     }
 
     /**

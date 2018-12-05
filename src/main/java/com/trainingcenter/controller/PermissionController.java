@@ -142,7 +142,9 @@ public class PermissionController {
             ajaxJson.setMsg("数据获取失败，查询对象不能为空");
             return ajaxJson;
         }
-        List<Permission> permissions = permissionService.getPermissionsByRoleId(roleId);
+        Map<String,Object> condition = new ConcurrentHashMap<>();
+        condition.put("state",1);
+        List<Permission> permissions = permissionService.getPermissionsByRoleId(roleId,condition);
         ajaxJson.setCode(1);
         ajaxJson.setMsg("数据获取成功");
         Map<String,Object> data = new ConcurrentHashMap<>();

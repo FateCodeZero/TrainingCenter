@@ -82,6 +82,7 @@
             //渲染
             table.render({
                 id: 'table1'
+                , height: 550
                 , elem: '#tableData'
                 , autoSort:true     /*自动排序*/
                 , initSort: 'orderNumber'  /*默认排序字段*/

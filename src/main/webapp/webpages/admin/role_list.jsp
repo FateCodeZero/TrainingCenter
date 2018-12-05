@@ -92,6 +92,7 @@
             table.render({
                 id: 'table1'
                 , elem: '#tableData'
+                , height: 550
                 , toolbar: '#table-head'
                 , title: '菜单管理'
                 , url: '${webRoot}/role/list' //数据接口

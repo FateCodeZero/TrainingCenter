@@ -90,7 +90,7 @@
 </body>
 <script>
     $(document).ready(function () {
-        ajaxErrorHandler(); //ajax请求错误统一处理
+//        ajaxErrorHandler(); //ajax请求错误统一处理
         var resourceData = getResourceData();
         var treeData = buildTreeData(resourceData);
         initSelectableTree(treeData);
