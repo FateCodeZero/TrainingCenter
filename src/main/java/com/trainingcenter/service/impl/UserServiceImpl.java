@@ -471,7 +471,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UsernameNotFoundException exception;
         User user;
-
         if (StringUtil.isNotEmpty(username)) {
             user = this.getUserByUsername(username);
 

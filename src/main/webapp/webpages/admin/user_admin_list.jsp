@@ -62,6 +62,8 @@
     var table;  //layui table
 
     $(document).ready(function () {
+        ajaxErrorHandler(); //ajax请求错误统一处理
+
         tableData();    //加载数据表格
     });
 

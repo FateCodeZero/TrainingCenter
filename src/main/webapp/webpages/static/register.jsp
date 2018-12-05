@@ -48,6 +48,8 @@
 <script type="text/javascript">
 
     $(document).ready( function(){
+        ajaxErrorHandler(); //ajax请求错误统一处理
+
     });
 
     /*验证用户名*/
@@ -229,7 +231,7 @@
                     $("#rePassword").css("border", "1px solid #cccccc");
 
                     //错误错误状态码统一跳转
-                    errorPageJump("${webRoot}", code);
+                    ajaxErrorHandler("${webRoot}", code);
                 }
             }
         });

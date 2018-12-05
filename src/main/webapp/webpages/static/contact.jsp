@@ -99,7 +99,7 @@
                     $("#kaptchaMsg").html('<span style="color: #b92c28">' + msg + '</span>');
                 } else {
                     //错误错误状态码统一跳转
-                    errorPageJump("${webRoot}", code);
+                    ajaxErrorHandler("${webRoot}", code);
                 }
             }
         });

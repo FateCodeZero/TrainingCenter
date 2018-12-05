@@ -55,6 +55,8 @@
     var currentResouceId = null;
 
     $(document).ready(function () {
+        ajaxErrorHandler(); //ajax请求错误统一处理
+
         /*从URL获取对象ID,获取当前要授权的角色对象id*/
         roleId = getUrlParam('id');
         /*获取菜单数据*/

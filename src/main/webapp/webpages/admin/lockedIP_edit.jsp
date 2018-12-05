@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/context/mytags.jsp" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -20,7 +19,6 @@
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script src="${webRoot}/plug-in/js/utils.js"></script>
-
 </head>
 <body>
 <br>
@@ -60,6 +58,7 @@
     $(document).ready(function () {
         //页面加载完成
         //……
+        ajaxErrorHandler(); //ajax请求错误统一处理
 
         /*从URL获取对象ID*/
         var lockedIPId = getUrlParam('id');

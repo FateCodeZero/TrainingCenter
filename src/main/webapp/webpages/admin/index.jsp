@@ -90,6 +90,7 @@
 </body>
 <script>
     $(document).ready(function () {
+        ajaxErrorHandler(); //ajax请求错误统一处理
         var resourceData = getResourceData();
         var treeData = buildTreeData(resourceData);
         initSelectableTree(treeData);
@@ -145,14 +146,22 @@
     function buildTreeData(data) {
         var tree = [];
         $.each(data, function (index, item) {
-            var id = item.id;   /*本节点菜单id*/
-            var name = item.name;   /*本节点菜单名称*/
-            var parentId = item.parentId;   /*本节点的父节点菜单id*/
-            var order = item.order; /*本节点排序，可忽略*/
-            var level = item.level; /*本节点层级*/
-            var url = item.data.url;   /*本节点url*/
-            var iconStyle = item.data.iconStyle;  /*本节点iocn*/
-            var children = item.children;   /*子节点*/
+            var id = item.id;
+            /*本节点菜单id*/
+            var name = item.name;
+            /*本节点菜单名称*/
+            var parentId = item.parentId;
+            /*本节点的父节点菜单id*/
+            var order = item.order;
+            /*本节点排序，可忽略*/
+            var level = item.level;
+            /*本节点层级*/
+            var url = item.data.url;
+            /*本节点url*/
+            var iconStyle = item.data.iconStyle;
+            /*本节点iocn*/
+            var children = item.children;
+            /*子节点*/
 
             //使用递归方式解析数据
             tree[index] = {
@@ -160,9 +169,9 @@
                 pid: parentId,
                 order: order,
                 text: name,
-                icon:iconStyle,  /*当前节点上的图标*/
-                selectedIcon:iconStyle,  /*当前节点被选择后的图标*/
-                href:url,
+                icon: iconStyle, /*当前节点上的图标*/
+                selectedIcon: iconStyle, /*当前节点被选择后的图标*/
+                href: url,
                 tags: level,
                 nodes: buildTreeData(children)
             };
@@ -174,20 +183,20 @@
     function initSelectableTree(data) {
         return $('#treeview-selectable').treeview({
             data: data,
-            backColor:'#32353E',    //树所有节点的背景颜色
-            onhoverColor:'#009688', //节点在用户鼠标滑过时的背景颜色
-            selectedBackColor:'#009688', //节点被选中后的背景颜色
-            showBorder:false,       //不显示边框
-            showIcon: true,    /*开启节点图标*/
-            enableLinks:false,  /*不启用当前节点的超链接*/
+            backColor: '#32353E',    //树所有节点的背景颜色
+            onhoverColor: '#009688', //节点在用户鼠标滑过时的背景颜色
+            selectedBackColor: '#009688', //节点被选中后的背景颜色
+            showBorder: false,       //不显示边框
+            showIcon: true, /*开启节点图标*/
+            enableLinks: false, /*不启用当前节点的超链接*/
             multiSelect: $('#chk-select-multi').is(':checked'),
             onNodeSelected: function (event, node) {
                 console.log(node);
                 var id = node.id; //节点数据id
                 var href = node.href;
                 var jspReg = /\/\w+\.jsp$/;   //以 / 开头，中间至少有一个字符，以.jsp结尾
-                if (jspReg.test(href)){
-                    $("#index-body").attr('src', "${webRoot}"+href);
+                if (jspReg.test(href)) {
+                    $("#index-body").attr('src', "${webRoot}" + href);
                 }
             },
             onNodeUnselected: function (event, node) {

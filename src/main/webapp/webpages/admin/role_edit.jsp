@@ -76,6 +76,7 @@
     $(document).ready(function () {
         //页面加载完成
         //……
+        ajaxErrorHandler(); //ajax请求错误统一处理
 
         /*从URL获取对象ID*/
         var roleId = getUrlParam('id');

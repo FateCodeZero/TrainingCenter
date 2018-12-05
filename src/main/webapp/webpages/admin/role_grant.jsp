@@ -44,6 +44,8 @@
     var roleData = null; /*该用户已有的角色数据*/
 
     $(document).ready(function () {
+        ajaxErrorHandler(); //ajax请求错误统一处理
+
         /*从URL获取对象ID*/
         userId = getUrlParam('id');
         roleData = getRolesByUserId(userId);

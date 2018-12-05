@@ -20,7 +20,6 @@
     <script type="text/javascript" src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
-
 </head>
 <body >
 <div id="mian">
@@ -86,10 +85,10 @@
                 </c:if>
                 <c:if test="${empty user}">
                     <li class="layui-nav-item" style="float: right">
-                        <a href="${webRoot}/user/goLogin" id="CT-login">登录</a>
+                        <a href="${webRoot}/webpages/static/login.jsp" id="CT-login">登录</a>
                     </li>
                     <li class="layui-nav-item" style="float: right">
-                        <a href="${webRoot}/user/goRegister">注册</a>
+                        <a href="${webRoot}/webpages/static/register.jsp">注册</a>
                     </li>
                 </c:if>
             </ul>
@@ -111,6 +110,9 @@
 </body>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        ajaxErrorHandler(); //ajax请求错误统一处理
+    });
 
     //使用 element 模块
     layui.use('element', function () {

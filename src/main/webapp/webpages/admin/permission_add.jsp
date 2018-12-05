@@ -97,6 +97,7 @@
     $(document).ready(function () {
         //页面加载完成
         //……
+        ajaxErrorHandler(); //ajax请求错误统一处理
     });
 
     //选择权限对应的资源

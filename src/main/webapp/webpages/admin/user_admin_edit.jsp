@@ -71,6 +71,8 @@
     $(document).ready(function () {
         //页面加载完成
         //……
+        ajaxErrorHandler(); //ajax请求错误统一处理
+
         /*从URL获取对象ID*/
         userId = getUrlParam('id');
         /*通过ID获取对象信息*/

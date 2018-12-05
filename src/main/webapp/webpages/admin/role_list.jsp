@@ -60,6 +60,8 @@
     var table;  //layui table
 
     $(document).ready(function () {
+        ajaxErrorHandler(); //ajax请求错误统一处理
+
         //加载表格数据
         tableData();
     });

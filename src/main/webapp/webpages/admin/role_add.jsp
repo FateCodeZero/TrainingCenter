@@ -74,6 +74,7 @@
     $(document).ready(function () {
         //页面加载完成
         //……
+        ajaxErrorHandler(); //ajax请求错误统一处理
     });
 
     //提交

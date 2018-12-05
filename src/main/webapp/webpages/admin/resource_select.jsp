@@ -43,6 +43,8 @@
     var table = null;  //layui table
 
     $(document).ready(function () {
+        ajaxErrorHandler(); //ajax请求错误统一处理
+
         var resourceData = getResourceData();
         var treeData = buildTreeData(resourceData);
         initSelectableTree(treeData);

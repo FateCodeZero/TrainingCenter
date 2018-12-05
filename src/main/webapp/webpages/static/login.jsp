@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@include file="/context/mytags.jsp" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>登录</title>
@@ -10,12 +9,11 @@
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/login.css">
 
-
     <%--JS--%>
     <script type="text/javascript" src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
-
+    <script src="${webRoot}/plug-in/js/utils.js"></script>
 </head>
 <body style="background-image: url(${webRoot}/webpages/static/images/22.jpg); background-repeat: no-repeat;background-size: cover;">
 <h1 class="col-md-12 my_title text-center">梦润传承</h1>
@@ -49,7 +47,6 @@
 </div>
 
 </body>
-<script type="text/javascript" src="${webRoot}/webpages/static/js/PageJumpHandle.js"></script>
 <script type="text/javascript">
 
     //ajax刷新验证码
@@ -73,6 +70,7 @@
 
     /*输入控制*/
     $(document).ready(function(){
+        ajaxErrorHandler();//ajax请求错误统一处理
 
         $('#username').blur(function () {
             if ($('#username').val() =='')
@@ -82,7 +80,7 @@
             }else {
                 $("#usernameMsg").html("");
             }
-        })
+        });
         $('#password').blur(function () {
             if ($('#password').val() == '') {
                 $("#passwordMsg").html("<span style='color:#FF5722'>密码不能为空！</span>");
@@ -90,7 +88,7 @@
             }else {
                 $("#passwordMsg").html("");
             }
-        })
+        });
         $('#kaptcha').blur(function () {
             if ($('#kaptcha').val() == '') {
                 $("#kaptchaMsg").html("<span style='color:#FF5722'>验证码不能为空！</span>");
@@ -98,7 +96,7 @@
             }else {
                 $("#kaptchaMsg").html("");
             }
-        })
+        });
     });
 
 
@@ -125,25 +123,24 @@
                 var code = jsonData.code;   //状态码
                 var msg = jsonData.msg;     //提示信息
                 var url = null;
+                var responseData = null;
 
-                var responseData = jsonData.data;    //获取返回的数据集
-                if (responseData != null && responseData != "") {
-                    url = responseData.url;
-                }
-
-                if (code == 1) {
+                if (code === 1) {
                     layer.alert(msg, {
                         time: 3000,
                         icon: 1
                     });
-
-                    if (url != null) {
+                    responseData = jsonData.data;    //获取返回的数据集
+                    if (responseData !== null && responseData !== "") {
+                        url = responseData.url;
+                    }
+                    if (url !== null) {
                         //登录成功后跳转
                         window.location = url;
                     }else {
                         window.location = "/index.jsp";
                     }
-                } else if (code == 0) {
+                } else {
                     layer.alert(msg, {
                         time: 3000,
                         icon: 2
@@ -154,13 +151,6 @@
 
                     //显示错误信息
                     $("#kaptchaMsg").html('<span style="color: #b92c28">' + msg + '</span>');
-                } else {
-                    $("#username").css("border", "1px solid #cccccc");
-                    $("#password").css("border", "1px solid #cccccc");
-                    $("#kaptcha").css("border", "1px solid #cccccc");
-
-                    //错误错误状态码统一跳转
-                    errorPageJump("${webRoot}", code);
                 }
             }
         });
