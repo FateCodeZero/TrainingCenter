@@ -1,13 +1,11 @@
 package com.trainingcenter.controller;
 
-import com.trainingcenter.bean.StudentMien;
-import com.trainingcenter.bean.StudentMien;
+import com.trainingcenter.bean.Annunciation;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.exception.UpdateException;
-import com.trainingcenter.service.StudentMienService;
-import com.trainingcenter.service.StudentMienService;
+import com.trainingcenter.service.AnnunciationService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.StringUtil;
@@ -16,10 +14,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +31,14 @@ import static com.trainingcenter.utils.SysResourcesUtils.getCurrentUsername;
  * @author Liutingwei
  * @date 2018-11-9 19:45
  */
-@RequestMapping("/studentMien")
+@RequestMapping("/annunciation")
 @Controller
-public class StudentMienController {
+public class AnnunciationController {
 
 
-    @Qualifier("studentMienService")
+    @Qualifier("annunciationService")
     @Autowired
-    private StudentMienService studentMienService;
+    private AnnunciationService annunciationService;
 
     @Qualifier("userService")
     @Autowired
@@ -53,10 +52,10 @@ public class StudentMienController {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("参数异常");
             return ajaxJson;        }
-        List<StudentMien> studentMiens = studentMienService.getStudentMiens(currentPage, rows, searchContent);
-        Integer total = studentMienService.getStudentMiens().size();
+        List<Annunciation> annunciations = annunciationService.getAnnunciations(currentPage, rows, searchContent);
+        Integer total = annunciationService.getAnnunciations().size();
 
-        if (studentMiens.size() == 0){
+        if (annunciations.size() == 0){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("暂无数据");
         }else {
@@ -66,8 +65,38 @@ public class StudentMienController {
 
         Map<String,Object> data = new ConcurrentHashMap<>();
         data.put("total",total);
-        data.put("items",studentMiens);
+        data.put("items",annunciations);
         ajaxJson.setData(data);
+        return ajaxJson;
+    }
+
+    /**
+     * 进入详细页面
+     *
+     * @return loginPage
+     */
+    @RequestMapping(value = "/detailsPage", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxJson detailsPage(@RequestParam("id") String id) {
+        AjaxJson ajaxJson = new AjaxJson();
+        if(StringUtil.isNotEmpty(id)){
+            Annunciation annunciation = annunciationService.getAnnunciationById(id);
+            if (annunciation == null){
+                ajaxJson.setCode(1);
+                ajaxJson.setMsg("暂无数据");
+                return ajaxJson;
+            }else{
+                ajaxJson.setCode(1);
+                ajaxJson.setMsg("請求成功");
+                Map<String, Object> map = new ConcurrentHashMap<>(); //返回携带的数据
+                map.put("items",annunciation);
+                ajaxJson.setData(map);
+                return ajaxJson;
+            }
+        }else {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("id异常请检查");
+        }
         return ajaxJson;
     }
 
@@ -77,7 +106,7 @@ public class StudentMienController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getStudentMienById")
+    @RequestMapping("/getAnnunciationById")
     public AjaxJson getStudentMienById(@RequestParam("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
         if (StringUtil.isEmpty(id)) {
@@ -86,7 +115,7 @@ public class StudentMienController {
             return ajaxJson;
         }
 
-        StudentMien resource = studentMienService.getStudentMienById(id);
+        Annunciation resource = annunciationService.getAnnunciationById(id);
         if (resource == null) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("对象不存在或已被删除");
@@ -95,15 +124,16 @@ public class StudentMienController {
             ajaxJson.setCode(1);
             ajaxJson.setMsg("获取成功");
             Map<String, Object> map = new ConcurrentHashMap<>();
-            map.put("studentMien", resource);
+            map.put("annunciation", resource);
             ajaxJson.setData(map);
             return ajaxJson;
         }
     }
 
+
     @RequestMapping(value = "/update",method = RequestMethod.GET)
     @ResponseBody
-    public AjaxJson update(@Validated(value = {TC_Update.class}) StudentMien studentMine){
+    public AjaxJson update(@Validated(value = {TC_Update.class}) Annunciation annunciation){
         AjaxJson ajaxJson = new AjaxJson();
         Integer res;    //操作结果 flag
 
@@ -116,7 +146,7 @@ public class StudentMienController {
             throw new CredentialsExpiredException("登录凭证已过期");
         }
 
-        if (studentMine == null){
+        if (annunciation == null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("操作失败，对象不能为空");
             return ajaxJson;
@@ -124,26 +154,23 @@ public class StudentMienController {
         }
         //更新操作
         //当前ID
-        StudentMien newAd = studentMienService.getStudentMienById(studentMine.getId());
+        Annunciation newAd = annunciationService.getAnnunciationById(annunciation.getId());
         if (newAd == null){
             throw new UpdateException("更新失败，对象不存在或已被删除");
         }else {
-            if (StringUtil.isNotEmpty(studentMine.getImgs())) {
-                newAd.setImgs(studentMine.getImgs());
+            if (StringUtil.isNotEmpty(annunciation.getRemarks())) {
+                newAd.setRemarks(annunciation.getRemarks());
             }
-            if (StringUtil.isNotEmpty(studentMine.getRemarks())) {
-                newAd.setRemarks(studentMine.getRemarks());
+            if (StringUtil.isNotEmpty(annunciation.getContent())) {
+                newAd.setContent(annunciation.getContent());
             }
-            if (StringUtil.isNotEmpty(studentMine.getContent())) {
-                newAd.setContent(studentMine.getContent());
-            }
-            if(StringUtil.isNotEmpty(studentMine.getTitle())){
-                newAd.setTitle(studentMine.getTitle());
+            if(StringUtil.isNotEmpty(annunciation.getTitle())){
+                newAd.setTitle(annunciation.getTitle());
             }
             newAd.setUpdateUserId(user.getId());
             newAd.setUpdateDate(new Date());
 
-            res = studentMienService.update(newAd);
+            res = annunciationService.update(newAd);
         }
         if (res == 0){
             ajaxJson.setCode(0);
@@ -159,7 +186,7 @@ public class StudentMienController {
 
     @RequestMapping(value = "/add",method = RequestMethod.GET)
     @ResponseBody
-    public AjaxJson add(@Validated(value = {TC_Add.class}) StudentMien newsInfo){
+    public AjaxJson add(@Validated(value = {TC_Add.class}) Annunciation annunciation){
         AjaxJson ajaxJson = new AjaxJson();
 
         //获取当前用户
@@ -168,16 +195,16 @@ public class StudentMienController {
         User user = userService.getUserByUsername(currentName);
 
         //非空验证
-        if(newsInfo==null){
+        if(annunciation==null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("操作对象为空，操作失败");
         }
         //资料添加
 
-        newsInfo.setId(UUID.randomUUID().toString());
-        newsInfo.setCreateUserId(user.getId());
-        newsInfo.setCreateDate(new Date());
-        Integer add = studentMienService.add(newsInfo);
+        annunciation.setId(UUID.randomUUID().toString());
+        annunciation.setCreateUserId(user.getId());
+        annunciation.setCreateDate(new Date());
+        Integer add = annunciationService.add(annunciation);
         if (add==1){
             ajaxJson.setCode(1);
             ajaxJson.setMsg("添加成功");
@@ -189,8 +216,8 @@ public class StudentMienController {
         return ajaxJson;
     }
 
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
     @ResponseBody
-    @RequestMapping(value = "/delete")
     public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 
@@ -200,8 +227,8 @@ public class StudentMienController {
             return ajaxJson;
         }
 
-        Integer delete = studentMienService.batchDelete(ids);
-        if (delete == 1){
+        boolean delete = annunciationService.batchDelete(ids);
+        if (delete){
             ajaxJson.setCode(1);
             ajaxJson.setMsg("删除成功");
         }else {
