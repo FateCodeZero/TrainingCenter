@@ -78,6 +78,7 @@
                         '    </div>';
 
                     $("#news_details").html(news_details_div);
+                    IFrameResize();
 
                 }else {
                     alert(msg);
@@ -86,6 +87,7 @@
             error:function (msg) {
                 alert(msg);
             }
+
         })
         IFrameResize();
     })

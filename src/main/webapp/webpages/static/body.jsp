@@ -81,8 +81,7 @@
                                 <!-- <p class="pricing__sentence">Single user license</p> -->
                             </div>
                             <div class="pricing__price">
-                        <span class="pricing__anim pricing__anim--1">
-								<span class="pricing__currency"> &amp; </span>126
+                        <span id="newsTotal" class="pricing__anim pricing__anim--1">
                         </span>
                                 <span class="pricing__anim pricing__anim--2">
 								<span class="pricing__period">条新闻</span>
@@ -90,13 +89,7 @@
                             </div>
                             <div class="wrap-price">
                                 <ul class="pricing__feature-list">
-                                    <a href="https://www.baidu.com/"><li class="pricing__feature">团泽镇妇女同胞们前往中国农民工文化陈列馆参观学习。</li></a>
-                                    <a href="https://www.baidu.com/"><li class="pricing__feature">贵州省总工会到梦润集团参观学习</li></a>
-                                    <a href="https://www.baidu.com/"><li class="pricing__feature">省林业厅副厅长孟广芹一行视察指导梦润集团</li></a>
-                                    <a href=""><li class="pricing__feature">汇川区的梦润集团高人云集</li></a>
-                                    <a href=""><li class="pricing__feature">脱贫攻坚群英谱，乡村振兴梦</li></a>
-                                    <a href=""><li class="pricing__feature">汇川区的梦润集团高人云集</li></a>
-                                    <a href=""><li class="pricing__feature">脱贫攻坚群英谱，乡村振兴梦</li></a>
+                                    <a id="newsInfo"></a>
                                 </ul>
                                 <a href="${webRoot}/webpages/static/allNews.jsp" >
                                     <button class="pricing__action"> 全部新闻</button>
@@ -189,7 +182,7 @@
         });
 
         $(document).ready(function loading(){
-
+            getNews();
             getDynamicListPage();
             getAdvertisement();
             IFrameResize();
@@ -343,11 +336,56 @@
                     }
                 }
             });
-
         }
+        /*获取新闻*/
+        function getNews() {
+            $.ajax({
+                type: 'GET',
+                url: "${webRoot}/newsInfo/listPage",
+                data: {currentPage:1,rows:7},
+                dataType: "json",
+                success: function (data) {
+                    var jsonData = eval(data);
+                    var code = jsonData.code;
+                    var msg = jsonData.msg;
+                    if(code == 1){
+                        var news = jsonData.data.items;
 
+                        $.each(news,function (index,newsInfo) {
+                            var id = newsInfo.id;
+                            var news_title = newsInfo.title;
+                            var newsTotal = Math.ceil(jsonData.data.total);
+
+                            if(news_title.length > 25 ){
+                                news_title = news_title.substring(0,25) +"…";
+                            }
+
+                            //alert("数据id:"+news_id+"标题："+news_title);
+                            var newsTotal_div = '<span class="pricing__currency"> &amp; </span>'+newsTotal+'';
+                            var news_div = '<li id="'+id+'" target="newsContent" class="pricing__feature">'+news_title+'</li>';
+
+                            if (index == 0) {
+                                $("#newsInfo").html(news_div);
+                            }else {
+                                $("#newsInfo").append(news_div);
+                            }
+
+                            $("#newsTotal").html(newsTotal_div);
+
+                            $("li[target='newsContent']").on('click',function () {
+                                //获取当前被点击的条数ID，携带ID跳转到新闻详情页面
+                                var news_id = $(this).attr("id");
+                                window.location.href = "news.jsp?id="+news_id+"";
+                            });
+
+                        });
+                    }else {
+                        $("#newsInfo").html('<h3>暂无数据</h3>');
+                    }
+                }
+            });
+        }
         IFrameResize();
-
     });
 
 </script>
