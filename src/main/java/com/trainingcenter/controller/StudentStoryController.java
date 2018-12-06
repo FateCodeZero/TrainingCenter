@@ -189,7 +189,7 @@ public class StudentStoryController {
 
     @ResponseBody
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public AjaxJson delete(@PathVariable("ids") String ids) {
+    public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 
         if (StringUtil.isEmpty(ids)){

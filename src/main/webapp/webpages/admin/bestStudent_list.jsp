@@ -12,7 +12,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>学员学习照管理</title>
+    <title>最佳学员管理</title>
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css" charset="UTF-8">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css" charset="UTF-8">
 
@@ -163,7 +163,7 @@
                 , elem: '#tableData'
                 , toolbar: '#table-head'
                 , title: '菜单管理'
-                , url: '${webRoot}/studentMien/listPage' //数据接口
+                , url: '${webRoot}/bestStudent/listPage' //数据接口
                 , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                     layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
                     , limit: 10
@@ -179,7 +179,7 @@
                     , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
                     , {field: 'id', title: 'id', hide: true, width: 100, align: 'center'}
                     , {field: 'title', title: '标题', width: 200, align: 'center'}
-                    , {field: 'content', title: '学习照内容', width: 200, align: 'center'}
+                    , {field: 'content', title: '内容', width: 200, align: 'center'}
                     , {field: 'imgs', title: '图片', width: 150}
                     , {field: 'remarks', title: '备注', width: 150, align: 'center'}
                     , {
@@ -319,12 +319,12 @@
     /*添加新闻*/
     function addData() {
         layer.open({
-            title: '添加学员学习照',
+            title: '添加最佳学员',
             type: 2,
             area: ['1100px', '550px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/webpages/admin/student_photo_add.jsp',
+            content: '${webRoot}/webpages/admin/bestStudent_add.jsp',
             success: function (layero, index) {
                 layer_window = layero;   //获取弹出窗口的窗口对象
             },
@@ -337,12 +337,12 @@
     /*编辑新闻*/
     function editData(id) {
         layer.open({
-            title: '编辑学员学习照',
+            title: '编辑最佳学员',
             type: 2,
             area: ['1100px', '550px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/webpages/admin/student_photo_edit.jsp?id=' + id,
+            content: '${webRoot}/webpages/admin/bestStudent_edit.jsp?id=' + id,
             success: function (layero, index) {
                 layer_window = layero;   //获取弹出窗口的窗口对象
             },
@@ -372,7 +372,7 @@
                     ids: ids
                 };
                 $.ajax({
-                    url: "${webRoot}/studentMien/delete",
+                    url: "${webRoot}/bestStudent/delete",
                     type: "get",
                     data: data,
                     dataType: "json",
