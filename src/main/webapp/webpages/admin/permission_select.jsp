@@ -25,8 +25,21 @@
                 <div id="treeView-checkbox" class=""></div>
             </div>
             <div class="col-sm-8 text-center layui-tab-content">
-                <div class="text-center" style="color: #FF5722;font-size: larger">菜单详细授权，此处勾选后记得保存哟~</div>
-                <table id="tableData" lay-filter="table-filter"></table>
+                <div class="row">
+                    <div class="col-sm-6"></div>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchContent" placeholder="模糊查询">
+                            <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" id="search" title="查找本表的内容">搜索</button>
+                    </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center" style="color: #FF5722;">菜单详细授权，此处勾选后记得保存哟~</div>
+                <div class="row">
+                    <table id="tableData" lay-filter="table-filter"></table>
+                </div>
             </div>
         </div>
     </div>
@@ -52,7 +65,8 @@
     /*菜单树所需要的数据*/
     var treeData = null;
     /*当前授权的页面菜单id*/
-    var currentResouceId = null;
+    var currentResourceId = null;
+    var searchContent = $("#searchContent").val(); //模糊查询内容
 
     $(document).ready(function () {
         ajaxErrorHandler(); //ajax请求错误统一处理
@@ -227,8 +241,11 @@
                 console.log(node);
                 var id = node.id;  //节点数据id
                 var parentId = node.pid; //当前节点的父节点数据id
-                var condition = {resourceId: id}; //自定义查询条件
-                currentResouceId = id;  //设置当前页面菜单id
+                var condition = { //自定义查询条件
+                    resourceId: id
+                    , searchContent: searchContent
+                };
+                currentResourceId = id;  //设置当前页面菜单id
                 tableData(condition);
             }
         });
@@ -271,6 +288,25 @@
             }
         }
     }
+
+    /**
+     * 模糊查询
+     */
+    $("#search").click(function () {
+        var searchContent = $("#searchContent").val(); //模糊查询内容
+        var condition = {
+            resourceId: currentResourceId
+            , searchContent: searchContent
+        };
+        table.reload('table1', {
+            page: {
+                curr: 1 //重新从第 1 页开始
+            }
+            , where: { //接口需要的其它参数
+                condition: JSON.stringify(condition)
+            }
+        });
+    });
 
     /*数据表格
     * condition：json字符串查询条件
@@ -398,7 +434,7 @@
         var checkStatus = table.checkStatus('table1');
         var items = checkStatus.data;
 
-        var resourceId = currentResouceId; //当前授权菜单id
+        var resourceId = currentResourceId; //当前授权菜单id
         //获取表格选中的操作权限
         var permissionIds = '';    //选中的权限数据
 
@@ -435,7 +471,7 @@
 
         /*保证当前授权菜单被选中
         if (permissionData !== null && (resourceIds === null || resourceIds === '')) {
-            resourceIds += currentResouceId;
+            resourceIds += currentResourceId;
         }*/
 
         var grantData = {

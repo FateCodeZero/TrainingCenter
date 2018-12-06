@@ -82,7 +82,7 @@
                     <if test="(key == &quot;unlocked_flag&quot; or key == &quot;unlockedFlag&quot;) and value != null and value != '' ">
                         and unlocked_flag = #{value}
                     </if>
-                    <if test="key == &quot;state&quot; and value != null and value != '' ">
+                    <if test="key == &quot;state&quot; and value != null ">
                         and state = #{value}
                     </if>
                     <if test="(key == &quot;register_time&quot; or key == &quot;registerTime&quot;) and value != null and value != '' ">
@@ -136,7 +136,7 @@
                     <if test="(key == &quot;unlocked_flag&quot; or key == &quot;unlockedFlag&quot;) and value != null and value != '' ">
                         and u.unlocked_flag = #{value}
                     </if>
-                    <if test="key == &quot;state&quot; and value != null and value != '' ">
+                    <if test="key == &quot;state&quot; and value != null ">
                         and u.state = #{value}
                     </if>
                     <if test="(key == &quot;register_time&quot; or key == &quot;registerTime&quot;) and value != null and value != '' ">

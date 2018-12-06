@@ -21,6 +21,7 @@
         <li class="layui-this" lay-id="all">全部</li>
         <li lay-id="enable">已启用</li>
         <li lay-id="unEnable">已禁用</li>
+        <li lay-id="deleted">已删除</li>
     </div>
     <div class="layui-tab-content">
         <div class="row">
@@ -70,11 +71,12 @@
     var searchContent = $("#searchContent").val(); //模糊查询内容
     var table = null;  //layui table
     var element = null; //layui element
+    var state = null; //tab标题状态
 
     $(document).ready(function () {
         ajaxErrorHandler(); //ajax请求错误统一处理
         loadLayuiElement();//加载 layui element
-        tableData(); //加载页面数据
+        tableData();
     });
 
     function loadLayuiElement() {
@@ -85,52 +87,79 @@
             element.on('tab(tab-top)', function (data) {
                 console.log(data);
                 var lay_id = this.getAttribute('lay-id');//当前Tab标题所在的原始DOM元素
+                var condition = null;
                 switch (lay_id) {
                     case 'all':     //全部数据
-                        table.reload('table1',{
-                            where: { //接口需要的其它参数
-                                condition: JSON.stringify({searchContent:searchContent})
-                            }
-                        });
+                        state = '';
+                        condition = {
+                            searchContent: searchContent,
+                            state: state
+                        };
+                        layuiReload(condition);
                         break;
                     case 'enable':     //已启用的数据
-                        table.reload('table1',{
-                            where: { //接口需要的其它参数
-                                condition: JSON.stringify({
-                                    searchContent:searchContent,
-                                    state:1
-                                })
-                            }
-                        });
+                        state = 1;
+                        condition = {
+                            searchContent: searchContent,
+                            state: state
+                        };
+                        layuiReload(condition);
                         break;
                     case 'unEnable':     //已禁用的数据
-                        table.reload('table1',{
-                            where: { //接口需要的其它参数
-                                condition: JSON.stringify({
-                                    searchContent:searchContent,
-                                    state:0
-                                })
-                            }
-                        });
+                        state = 0;
+                        condition = {
+                            searchContent: searchContent,
+                            state: state
+                        };
+                        layuiReload(condition);
+                        break;
+                    case 'deleted':     //已删除的数据
+                        state = -1;
+                        condition = {
+                            searchContent: searchContent,
+                            state: state
+                        };
+                        layuiReload(condition);
                         break;
                 }
             });
             element.render('tab(tab-top)');
         });
     }
-
+    /**
+     * 数据表格重新加载
+     * condition：自定义查询条件
+     * */
+    function layuiReload(condition) {
+        if (condition !== null && condition !== ''){
+            var state = condition.state;
+            var searchTxt = condition.searchContent;
+            if (state === null || state === ''){
+                //保证tab返回全部时，能查询所有
+                condition = {
+                    searchContent:searchTxt
+                };
+            }
+            table.reload('table1', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                ,where: { //接口需要的其它参数
+                    condition: JSON.stringify(condition)
+                }
+            });
+        }
+    }
     /**
      * 模糊查询
      */
     $("#search").click(function () {
         var searchContent = $("#searchContent").val(); //模糊查询内容
-        table.reload('table1',{
-            where: { //接口需要的其它参数
-                condition: JSON.stringify({
-                    searchContent:searchContent,
-                })
-            }
-        });
+        var condition = {
+            searchContent: searchContent
+            ,state:state
+        };
+        layuiReload(condition);
     });
 
     function tableData() {
@@ -142,13 +171,43 @@
                 id: 'table1'
                 , height: 550
                 , elem: '#tableData'
-                , autoSort:true     /*自动排序*/
+                , autoSort: true     /*自动排序*/
                 , initSort: 'orderNumber'  /*默认排序字段*/
                 , toolbar: '#table-head'
                 , title: '菜单管理'
                 , url: '${webRoot}/resource/list' //数据接口
-                , page: true //开启分页
-                , limit: 10 //每页显示多少条数据
+                , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    , limit: 10
+                    , prev: '上一页'
+                    , next: '下一页'
+                    , groups: 5 //只显示 5 个连续页码
+                    , first: true //显示首页
+                    , last: true //显示尾页
+                }
+                , request: { //用于对分页请求的参数：page、limit重新设定名称
+                    pageName: 'currentPage' //页码的参数名称，默认：page
+                    , limitName: 'rows' //每页数据量的参数名，默认：limit
+                }
+                , where: {  //接口需要的其它参数
+                    condition: JSON.stringify({searchContent: searchContent})
+                }
+                , parseData: function (res) { //res 即为原始返回的数据
+                    var code = res.code === 1 ? 0 : 1;
+                    var msg = res.msg;
+                    var data = null;
+                    var count = 0;
+                    if (code === 0) {
+                        data = res.data.items;
+                        count = res.data.total;
+                    }
+                    return {
+                        "code": code, //解析接口状态，layui的0为成功
+                        "msg": msg, //解析提示文本
+                        "count": count, //解析数据长度
+                        "data": data //解析数据列表
+                    };
+                }
                 , cols: [[ //表头
                     {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
                     , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
@@ -157,18 +216,20 @@
                     , {field: 'url', title: '对应URL', width: 150, align: 'center'}
                     , {
                         field: 'parentId', title: '父级菜单', width: 150, align: 'center', templet: function (d) {
-                            if (d.parentId === '0'){
+                            if (d.parentId === '0') {
                                 return d.name;
-                            }else {
+                            } else {
                                 return getResourceById(d.parentId).name;
                             }
                         }
                     }
-                    , {field: 'orderNumber', title: '排序顺序', width: 100, align: 'center',sort:true}
-                    , {field: 'level', title: '菜单层级', width: 100, align: 'center',sort:true}
-                    , {field: 'iconStyle', title: '菜单图标', width: 100, align: 'center', templet: function (d) {
-                        return '<i class="'+d.iconStyle+'"></i>'
-                    }}
+                    , {field: 'orderNumber', title: '排序顺序', width: 100, align: 'center', sort: true}
+                    , {field: 'level', title: '菜单层级', width: 100, align: 'center', sort: true}
+                    , {
+                        field: 'iconStyle', title: '菜单图标', width: 100, align: 'center', templet: function (d) {
+                            return '<i class="' + d.iconStyle + '"></i>'
+                        }
+                    }
                     , {field: 'describe', title: '资源描述', width: 150, align: 'center'}
                     , {field: 'remarks', title: '备注', width: 150, align: 'center'}
                     , {
@@ -220,31 +281,6 @@
                     , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 150, align: 'center'} //这里的toolbar值是模板元素的选择器
                     <%--</sec:authorize>--%>
                 ]]
-                , where: {//接口需要的其它参数
-                    condition: JSON.stringify({searchContent:searchContent})
-                }
-                , parseData: function (res) { //res 即为原始返回的数据
-                    var code = res.code === 1 ? 0 : 1;
-                    var msg = res.msg;
-                    var data = null;
-                    if (code === 0) {
-                        data = res.data.items;
-                    }
-                    var count = 0;
-                    if (data !== null) {
-                        count = data.total;
-                    }
-                    return {
-                        "code": code, //解析接口状态，layui的0为成功
-                        "msg": msg, //解析提示文本
-                        "count": count, //解析数据长度
-                        "data": data //解析数据列表
-                    };
-                }
-                , request: { //用于对分页请求的参数：page、limit重新设定名称
-                    pageName: 'currentPage' //页码的参数名称，默认：page
-                    , limitName: 'rows' //每页数据量的参数名，默认：limit
-                }
                 , done: function (res, curr, count) { //渲染完毕后回调
                 }
             });
@@ -418,9 +454,9 @@
             var data = {
                 id: obj.id,
                 name: obj.name,
-                parentId:obj.parentId,
+                parentId: obj.parentId,
                 url: obj.url,
-                orderNumber:obj.orderNumber,
+                orderNumber: obj.orderNumber,
                 state: state
             };
             $.ajax({
@@ -491,7 +527,7 @@
      * @returns {*}
      */
     function getResourceById(id) {
-        if (id == null || id == '') {
+        if (id === null || id === '') {
             layer.alert('id不能为空！', {
                 time: 3000,
                 icon: 2
@@ -510,7 +546,7 @@
                 var jsonData = eval(data); //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code == 1) {
+                if (code === 1) {
                     resource = jsonData.data.resource;
                 } else {
                     layer.alert(msg, {

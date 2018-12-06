@@ -19,6 +19,17 @@
 <div class="layui-tab layui-tab-brief" lay-filter="demoTitle">
     <div class="layui-tab-content">
         <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchContent" placeholder="模糊查询">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" id="search" title="查找本表的内容">搜索</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <%--<div class="col-sm-1"></div>--%>
             <div class="text-left col-sm-12">
                 <table id="tableData" lay-filter="table-filter"></table>
@@ -82,6 +93,31 @@
         });
         return roles;
     }
+    /**
+     * 数据表格重新加载
+     * condition：自定义查询条件
+     * */
+    function layuiReload(condition) {
+        table.reload('table1', {
+            page: {
+                curr: 1 //重新从第 1 页开始
+            }
+            ,where: { //接口需要的其它参数
+                condition: JSON.stringify(condition)
+            }
+        });
+    }
+    /**
+     * 模糊查询
+     */
+    $("#search").click(function () {
+        var searchContent = $("#searchContent").val(); //模糊查询内容
+        var condition = {
+            searchContent: searchContent
+            ,state:state
+        };
+        layuiReload(condition);
+    });
 
     function tableData() {
         //layui数据表格
@@ -93,8 +129,15 @@
                 , elem: '#tableData'
                 , title: '菜单管理'
                 , url: '${webRoot}/role/select' //数据接口
-                , page: true //开启分页
-                , limit: 10 //每页显示多少条数据
+                , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    , limit: 10
+                    , prev: '上一页'
+                    , next: '下一页'
+                    , groups: 5 //只显示 5 个连续页码
+                    , first: true //显示首页
+                    , last: true //显示尾页
+                }
                 , cols: [[ //表头
                     {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
                     , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
@@ -110,12 +153,10 @@
                     var code = res.code === 1 ? 0 : 1;
                     var msg = res.msg;
                     var data = null;
-                    if (code === 0){
-                        data = res.data.items;
-                    }
                     var count = 0;
-                    if (data !== null) {
-                        count = data.total;
+                    if (code === 0) {
+                        data = res.data.items;
+                        count = res.data.total;
                     }
                     /*让用户已有的角色处于被选中状态*/
                     var roleIds = '';
