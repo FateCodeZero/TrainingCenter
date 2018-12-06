@@ -21,7 +21,7 @@
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
 </head>
-<body >
+<body>
 <div id="mian">
 
     <%--顶部公司log图片--%>
@@ -76,9 +76,11 @@
                     <li class="layui-nav-item" style="float: right">
                         <a href="#"><img src="//t.cn/RCzsdCq" class="layui-nav-img">用户A</a>
                         <dl class="layui-nav-child">
-                            <dd><a>个人中心</a></dd>
+                            <dd><a href="${webRoot}/webpages/user/userInfo.jsp">个人中心</a></dd>
                             <dd><a>消息通知</a></dd>
-                            <dd><a href="${webRoot}/user/admin">后台管理系统</a></dd>
+                            <%--<sec:authorize url="${webRoot}/webpages/admin/index.jsp">--%>
+                                <dd><a href="${webRoot}/webpages/admin/index.jsp">后台管理系统</a></dd>
+                            <%--</sec:authorize>--%>
                             <dd><a href="${webRoot}/user/logout">退出</a></dd>
                         </dl>
                     </li>
@@ -98,7 +100,7 @@
     <%--身体部分,各个页面跳转显示--%>
     <div id="body">
         <iframe id="IF-body" src="${webRoot}/webpages/static/body.jsp" frameborder="0" width="100%"
-                 scrolling="no" > </iframe>
+                scrolling="no"></iframe>
     </div>
 
     <%--页脚，网站相关信息--%>
@@ -153,22 +155,22 @@
             if (text === '最佳学员') {
                 loadUrl = "${webRoot}/webpages/static/pages/studentStyle/bestStudent.jsp";
             }
-            if(text === '往期学员故事'){
+            if (text === '往期学员故事') {
                 loadUrl = "${webRoot}/webpages/static/pages/studentStyle/studentStory.jsp";
             }
-            if(text === '红色圣地'){
+            if (text === '红色圣地') {
                 loadUrl = "${webRoot}/webpages/static/pages/scheduling/revolutionarySite.jsp";
             }
-            if(text === '交通工具'){
+            if (text === '交通工具') {
                 loadUrl = "${webRoot}/webpages/static/pages/scheduling/transportation.jsp";
             }
-            if(text === '特色美食'){
+            if (text === '特色美食') {
                 loadUrl = "${webRoot}/webpages/static/pages/scheduling/specialFood.jsp";
             }
-            if(text === '文化产品'){
+            if (text === '文化产品') {
                 loadUrl = "${webRoot}/webpages/static/pages/scheduling/culturalProducts.jsp";
             }
-            if(text === '特此介绍'){
+            if (text === '特此介绍') {
                 loadUrl = "${webRoot}/webpages/static/pages/scheduling/specialIntroduction.jsp";
             }
             //通过修改 iframe 的 url 来切换页面，注：要用此方法，点击处<a>标签必须是 href="#"

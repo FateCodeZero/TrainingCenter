@@ -41,7 +41,7 @@
             URL权限控制：只是对请求的url进行基于角色的粗略权限控制
             要进行细粒的权限控制，需要使用注解配合，可做到方法级别的权限控制
     -->
-    <security:http auto-config="false" use-expressions="true">
+    <security:http auto-config="true" use-expressions="true">
         <!--（0）开启浏览器加载 frame页面
             DENY：浏览器拒绝当前页面加载任何Frame页面（默认）
             SAMEORIGIN：frame页面的地址只能为同源域名下的页面

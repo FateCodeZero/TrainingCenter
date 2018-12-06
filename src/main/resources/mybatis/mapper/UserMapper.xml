@@ -156,6 +156,7 @@
                 </foreach>
             </if>
         </trim>
+        GROUP BY u.id
         ORDER BY u.register_time DESC
         <if test="start != null and number != null">
             LIMIT #{start},#{number}

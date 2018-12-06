@@ -29,7 +29,7 @@
     <div class="layui-header">
         <div class="layui-logo">梦润后台管理系统</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
-        <ul class="layui-nav layui-layout-left" lay-filter="nav-top">
+        <%--<ul class="layui-nav layui-layout-left" lay-filter="nav-top">
             <li class="layui-nav-item">
                 <a href="">控制台</a>
             </li>
@@ -53,7 +53,7 @@
                     </dd>
                 </dl>
             </li>
-        </ul>
+        </ul>--%>
         <ul class="layui-nav layui-layout-right" lay-filter="nav-user">
             <li class="layui-nav-item" style="float: right">
                 <a href="#"><img src="//t.cn/RCzsdCq" class="layui-nav-img">用户A</a>

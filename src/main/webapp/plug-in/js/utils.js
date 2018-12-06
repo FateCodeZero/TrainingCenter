@@ -75,4 +75,26 @@ checkPhone = function(str) {
     }
 };
 
+/**
+ * 输入长度限制工具方法
+ * @param inputDom:输入框dom对象
+ * @param maxLength：最大允许输入的字符个数
+ */
+stringLengthCheck = function (inputDom,maxLength) {
+    var numberReg = /\d+$/;  //验证数字，至少是一位数字
+    if (inputDom === null || inputDom === '' || !numberReg.test(maxLength) ){
+        alert('参数错误，传入的参数不符合方法需求！');
+        return false;
+    }else {
+        var str = inputDom.val();
+        var length = str.length();
+        if (length > maxLength){
+            inputDom.val(inputDom.val().substring(0,maxLength) );
+            return false;
+        }else {
+            return true;
+        }
+    }
+};
+
 

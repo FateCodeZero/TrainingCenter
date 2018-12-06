@@ -191,7 +191,6 @@ public class UserController {
     public AjaxJson register(@RequestParam("username") String username, @RequestParam("password") String password,
                              @RequestParam("rePassword") String rePassword) {
         AjaxJson ajaxJson = new AjaxJson();
-        int a = 1/0;
         //非空验证
         if (StringUtil.isEmpty(username) || StringUtil.isEmpty(password)) {
             ajaxJson.setCode(0);

@@ -205,12 +205,12 @@
                 var jsonData = eval(data);   //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code == 1) {
+                if (code === 1) {
                     layer.alert(msg, {
                         time: 3000,
                         icon: 1
                     });
-                    close();    //关闭窗口
+                    closeView();    //关闭窗口
                 } else {
                     layer.alert(msg, {
                         time: 3000,
