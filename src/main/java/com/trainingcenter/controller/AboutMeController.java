@@ -158,6 +158,7 @@ public class AboutMeController {
         newTD.setRemarks(aboutMe.getRemarks());
         newTD.setContent(aboutMe.getContent());
         newTD.setImgs(aboutMe.getImgs());
+        newTD.setTitle(aboutMe.getTitle());
         newTD.setUpdateDate(new Date());
         newTD.setUpdateUserId(user.getId());
 
@@ -206,6 +207,7 @@ public class AboutMeController {
         aboutMe.setImgs(imgs);
         aboutMe.setContent(content);
         aboutMe.setRemarks(remarks);
+        aboutMe.setTitle(title);
         aboutMe.setCreateUserId(user.getId());
         aboutMe.setCreateDate(new Date());
         Integer add = aboutMeService.add(aboutMe);

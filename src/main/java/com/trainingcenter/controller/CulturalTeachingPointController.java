@@ -206,6 +206,7 @@ public class CulturalTeachingPointController {
         culturalTeachingPoint.setImgs(imgs);
         culturalTeachingPoint.setContent(content);
         culturalTeachingPoint.setRemarks(remarks);
+        culturalTeachingPoint.setTitle(title);
         culturalTeachingPoint.setCreateUserId(user.getId());
         culturalTeachingPoint.setCreateDate(new Date());
         Integer add = culturalTeachingPointService.add(culturalTeachingPoint);

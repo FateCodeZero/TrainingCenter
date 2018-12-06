@@ -206,6 +206,7 @@ public class DevelopTeachingPointController {
         developTeachingPoint.setImgs(imgs);
         developTeachingPoint.setContent(content);
         developTeachingPoint.setRemarks(remarks);
+        developTeachingPoint.setTitle(title);
         developTeachingPoint.setCreateUserId(user.getId());
         developTeachingPoint.setCreateDate(new Date());
         Integer add = developTeachingPointService.add(developTeachingPoint);
