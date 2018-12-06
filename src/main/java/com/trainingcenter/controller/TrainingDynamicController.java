@@ -162,7 +162,7 @@ public class TrainingDynamicController {
 
         res=trainingDynamicService.update(newTD);
         if (res == 0){
-            ajaxJson.setCode(0);
+            ajaxJson.setCode(1);
             ajaxJson.setMsg("操作失败，请重试");
             return ajaxJson;
         }else {

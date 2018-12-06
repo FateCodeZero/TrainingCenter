@@ -57,7 +57,7 @@ public class StudentMienController {
         Integer total = studentMienService.getStudentMiens().size();
 
         if (studentMiens.size() == 0){
-            ajaxJson.setCode(0);
+            ajaxJson.setCode(1);
             ajaxJson.setMsg("暂无数据");
         }else {
             ajaxJson.setCode(1);

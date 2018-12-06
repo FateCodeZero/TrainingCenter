@@ -55,7 +55,7 @@ public class DevelopTeachingPointController {
         Integer total = developTeachingPointService.getDevelopTeachingPoints().size();
 
         if (developTeachingPoints.size() == 0){
-            ajaxJson.setCode(0);
+            ajaxJson.setCode(1);
             ajaxJson.setMsg("暂无数据");
         }else {
             ajaxJson.setCode(1);

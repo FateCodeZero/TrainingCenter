@@ -57,7 +57,7 @@ public class SpotTeachingController {
         Integer total = spotTeachingService.getSpotTeachings().size();
 
         if (spotTeachings.size() == 0){
-            ajaxJson.setCode(0);
+            ajaxJson.setCode(1);
             ajaxJson.setMsg("暂无数据");
         }else {
             ajaxJson.setCode(1);

@@ -56,7 +56,7 @@ public class AnnunciationController {
         Integer total = annunciationService.getAnnunciations().size();
 
         if (annunciations.size() == 0){
-            ajaxJson.setCode(0);
+            ajaxJson.setCode(1);
             ajaxJson.setMsg("暂无数据");
         }else {
             ajaxJson.setCode(1);

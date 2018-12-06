@@ -55,7 +55,7 @@ public class AboutMeController {
         Integer total = aboutMeService.getAboutMes().size();
 
         if (aboutMes.size() == 0){
-            ajaxJson.setCode(0);
+            ajaxJson.setCode(1);
             ajaxJson.setMsg("暂无数据");
         }else {
             ajaxJson.setCode(1);

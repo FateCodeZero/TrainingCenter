@@ -55,7 +55,7 @@ public class RevolutionarySiteController {
         Integer total = revolutionarySiteService.getRevolutionarySites().size();
 
         if (revolutionarySites.size() == 0){
-            ajaxJson.setCode(0);
+            ajaxJson.setCode(1);
             ajaxJson.setMsg("暂无数据");
         }else {
             ajaxJson.setCode(1);
