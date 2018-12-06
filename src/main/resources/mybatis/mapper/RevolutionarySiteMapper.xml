@@ -70,16 +70,16 @@
                 remarks = #{revolutionarySite.remarks},
             </if>
             <if test="revolutionarySite.createUserId != null and revolutionarySite.createUserId != '' ">
-                create_user_id = #{revolutionarySite.createUserId},
+                createUserId = #{revolutionarySite.createUserId},
             </if>
             <if test="revolutionarySite.createDate != null ">
-                create_date = #{revolutionarySite.createDate},
+                createDate = #{revolutionarySite.createDate},
             </if>
             <if test="revolutionarySite.updateUserId != null and revolutionarySite.updateUserId != '' ">
-                update_user_id = #{revolutionarySite.updateUserId},
+                updateUserId = #{revolutionarySite.updateUserId},
             </if>
             <if test="revolutionarySite.updateDate != null ">
-                update_date = #{revolutionarySite.updateDate},
+                updateDate = #{revolutionarySite.updateDate},
             </if>
 
         </trim>

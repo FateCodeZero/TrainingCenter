@@ -36,7 +36,7 @@ public interface CulturalProductsMapper {
      * @param culturalProductsSite 培训新闻
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer add(@Valid @Param("culturalProductsSite") CulturalProducts culturalProductsSite);
+    public Integer add(@Valid @Param("culturalProducts") CulturalProducts culturalProducts);
 
 
     /**
@@ -44,7 +44,7 @@ public interface CulturalProductsMapper {
      * @param culturalProductsSite：要更新的培训新闻
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer update(@Valid @Param("culturalProductsSite") CulturalProducts culturalProductsSite);
+    public Integer update(@Valid @Param("culturalProducts") CulturalProducts culturalProducts);
 
     /**
      * 动态培训删除方法

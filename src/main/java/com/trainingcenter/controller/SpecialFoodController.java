@@ -173,7 +173,8 @@ public class SpecialFoodController {
         }
     }
 
-
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @ResponseBody
     public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
             , @RequestParam("content") String content, String remarks){
         AjaxJson ajaxJson = new AjaxJson();
@@ -203,6 +204,7 @@ public class SpecialFoodController {
         SpecialFood specialFood = new SpecialFood();
         specialFood.setId(UUID.randomUUID().toString());
         specialFood.setImgs(imgs);
+        specialFood.setTitle(title);
         specialFood.setContent(content);
         specialFood.setRemarks(remarks);
         specialFood.setCreateUserId(user.getId());

@@ -70,16 +70,16 @@
                 remarks = #{culturalProducts.remarks},
             </if>
             <if test="culturalProducts.createUserId != null and culturalProducts.createUserId != '' ">
-                create_user_id = #{culturalProducts.createUserId},
+                createUserId = #{culturalProducts.createUserId},
             </if>
             <if test="culturalProducts.createDate != null ">
-                create_date = #{culturalProducts.createDate},
+                createDate = #{culturalProducts.createDate},
             </if>
             <if test="culturalProducts.updateUserId != null and culturalProducts.updateUserId != '' ">
-                update_user_id = #{culturalProducts.updateUserId},
+                updateUserId = #{culturalProducts.updateUserId},
             </if>
             <if test="culturalProducts.updateDate != null ">
-                update_date = #{culturalProducts.updateDate},
+                updateDate = #{culturalProducts.updateDate},
             </if>
 
         </trim>

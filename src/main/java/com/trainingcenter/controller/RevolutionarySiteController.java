@@ -173,7 +173,8 @@ public class RevolutionarySiteController {
         }
     }
 
-
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @ResponseBody
     public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
             , @RequestParam("content") String content, String remarks){
         AjaxJson ajaxJson = new AjaxJson();
@@ -203,6 +204,7 @@ public class RevolutionarySiteController {
         RevolutionarySite revolutionarySite = new RevolutionarySite();
         revolutionarySite.setId(UUID.randomUUID().toString());
         revolutionarySite.setImgs(imgs);
+        revolutionarySite.setTitle(title);
         revolutionarySite.setContent(content);
         revolutionarySite.setRemarks(remarks);
         revolutionarySite.setCreateUserId(user.getId());

@@ -173,7 +173,8 @@ public class CulturalProductsController {
         }
     }
 
-
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @ResponseBody
     public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
             , @RequestParam("content") String content, String remarks){
         AjaxJson ajaxJson = new AjaxJson();
@@ -203,6 +204,7 @@ public class CulturalProductsController {
         CulturalProducts culturalProducts = new CulturalProducts();
         culturalProducts.setId(UUID.randomUUID().toString());
         culturalProducts.setImgs(imgs);
+        culturalProducts.setTitle(title);
         culturalProducts.setContent(content);
         culturalProducts.setRemarks(remarks);
         culturalProducts.setCreateUserId(user.getId());

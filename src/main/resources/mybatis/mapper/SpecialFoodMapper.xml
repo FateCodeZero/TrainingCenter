@@ -70,16 +70,16 @@
                 remarks = #{specialFood.remarks},
             </if>
             <if test="specialFood.createUserId != null and specialFood.createUserId != '' ">
-                create_user_id = #{specialFood.createUserId},
+                createUserId = #{specialFood.createUserId},
             </if>
             <if test="specialFood.createDate != null ">
-                create_date = #{specialFood.createDate},
+                createDate = #{specialFood.createDate},
             </if>
             <if test="specialFood.updateUserId != null and specialFood.updateUserId != '' ">
-                update_user_id = #{specialFood.updateUserId},
+                updateUserId = #{specialFood.updateUserId},
             </if>
             <if test="specialFood.updateDate != null ">
-                update_date = #{specialFood.updateDate},
+                updateDate = #{specialFood.updateDate},
             </if>
 
         </trim>
