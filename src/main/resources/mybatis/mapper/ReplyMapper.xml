@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.ReplyMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="replycolumns">
+        id,content,comment_id,praise_count,create_user_id,create_date
+    </sql>
+
+    <!-- public Reply getReplyById(@Param("id") String id);
+        通过id获取动态培训
+    -->
+    <select id="getReplyById" resultType="com.trainingcenter.bean.Reply">
+        SELECT <include refid="replycolumns"></include>
+        FROM tab_reply
+        WHERE id = #{id}
+    </select>
+
+
+    <!-- public List<Resource> getResources(@Param("start") Integer start, @Param("number") Integer number,
+                                       @Param("condition") Map<String,Object> condition);
+        分页查询所有资源
+    -->
+    <select id="getReplys" resultType="com.trainingcenter.bean.Reply">
+        SELECT <include refid="replycolumns"/>
+        FROM tab_reply
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;content&quot; and value != null and value != '' ">
+                        and `content` = #{value}
+                    </if>
+                    <if test="key == &quot;comment_id&quot; and value != null and value != '' ">
+                        and comment_id = #{value}
+                    </if>
+                    id,content,comment_id,praise_count,create_user_id,create_date
+                    <if test="(key == &quot;praise_count&quot; or key == &quot;praise_count&quot;) and value != null ">
+                        and praise_count = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and
+                        (
+                        `name` like CONCAT('%',#{value},'%')
+                        OR comment_id like CONCAT('%',#{value},'%')
+                        OR praise_count like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY praise_count DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+    <!--
+    public Integer add(@Param("reply") Reply reply;
+    动态培训添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.Reply">
+        INSERT INTO tab_reply(<include refid="replycolumns"></include>)
+        VALUES (#{reply.id},#{reply.content},#{reply.message_id},#{reply.release_user_id},#{reply.release_time}
+    </insert>
+
+    <!--
+            public Integer update(@Param("reply") Reply reply);
+            更新动态培训信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.Reply">
+        UPDATE tab_reply
+        <trim prefix="set" suffixOverrides=",">
+            <if test="reply.content != null and reply.content != '' ">
+                content = #{reply.content},
+            </if>
+            <if test="reply.message_id != null and reply.message_id != '' ">
+                message_id = #{reply.message_id},
+            </if>
+            <if test="reply.release_user_id != null and reply.release_user_id != '' ">
+                release_user_id = #{reply.release_user_id},
+            </if>
+            <if test="reply.release_time != null and reply.release_time != '' ">
+                release_time = #{reply.release_time},
+            </if>
+        </trim>
+        WHERE id = #{reply.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除动态培训
+       -->
+    <delete id="delete">
+        DELETE FROM tab_reply
+        WHERE id = #{id}
+    </delete>
+
+    <!--public Collection<User> getUsersByRoleId(@Param("roleId") String roleId, @Param("start") Integer start,
+                                                 @Param("number") Integer number, @Param("searchContent") String searchContent);
+       返回含有该角色的所有用户，支持分页与模糊查询
+   -->
+    <select id="getReplysByCommentId" resultType="com.trainingcenter.bean.Reply">
+        SELECT u.id,u.content,u.comment_id,u.praise_count,u.create_user_id,u.create_date
+        FROM tab_Reply u LEFT JOIN tab_comment ur ON u.comment_id = ur.id
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="(key == &quot;comment_id&quot; or key == &quot;commentId&quot;) and value != null and value != '' ">
+                        and u.comment_id = #{value}
+                    </if>
+                    <if test="key == &quot;praiseCount&quot; and value != null ">
+                        and u.praiseCount = #{value}
+                    </if>
+
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and u.create_user_id = #{value}
+                    </if>
+
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and
+                        (
+                        u.content like CONCAT('%',#{value},'%')
+                        OR u.praiseCount like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY u.create_date ASC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+</mapper>
