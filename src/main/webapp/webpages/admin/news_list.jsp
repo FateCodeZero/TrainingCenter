@@ -53,6 +53,11 @@
 </script>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        ajaxErrorHandler(); //ajax请求错误统一处理
+        //页面加载完成
+        //……
+    });
     var layer_window = ''; 	//定义全局变量,用以储存弹出的窗口的窗口对象
     var searchContent = $("#searchContent").val(); //模糊查询内容
     var table;  //layui table

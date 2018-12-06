@@ -93,6 +93,7 @@
     });
 
     $(document).ready(function () {
+        ajaxErrorHandler(); //ajax请求错误统一处理
         //页面加载完成
         //……
     });

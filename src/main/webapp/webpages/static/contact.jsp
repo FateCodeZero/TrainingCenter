@@ -253,6 +253,7 @@
     layui.use('laypage', function(){
 
         $(document).ready(function loading(){
+            ajaxErrorHandler(); //ajax请求错误统一处理
 
             getCommentListPage();
             IFrameResize();

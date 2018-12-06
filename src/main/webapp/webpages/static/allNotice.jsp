@@ -64,6 +64,7 @@
         var laypage = layui.laypage;
 
         $(document).ready(function loading(){
+            ajaxErrorHandler(); //ajax请求错误统一处理
             getNotices();
             IFrameResize();
         });

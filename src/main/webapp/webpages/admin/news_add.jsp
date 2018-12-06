@@ -82,6 +82,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+        ajaxErrorHandler(); //ajax请求错误统一处理
         wangEditorGet();
         //页面加载完成
         //……
