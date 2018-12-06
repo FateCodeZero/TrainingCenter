@@ -43,7 +43,7 @@
                 <label for="parentId" class="col-sm-2 control-label">父级菜单</label>
                 <div class="col-sm-8">
                     <input type="hidden" name="parentId" id="parentId"/>
-                    <input type="text" class="form-control" name="parentName" id="parentName" value=""
+                    <input type="text" class="form-control" name="parentName" id="parentName" value="0"
                            disabled="disabled"
                            placeholder="选择父级菜单，顶级菜单为管理系统首页">
                 </div>
@@ -157,6 +157,11 @@
             $("#orderNumber").css("border", "1px solid #009688");
             $("#orderNumber").blur();      //失去焦点
         }
+        /*若添加的菜单是顶级页面，则其父页面id为'0'*/
+        if (parentId === null || parentId === '' ){
+            parentId = '0';
+        }
+
         var data = {
             name: name,
             url: url,

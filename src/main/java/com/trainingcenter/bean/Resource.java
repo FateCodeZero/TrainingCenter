@@ -46,6 +46,7 @@ public class Resource extends BaseEntity implements Serializable {
      * 该资源的父级菜单ID，对应数据库（parent_id）字段
      * 若父级菜单ID为自己，则该资源为顶级菜单,默认为自己
      */
+    @NotNull(message = "父页面id不能为空",groups = {TC_Add.class, TC_Update.class})
     private String parentId;
 
     /**

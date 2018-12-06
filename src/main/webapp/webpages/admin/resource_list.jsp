@@ -16,13 +16,24 @@
 </head>
 
 <body>
-<div class="layui-tab layui-tab-brief" lay-filter="demoTitle">
-    <div class="layui-tab-title" lay-filter="tab-top">
+<div class="layui-tab layui-tab-brief" lay-filter="tab-top">
+    <div class="layui-tab-title">
         <li class="layui-this" lay-id="all">全部</li>
         <li lay-id="enable">已启用</li>
         <li lay-id="unEnable">已禁用</li>
     </div>
     <div class="layui-tab-content">
+        <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchContent" placeholder="模糊查询">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" id="search" title="查找本表的内容">搜索</button>
+                    </span>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <%--<div class="col-sm-1"></div>--%>
             <div class="text-left col-sm-12">
@@ -57,22 +68,69 @@
 <script type="text/javascript">
     var layer_window = ''; 	//定义全局变量,用以储存弹出的窗口的窗口对象
     var searchContent = $("#searchContent").val(); //模糊查询内容
-    var table;  //layui table
+    var table = null;  //layui table
+    var element = null; //layui element
 
     $(document).ready(function () {
         ajaxErrorHandler(); //ajax请求错误统一处理
+        loadLayuiElement();//加载 layui element
         tableData(); //加载页面数据
     });
 
-    //JavaScript代码区域
-    layui.use('element', function () {
-        var element = layui.element;
-        //监听选项卡切换
-        element.on('tab', function (data) {
-            var lay_id = this.getAttribute('lay-id');
-            console.log(lay_id); //当前Tab标题所在的原始DOM元素
+    function loadLayuiElement() {
+        //JavaScript代码区域
+        layui.use('element', function () {
+            var element = layui.element;
+            //监听选项卡切换
+            element.on('tab(tab-top)', function (data) {
+                console.log(data);
+                var lay_id = this.getAttribute('lay-id');//当前Tab标题所在的原始DOM元素
+                switch (lay_id) {
+                    case 'all':     //全部数据
+                        table.reload('table1',{
+                            where: { //接口需要的其它参数
+                                condition: JSON.stringify({searchContent:searchContent})
+                            }
+                        });
+                        break;
+                    case 'enable':     //已启用的数据
+                        table.reload('table1',{
+                            where: { //接口需要的其它参数
+                                condition: JSON.stringify({
+                                    searchContent:searchContent,
+                                    state:1
+                                })
+                            }
+                        });
+                        break;
+                    case 'unEnable':     //已禁用的数据
+                        table.reload('table1',{
+                            where: { //接口需要的其它参数
+                                condition: JSON.stringify({
+                                    searchContent:searchContent,
+                                    state:0
+                                })
+                            }
+                        });
+                        break;
+                }
+            });
+            element.render('tab(tab-top)');
         });
-        element.render('tab');
+    }
+
+    /**
+     * 模糊查询
+     */
+    $("#search").click(function () {
+        var searchContent = $("#searchContent").val(); //模糊查询内容
+        table.reload('table1',{
+            where: { //接口需要的其它参数
+                condition: JSON.stringify({
+                    searchContent:searchContent,
+                })
+            }
+        });
     });
 
     function tableData() {
@@ -360,7 +418,9 @@
             var data = {
                 id: obj.id,
                 name: obj.name,
+                parentId:obj.parentId,
                 url: obj.url,
+                orderNumber:obj.orderNumber,
                 state: state
             };
             $.ajax({
@@ -374,13 +434,13 @@
                     var msg = jsonData.msg;
                     if (code === 1) {
                         layer.msg(msg);
+                        location.reload(); //操作成功后刷新页面
                     } else {
                         layer.alert(msg, {
                             time: 3000,
                             icon: 2
                         });
                     }
-                    location.reload(); //操作后刷新页面
                 }
             });
         }

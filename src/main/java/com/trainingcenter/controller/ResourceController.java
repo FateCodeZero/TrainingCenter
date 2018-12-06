@@ -1,5 +1,6 @@
 package com.trainingcenter.controller;
 
+import com.trainingcenter.bean.Permission;
 import com.trainingcenter.bean.Resource;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.controller.validation.TC_Add;
@@ -47,11 +48,11 @@ public class ResourceController {
      *
      * @param currentPage：当前页
      * @param rows：每页展示的数据条数
-     * @param searchContent：模糊查询
+     * @param request：其他参数，如模糊查询等
      */
     @ResponseBody
     @RequestMapping("/list")
-    public AjaxJson getResources_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent) {
+    public AjaxJson getResources_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null) {
             ajaxJson.setCode(0);
@@ -60,10 +61,11 @@ public class ResourceController {
         } else {
             //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
             Map<String, Object> condition = new ConcurrentHashMap<>();
-            // 此处注意：ConcurrentHashMap 不允许 NULL 值
-            if (StringUtil.isNotEmpty(searchContent)) {
-                condition.put("searchContent", searchContent);
+            String conditionStr = request.getParameter("condition");
+            if (StringUtil.isNotEmpty(conditionStr)){
+                condition = FindConditionUtils.findConditionBuild(Resource.class,conditionStr);
             }
+
             //获取当前查询条件下的所有数据条数，分页用
             Integer total = resourceService.getResources(condition).size();
             //获取当前页的数据
@@ -199,7 +201,8 @@ public class ResourceController {
         resource.setUpdateUserId(currentUser.getId());
         resource.setUpdateDate(new Date());
 
-        if (StringUtil.isEmpty(resource.getParentId())) {
+        String parentId = resource.getParentId();
+        if (StringUtil.isEmpty(parentId) || parentId.equals("0")) {
             resource.setParentId("0");  //默认父菜单为0
             //父菜单为自己时，表示该菜单为顶级菜单
             resource.setLevel(0);
@@ -264,8 +267,8 @@ public class ResourceController {
             oldResource.setParentId(resource.getParentId());
         }
         //菜单层级不能手动更新
-        String parentId = resource.getParentId();
-        if (!parentId.equals("0")){
+        String parentId = oldResource.getParentId();
+        if (StringUtil.isNotEmpty(parentId) && !parentId.equals("0")){
             //获取当前菜单的父级菜单
             Resource parent = resourceService.getResourceById(resource.getParentId());
             //设置当前菜单的层级为父菜单层级 + 1

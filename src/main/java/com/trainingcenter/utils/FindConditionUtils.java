@@ -7,7 +7,6 @@ package com.trainingcenter.utils;
  * Time: 15:03
  */
 
-import com.trainingcenter.bean.Resource;
 import com.trainingcenter.exception.FindConditionMapException;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -53,7 +52,8 @@ public class FindConditionUtils {
             }
             Set<String> keySet = Collections.synchronizedSet(condition.keySet());
             for (String conditionKey : keySet) {
-                if (!fieldNames.contains(conditionKey)) {
+                //searchContent：模糊查询的key
+                if (!conditionKey.equals("searchContent") && !fieldNames.contains(conditionKey)) {
                     findConditionMapException = new FindConditionMapException("查询条件映射失败，查询字段在对应表中不存在");
                     throw findConditionMapException;
                 }
