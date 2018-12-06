@@ -36,7 +36,7 @@ public interface ExperientialTeachingMapper {
      * @param trainingDynamic 培训新闻
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer add(@Valid @Param("trainingDynamic") ExperientialTeaching trainingDynamic);
+    public Integer add(@Valid @Param("experientialTeaching") ExperientialTeaching trainingDynamic);
 
 
     /**
@@ -44,7 +44,7 @@ public interface ExperientialTeachingMapper {
      * @param trainingDynamic：要更新的培训新闻
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer update(@Valid @Param("trainingDynamic") ExperientialTeaching trainingDynamic);
+    public Integer update(@Valid @Param("experientialTeaching") ExperientialTeaching trainingDynamic);
 
     /**
      * 动态培训删除方法

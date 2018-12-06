@@ -176,7 +176,8 @@ public class InterviewTeachingController {
         }
     }
 
-
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @ResponseBody
     public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
             , @RequestParam("content") String content, String remarks){
         AjaxJson ajaxJson = new AjaxJson();
@@ -206,6 +207,7 @@ public class InterviewTeachingController {
         InterviewTeaching interviewTeaching = new InterviewTeaching();
         interviewTeaching.setId(UUID.randomUUID().toString());
         interviewTeaching.setImgs(imgs);
+        interviewTeaching.setTitle(title);
         interviewTeaching.setContent(content);
         interviewTeaching.setRemarks(remarks);
         interviewTeaching.setCreateUserId(user.getId());

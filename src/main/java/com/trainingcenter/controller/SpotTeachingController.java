@@ -177,7 +177,8 @@ public class SpotTeachingController {
         }
     }
 
-
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @ResponseBody
     public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
             , @RequestParam("content") String content, String remarks){
         AjaxJson ajaxJson = new AjaxJson();
@@ -207,6 +208,7 @@ public class SpotTeachingController {
         SpotTeaching spotTeaching = new SpotTeaching();
         spotTeaching.setId(UUID.randomUUID().toString());
         spotTeaching.setImgs(imgs);
+        spotTeaching.setTitle(title);
         spotTeaching.setContent(content);
         spotTeaching.setRemarks(remarks);
         spotTeaching.setCreateUserId(user.getId());

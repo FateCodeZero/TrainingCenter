@@ -177,7 +177,8 @@ public class ExperientialTeachingController {
         }
     }
 
-
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @ResponseBody
     public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
             , @RequestParam("content") String content, String remarks){
         AjaxJson ajaxJson = new AjaxJson();
@@ -207,6 +208,7 @@ public class ExperientialTeachingController {
         ExperientialTeaching experientialTeaching = new ExperientialTeaching();
         experientialTeaching.setId(UUID.randomUUID().toString());
         experientialTeaching.setImgs(imgs);
+        experientialTeaching.setTitle(title);
         experientialTeaching.setContent(content);
         experientialTeaching.setRemarks(remarks);
         experientialTeaching.setCreateUserId(user.getId());

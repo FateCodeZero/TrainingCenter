@@ -70,16 +70,16 @@
                 remarks = #{communicationTeaching.remarks},
             </if>
             <if test="communicationTeaching.createUserId != null and communicationTeaching.createUserId != '' ">
-                create_user_id = #{communicationTeaching.createUserId},
+                createUserId = #{communicationTeaching.createUserId},
             </if>
             <if test="communicationTeaching.createDate != null">
-                create_date = #{communicationTeaching.createDate},
+                createDate = #{communicationTeaching.createDate},
             </if>
             <if test="communicationTeaching.updateUserId != null and communicationTeaching.updateUserId != '' ">
-                update_user_id = #{communicationTeaching.updateUserId},
+                updateUserId = #{communicationTeaching.updateUserId},
             </if>
             <if test="communicationTeaching.updateDate != null">
-                update_date = #{communicationTeaching.updateDate},
+                updateDate = #{communicationTeaching.updateDate},
             </if>
 
         </trim>

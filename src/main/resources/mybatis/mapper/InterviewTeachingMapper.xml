@@ -70,16 +70,16 @@
                 remarks = #{interviewTeaching.remarks},
             </if>
             <if test="interviewTeaching.createUserId != null and interviewTeaching.createUserId != '' ">
-                create_user_id = #{interviewTeaching.createUserId},
+                createUserId = #{interviewTeaching.createUserId},
             </if>
             <if test="interviewTeaching.createDate != null  ">
-                create_date = #{interviewTeaching.createDate},
+                createDate = #{interviewTeaching.createDate},
             </if>
             <if test="interviewTeaching.updateUserId != null and interviewTeaching.updateUserId != '' ">
-                update_user_id = #{interviewTeaching.updateUserId},
+                updateUserId = #{interviewTeaching.updateUserId},
             </if>
             <if test="interviewTeaching.updateDate != null ">
-                update_date = #{interviewTeaching.updateDate},
+                updateDate = #{interviewTeaching.updateDate},
             </if>
 
         </trim>

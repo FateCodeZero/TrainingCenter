@@ -70,16 +70,16 @@
                 remarks = #{experientialTeaching.remarks},
             </if>
             <if test="experientialTeaching.createUserId != null and experientialTeaching.createUserId != '' ">
-                create_user_id = #{experientialTeaching.createUserId},
+                createUserId = #{experientialTeaching.createUserId},
             </if>
             <if test="experientialTeaching.createDate != null">
-                create_date = #{experientialTeaching.createDate},
+                createDate = #{experientialTeaching.createDate},
             </if>
             <if test="experientialTeaching.updateUserId != null and experientialTeaching.updateUserId != '' ">
-                update_user_id = #{experientialTeaching.updateUserId},
+                updateUserId = #{experientialTeaching.updateUserId},
             </if>
             <if test="experientialTeaching.updateDate != null ">
-                update_date = #{experientialTeaching.updateDate},
+                updateDate = #{experientialTeaching.updateDate},
             </if>
 
         </trim>

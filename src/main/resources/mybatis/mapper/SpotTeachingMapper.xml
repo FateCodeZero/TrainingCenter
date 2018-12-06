@@ -70,16 +70,16 @@
                 remarks = #{spotTeaching.remarks},
             </if>
             <if test="spotTeaching.createUserId != null and spotTeaching.createUserId != '' ">
-                create_user_id = #{spotTeaching.createUserId},
+                createUserId = #{spotTeaching.createUserId},
             </if>
             <if test="spotTeaching.createDate != null  ">
-                create_date = #{spotTeaching.createDate},
+                createDate = #{spotTeaching.createDate},
             </if>
             <if test="spotTeaching.updateUserId != null and spotTeaching.updateUserId != '' ">
-                update_user_id = #{spotTeaching.updateUserId},
+                updateUserId = #{spotTeaching.updateUserId},
             </if>
             <if test="spotTeaching.updateDate != null  ">
-                update_date = #{spotTeaching.updateDate},
+                updateDate = #{spotTeaching.updateDate},
             </if>
 
         </trim>

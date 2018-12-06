@@ -1,5 +1,6 @@
 package com.trainingcenter.controller;
 
+import com.trainingcenter.bean.SpotTeaching;
 import com.trainingcenter.bean.VideoTeaching;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.controller.validation.TC_Update;
@@ -70,7 +71,35 @@ public class VideoTeachingController {
         ajaxJson.setData(data);
         return ajaxJson;
     }
+    /**
+     * 通过 id 获取资源对象
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getVideoTeachingById")
+    public AjaxJson getVideoTeachingById(@RequestParam("id") String id) {
+        AjaxJson ajaxJson = new AjaxJson();
+        if (StringUtil.isEmpty(id)) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("请先选择要查询的对象");
+            return ajaxJson;
+        }
 
+        VideoTeaching resource = videoTeachingService.getVideoTeachingById(id);
+        if (resource == null) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("对象不存在或已被删除");
+            return ajaxJson;
+        } else {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("获取成功");
+            Map<String, Object> map = new ConcurrentHashMap<>();
+            map.put("videoTeaching", resource);
+            ajaxJson.setData(map);
+            return ajaxJson;
+        }
+    }
     /**
      * 进入详细页面
      *
@@ -106,6 +135,7 @@ public class VideoTeachingController {
      *
      * @return loginPage
      */
+
     @RequestMapping(value = "/addPage", method = RequestMethod.GET)
     public ModelAndView addPage(HttpServletRequest request) {
         String id = request.getParameter("videoTeachingId");
@@ -181,7 +211,8 @@ public class VideoTeachingController {
         }
     }
 
-
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @ResponseBody
     public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
             , @RequestParam("content") String content, String remarks){
         AjaxJson ajaxJson = new AjaxJson();
@@ -211,6 +242,7 @@ public class VideoTeachingController {
         VideoTeaching videoTeaching = new VideoTeaching();
         videoTeaching.setId(UUID.randomUUID().toString());
         videoTeaching.setImgs(imgs);
+        videoTeaching.setTitle(title);
         videoTeaching.setContent(content);
         videoTeaching.setRemarks(remarks);
         videoTeaching.setCreateUserId(user.getId());

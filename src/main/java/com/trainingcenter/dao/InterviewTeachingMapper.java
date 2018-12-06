@@ -36,7 +36,7 @@ public interface InterviewTeachingMapper {
      * @param InterviewTeaching 培训新闻
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer add(@Valid @Param("InterviewTeaching") InterviewTeaching InterviewTeaching);
+    public Integer add(@Valid @Param("interviewTeaching") InterviewTeaching interviewTeaching);
 
 
     /**
@@ -44,7 +44,7 @@ public interface InterviewTeachingMapper {
      * @param InterviewTeaching：要更新的培训新闻
      * @return 返回操作成功的个数，0表示操作失败
      */
-    public Integer update(@Valid @Param("InterviewTeaching") InterviewTeaching InterviewTeaching);
+    public Integer update(@Valid @Param("interviewTeaching") InterviewTeaching interviewTeaching);
 
     /**
      * 动态培训删除方法
