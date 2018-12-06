@@ -38,29 +38,29 @@
         <br>
         <form class="form-horizontal" role="form" action="">
             <div class="form-group">
-                <label for="title" class="col-sm-2 control-label">最佳学员标题</label>
+                <label for="title" class="col-sm-2 control-label">学员故事标题</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" name="name" id="title" value="" placeholder="请输入标题">
                 </div>
             </div>
             <div class="form-group">
-                <label for="content" class="col-sm-2 control-label">最佳学员内容</label>
+                <label for="content" class="col-sm-2 control-label">学员故事内容</label>
                 <div class="col-sm-10">
                     <div id="toolbar" class="toolbar"></div>
                     <div id="content" class="text">
                         <!--可使用 min-height 实现编辑区域自动增加高度-->
-                        <h4 >请在此编辑最佳学员内容</h4>
+                        <h4 >请在此编辑学员故事内容</h4>
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="imgs" class="col-sm-2 control-label">最佳学员图片</label>
+                <label for="imgs" class="col-sm-2 control-label">学员故事图片</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" name="imgs" id="imgs" value="" placeholder="请给出图片链接">
                 </div>
             </div>
             <div class="form-group">
-                <label for="remark" class="col-sm-2 control-label">最佳学员备注</label>
+                <label for="remark" class="col-sm-2 control-label">学员故事备注</label>
                 <div class="col-sm-10">
                     <textarea rows="3" class="form-control" name="remark" id="remark"
                               placeholder="备注内容"></textarea>
@@ -146,7 +146,7 @@
         };
 
         $.ajax({
-            url: "${webRoot}/bestStudent/add",
+            url: "${webRoot}/studentStory/add",
             type: "get",
             data: data,
             dataType: "json",

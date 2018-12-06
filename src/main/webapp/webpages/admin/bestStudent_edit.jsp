@@ -42,7 +42,7 @@
             <div class="form-group">
                 <label for="title" class="col-sm-2 control-label">学员学习照标题</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" name="name" id="title" value="" placeholder="请输入新闻标题">
+                    <input type="text" class="form-control" name="name" id="title" value="" placeholder="请输入标题">
                 </div>
             </div>
             <div class="form-group">
