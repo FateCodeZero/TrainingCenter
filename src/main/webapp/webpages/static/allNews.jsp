@@ -77,6 +77,10 @@
                         var allNews = jsonData.data.items;
                         var newsTotal = Math.ceil((jsonData.data.total)/9);
 
+                        if (allNews == 0){
+                            $("#allNews").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                        }
+
                         $.each(allNews,function (index,allNews) {
                             var id = allNews.id;
                             var title = allNews.title;
@@ -125,7 +129,7 @@
                         //再次计算高度，包含ajax新增的数据流
                         IFrameResize();
                     }else {
-                        $("#allNews").html('<h3>暂无数据</h3>');
+                        $("#allNews").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
 
                 }

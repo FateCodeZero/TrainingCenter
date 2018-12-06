@@ -89,6 +89,10 @@
                         var notice = jsonData.data.items;
                         var noticeTotal = Math.ceil((jsonData.data.total)/10);
 
+                        if (notice == 0){
+                            $("#notice").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                        }
+
                         $.each(notice,function (index,notices) {
                             var id = notices.id;
                             var notice_title = notices.title;
@@ -121,7 +125,7 @@
                         //再次计算高度，包含ajax新增的数据流
                         IFrameResize();
                     }else {
-                        $("#notices").html('<h3>暂无数据</h3>');
+                        $("#notices").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                 }
             });

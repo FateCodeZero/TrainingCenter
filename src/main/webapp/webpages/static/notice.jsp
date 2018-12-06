@@ -55,6 +55,12 @@
 
                 if(code == 1){
                     var notice = jsonData.data.items;
+
+                    if (notice == 0){
+                        $("#notice_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                    }
+
+
                     var id = notice.id;
                     var title = notice.title;
                     var content = notice.content;
@@ -69,7 +75,7 @@
                         '        <div class="col-md-12 animate-box">' +
                         '            <h2 style="text-align: center">'+title+'</h2>' +
                         '            <span class="col-md-12" style="text-align: center">发布时间：'+createDate+'</span>' +
-                        '            <p class="col-md-10 col-md-offset-1"  style="padding: 30px 0">'+content+'</p>' +
+                        '            <p style="padding: 30px 0">'+content+'</p>' +
                         '        </div>\n' +
                         '    </div>';
 
@@ -77,7 +83,7 @@
                     IFrameResize();
 
                 }else {
-                    alert(msg);
+                    $("#notice_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
             },
             error:function (msg) {

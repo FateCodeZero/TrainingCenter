@@ -83,10 +83,16 @@
                 var msg = jsonData.msg;     //提示信息
                 var url = null;
 
-                var responseData = jsonData.data;    //获取返回的数据集
+                var responseData = jsonData.data.items;    //获取返回的数据集
+                if (responseData == 0){
+                    $("#responseData").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                }
+
                 if (responseData != null && responseData != "") {
                     url = responseData.url;
                 }
+
+
 
                 if (code == 1) {
                     layer.alert(msg, {
@@ -281,6 +287,10 @@
                         var allComment = jsonData.data.items;
                         var commentTotal = Math.ceil((jsonData.data.total)/20);
 
+                        if (allComment == 0){
+                            $("#allComment").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                        }
+
                         $.each(allComment,function (index,allComment) {
                             var id = contact.id;
                             var portrait = contact.portrait;
@@ -301,7 +311,7 @@
                         //再次计算高度，包含ajax新增的数据流
                         IFrameResize();
                     }else {
-                        $("#allComment").html('<h3>暂无数据</h3>');
+                        $("#allComment").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
 
                 }

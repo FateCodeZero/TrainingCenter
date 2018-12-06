@@ -55,6 +55,10 @@
 
                 if(code == 1){
                     var news_details = jsonData.data.items;
+
+                    if (news_details == 0){
+                        $("#news_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                    }
                     var id = news_details.id;
                     var title = news_details.title;
                     var content = news_details.content;
@@ -82,7 +86,7 @@
                     IFrameResize();
 
                 }else {
-                    alert(msg);
+                    $("#news_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
             },
             error:function (msg) {

@@ -50,7 +50,6 @@
                 <div class="col-sm-10">
                     <div id="toolbar" class="toolbar"></div>
                     <div id="content" class="text">
-                        <!--可使用 min-height 实现编辑区域自动增加高度-->
                         <h4 >请在此编辑新闻内容</h4>
                     </div>
                 </div>
@@ -100,7 +99,6 @@
     function wangEditorGet() {
         var E = window.wangEditor
         var editor = new E('#toolbar','#content')
-        // 或者 var editor = new E( document.getElementById('editor') )
         editor.create()
     }
 
