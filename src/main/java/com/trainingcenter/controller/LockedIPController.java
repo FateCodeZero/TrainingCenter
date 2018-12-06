@@ -47,6 +47,7 @@ public class LockedIPController {
     @Autowired
     private UserService userService;
 
+//    @PreAuthorize("hasPermission('/webpages/admin/lockedIP_list.jsp','READ')")
     @ResponseBody
     @RequestMapping("/list")
     public AjaxJson getLockedIPs(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request){
@@ -81,6 +82,7 @@ public class LockedIPController {
         }
     }
 
+//    @PreAuthorize("hasPermission('/webpages/admin/lockedIP_list.jsp','CREATE')")
     @ResponseBody
     @RequestMapping("/add")
     public AjaxJson add(@Validated(value = {TC_Add.class}) LockedIP lockedIP){
@@ -114,6 +116,7 @@ public class LockedIPController {
         }
     }
 
+//    @PreAuthorize("hasPermission('/webpages/admin/lockedIP_list.jsp','UPDATE')")
     @ResponseBody
     @RequestMapping("/update")
     public AjaxJson update(@Validated(value = {TC_Update.class}) LockedIP lockedIP){
@@ -163,6 +166,7 @@ public class LockedIPController {
      * @param ids
      * @return
      */
+//    @PreAuthorize("hasPermission('/webpages/admin/lockedIP_list.jsp','DELETE')")
     @ResponseBody
     @RequestMapping(value = "/delete")
     public AjaxJson delete(@RequestParam("ids") String ids) {

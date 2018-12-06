@@ -13,6 +13,7 @@ import com.trainingcenter.utils.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -50,6 +51,7 @@ public class ResourceController {
      * @param rows：每页展示的数据条数
      * @param request：其他参数，如模糊查询等
      */
+//    @PreAuthorize("hasPermission('/webpages/admin/resource_list.jsp','READ')")
     @ResponseBody
     @RequestMapping("/list")
     public AjaxJson getResources_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
@@ -132,6 +134,7 @@ public class ResourceController {
     /**
      * 获取树形资源数据（获取只获取已启用的）
      */
+//    @PreAuthorize("hasPermission('/webpages/admin/index.jsp','READ')")
     @ResponseBody
     @RequestMapping("/tree")
     public AjaxJson getResources_tree() {
@@ -180,6 +183,7 @@ public class ResourceController {
         return ajaxJson;
     }
 
+//    @PreAuthorize("hasPermission('/webpages/admin/resource_list.jsp','CREATE')")
     @ResponseBody
     @RequestMapping("/add")
     public AjaxJson add(@Validated(value = {TC_Add.class}) Resource resource) {
@@ -229,6 +233,7 @@ public class ResourceController {
         }
     }
 
+//    @PreAuthorize("hasPermission('/webpages/admin/resource_list.jsp','UPDATE')")
     @ResponseBody
     @RequestMapping("/update")
     public AjaxJson update(@Validated(value = {TC_Update.class}) Resource resource) {
@@ -311,6 +316,7 @@ public class ResourceController {
      * @param ids
      * @return
      */
+//    @PreAuthorize("hasPermission('/webpages/admin/resource_list.jsp','DELETE')")
     @ResponseBody
     @RequestMapping("/delete")
     public AjaxJson delete(@RequestParam("ids") String ids) {

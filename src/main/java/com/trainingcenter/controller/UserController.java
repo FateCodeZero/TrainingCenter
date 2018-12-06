@@ -66,7 +66,7 @@ public class UserController {
      *
      * @return updatePage
      */
-    @PreAuthorize("hasPermission('/webpages/user/update.jsp','READ')")
+//    @PreAuthorize("hasPermission('/webpages/user/userInfo.jsp','READ')")
     @RequestMapping(value = "/goUpdate", method = RequestMethod.GET)
     public ModelAndView updatePage() {
         String viewName = "static/update";
@@ -78,7 +78,7 @@ public class UserController {
      *
      * @return
      */
-    @PreAuthorize(value = "hasPermission('/webpages/admin/index.jsp','READ')")
+//    @PreAuthorize(value = "hasPermission('/webpages/admin/index.jsp','READ')")
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public ModelAndView adminIndex() {
         return new ModelAndView("admin/index");
@@ -248,7 +248,7 @@ public class UserController {
      * @param user：要更新的用户
      * @return
      */
-    /*@PreAuthorize("hasPermission('/webpages/user/update.jsp','UPDATE')")*/
+//    @PreAuthorize("hasPermission('/webpages/user/userInfo.jsp','UPDATE')")
     @ResponseBody
     @RequestMapping(value = "/update")
     public AjaxJson update(User user, HttpServletRequest request) {
@@ -353,7 +353,7 @@ public class UserController {
      * @param ids：用户ids
      * @return 返回操作成功的数目与操作失败的对象及消息提示
      */
-    /*@PreAuthorize("hasPermission('/webpages/user/update.jsp','DELETE')")*/
+//    @PreAuthorize("hasPermission('/webpages/user/user_admin_list.jsp','DELETE')")
     @ResponseBody
     @RequestMapping(value = "/delete")
     public AjaxJson delete(@RequestParam("ids") String ids) {
@@ -432,6 +432,7 @@ public class UserController {
      * @param request：HttpServletRequest
      * @return
      */
+//    @PreAuthorize("hasPermission('/webpages/user/user_list.jsp','READ')")
     @ResponseBody
     @RequestMapping("/list")
     public AjaxJson list(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
@@ -474,6 +475,7 @@ public class UserController {
      * @param request：HttpServletRequest
      * @return
      */
+//    @PreAuthorize("hasPermission('/webpages/user/user_admin_list.jsp','READ')")
     @ResponseBody
     @RequestMapping("/list_admin")
     public AjaxJson list_admin(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
@@ -513,6 +515,7 @@ public class UserController {
      *
      * @param request：HttpServletRequest
      */
+//    @PreAuthorize("hasPermission('/webpages/user/user_admin_list.jsp','UPDATE')")
     @ResponseBody
     @RequestMapping("/grant")
     public AjaxJson grant(HttpServletRequest request) {
@@ -567,6 +570,7 @@ public class UserController {
      * 添加管理员
      * @param roleIds：添加管理员时授给该管理员用户的角色
      */
+//    @PreAuthorize("hasPermission('/webpages/user/user_admin_list.jsp','CREATE')")
     @ResponseBody
     @RequestMapping(value = "/adminAdd")
     public AjaxJson adminAdd(@RequestParam("username") String username, @RequestParam("password") String password,

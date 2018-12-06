@@ -243,12 +243,10 @@
                     var code = res.code === 1 ? 0 : 1;
                     var msg = res.msg;
                     var data = null;
+                    var count = 0;
                     if (code === 0) {
                         data = res.data.items;
-                    }
-                    var count = 0;
-                    if (data !== null) {
-                        count = data.total;
+                        count = res.data.total;
                     }
                     return {
                         "code": code, //解析接口状态，layui的0为成功
