@@ -172,7 +172,8 @@ public class TrainingDynamicController {
         }
     }
 
-
+    @ResponseBody
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
     public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
             , @RequestParam("content") String content, String remarks){
         AjaxJson ajaxJson = new AjaxJson();

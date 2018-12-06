@@ -70,17 +70,18 @@
                 remarks = #{trainingDynamic.remarks},
             </if>
             <if test="trainingDynamic.createUserId != null and trainingDynamic.createUserId != '' ">
-                create_user_id = #{trainingDynamic.createUserId},
+                createUserId = #{trainingDynamic.createUserId},
             </if>
             <if test="trainingDynamic.createDate != null ">
-                create_date = #{trainingDynamic.createDate},
+                createDate = #{trainingDynamic.createDate},
             </if>
             <if test="trainingDynamic.updateUserId != null and trainingDynamic.updateUserId != '' ">
-                update_user_id = #{trainingDynamic.updateUserId},
+                updateUserId = #{trainingDynamic.updateUserId},
             </if>
             <if test="trainingDynamic.updateDate != null ">
-                update_date = #{trainingDynamic.updateDate},
+                updateDate = #{trainingDynamic.updateDate},
             </if>
+
 
         </trim>
         WHERE id = #{trainingDynamic.id}
