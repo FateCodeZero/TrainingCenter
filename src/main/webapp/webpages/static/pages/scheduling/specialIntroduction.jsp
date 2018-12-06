@@ -32,7 +32,7 @@
 <script>
 
     $(document).ready(function () {
-
+ajaxErrorHandler();//ajax请求错误统一处理
         $.ajax({
             type: 'GET',
             url: "${webRoot}/culturalProducts/detailsPage",

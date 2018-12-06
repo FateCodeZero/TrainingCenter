@@ -49,7 +49,7 @@
 </body>
 <script>
     $(document).ready(function loading(){
-
+        ajaxErrorHandler();//ajax请求错误统一处理
         //加载最佳学员列表
         $.ajax({
             type: 'GET',
@@ -62,6 +62,10 @@
                 var msg = jsonData.msg;
                 if(code == 1){
                     var bestStudents = jsonData.data.items;
+
+                    if(bestStudents.length == 0){
+                        $("#best_student").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                    }
                     $.each(bestStudents,function (index,bestStudent) {
                         var id = bestStudent.id;
                         var title = bestStudent.title;
@@ -108,7 +112,7 @@
                     //再次计算高度，包含ajax新增的数据流
                     IFrameResize();
                 }else {
-                    $("#best_student").html('<h3 class="col-md-12 text-center">暂无数据</h3>');
+                    $("#best_student").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
                 IFrameResize();
             }

@@ -38,7 +38,7 @@
 <script>
 
     $(document).ready(function () {
-
+        ajaxErrorHandler();//ajax请求错误统一处理
         var id = $.Request('id');
         $.ajax({
             type: 'GET',

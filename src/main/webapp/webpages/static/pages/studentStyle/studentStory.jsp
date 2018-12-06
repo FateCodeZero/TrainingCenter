@@ -52,7 +52,7 @@
 
 <script>
     $(document).ready(function loading(){
-
+        ajaxErrorHandler();//ajax请求错误统一处理
         //加载往期学员故事列表
         $.ajax({
             type: 'GET',
@@ -65,6 +65,10 @@
                 var msg = jsonData.msg;
                 if(code == 1){
                     var studentStories = jsonData.data.items;
+
+                    if(studentStories.length == 0){
+                        $("#student_story").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                    }
                     $.each(studentStories,function (index,studentstory) {
                         var id = studentstory.id;
                         var title = studentstory.title;
@@ -112,7 +116,7 @@
                     //再次计算高度，包含ajax新增的数据流
                     IFrameResize();
                 }else {
-                    $("#student_story").html('<h3 class="col-md-12 text-center">暂无数据</h3>');
+                    $("#student_story").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
             }
         });

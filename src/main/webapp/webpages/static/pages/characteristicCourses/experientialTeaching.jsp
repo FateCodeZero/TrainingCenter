@@ -53,6 +53,7 @@
     layui.use('laypage', function(){
 
         $(document).ready(function loading(){
+            ajaxErrorHandler();//ajax请求错误统一处理
             getExperientialListPage();
             IFrameResize();
         });
@@ -76,6 +77,9 @@
                     if(code == 1){
                         var experientialListPages = jsonData.data.items;
                         var experientialTotal = Math.ceil((jsonData.data.total)/4);
+                        if(experientialListPages.length == 0){
+                            $("#experiential").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                        }
 
                         $.each(experientialListPages,function (index,experientialListPage) {
                             var id = experientialListPage.id;
@@ -124,7 +128,7 @@
                         //再次计算高度，包含ajax新增的数据流
                         IFrameResize();
                     }else {
-                        $("#experiential").html('<h3 class="col-md-12 text-center">暂无数据</h3>');
+                        $("#experiential").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                 }
             });

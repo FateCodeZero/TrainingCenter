@@ -54,6 +54,7 @@
     layui.use('laypage', function(){
 
         $(document).ready(function loading(){
+            ajaxErrorHandler();//ajax请求错误统一处理
             getListPage();
             IFrameResize();
         });
@@ -76,6 +77,9 @@
                     if(code == 1){
                         var ListPages = jsonData.data.items;
                         var Total = Math.ceil((jsonData.data.total)/3);
+                        if(ListPages.length == 0){
+                            $("#special").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                        }
 
                         $.each(ListPages,function (index,ListPage) {
                             var id = ListPage.id;

@@ -175,6 +175,7 @@
         });
 
         $(document).ready(function loading(){
+            ajaxErrorHandler();//ajax请求错误统一处理
             getNotices();
             getNews();
             getDynamicListPage();
@@ -201,6 +202,10 @@
                     if(code == 1){
                         var trainingDynamics = jsonData.data.items;
                         var dynamicsTotal = Math.ceil((jsonData.data.total)/4);
+
+                        if(trainingDynamics.length == 0){
+                            $("#dynamic").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                        }
 
                         $.each(trainingDynamics,function (index,trainingDynamic) {
                             var id = trainingDynamic.id;
@@ -246,7 +251,7 @@
                         //再次计算高度，包含ajax新增的数据流
                         IFrameResize();
                     }else {
-                        $("#dynamic").html('<h3>暂无数据</h3>');
+                        $("#dynamic").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                 }
             });
@@ -292,6 +297,9 @@
                     var msg = jsonData.msg;
                     if(code == 1){
                         var advertisements = jsonData.data.items;
+                        if(advertisements.length == 0){
+                            $("#advertisement").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                        }
 
                         $.each(advertisements,function (index,advertisement) {
 
@@ -326,7 +334,7 @@
                         //再次计算高度，包含ajax新增的数据流
                         IFrameResize();
                     }else {
-                        $("#advertisement").html('<h3>暂无数据</h3>');
+                        $("#advertisement").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                 }
             });
@@ -344,6 +352,9 @@
                     var msg = jsonData.msg;
                     if(code == 1){
                         var news = jsonData.data.items;
+                        if(news.length == 0){
+                            $("#newsInfo").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                        }
 
                         $.each(news,function (index,newsInfo) {
                             var id = newsInfo.id;
@@ -374,7 +385,7 @@
 
                         });
                     }else {
-                        $("#newsInfo").html('<h3>暂无数据</h3>');
+                        $("#newsInfo").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                 }
             });
@@ -392,6 +403,9 @@
                     var msg = jsonData.msg;
                     if(code == 1){
                         var notice = jsonData.data.items;
+                        if(notice.length == 0){
+                            $("#notices").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                        }
 
                         $.each(notice,function (index,notices) {
                             var id = notices.id;
@@ -422,7 +436,7 @@
 
                         });
                     }else {
-                        $("#notices").html('<h3>暂无数据</h3>');
+                        $("#notices").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                 }
             });

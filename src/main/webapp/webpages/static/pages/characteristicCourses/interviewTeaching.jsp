@@ -54,6 +54,7 @@
     layui.use('laypage', function(){
 
         $(document).ready(function loading(){
+            ajaxErrorHandler();//ajax请求错误统一处理
             getInterviewListPage();
             IFrameResize();
         });
@@ -77,6 +78,9 @@
                     if(code == 1){
                         var interviewListPages = jsonData.data.items;
                         var interviewTotal = Math.ceil((jsonData.data.total)/4);
+                        if(interviewListPages.length == 0){
+                            $("#interview").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                        }
 
                         $.each(interviewListPages,function (index,interviewListPage) {
                             var id = interviewListPage.id;
@@ -125,7 +129,7 @@
                         //再次计算高度，包含ajax新增的数据流
                         IFrameResize();
                     }else {
-                        $("#interview").html('<h3 class="col-md-12 text-center">暂无数据</h3>');
+                        $("#interview").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                 }
             });
