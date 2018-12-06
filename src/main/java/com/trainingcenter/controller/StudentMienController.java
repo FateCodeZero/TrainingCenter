@@ -177,9 +177,9 @@ public class StudentMienController {
             studentMien.setCreateUserId(user.getId());
             studentMien.setCreateDate(new Date());
 
-            if(StringUtil.length(studentMien.getContent())>100) {
+            if(StringUtil.length(studentMien.getTitle())>100) {
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("内容过长，请重新编辑");
+            ajaxJson.setMsg("标题过长，请重新编辑");
             return ajaxJson;
             }
             Integer add = studentMienService.add(studentMien);
