@@ -47,7 +47,7 @@
                 <label for="content" class="col-sm-2 control-label">新闻内容</label>
                 <div class="col-sm-10">
                     <div id="toolbar" class="toolbar"></div>
-                    <div id="content" class="text">
+                    <div id="content" class="text" >
                         <h4 >请在此编辑新闻内容</h4>
                     </div>
                 </div>

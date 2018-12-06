@@ -22,11 +22,24 @@
 </head>
 
 <body>
-<div class="layui-tab layui-tab-brief" lay-filter="demoTitle">
-    <div class="layui-tab-title" lay-filter="tab-top">
+<div class="layui-tab layui-tab-brief" lay-filter="tab-top">
+    <div class="layui-tab-title">
         <li class="layui-this" lay-id="all">全部</li>
+        <li lay-id="enable">已启用</li>
+        <li lay-id="unEnable">已禁用</li>
     </div>
     <div class="layui-tab-content">
+        <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchContent" placeholder="模糊查询">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" id="search" title="查找本表的内容">搜索</button>
+                    </span>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <%--<div class="col-sm-1"></div>--%>
             <div class="text-left col-sm-12">
@@ -53,188 +66,256 @@
 </script>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        ajaxErrorHandler(); //ajax请求错误统一处理
-        //页面加载完成
-        //……
-    });
     var layer_window = ''; 	//定义全局变量,用以储存弹出的窗口的窗口对象
     var searchContent = $("#searchContent").val(); //模糊查询内容
-    var table;  //layui table
+    var table = null;  //layui table
+    var element = null; //layui element
+    var state = null; //tab标题状态
 
-    //JavaScript代码区域
-    layui.use('element', function () {
-        var element = layui.element;
-        //监听选项卡切换
-        element.on('tab', function (data) {
-            var lay_id = this.getAttribute('lay-id');
-            console.log(lay_id); //当前Tab标题所在的原始DOM元素
-            /*if (lay_id === 'enable'){
-                table.reload('table1',{
-                    where: {//接口需要的其它参数
-                        searchContent: 1
-                    }
-                });
-            }*/
-        });
-        element.render('tab');
+    $(document).ready(function () {
+        ajaxErrorHandler(); //ajax请求错误统一处理
+        loadLayuiElement();//加载 layui element
+        tableData();
     });
 
-    //layui数据表格
-    layui.use('table', function () {
-        table = layui.table;
-        //渲染
-        table.render({
-            id: 'table1'
-            , elem: '#tableData'
-            , toolbar: '#table-head'
-            , title: '菜单管理'
-            , url: '${webRoot}/communicationTeaching/listPage' //数据接口
-            , page: true //开启分页
-            , limit: 10 //每页显示多少条数据
-            ,height:550
-            , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
-                , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
-                , {field: 'id', title: 'id', hide: true, width: 100, align: 'center'}
-                , {field: 'title', title: '教学标题', width: 200, align: 'center'}
-                , {field: 'content', title: '教学内容', width: 200, align: 'center'}
-                , {field: 'imgs', title: '图片', width: 150}
-                , {field: 'remarks', title: '备注', width: 150, align: 'center'}
-                , {
-                    field: 'createUserId', title: '创建人', width: 150, align: 'center', templet: function (d) {
-                        var user = getUserById(d.createUserId);
-                        return user.username;
-                    }
+
+    function loadLayuiElement() {
+        //JavaScript代码区域
+        layui.use('element', function () {
+            var element = layui.element;
+            //监听选项卡切换
+            element.on('tab(tab-top)', function (data) {
+                console.log(data);
+                var lay_id = this.getAttribute('lay-id');//当前Tab标题所在的原始DOM元素
+                var condition = null;
+                switch (lay_id) {
+                    case 'all':     //全部数据
+                        state = '';
+                        condition = {
+                            searchContent: searchContent,
+                            state: state
+                        };
+                        layuiReload(condition);
+                        break;
+                    case 'enable':     //已启用的数据
+                        state = 1;
+                        condition = {
+                            searchContent: searchContent,
+                            state: state
+                        };
+                        layuiReload(condition);
+                        break;
+                    case 'unEnable':     //已禁用的数据
+                        state = 0;
+                        condition = {
+                            searchContent: searchContent,
+                            state: state
+                        };
+                        layuiReload(condition);
+                        break;
                 }
-                , {
-                    field: 'createDate',
-                    title: '创建时间',
-                    sort: true,
-                    width: 180,
-                    align: 'center',
-                    templet: function (d) {
-                        return new Date(d.createDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
-                    }
-                }
-                , {
-                    field: 'updateUserId', title: '更新人Id', width: 150, align: 'center', templet: function (d) {
-                        var user = getUserById(d.updateUserId);
-                        return user.username;
-                    }
-                }
-                , {
-                    field: 'updateDate',
-                    title: '更新时间',
-                    sort: true,
-                    width: 180,
-                    align: 'center',
-                    templet: function (d) {
-                        return new Date(d.updateDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
-                    }
-                }
-                <%--<sec:authorize access="hasPermission('/webpages/admin/resource_list.jsp','UPDATE')">--%>
-                /* , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 150, align: 'center'} *///这里的toolbar值是模板元素的选择器
-                <%--</sec:authorize>--%>
-            ]]
-            , where: {//接口需要的其它参数
-                searchContent: searchContent
-            }
-            , parseData: function (res) { //res 即为原始返回的数据
-                var code = res.code === 1 ? 0 : 1;
-                var msg = res.msg;
-                var data = null;
-                if (code === 0){
-                    data = res.data.items;
-                }
-                var count = 0;
-                if (data !== null) {
-                    count = data.total;
-                }
-                return {
-                    "code": code, //解析接口状态，layui的0为成功
-                    "msg": msg, //解析提示文本
-                    "count": count, //解析数据长度
-                    "data": data //解析数据列表
+            });
+            element.render('tab(tab-top)');
+        });
+    }
+    /**
+     * 数据表格重新加载
+     * condition：自定义查询条件
+     * */
+    function layuiReload(condition) {
+        if (condition !== null && condition !== ''){
+            var state = condition.state;
+            var searchTxt = condition.searchContent;
+            if (state === null || state === ''){
+                //保证tab返回全部时，能查询所有
+                condition = {
+                    searchContent:searchTxt
                 };
             }
-            , request: { //用于对分页请求的参数：page、limit重新设定名称
-                pageName: 'currentPage' //页码的参数名称，默认：page
-                , limitName: 'rows' //每页数据量的参数名，默认：limit
-            }
-            , done: function (res, curr, count) { //渲染完毕后回调
-                //如果是异步请求数据方式，res即为你接口返回的信息。
-                //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-                //table.render();
-            }
-        });
-
-        //头部工具栏监听事件
-        table.on('toolbar(table-filter)', function (obj) {
-            //var checkStatus = table.checkStatus(obj.config.id);
-
-            //获取被选中数据
-            var checkStatus = table.checkStatus('table1');
-            var data = checkStatus.data;
-
-            if (data.length === 0 && obj.event !== 'add') {
-                layer.alert('请先选择要操作的数据', {
-                    time: 3000,
-                    icon: 2
-                });
-                return false;
-            } else {
-                switch (obj.event) {
-                    case 'add':     //添加
-                        addData();
-                        break;
-                    case 'delete':  //删除
-
-                        var ids = '';
-                        var cnt = 0;
-                        $.each(data, function (index, d) { //拼装ids
-                            if (index === 0) {
-                                ids += d.id;
-                            } else {
-                                ids += ",";
-                                ids += d.id;
-                            }
-                            cnt += 1;
-                        });
-                        deleteData(ids, cnt); //删除数据
-                        break;
-                    case 'update':  //编辑
-                        if (data.length > 1) {
-                            layer.alert('一次只能编辑一条数据', {
-                                time: 3000,
-                                icon: 2
-                            });
-                            return false;
-                        } else {
-                            editData(data[0].id);
-                        }
-                        break;
-                    case 'detail':
-                        if (data.length > 1) {
-                            layer.alert('一次只能查看一条数据', {
-                                time: 3000,
-                                icon: 2
-                            });
-                            return false;
-                        } else {
-                            layer.msg("ID:【" + data[0].id + "】的查看操作");
-                        }
-                        break;
+            table.reload('table1', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
                 }
-            }
-        });
-
-        //监听表格复选框选择
-        table.on('checkbox(table-filter)', function (obj) {
-            console.log(obj)
-        });
-
+                ,where: { //接口需要的其它参数
+                    condition: JSON.stringify(condition)
+                }
+            });
+        }
+    }
+    /**
+     * 模糊查询
+     */
+    $("#search").click(function () {
+        var searchContent = $("#searchContent").val(); //模糊查询内容
+        var condition = {
+            searchContent: searchContent
+            ,state:state
+        };
+        layuiReload(condition);
     });
+
+    function tableData() {
+        //layui数据表格
+        layui.use('table', function () {
+            table = layui.table;
+            //渲染
+            table.render({
+                id: 'table1'
+                , elem: '#tableData'
+                , toolbar: '#table-head'
+                , title: '菜单管理'
+                , url: '${webRoot}/communicationTeaching/listPage' //数据接口
+                , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    , limit: 10
+                    , prev: '上一页'
+                    , next: '下一页'
+                    , groups: 5 //只显示 5 个连续页码
+                    , first: true //显示首页
+                    , last: true //显示尾页
+                }
+                ,height:550
+                , cols: [[ //表头
+                    {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
+                    , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
+                    , {field: 'id', title: 'id', hide: true, width: 100, align: 'center'}
+                    , {field: 'title', title: '教学标题', width: 200, align: 'center'}
+                    , {field: 'content', title: '教学内容', width: 200, align: 'center'}
+                    , {field: 'imgs', title: '图片', width: 150}
+                    , {field: 'remarks', title: '备注', width: 150, align: 'center'}
+                    , {
+                        field: 'createUserId', title: '创建人', width: 150, align: 'center', templet: function (d) {
+                            var user = getUserById(d.createUserId);
+                            return user.username;
+                        }
+                    }
+                    , {
+                        field: 'createDate',
+                        title: '创建时间',
+                        sort: true,
+                        width: 180,
+                        align: 'center',
+                        templet: function (d) {
+                            return new Date(d.createDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
+                        }
+                    }
+                    , {
+                        field: 'updateUserId', title: '更新人Id', width: 150, align: 'center', templet: function (d) {
+                            var user = getUserById(d.updateUserId);
+                            return user.username;
+                        }
+                    }
+                    , {
+                        field: 'updateDate',
+                        title: '更新时间',
+                        sort: true,
+                        width: 180,
+                        align: 'center',
+                        templet: function (d) {
+                            return new Date(d.updateDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
+                        }
+                    }
+                    <%--<sec:authorize access="hasPermission('/webpages/admin/resource_list.jsp','UPDATE')">--%>
+                    /* , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 150, align: 'center'} *///这里的toolbar值是模板元素的选择器
+                    <%--</sec:authorize>--%>
+                ]]
+                , where: {//接口需要的其它参数
+                    searchContent: searchContent
+                }
+                , parseData: function (res) { //res 即为原始返回的数据
+                    var code = res.code === 1 ? 0 : 1;
+                    var msg = res.msg;
+                    var data = null;
+                    var count = 0;
+                    if (code === 0) {
+                        data = res.data.items;
+                        count = res.data.total;
+                    }
+                    return {
+                        "code": code, //解析接口状态，layui的0为成功
+                        "msg": msg, //解析提示文本
+                        "count": count, //解析数据长度
+                        "data": data //解析数据列表
+                    };
+                }
+                , request: { //用于对分页请求的参数：page、limit重新设定名称
+                    pageName: 'currentPage' //页码的参数名称，默认：page
+                    , limitName: 'rows' //每页数据量的参数名，默认：limit
+                }
+                , done: function (res, curr, count) { //渲染完毕后回调
+                    //如果是异步请求数据方式，res即为你接口返回的信息。
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    //table.render();
+                }
+            });
+
+            //头部工具栏监听事件
+            table.on('toolbar(table-filter)', function (obj) {
+                //var checkStatus = table.checkStatus(obj.config.id);
+
+                //获取被选中数据
+                var checkStatus = table.checkStatus('table1');
+                var data = checkStatus.data;
+
+                if (data.length === 0 && obj.event !== 'add') {
+                    layer.alert('请先选择要操作的数据', {
+                        time: 3000,
+                        icon: 2
+                    });
+                    return false;
+                } else {
+                    switch (obj.event) {
+                        case 'add':     //添加
+                            addData();
+                            break;
+                        case 'delete':  //删除
+
+                            var ids = '';
+                            var cnt = 0;
+                            $.each(data, function (index, d) { //拼装ids
+                                if (index === 0) {
+                                    ids += d.id;
+                                } else {
+                                    ids += ",";
+                                    ids += d.id;
+                                }
+                                cnt += 1;
+                            });
+                            deleteData(ids, cnt); //删除数据
+                            break;
+                        case 'update':  //编辑
+                            if (data.length > 1) {
+                                layer.alert('一次只能编辑一条数据', {
+                                    time: 3000,
+                                    icon: 2
+                                });
+                                return false;
+                            } else {
+                                editData(data[0].id);
+                            }
+                            break;
+                        case 'detail':
+                            if (data.length > 1) {
+                                layer.alert('一次只能查看一条数据', {
+                                    time: 3000,
+                                    icon: 2
+                                });
+                                return false;
+                            } else {
+                                layer.msg("ID:【" + data[0].id + "】的查看操作");
+                            }
+                            break;
+                    }
+                }
+            });
+
+            //监听表格复选框选择
+            table.on('checkbox(table-filter)', function (obj) {
+                console.log(obj)
+            });
+
+        });
+    }
 
     /*添加与创业名人/团队交流调研教学*/
     function addData() {
