@@ -89,7 +89,7 @@
                             title = title.substring(0,20);
                         }
                         //处理context文本换行
-                        var my_content = "";
+/*                        var my_content = "";
                         if(content.length > 100){
                             for (var i = 0;i < 4;i++){
                                 my_content = my_content + content.substring(i*25,(i+1)*25)+"\n";
@@ -100,7 +100,7 @@
                             for (var i = 0;i < Math.floor(content.length/25);i++){
                                 my_content = my_content + content.substring(i*25,(i+1)*25)+"\n";
                             }
-                        }
+                        }*/
 
                         var photo_div = '<div id="student_photo"  class="col-md-3 w3agile_gallery_grid">' +
                             '                    <div class="w3agile_gallery_image">' +
@@ -109,7 +109,7 @@
                             '                                <img src="'+imgs+'" alt="" class="img-responsive" />' +
                             '                                <figcaption>' +
                             '                                    <h4>'+title+'</h4>' +
-                            '                                    <p>'+my_content+'</p>' +
+                            '                                    <p>'+content+'</p>' +
                             '                                </figcaption>' +
                             '                            </figure>' +
                             '                        </a>' +

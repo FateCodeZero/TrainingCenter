@@ -39,7 +39,31 @@ body{
     margin-top: 60px;
 }
 
-div.introduce:hover {
-    background-color:#003f87;
-    color: #FFFFFF;
+.bg1 {
+    background-color: #F85A40;
+}
+
+.bg2 {
+    background-color: #F47721;
+}
+
+.bg3 {
+    background-color: #0099EA;
+}
+
+.bg4 {
+    background-color: #562E19;
+}
+
+.bg1:hover{
+    background-color:#ec3f22;
+}
+.bg2:hover{
+    background-color: #d56110;
+}
+.bg3:hover{
+    background-color:#095b86;
+}
+.bg4:hover{
+    background-color: #29180f;
 }

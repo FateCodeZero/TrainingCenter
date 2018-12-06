@@ -27,42 +27,42 @@
 <body onload="IFrameResize()">
     <div class="row">
         <div class="col-md-12 about_bg">
-            <h1 class="col-md-12 text-center mytitle">
-                梦 润 传 承
-            </h1>
+            <h1 class="col-md-12 text-center mytitle">梦 润 传 承</h1>
             <h4 class="col-md-12 text-center mytitle2">
                 梦润，致力于让每个人都能公平和便利地获取优质教育服务，实现可持续职业成长
             </h4>
             <div class="col-md-10 col-md-offset-1">
                 <div class="col-md-3">
-                   <div class="col-md-10 col-md-offset-1 introduce" style="background-color: rgb(248, 90, 64);">
-                       <a href="#introduce1">
+                   <div class="col-md-10 col-md-offset-1 introduce bg1">
+                       <a target="introduce1">
                        <img src="${webRoot}/webpages/static/images/introduce1.png" class="col-md-6 col-md-offset-3 introduce_img">
                        <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">公司简介</h3>
                        </a>
                    </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="col-md-10 col-md-offset-1 introduce" style="background-color: rgb(244, 119, 33);">
-                        <a href="#introduce2">
-                        <img src="${webRoot}/webpages/static/images/introduce2.png" class="col-md-6 col-md-offset-3 introduce_img">
-                        <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">红色历史文化教学点</h3>
+                    <div class="col-md-10 col-md-offset-1 introduce bg2">
+                        <a target="introduce2">
+                            <img src="${webRoot}/webpages/static/images/introduce2.png" class="col-md-6 col-md-offset-3 introduce_img">
+                            <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">红色文化</h3>
+                            <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 2px;">教学点</h3>
                         </a>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="col-md-10 col-md-offset-1 introduce" style="background-color: rgb(0, 153, 204);>
-                        <a href="#introduce2">
+                    <div class="col-md-10 col-md-offset-1 introduce bg3">
+                        <a target="introduce3">
                             <img src="${webRoot}/webpages/static/images/introduce3.png" class="col-md-6 col-md-offset-3 introduce_img">
-                            <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">绿色发展教学点</h3>
+                            <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">绿色发展</h3>
+                            <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 2px;">教学点</h3>
                         </a>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="col-md-10 col-md-offset-1 introduce" style="background-color: rgb(86, 46, 25);>
-                        <a href="#introduce3">
-                        <img src="${webRoot}/webpages/static/images/introduce4.png" class="col-md-6 col-md-offset-3 introduce_img">
-                        <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">挂牌单位</h3>
+                    <div class="col-md-10 col-md-offset-1 introduce bg4">
+                        <a target="introduce4">
+                            <img src="${webRoot}/webpages/static/images/introduce4.png" class="col-md-6 col-md-offset-3 introduce_img">
+                            <h3 class="col-md-12 text-center" style="color: #FFFFFF; margin-top: 15px;">挂牌单位</h3>
                         </a>
                     </div>
                 </div>
@@ -73,23 +73,7 @@
        <%-- 公司简介--%>
         <div id="introduce1" class="col-md-12 fh5co-bg-section" style="padding: 30px 0 50px 0px">
             <div class="container">
-                <div class="row animate-box">
-                    <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">
-                        <h2>公司 &amp; 简介</h2>
-                        <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 animate-box">
-                    <span>Company introduce</span>
-                    <h2 >梦润传承</h2>
-                    <p>梦润集团下辖贵州张明富生态农业有限公司、贵州梦润云大数据有限公司、贵州梦丽雅化妆品有限公司</p>
-                    <p>贵州梦润鹌鹑有限公司、遵义市张明富旅游服务有限公司、遵义市梦润之春建筑有限公司、遵义市梦润农民专业合作社等7家公司。现集团公司用地1000多亩，建有梦润农民工返乡下乡创业园</p>
-                    <p>茅台集团梦润还原土猪养殖观光旅游示范基地、国家级梦润鹌鹑养殖示范区</p>
-                    <P>全国农民工返乡下乡培训基地、农民工文化馆、党建馆、劳模创新工作室等</P>
-                </div>
-                <div class="col-md-6 img_height">
-                    <img class="img-responsive" src="${webRoot}/webpages/static/images/building.jpg" alt="Free HTML5 Bootstrap Template">
-                </div>
+                <div id="company"></div>
             </div>
         </div>
 
@@ -104,73 +88,15 @@
                         </div>
                     </div>
                     <div class="row">
-
-                        <div class="col-md-3 animate-box text-center">
-                            <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green1.jpg);">
-                                    <ul class="fh5co-social">
-                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                        <li><a href="#"><i class="icon-github"></i></a></li>
-                                    </ul>
-                                </div>
-                                <span>Health Teacher</span>
-                                <h3><a href="#">Mike Smith</a></h3>
-                                <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 animate-box text-center">
-                            <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green2.jpg);">
-                                    <ul class="fh5co-social">
-                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                        <li><a href="#"><i class="icon-github"></i></a></li>
-                                    </ul>
-                                </div>
-                                <span>Health Teacher</span>
-                                <h3><a href="#">Mike Smith</a></h3>
-                                <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 animate-box text-center">
-                            <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green3.jpg);">
-                                    <ul class="fh5co-social">
-                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                        <li><a href="#"><i class="icon-github"></i></a></li>
-                                    </ul>
-                                </div>
-                                <span>Health Teacher</span>
-                                <h3><a href="#">Mike Smith</a></h3>
-                                <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 animate-box text-center">
-                            <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green4.jpg);">
-                                    <ul class="fh5co-social">
-                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                        <li><a href="#"><i class="icon-github"></i></a></li>
-                                    </ul>
-                                </div>
-                                <span>Health Teacher</span>
-                                <h3><a href="#">Mike Smith</a></h3>
-                                <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                            </div>
-                        </div>
+                        <div id="culturalTeachingPoint" ></div>
                     </div>
                 </div>
             </div>
         </div>
+
+
         <%--绿色发展教学点--%>
-        <div id="introduce2" class="col-md-12 fh5co-bg-section">
+        <div id="introduce3" class="col-md-12 fh5co-bg-section">
             <div>
                 <div class="container" style="margin-top: 150px;">
                     <div class="row animate-box">
@@ -180,74 +106,14 @@
                         </div>
                     </div>
                     <div class="row">
-
-                        <div class="col-md-3 animate-box text-center">
-                            <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green1.jpg);">
-                                    <ul class="fh5co-social">
-                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                        <li><a href="#"><i class="icon-github"></i></a></li>
-                                    </ul>
-                                </div>
-                                <span>Health Teacher</span>
-                                <h3><a href="#">Mike Smith</a></h3>
-                                <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 animate-box text-center">
-                            <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green2.jpg);">
-                                    <ul class="fh5co-social">
-                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                        <li><a href="#"><i class="icon-github"></i></a></li>
-                                    </ul>
-                                </div>
-                                <span>Health Teacher</span>
-                                <h3><a href="#">Mike Smith</a></h3>
-                                <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 animate-box text-center">
-                            <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green3.jpg);">
-                                    <ul class="fh5co-social">
-                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                        <li><a href="#"><i class="icon-github"></i></a></li>
-                                    </ul>
-                                </div>
-                                <span>Health Teacher</span>
-                                <h3><a href="#">Mike Smith</a></h3>
-                                <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 animate-box text-center">
-                            <div class="staff">
-                                <div class="staff-img" style="background-image: url(${webRoot}/webpages/static/images/green4.jpg);">
-                                    <ul class="fh5co-social">
-                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                                        <li><a href="#"><i class="icon-github"></i></a></li>
-                                    </ul>
-                                </div>
-                                <span>Health Teacher</span>
-                                <h3><a href="#">Mike Smith</a></h3>
-                                <p>Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.</p>
-                            </div>
-                        </div>
+                        <div id="developTeachingPoint"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <%--核心竞争力--%>
-        <div class="col-md-12 " style="margin-top: 150px;">
+        <%--挂牌单位--%>
+        <div id="introduce4" class="col-md-12 " style="margin-top: 150px;">
             <div class="container">
                 <div class="row animate-box">
                     <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
@@ -264,10 +130,216 @@
             </div>
             <div class="col-md-12" style="height: 150px; background-color: #FFFFFF"></div>
         </div>
-
-
     </div>
 
 
 </body>
+
+<script>
+
+        $(document).ready(function loading(){
+            ajaxErrorHandler();//ajax请求错误统一处理
+            getCompanyIntroduction();
+            getRedHistory();
+            getGreenDevelopment();
+            IFrameResize();
+            getDivScroll();
+        });
+
+        /*获取目录块点击跳转*/
+        function getDivScroll() {
+            $("a[target='introduce1']").on('click',function () {
+                document.getElementById("introduce1").scrollIntoView();
+            });
+            $("a[target='introduce2']").on('click',function () {
+                document.getElementById("introduce2").scrollIntoView();
+            });
+            $("a[target='introduce3']").on('click',function () {
+                document.getElementById("introduce3").scrollIntoView();
+            });
+            $("a[target='introduce4']").on('click',function () {
+                document.getElementById("introduce4").scrollIntoView();
+            });
+
+        }
+
+        /*获取公司简介*/
+        function getCompanyIntroduction() {
+
+            $.ajax({
+                type: 'GET',
+                url: "${webRoot}/aboutMe/listPage",
+                data:{currentPage:1,rows:1},
+                dataType: "json",
+                success:function (data) {
+                    var jsonData = eval(data);
+                    var code = jsonData.code;
+                    var msg = jsonData.msg;
+
+                    if(code == 1){
+                        var company = jsonData.data.items;
+                        $.each(company,function (index,companyOne) {
+
+                            var id = companyOne.id;
+                            var title = companyOne.title;
+                            var content = companyOne.content;
+                            var imgs = companyOne.imgs;
+
+                            var details_div = '<div class="row animate-box">\n' +
+                                '                    <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">\n' +
+                                '                        <h2>公司 &amp; 简介</h2>\n' +
+                                '                        <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>\n' +
+                                '                    </div>\n' +
+                                '                </div>\n' +
+                                '                <div class="col-md-6 animate-box">\n' +
+                                '                    <span>Company introduce</span>\n' +
+                                '                    <h2 >'+title+'</h2>\n' +
+                                '                    <p>'+content+'</p>\n' +
+                                '                </div>\n' +
+                                '                <div class="col-md-6 img_height">\n' +
+                                '                    <img class="img-responsive" src="'+imgs+'" alt="Free HTML5 Bootstrap Template">\n' +
+                                '                </div>';
+
+                            $("#company").html(details_div);
+                            IFrameResize();
+
+                        });
+
+                    }else {
+                        $("#company").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                    }
+
+                },
+                error:function (msg) {
+                    $("#company").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                }
+            })
+        }
+
+
+        //获取红色历史文化教学点
+        function getRedHistory(){
+
+            $.ajax({
+                type: 'GET',
+                url: "${webRoot}/culturalTeachingPoint/listPage",
+                data: {currentPage:1,rows:4},
+                dataType: "json",
+                success: function (data) {
+                    var jsonData = eval(data);
+                    var code = jsonData.code;
+                    var msg = jsonData.msg;
+                    if(code == 1){
+                        var redPoints = jsonData.data.items;
+
+                        if(redPoints.length == 0){
+                            $("#culturalTeachingPoint").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                        }
+
+                        $.each(redPoints,function (index,redPoint) {
+                            var id = redPoint.id;
+                            var title = redPoint.title;
+                            var content = redPoint.content;
+                            var imgs = redPoint.imgs;
+
+                            /*截取字符串，p标签里面的文字长度必须一样长，否则页面会乱码*/
+                            if(content.length > 60 ){
+                                content = content.substring(0,60);
+                            }
+                            var red_div = '<div id="'+id+'" class="col-md-3 animate-box text-center">\n' +
+                                '                            <div class="staff">\n' +
+                                '                                <div class="staff-img" style="background-image: url('+imgs+');">\n' +
+                                '                                    <ul class="fh5co-social">\n' +
+                                '                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>\n' +
+                                '                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>\n' +
+                                '                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>\n' +
+                                '                                        <li><a href="#"><i class="icon-github"></i></a></li>\n' +
+                                '                                    </ul>\n' +
+                                '                                </div>\n' +
+                                '                                <span>Health Teacher</span>\n' +
+                                '                                <h3><a href="#">'+title+'</a></h3>\n' +
+                                '                                <p>'+content+'</p>\n' +
+                                '                            </div>\n' +
+                                '                        </div>';
+
+
+                            if (index == 0) {
+                                $("#culturalTeachingPoint").html(red_div);
+                            }else {
+                                $("#culturalTeachingPoint").append(red_div);
+                            }
+                        });
+                        //再次计算高度，包含ajax新增的数据流
+                        IFrameResize();
+                    }else {
+                        $("#culturalTeachingPoint").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                    }
+                }
+            });
+
+        }
+
+
+        /*获取绿色发展教学点*/
+        function getGreenDevelopment() {
+            $.ajax({
+                type: 'GET',
+                url: "${webRoot}/developTeachingPoint/listPage",
+                data: {currentPage:1,rows:4},
+                dataType: "json",
+                success: function (data) {
+                    var jsonData = eval(data);
+                    var code = jsonData.code;
+                    var msg = jsonData.msg;
+                    if(code == 1){
+                        var greenPoints = jsonData.data.items;
+
+                        if(greenPoints.length == 0){
+                            $("#culturalTeachingPoint").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                        }
+
+                        $.each(greenPoints,function (index,greenPoint) {
+                            var id = greenPoint.id;
+                            var title = greenPoint.title;
+                            var content = greenPoint.content;
+                            var imgs = greenPoint.imgs;
+
+                            /*截取字符串，p标签里面的文字长度必须一样长，否则页面会乱码*/
+                            if(content.length > 60 ){
+                                content = content.substring(0,60);
+                            }
+                            var green_div = '<div id="'+id+'" class="col-md-3 animate-box text-center">\n' +
+                                '                            <div class="staff">\n' +
+                                '                                <div class="staff-img" style="background-image: url('+imgs+');">\n' +
+                                '                                    <ul class="fh5co-social">\n' +
+                                '                                        <li><a href="#"><i class="icon-facebook2"></i></a></li>\n' +
+                                '                                        <li><a href="#"><i class="icon-twitter2"></i></a></li>\n' +
+                                '                                        <li><a href="#"><i class="icon-dribbble2"></i></a></li>\n' +
+                                '                                        <li><a href="#"><i class="icon-github"></i></a></li>\n' +
+                                '                                    </ul>\n' +
+                                '                                </div>\n' +
+                                '                                <span>Health Teacher</span>\n' +
+                                '                                <h3><a href="#">'+title+'</a></h3>\n' +
+                                '                                <p>'+content+'</p>\n' +
+                                '                            </div>\n' +
+                                '                        </div>';
+
+
+                            if (index == 0) {
+                                $("#developTeachingPoint").html(green_div);
+                            }else {
+                                $("#developTeachingPoint").append(green_div);
+                            }
+                        });
+                        //再次计算高度，包含ajax新增的数据流
+                        IFrameResize();
+                    }else {
+                        $("#developTeachingPoint").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                    }
+                }
+            });
+        }
+        IFrameResize();
+
+</script>
 </html>
