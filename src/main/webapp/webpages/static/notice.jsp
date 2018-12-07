@@ -74,7 +74,7 @@
                         '        </div>' +
                         '        <div class="col-md-12 animate-box">' +
                         '            <h2 style="text-align: center">'+title+'</h2>' +
-                        '            <span class="col-md-12" style="text-align: center">发布时间：'+createDate+'</span>' +
+                        '            <span class="col-md-12" style="text-align: center">发布时间：'+new Date(createDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ')+'</span>' +
                         '            <p style="padding: 30px 0">'+content+'</p>' +
                         '        </div>\n' +
                         '    </div>';

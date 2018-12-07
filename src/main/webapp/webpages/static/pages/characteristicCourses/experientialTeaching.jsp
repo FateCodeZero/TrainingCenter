@@ -118,7 +118,6 @@
 
                             $("#"+id).on('click',function () {
                                 var experiential_id = $(this).attr("id");
-                                alert(experiential_id);
                                 window.location.href = "${webRoot}/webpages/static/pages/characteristicCourses/experientialDetails.jsp?id="+experiential_id;
 
                             })

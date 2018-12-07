@@ -106,7 +106,7 @@
                                 '                              <a id="'+id+'" target="news" class="blog-img-holder" style="background-image: url('+imgs+');"></a>' +
                                 '                          <div class="blog-text">' +
                                 '                              <h3><a id="'+id+'" target="news">'+title+'</a></h3>' +
-                                '                              <span class="posted_on">'+createDate+'</span>' +
+                                '                              <span class="posted_on">'+new Date(createDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ')+'</span>' +
                                 '                              <p>'+content+'</p>'+
                                 '                          </div>' +
                                 '                      </div>' +

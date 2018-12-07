@@ -74,7 +74,7 @@
                         '        </div>' +
                         '        <div class="col-md-6 animate-box">' +
                         '            <h2>'+title+'</h2>' +
-                        '            <span>发布时间：'+createDate+'</span>' +
+                        '            <span>发布时间：'+new Date(createDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ')+'</span>' +
                         '            <p>'+content+'</p>' +
                         '        </div>\n' +
                         '        <div class="col-md-6 img_height">' +
