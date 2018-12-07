@@ -207,6 +207,7 @@ public class TrainingDynamicController {
         trainingDynamic.setRemarks(remarks);
         trainingDynamic.setCreateUserId(user.getId());
         trainingDynamic.setCreateDate(new Date());
+        trainingDynamic.setTitle(title);
         Integer add = trainingDynamicService.add(trainingDynamic);
         if (add==1){
             ajaxJson.setCode(1);

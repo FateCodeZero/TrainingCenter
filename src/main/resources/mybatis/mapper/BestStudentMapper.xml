@@ -78,7 +78,7 @@
             <if test="bestStudent.updateUserId != null and bestStudent.updateUserId != '' ">
                 update_user_id = #{bestStudent.updateUserId},
             </if>
-            <if test="bestStudent.updateDate != null and bestStudent.updateDate != '' ">
+            <if test="bestStudent.updateDate != null ">
                 update_date = #{bestStudent.updateDate},
             </if>
 

@@ -56,6 +56,7 @@
     IFrameResize();
 
     $(document).ready(function loading(){
+        IFrameResize();
         ajaxErrorHandler();//ajax请求错误统一处理
         //加载学员学习照列表
         $.ajax({
