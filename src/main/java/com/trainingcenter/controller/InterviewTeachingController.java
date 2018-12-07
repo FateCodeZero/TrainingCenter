@@ -45,7 +45,7 @@ public class InterviewTeachingController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/listPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/listPage")
     @ResponseBody
     public AjaxJson listPage(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
         AjaxJson ajaxJson = new AjaxJson();
@@ -76,7 +76,7 @@ public class InterviewTeachingController {
      *
      * @return loginPage
      */
-    @RequestMapping(value = "/detailsPage", method = RequestMethod.GET)
+    @RequestMapping(value = "/detailsPage")
     @ResponseBody
     public AjaxJson detailsPage(@RequestParam("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
@@ -131,7 +131,7 @@ public class InterviewTeachingController {
         }
     }
 
-    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    @RequestMapping(value = "/update")
     @ResponseBody
     public AjaxJson update(@Validated(value = {TC_Update.class}) InterviewTeaching interviewTeaching){
         AjaxJson ajaxJson = new AjaxJson();
@@ -176,7 +176,7 @@ public class InterviewTeachingController {
         }
     }
 
-    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/add")
     @ResponseBody
     public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
             , @RequestParam("content") String content, String remarks){
@@ -224,7 +224,7 @@ public class InterviewTeachingController {
         return ajaxJson;
     }
     @ResponseBody
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete")
     public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 

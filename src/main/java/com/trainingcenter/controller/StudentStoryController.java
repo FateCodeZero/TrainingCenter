@@ -43,7 +43,7 @@ public class StudentStoryController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/listPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/listPage")
     @ResponseBody
     public AjaxJson listPage(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
         AjaxJson ajaxJson = new AjaxJson();
@@ -99,7 +99,7 @@ public class StudentStoryController {
         }
     }
 
-    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    @RequestMapping(value = "/update")
     @ResponseBody
     public AjaxJson update(@Validated(value = {TC_Update.class}) StudentStory studentStory){
         AjaxJson ajaxJson = new AjaxJson();
@@ -155,7 +155,7 @@ public class StudentStoryController {
     }
 
 
-    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/add")
     @ResponseBody
     public AjaxJson add(@Validated(value = {TC_Add.class}) StudentStory newsInfo){
         AjaxJson ajaxJson = new AjaxJson();
@@ -188,7 +188,7 @@ public class StudentStoryController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete")
     public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 

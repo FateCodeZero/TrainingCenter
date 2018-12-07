@@ -43,7 +43,7 @@ public class BestStudentController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/listPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/listPage")
     @ResponseBody
     public AjaxJson listPage(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
         AjaxJson ajaxJson = new AjaxJson();
@@ -100,7 +100,7 @@ public class BestStudentController {
         }
     }
 
-    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    @RequestMapping(value = "/update")
     @ResponseBody
     public AjaxJson update(@Validated(value = {TC_Update.class}) BestStudent bestStudent){
         AjaxJson ajaxJson = new AjaxJson();
@@ -156,7 +156,7 @@ public class BestStudentController {
     }
 
 
-    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/add")
     @ResponseBody
     public AjaxJson add(@Validated(value = {TC_Add.class}) BestStudent newsInfo){
         AjaxJson ajaxJson = new AjaxJson();
@@ -188,7 +188,7 @@ public class BestStudentController {
         return ajaxJson;
     }
     @ResponseBody
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete")
     public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 

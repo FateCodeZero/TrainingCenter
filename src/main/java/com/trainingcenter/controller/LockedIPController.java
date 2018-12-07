@@ -194,7 +194,7 @@ public class LockedIPController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/getLockedIPById", method = RequestMethod.GET)
+    @RequestMapping(value = "/getLockedIPById")
     public AjaxJson getRoleById(@RequestParam("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
         if (StringUtil.isEmpty(id)) {
@@ -224,7 +224,7 @@ public class LockedIPController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/getLockedIPByIP", method = RequestMethod.GET)
+    @RequestMapping(value = "/getLockedIPByIP")
     public AjaxJson getLockedIPByIP(@RequestParam("IP") String IP) {
         AjaxJson ajaxJson = new AjaxJson();
         if (StringUtil.isEmpty(IP)) {

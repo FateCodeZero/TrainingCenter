@@ -44,7 +44,7 @@ public class AnnunciationController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/listPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/listPage")
     @ResponseBody
     public AjaxJson listPage(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
         AjaxJson ajaxJson = new AjaxJson();
@@ -75,7 +75,7 @@ public class AnnunciationController {
      *
      * @return loginPage
      */
-    @RequestMapping(value = "/detailsPage", method = RequestMethod.GET)
+    @RequestMapping(value = "/detailsPage")
     @ResponseBody
     public AjaxJson detailsPage(@RequestParam("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
@@ -131,7 +131,7 @@ public class AnnunciationController {
     }
 
 
-    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    @RequestMapping(value = "/update")
     @ResponseBody
     public AjaxJson update(@Validated(value = {TC_Update.class}) Annunciation annunciation){
         AjaxJson ajaxJson = new AjaxJson();
@@ -184,7 +184,7 @@ public class AnnunciationController {
     }
 
 
-    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/add")
     @ResponseBody
     public AjaxJson add(@Validated(value = {TC_Add.class}) Annunciation annunciation){
         AjaxJson ajaxJson = new AjaxJson();
@@ -216,7 +216,7 @@ public class AnnunciationController {
         return ajaxJson;
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete")
     @ResponseBody
     public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();

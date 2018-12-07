@@ -45,7 +45,7 @@ public class ExperientialTeachingController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/listPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/listPage")
     @ResponseBody
     public AjaxJson listPage(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
         AjaxJson ajaxJson = new AjaxJson();
@@ -76,7 +76,7 @@ public class ExperientialTeachingController {
      *
      * @return loginPage
      */
-    @RequestMapping(value = "/detailsPage", method = RequestMethod.GET)
+    @RequestMapping(value = "/detailsPage")
     @ResponseBody
     public AjaxJson detailsPage(@RequestParam("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
@@ -132,7 +132,7 @@ public class ExperientialTeachingController {
     }
 
 
-    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    @RequestMapping(value = "/update")
     @ResponseBody
     public AjaxJson update(@Validated(value = {TC_Update.class}) ExperientialTeaching experientialTeaching){
         AjaxJson ajaxJson = new AjaxJson();
@@ -177,7 +177,7 @@ public class ExperientialTeachingController {
         }
     }
 
-    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/add")
     @ResponseBody
     public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
             , @RequestParam("content") String content, String remarks){
@@ -226,7 +226,7 @@ public class ExperientialTeachingController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete")
     public AjaxJson delete(@RequestParam("ids") String ids) {
         AjaxJson ajaxJson = new AjaxJson();
 

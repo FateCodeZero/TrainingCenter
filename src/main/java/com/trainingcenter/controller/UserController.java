@@ -44,7 +44,7 @@ public class UserController {
      *
      * @return loginPage
      */
-    @RequestMapping(value = "/goLogin", method = RequestMethod.GET)
+    @RequestMapping(value = "/goLogin")
     public ModelAndView loginPage() {
         String viewName = "static/login";
         return new ModelAndView(viewName);
@@ -55,7 +55,7 @@ public class UserController {
      *
      * @return registerPage
      */
-    @RequestMapping(value = "/goRegister", method = RequestMethod.GET)
+    @RequestMapping(value = "/goRegister")
     public ModelAndView registerPage() {
         String viewName = "static/register";
         return new ModelAndView(viewName);
@@ -67,7 +67,7 @@ public class UserController {
      * @return updatePage
      */
 //    @PreAuthorize("hasPermission('/webpages/user/userInfo.jsp','READ')")
-    @RequestMapping(value = "/goUpdate", method = RequestMethod.GET)
+    @RequestMapping(value = "/goUpdate")
     public ModelAndView updatePage() {
         String viewName = "static/update";
         return new ModelAndView(viewName);
@@ -79,7 +79,7 @@ public class UserController {
      * @return
      */
 //    @PreAuthorize(value = "hasPermission('/webpages/admin/index.jsp','READ')")
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin")
     public ModelAndView adminIndex() {
         return new ModelAndView("admin/index");
     }
@@ -155,7 +155,7 @@ public class UserController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/usernameCheck", method = RequestMethod.GET)
+    @RequestMapping(value = "/usernameCheck")
     public AjaxJson checkUsername(@RequestParam("username") String username) {
         AjaxJson ajaxJson = new AjaxJson();
 
@@ -393,7 +393,7 @@ public class UserController {
      * @return 返回用户对象，只包含 id 与 username
      */
     @ResponseBody
-    @RequestMapping(value = "/getUserById", method = RequestMethod.GET)
+    @RequestMapping(value = "/getUserById")
     public AjaxJson getUserById(@RequestParam("id") String id) {
         AjaxJson ajaxJson = new AjaxJson();
         if (StringUtil.isEmpty(id)) {
