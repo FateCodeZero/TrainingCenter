@@ -223,7 +223,7 @@
                                 content = content.substring(0,60);
                             }
 
-                            var dynamic_div = ' <div class="col-md-6 animate-box"><div class="course"><a href="#" class="course-img" style="background-image: url('+imgs+');"></a>' +
+                            var dynamic_div = ' <div id="'+id+'" class="col-md-6 animate-box"><div class="course"><a href="#" class="course-img" style="background-image: url('+imgs+');"></a>' +
                                 '                        <div class="desc">' +
                                 '                            <h3><a href="#">'+title+'</a></h3>' +
                                 '                            <p>'+content+'</p>' +
@@ -239,11 +239,11 @@
                                 $("#dynamic").append(dynamic_div);
                             }
 
-                            $("a[target='dynamic_a']").on('click',function () {
-                                //获取当前被点击的条数ID，携带ID跳转到动态培训详情页面
+                            $("#"+id).on('click',function () {
                                 var dynamic_id = $(this).attr("id");
-                                window.location.href = "dynamicDetails.jsp?id="+dynamic_id+"";
-                            });
+                                window.location.href = "${webRoot}/webpages/static/dynamicDetails.jsp?id="+dynamic_id;
+                            })
+
                         });
 
                         //生成分页
@@ -304,6 +304,7 @@
                         $.each(advertisements,function (index,advertisement) {
 
                             var advertisement_id = advertisement.id;
+                            var title = advertisement.title;
                             var advertisement_img = advertisement.imgs;
                             var advertisement_describe = advertisement.describe;
                             var advertisement_url = advertisement.url;
@@ -315,7 +316,7 @@
                                 '                            <figure>\n' +
                                 '                                <img id="advertisement_img" class="col-md-12" style="background-size:cover; padding:0px; height:150px;" src="'+advertisement_img+'" />\n' +
                                 '                                <figcaption class="col-md-12 padding:0px;">\n' +
-                                '                                    <h4 id="describe_title" style="color: #FFFFFF;">广告'+advertisement_id+'</h4>\n' +
+                                '                                    <h4 id="describe_title" style="color: #FFFFFF;">'+" "+'</h4>\n' +
                                 '                                    <p id="describe" class="text-center">'+advertisement_describe+'</p>\n' +
                                 '                                </figcaption>\n' +
                                 '                            </figure>\n' +
