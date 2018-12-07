@@ -41,7 +41,9 @@
             URL权限控制：只是对请求的url进行基于角色的粗略权限控制
             要进行细粒的权限控制，需要使用注解配合，可做到方法级别的权限控制
     -->
-    <security:http auto-config="true" use-expressions="true">
+    <security:http auto-config="false" use-expressions="true"
+                   authentication-manager-ref="userInfoAuthenticationManager"
+                   entry-point-ref="authenticationEntryPoint" >
         <!--（0）开启浏览器加载 frame页面
             DENY：浏览器拒绝当前页面加载任何Frame页面（默认）
             SAMEORIGIN：frame页面的地址只能为同源域名下的页面
@@ -121,7 +123,7 @@
 
     <!--(2)自定义认证失败处理器-->
     <bean id="authenticationFailureHandler" class="com.trainingcenter.security.handler.SimpleUrlAuthenticationFailureHandler">
-        <property name="defaultFailureUrl" value="/user/goLogin"/>
+        <property name="defaultFailureUrl" value="/webpages/static/login.jsp"/>
     </bean>
 
     <!--（3）自定义验证码过滤器-->
@@ -135,24 +137,24 @@
     </bean>
 
     <!--(4)、自定义异常解释过滤器 【在使用了自定义认证错误处理器后，此处配置无效了】-->
-    <bean id="saveBackUrlFilter"
+    <!--<bean id="saveBackUrlFilter"
           class="org.springframework.security.web.access.ExceptionTranslationFilter">
 
-        <!--A、authenticationEntryPoint：在用户没有登录时用于引导用户进行登录认证的-->
+        &lt;!&ndash;A、authenticationEntryPoint：在用户没有登录时用于引导用户进行登录认证的&ndash;&gt;
         <constructor-arg name="authenticationEntryPoint" ref="authenticationEntryPoint"/>
 
-        <!--B、accessDeniedHandler：处理用户已登录，但访问资源没有权限的异常-->
+        &lt;!&ndash;B、accessDeniedHandler：处理用户已登录，但访问资源没有权限的异常&ndash;&gt;
 
         <property name="accessDeniedHandler">
             <bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
                 <property name="errorPage" value="/webpages/errorpage/403.jsp" />
             </bean>
         </property>
-    </bean>
+    </bean>-->
     <!--自定义authenticationEntryPoint：引导未登录用户登录的入口页面-->
     <bean id="authenticationEntryPoint"
           class="com.trainingcenter.security.authentication.entrypoint.AuthenticationEntryPoint">
-        <constructor-arg name="loginFormUrl" value="/webpages/user/login.jsp"/>
+        <constructor-arg name="loginFormUrl" value="/webpages/static/login.jsp"/>
     </bean>
 
 </beans>

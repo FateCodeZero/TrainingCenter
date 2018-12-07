@@ -50,17 +50,17 @@
             <div class="col-md-9 right_c">
                 <div class="col-md-12 right_info">
                     <div id="username" class="col-md-6 id_card">
-                        <span class="id_name">用户名：qq_40967964</span>
+                        <span class="id_name">用户名${user.username}</span>
                     </div>
                     <div class="col-md-12 line"></div>
                     <div class="col-md-12 nick">
-                        <span id="nickname" class="col-md-4 nickname">昵称：Daisy-song</span>
+                        <span id="nickname" class="col-md-4 nickname">昵称：${user.nickname}</span>
                         <span class="col-md-2 mod" data-toggle="modal" data-target="#modify-modal">修改资料</span>
                     </div>
                     <form>
                         <ul class="col-md-12 ">
                             <li class="common">实名：</li>
-                            <li class="common">性别：女</li>
+                            <li class="common">性别：${user.gender == 1?"男":"女"}</li>
                             <li class="common">生日：</li>
                             <li class="common">座右铭：</li>
                             <li class="common">地区：</li>

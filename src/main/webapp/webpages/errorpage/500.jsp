@@ -25,9 +25,8 @@
             <p class="notFond1">500</p>
             <h1 class="notFond2">该页面无法访问</h1>
             <h2 class="notFond3">服务器凉凉了，正在加紧修复中，您可以选择重新
-                <a  href="${webRoot}/webpages/static/login.jsp" >&nbsp;登录&nbsp;</a>或者
+                <a  href="${webRoot}/index.jsp" >&nbsp;返回首页&nbsp;</a>或者
                 <a href="${webRoot}/webpages/static/contact.jsp" >&nbsp;联系我们&nbsp;</a></h2>
-
         </div>
         <div class="col-md-2"></div>
     </div>

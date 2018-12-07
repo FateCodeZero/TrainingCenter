@@ -71,16 +71,15 @@
                 <li class="layui-nav-item">
                     <a href="#">留言咨询</a>
                 </li>
-
                 <c:if test="${not empty user}">
                     <li class="layui-nav-item" style="float: right">
-                        <a href="#"><img src="//t.cn/RCzsdCq" class="layui-nav-img">用户A</a>
+                        <a href="#"><img src="${webRoot}/${user.portraitImg}" class="layui-nav-img">${user.nickname}</a>
                         <dl class="layui-nav-child">
                             <dd><a href="${webRoot}/webpages/user/userInfo.jsp">个人中心</a></dd>
                             <dd><a>消息通知</a></dd>
-                            <%--<sec:authorize url="${webRoot}/webpages/admin/index.jsp">--%>
+                            <sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
                                 <dd><a href="${webRoot}/webpages/admin/index.jsp">后台管理系统</a></dd>
-                            <%--</sec:authorize>--%>
+                            </sec:authorize>
                             <dd><a href="${webRoot}/user/logout">退出</a></dd>
                         </dl>
                     </li>

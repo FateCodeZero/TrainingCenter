@@ -44,7 +44,8 @@ public class AuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
 
         try{
             //将 登录成功后 要跳转的URL存入 session 中
-            request.getSession().setAttribute("backUrl",buildHttpReturnUrlForRequest(request));
+            String backUrl = buildHttpReturnUrlForRequest(request);
+            request.getSession().setAttribute("backUrl",backUrl);
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -226,9 +226,15 @@ public class LoggingAspect implements Serializable {
                 e.printStackTrace();
             }
 
-            sysLog.setOpContent(content.toString());
+            String contStr = content.toString();
+            if (contStr.length() > 1500){
+                sysLog.setOpContent(contStr.substring(0,1500));
+            }else {
+                sysLog.setOpContent(contStr);
+            }
+
             //文件日志记录
-            LogUtil.info(clazz, title.toString(), content.toString());
+            LogUtil.info(clazz, title.toString(), sysLog.getOpContent());
             //数据库日志记录
             sysLogService.add(sysLog);
         }

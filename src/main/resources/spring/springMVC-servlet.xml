@@ -42,7 +42,7 @@
 
     <!--开启security在 Controller 层的支持-->
     <!--2、开启基于表达式/注解的权限管理-->
-    <security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled" proxy-target-class="true">
+    <security:global-method-security pre-post-annotations="enabled" jsr250-annotations="enabled" secured-annotations="enabled" proxy-target-class="true">
         <!--让方法支持自定义表达式-->
         <security:expression-handler ref="expressionHandler"/>
     </security:global-method-security>
