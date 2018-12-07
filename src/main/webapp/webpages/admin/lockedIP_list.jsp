@@ -18,8 +18,6 @@
 <div class="layui-tab layui-tab-brief" lay-filter="demoTitle">
     <div class="layui-tab-title" lay-filter="tab-top">
         <li class="layui-this" lay-id="all">全部</li>
-        <li lay-id="enable">已启用</li>
-        <li lay-id="unEnable">已禁用</li>
     </div>
     <div class="layui-tab-content">
         <div class="row">
