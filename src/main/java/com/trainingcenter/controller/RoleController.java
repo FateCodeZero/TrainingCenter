@@ -54,7 +54,7 @@ public class RoleController {
      * @param rows：每页展示的数据条数
      * @param request：传过来的其他参数
      */
-//    @PreAuthorize("hasPermission('/webpages/admin/role_list.jsp','READ')")
+    @PreAuthorize("hasPermission('/webpages/admin/role_list.jsp','READ')")
     @ResponseBody
     @RequestMapping("/list")
     public AjaxJson getRoles_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
@@ -140,7 +140,7 @@ public class RoleController {
      * @param role 角色对象
      * @return
      */
-//    @PreAuthorize("hasPermission('/webpages/admin/role_list.jsp','CREATE')")
+    @PreAuthorize("hasPermission('/webpages/admin/role_list.jsp','CREATE')")
     @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public AjaxJson add(@Validated(value = {TC_Add.class}) Role role) {
@@ -182,7 +182,7 @@ public class RoleController {
      * @param role:要更新的角色对象
      * @return
      */
-//    @PreAuthorize("hasPermission('/webpages/admin/role_list.jsp','UPDATE')")
+    @PreAuthorize("hasPermission('/webpages/admin/role_list.jsp','UPDATE')")
     @ResponseBody
     @RequestMapping(value = "/update")
     public AjaxJson update(@Validated(value = {TC_Add.class}) Role role) {
@@ -272,7 +272,7 @@ public class RoleController {
      * @param ids
      * @return
      */
-//    @PreAuthorize("hasPermission('/webpages/admin/role_list.jsp','DELETE')")
+    @PreAuthorize("hasPermission('/webpages/admin/role_list.jsp','DELETE')")
     @ResponseBody
     @RequestMapping(value = "/delete")
     public AjaxJson delete(@RequestParam("ids") String ids) {
@@ -299,7 +299,7 @@ public class RoleController {
      * @param request
      * @return
      */
-//    @PreAuthorize("hasPermission('/webpages/admin/role_list.jsp','UPDATE')")
+    @PreAuthorize("hasPermission('/webpages/admin/role_list.jsp','UPDATE')")
     @ResponseBody
     @RequestMapping("/grant")
     public AjaxJson grant(HttpServletRequest request) {
@@ -361,7 +361,7 @@ public class RoleController {
                 //读取所有被选中的页面,查询出当前角色在这些页面中含有的所有权限
                 Set<Permission> newPermissions = Collections.synchronizedSet(new HashSet<>());
                 for (String resourceId : rids) {
-                    //存储当前页面的新权限信息
+                    //存储当前角色在当前页面的新权限信息
                     if (StringUtil.isNotEmpty(currentResourceId) && resourceId.equals(currentResourceId)){
                         if (StringUtil.isNotEmpty(currentPermissionIds)){
                             String[] permissionIdArr = currentPermissionIds.split(",");
@@ -379,16 +379,16 @@ public class RoleController {
                             newPermissions.addAll(permissions);
                         }
                     }else {
-                        //存储其他页面的权限信息
+                        //存储当前角色在其他页面的权限信息
                         Map<String, Object> condition = new ConcurrentHashMap<>();
                         condition.put("state", 1);
                         condition.put("resourceId", resourceId);
-                        List<Permission> permissionList = permissionService.getPermissions(condition);
+                        List<Permission> permissionList = permissionService.getPermissionsByRoleId(roleId,condition);
                         //页面被选中了，但当前角色该页面中没有任何权限，默认授予 Read 权限
                         if (permissionList.size() == 0){
                             Map<String, Object> con = new ConcurrentHashMap<>();
                             con.put("state",1);
-                            condition.put("resourceId", resourceId);
+                            con.put("resourceId", resourceId);
                             con.put("operations",Permission.READ);
                             List<Permission> ps = permissionService.getPermissions(con);
                             permissionList.addAll(ps);

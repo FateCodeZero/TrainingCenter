@@ -50,7 +50,7 @@ public class PermissionController {
      * @param rows：每页展示的数据条数
      * @param request: HttpServletRequest
      */
-//    @PreAuthorize("hasPermission('/webpages/admin/permission_list.jsp','READ')")
+    @PreAuthorize("hasPermission('/webpages/admin/permission_list.jsp','READ')")
     @ResponseBody
     @RequestMapping(value = "/list")
     public AjaxJson getPermissions_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request){
@@ -160,7 +160,7 @@ public class PermissionController {
      * @param permission 添加的权限对象
      * @return
      */
-//    @PreAuthorize("hasPermission('/webpages/admin/permission_list.jsp','CREATE')")
+    @PreAuthorize("hasPermission('/webpages/admin/permission_list.jsp','CREATE')")
     @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public AjaxJson add(@Validated(value = {TC_Add.class}) Permission permission){
@@ -201,7 +201,7 @@ public class PermissionController {
      * @param permission 要更新的权限对象
      * @return
      */
-//    @PreAuthorize("hasPermission('/webpages/admin/permission_list.jsp','UPDATE')")
+    @PreAuthorize("hasPermission('/webpages/admin/permission_list.jsp','UPDATE')")
     @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public AjaxJson update(@Validated(value = {TC_Add.class}) Permission permission){
@@ -300,7 +300,7 @@ public class PermissionController {
      * @param ids
      * @return
      */
-//    @PreAuthorize("hasPermission('/webpages/admin/permission_list.jsp','DELETE')")
+    @PreAuthorize("hasPermission('/webpages/admin/permission_list.jsp','DELETE')")
     @ResponseBody
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public AjaxJson delete(@RequestParam("ids") String ids){

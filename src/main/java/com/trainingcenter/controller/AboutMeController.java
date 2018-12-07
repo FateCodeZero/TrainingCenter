@@ -10,6 +10,7 @@ import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -128,6 +129,8 @@ public class AboutMeController {
             return ajaxJson;
         }
     }
+
+    @PreAuthorize("hasPermission('/webpages/static/aboutUs.jsp','UPDATE')")
     @RequestMapping(value = "/update")
     @ResponseBody
     public AjaxJson update(@Validated(value = {TC_Update.class}) AboutMe aboutMe){
@@ -174,6 +177,7 @@ public class AboutMeController {
         }
     }
 
+    @PreAuthorize("hasPermission('/webpages/static/aboutUs.jsp','CREATE')")
     @RequestMapping(value = "/add")
     @ResponseBody
     public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
@@ -221,6 +225,8 @@ public class AboutMeController {
 
         return ajaxJson;
     }
+
+    @PreAuthorize("hasPermission('/webpages/static/aboutUs.jsp','DELETE')")
     @ResponseBody
     @RequestMapping(value = "/delete")
     public AjaxJson delete(@RequestParam("ids") String ids) {
