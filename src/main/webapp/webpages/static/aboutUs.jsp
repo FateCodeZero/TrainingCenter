@@ -71,11 +71,22 @@
 
 
        <%-- 公司简介--%>
-        <div id="introduce1" class="col-md-12 fh5co-bg-section" style="padding: 30px 0 50px 0px">
-            <div class="container">
-                <div id="company"></div>
+        <div id="introduce2" class="col-md-12 fh5co-bg-section" style="padding-top: 50px;">
+            <div id="">
+                <div class="container">
+                    <div class="row animate-box">
+                        <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+                            <h2>  公司&amp;简介 </h2>
+                            <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="company" style="height:12%"></div>
+                    </div>
+                </div>
             </div>
         </div>
+
 
         <%--红色历史文化教学点--%>
         <div id="introduce2" class="col-md-12">
@@ -163,6 +174,7 @@
 
         }
 
+
         /*获取公司简介*/
         function getCompanyIntroduction() {
 
@@ -185,19 +197,13 @@
                             var content = companyOne.content;
                             var imgs = companyOne.imgs;
 
-                            var details_div = '<div class="row animate-box">\n' +
-                                '                    <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">\n' +
-                                '                        <h2>公司 &amp; 简介</h2>\n' +
-                                '                        <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>\n' +
-                                '                    </div>\n' +
-                                '                </div>\n' +
-                                '                <div class="col-md-6 animate-box">\n' +
+                            var details_div = '<div class="col-md-6 animate-box">\n' +
                                 '                    <span>Company introduce</span>\n' +
                                 '                    <h2 >'+title+'</h2>\n' +
                                 '                    <p>'+content+'</p>\n' +
                                 '                </div>\n' +
                                 '                <div class="col-md-6 img_height">\n' +
-                                '                    <img class="img-responsive" src="'+imgs+'" alt="Free HTML5 Bootstrap Template">\n' +
+                                '                    <img class="img-responsive" src="'+imgs+'" >\n' +
                                 '                </div>';
 
                             $("#company").html(details_div);
