@@ -71,7 +71,7 @@
         var returnData = null;
         $.ajax({
             url: "${webRoot}/resource/tree",
-            type: "get",
+            type: "post",
             async: false,    //关闭异步请求
             data: null,
             dataType: "json",

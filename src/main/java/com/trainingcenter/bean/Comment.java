@@ -12,8 +12,8 @@ public class Comment {
     private Integer state;
     private String content;
 
-    private Integer replyCount;
-    private Integer praiseCount;
+    private long replyCount;
+    private long praiseCount;
     /**
      * 创建人ID，对应数据库各表的（createUserId）字段
      */
@@ -34,12 +34,12 @@ public class Comment {
      */
     private Date updateDate;
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public String getId() {
+        return id;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -50,19 +50,35 @@ public class Comment {
         this.title = title;
     }
 
-    public Integer getReplyCount() {
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public long getReplyCount() {
         return replyCount;
     }
 
-    public void setReplyCount(int replyCount) {
+    public void setReplyCount(long replyCount) {
         this.replyCount = replyCount;
     }
 
-    public Integer getPraiseCount() {
+    public long getPraiseCount() {
         return praiseCount;
     }
 
-    public void setPraiseCount(int praiseCount) {
+    public void setPraiseCount(long praiseCount) {
         this.praiseCount = praiseCount;
     }
 
@@ -90,42 +106,12 @@ public class Comment {
         this.updateUserId = updateUserId;
     }
 
-    public String getContent() {
-        return content;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", replyCount=" + replyCount +
-                ", praiseCount=" + praiseCount +
-                ", createUserId='" + createUserId + '\'' +
-                ", createDate=" + createDate +
-                ", updateUserId='" + updateUserId + '\'' +
-                ", updateDate=" + updateDate +
-                '}';
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }
 

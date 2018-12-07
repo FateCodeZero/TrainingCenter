@@ -228,7 +228,7 @@
 
         $.ajax({
             url: "${webRoot}/trainingDynamic/update",
-            type: "get",
+            type: "post",
             data: data,
             dataType: "json",
             success: function (data) {

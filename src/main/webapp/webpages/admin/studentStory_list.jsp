@@ -373,7 +373,7 @@
                 };
                 $.ajax({
                     url: "${webRoot}/studentStory/delete",
-                    type: "get",
+                    type: "post",
                     data: data,
                     dataType: "json",
                     success: function (data) {

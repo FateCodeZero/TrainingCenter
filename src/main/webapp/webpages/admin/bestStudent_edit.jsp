@@ -229,7 +229,7 @@
 
         $.ajax({
             url: "${webRoot}/bestStudent/update",
-            type: "get",
+            type: "post",
             data: data,
             dataType: "json",
             success: function (data) {

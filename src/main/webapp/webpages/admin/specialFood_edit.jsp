@@ -228,7 +228,7 @@
 
         $.ajax({
             url: "${webRoot}/specialFood/update",
-            type: "get",
+            type: "post",
             data: data,
             dataType: "json",
             success: function (data) {

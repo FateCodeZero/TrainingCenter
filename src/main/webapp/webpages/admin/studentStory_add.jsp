@@ -147,7 +147,7 @@
 
         $.ajax({
             url: "${webRoot}/studentStory/add",
-            type: "get",
+            type: "post",
             data: data,
             dataType: "json",
             success: function (data) {

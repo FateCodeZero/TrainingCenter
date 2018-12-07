@@ -146,7 +146,7 @@
 
         $.ajax({
             url: "${webRoot}/trainingDynamic/add",
-            type: "get",
+            type: "post",
             data: data,
             dataType: "json",
             success: function (data) {

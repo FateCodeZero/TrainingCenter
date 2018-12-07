@@ -375,8 +375,8 @@
                 };
                 $.ajax({
                     url: "${webRoot}/advertisement/delete",
-                    type: "get",
                     data: data,
+                    type: "post",
                     dataType: "json",
                     success: function (data) {
                         var jsonData = eval(data); //数据解析

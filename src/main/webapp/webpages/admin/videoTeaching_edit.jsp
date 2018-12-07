@@ -138,7 +138,7 @@
         var data = {id: id};
         $.ajax({
             url: "${webRoot}/videoTeaching/getVideoTeachingById",
-            type: "get",
+            type: "post",
             async: false,    //关闭异步请求
             data: data,
             dataType: "json",
@@ -228,7 +228,7 @@
 
         $.ajax({
             url: "${webRoot}/videoTeaching/update",
-            type: "get",
+            type: "post",
             data: data,
             dataType: "json",
             success: function (data) {

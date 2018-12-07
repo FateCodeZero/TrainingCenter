@@ -147,7 +147,7 @@
 
         $.ajax({
             url: "${webRoot}/developTeachingPoint/add",
-            type: "get",
+            type: "post",
             data: data,
             dataType: "json",
             success: function (data) {

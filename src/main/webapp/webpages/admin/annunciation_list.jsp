@@ -376,7 +376,7 @@
                 };
                 $.ajax({
                     url: "${webRoot}/annunciation/delete",
-                    type: "get",
+                    type: "post",
                     data: data,
                     dataType: "json",
                     success: function (data) {

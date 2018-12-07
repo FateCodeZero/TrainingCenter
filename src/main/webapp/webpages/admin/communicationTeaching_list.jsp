@@ -374,7 +374,7 @@
                 };
                 $.ajax({
                     url: "${webRoot}/communicationTeaching/delete",
-                    type: "get",
+                    type: "post",
                     data: data,
                     dataType: "json",
                     success: function (data) {

@@ -374,7 +374,7 @@
                 };
                 $.ajax({
                     url: "${webRoot}/trainingDynamic/delete",
-                    type: "get",
+                    type: "post",
                     data: data,
                     dataType: "json",
                     success: function (data) {

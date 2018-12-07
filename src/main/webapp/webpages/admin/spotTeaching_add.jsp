@@ -146,7 +146,7 @@
 
         $.ajax({
             url: "${webRoot}/spotTeaching/add",
-            type: "get",
+            type: "post",
             data: data,
             dataType: "json",
             success: function (data) {

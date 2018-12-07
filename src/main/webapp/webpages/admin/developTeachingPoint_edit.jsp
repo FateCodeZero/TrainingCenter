@@ -230,7 +230,7 @@
 
         $.ajax({
             url: "${webRoot}/developTeachingPoint/update",
-            type: "get",
+            type: "post",
             data: data,
             dataType: "json",
             success: function (data) {

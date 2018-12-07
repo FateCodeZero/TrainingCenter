@@ -127,7 +127,7 @@
 
         $.ajax({
             url: "${webRoot}/annunciation/add",
-            type: "get",
+            type: "post",
             data: data,
             dataType: "json",
             success: function (data) {

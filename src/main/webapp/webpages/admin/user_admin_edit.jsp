@@ -253,7 +253,7 @@
         };
         $.ajax({
             url: "${webRoot}/role/getRolesByUserId",
-            type: "post",
+            type: "get",
             async: false,    //关闭异步请求
             data: data,
             dataType: "json",

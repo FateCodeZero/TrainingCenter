@@ -373,7 +373,7 @@
                 };
                 $.ajax({
                     url: "${webRoot}/specialFood/delete",
-                    type: "get",
+                    type: "post",
                     data: data,
                     dataType: "json",
                     success: function (data) {

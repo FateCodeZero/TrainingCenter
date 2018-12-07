@@ -37,16 +37,16 @@
                     <if test="key == &quot;title&quot; and value != null and value != '' ">
                         and `title` = #{value}
                     </if>
-                    <if test="key == &quot;comment_id&quot; and value != null and value != '' ">
+                    <if test="(key == &quot;comment_id&quot; or key == &quot;commentId&quot;) and value != null and value != '' ">
                         and comment_id = #{value}
                     </if>
-                    <if test="key == &quot;reply_count&quot; and value != null ">
+                    <if test="(key == &quot;reply_count&quot; or key == &quot;replyCount&quot;) and value != null ">
                         and `reply_count` = #{value}
                     </if>
                     <if test="key == &quot;state&quot; and value != null ">
                         and state = #{value}
                     </if>
-                    <if test="key == &quot;praise_count&quot; and value != null ">
+                    <if test="(key == &quot;praise_count&quot; or key == &quot;praiseCount&quot;)  and value != null ">
                         and `praise_count` = #{value}
                     </if>
                     <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
@@ -79,8 +79,8 @@
     -->
     <insert id="add" parameterType="com.trainingcenter.bean.Comment">
         INSERT INTO tab_comment(<include refid="trainingdynamiccolumns"></include>)
-        VALUES (#{comment.id},#{comment.title},#{comment.imgs},#{comment.content},#{comment.remarks},#{comment.createUserId},#{comment.createDate},
-        #{comment.updateUserId},#{comment.updateDate},#{comment.state})
+        VALUES (#{comment.id},#{comment.title},#{comment.content},#{comment.replyCount},#{comment.praiseCount},#{comment.createUserId},#{comment.createDate},#{comment.updateUserId},#{comment.updateDate},
+        #{comment.state})
     </insert>
 
     <!--
@@ -96,10 +96,10 @@
             <if test="comment.content != null and comment.content != '' ">
                 content = #{comment.content},
             </if>
-            <if test="comment.reply_count != null">
+            <if test="comment.replyCount != null">
                 reply_count = #{comment.reply_count},
             </if>
-            <if test="comment.praise_count != null">
+            <if test="comment.praiseCount != null">
                 praise_count = #{comment.praise_count},
             </if>
             <if test="comment.createUserId != null and comment.createUserId != '' ">

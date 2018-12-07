@@ -104,7 +104,7 @@
                 };
                 $.ajax({
                     url: "${webRoot}/user/usernameCheck",
-                    type: "get",
+                    type: "post",
                     data: data,
                     dataType: "json",
                     success: function (data) {
