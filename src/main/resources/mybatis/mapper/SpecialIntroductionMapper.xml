@@ -70,16 +70,16 @@
                 remarks = #{specialIntroduction.remarks},
             </if>
             <if test="specialIntroduction.createUserId != null and specialIntroduction.createUserId != '' ">
-                create_user_id = #{specialIntroduction.createUserId},
+                createUserId = #{specialIntroduction.createUserId},
             </if>
             <if test="specialIntroduction.createDate != null ">
-                create_date = #{specialIntroduction.createDate},
+                createDate = #{specialIntroduction.createDate},
             </if>
             <if test="specialIntroduction.updateUserId != null and specialIntroduction.updateUserId != '' ">
-                update_user_id = #{specialIntroduction.updateUserId},
+                updateUserId = #{specialIntroduction.updateUserId},
             </if>
             <if test="specialIntroduction.updateDate != null ">
-                update_date = #{specialIntroduction.updateDate},
+                updateDate = #{specialIntroduction.updateDate},
             </if>
 
         </trim>

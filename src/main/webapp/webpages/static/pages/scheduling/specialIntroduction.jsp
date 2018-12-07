@@ -1,4 +1,3 @@
-<%--
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@include file="/context/mytags.jsp" %>
@@ -32,10 +31,64 @@
 <script>
 
     $(document).ready(function () {
-ajaxErrorHandler();//ajax请求错误统一处理
+    ajaxErrorHandler();//ajax请求错误统一处理
+
+
         $.ajax({
             type: 'GET',
-            url: "${webRoot}/culturalProducts/detailsPage",
+            url: "${webRoot}/specialIntroduction/listPage",
+            data:{currentPage:1,rows:1},
+            dataType: "json",
+            success:function (data) {
+                var jsonData = eval(data);
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+
+                if(code == 1){
+                    var introductions = jsonData.data.items;
+                    $.each(introductions,function (index,introduction) {
+
+                        var id = introduction.id;
+                        var title = introduction.title;
+                        var content = introduction.content;
+                        var imgs = introduction.imgs;
+
+                        var introduction_div = '    <div id="'+id+' " class="container">' +
+                            '        <div class="row animate-box">' +
+                            '            <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">' +
+                            '                <h2>特此介绍</h2>' +
+                            '                <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>\n' +
+                            '            </div>' +
+                            '        </div>' +
+                            '        <div class="col-md-6 animate-box">' +
+                            '            <span>About Our Class</span>' +
+                            '            <h2>'+title+'</h2>' +
+                            '            <p>'+content+'</p>' +
+                            '        </div>\n' +
+                            '        <div class="col-md-6 img_height">' +
+                            '            <img class="img-responsive" style="height:380px;"  src="'+imgs+'">' +
+                            '        </div>' +
+                            '    </div>';
+
+                        $("#introduction").html(introduction_div);
+                        IFrameResize();
+
+                    });
+
+                }else {
+                    $("#introduction").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                }
+
+            },
+            error:function (msg) {
+                $("#introduction").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+            }
+        })
+
+
+/*        $.ajax({
+            type: 'GET',
+            url: "",
             data: '',
             dataType: "json",
             success:function (data) {
@@ -77,9 +130,8 @@ ajaxErrorHandler();//ajax请求错误统一处理
             error:function (msg) {
                 $("#introduction").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
             }
-        })
+        })*/
     })
 
 </script>
 </html>
---%>

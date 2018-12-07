@@ -173,7 +173,8 @@ public class SpecialIntroductionController {
         }
     }
 
-
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @ResponseBody
     public AjaxJson add(@RequestParam("title") String title, @RequestParam("imgs") String imgs
             , @RequestParam("content") String content, String remarks){
         AjaxJson ajaxJson = new AjaxJson();
@@ -203,6 +204,7 @@ public class SpecialIntroductionController {
         SpecialIntroduction specialIntroduction = new SpecialIntroduction();
         specialIntroduction.setId(UUID.randomUUID().toString());
         specialIntroduction.setImgs(imgs);
+        specialIntroduction.setTitle(title);
         specialIntroduction.setContent(content);
         specialIntroduction.setRemarks(remarks);
         specialIntroduction.setCreateUserId(user.getId());
