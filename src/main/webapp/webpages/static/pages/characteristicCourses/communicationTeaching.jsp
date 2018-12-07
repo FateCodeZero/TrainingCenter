@@ -115,11 +115,12 @@
                                 $("#communication").append(communication_div);
                             }
 
-                            $("a[target='communication_a']").on('click',function () {
+                            $("#"+id).on('click',function () {
                                 //获取当前被点击的条数ID，携带ID跳转到体验式教学详情页面
                                 var spot_id = $(this).attr("id");
-                                window.location.href = "communicationDetails.jsp?id="+spot_id+"";
-                            });
+                                window.location.href = "${webRoot}/webpages/static/pages/characteristicCourses/communicationDetails.jsp?id="+spot_id;
+                            })
+
                         });
 
                         //生成分页

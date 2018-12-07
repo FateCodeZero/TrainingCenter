@@ -116,11 +116,12 @@
                                 $("#spot").append(spot_div);
                             }
 
-                            $("a[target='spot_a']").on('click',function () {
+                            $("#"+id).on('click',function () {
                                 //获取当前被点击的条数ID，携带ID跳转到体验式教学详情页面
                                 var spot_id = $(this).attr("id");
-                                window.location.href = "${webRoot}/webpages/static/pages/characteristicCourses/spotDetails.jsp?id="+spot_id+"";
-                            });
+                                window.location.href = "${webRoot}/webpages/static/pages/characteristicCourses/spotDetails.jsp?id="+spot_id;
+                            })
+
                         });
 
                         //生成分页

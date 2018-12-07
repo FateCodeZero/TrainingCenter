@@ -116,11 +116,12 @@
                                 $("#cultural").append(cultural_div);
                             }
 
-                            $("a[target='cultural_a']").on('click',function () {
+                            $("#"+id).on('click',function () {
                                 //获取当前被点击的条数ID，携带ID跳转到详情页面
                                 var cultural_id = $(this).attr("id");
-                                window.location.href = "${webRoot}/webpages/static/pages/scheduling/culturalDetails.jsp?id="+cultural_id+"";
-                            });
+                                window.location.href = "${webRoot}/webpages/static/pages/scheduling/culturalDetails.jsp?id="+cultural_id;
+                            })
+
                         });
 
                         //生成分页

@@ -116,11 +116,13 @@
                                 $("#experiential").append(experiential_div);
                             }
 
-                            $("a[target='experiential_a']").on('click',function () {
-                                //获取当前被点击的条数ID，携带ID跳转到体验式教学详情页面
+                            $("#"+id).on('click',function () {
                                 var experiential_id = $(this).attr("id");
-                                window.location.href = "${webRoot}/webpages/static/pages/characteristicCourses/experientialDetails.jsp?id="+experiential_id+"";
-                            });
+                                alert(experiential_id);
+                                window.location.href = "${webRoot}/webpages/static/pages/characteristicCourses/experientialDetails.jsp?id="+experiential_id;
+
+                            })
+
                         });
 
                         //生成分页
