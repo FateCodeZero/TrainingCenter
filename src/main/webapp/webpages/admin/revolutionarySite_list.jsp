@@ -16,9 +16,11 @@
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css" charset="UTF-8">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css" charset="UTF-8">
 
-    <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js" charset="UTF-8"></script>
-    <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js" charset="UTF-8"></script>
-    <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js" charset="UTF-8"></script>
+    <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+    <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
+    <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
+    <script src="${webRoot}/plug-in/js/utils.js"></script>
+
 </head>
 
 <body>
@@ -73,7 +75,6 @@
     var state = null; //tab标题状态
 
     $(document).ready(function () {
-        ajaxErrorHandler(); //ajax请求错误统一处理
         loadLayuiElement();//加载 layui element
         tableData();
     });
@@ -387,13 +388,16 @@
                                 time: 3000,
                                 icon: 1
                             });
+                            location.reload(); //操作成功后刷新页面
                         } else {
                             layer.alert(msg, {
                                 time: 3000,
                                 icon: 2
                             });
                         }
-                        location.reload(); //操作后刷新页面
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                     }
                 });
             });
@@ -424,7 +428,7 @@
                 var jsonData = eval(data); //数据解析
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if (code == 1) {
+                if (code === 1) {
                     user = jsonData.data.user;
                 } else {
                     layer.alert(msg, {
@@ -433,6 +437,9 @@
                     });
                     return false;
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
         return user;

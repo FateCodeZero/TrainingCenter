@@ -49,7 +49,6 @@
 </body>
 <script>
     $(document).ready(function loading(){
-        ajaxErrorHandler();//ajax请求错误统一处理
         //加载最佳学员列表
         $.ajax({
             type: 'GET',
@@ -60,10 +59,10 @@
                 var jsonData = eval(data);
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if(code == 1){
+                if(code === 1){
                     var bestStudents = jsonData.data.items;
 
-                    if(bestStudents.length == 0){
+                    if(bestStudents.length === 0){
                         $("#best_student").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                     $.each(bestStudents,function (index,bestStudent) {
@@ -102,7 +101,7 @@
                             '            </div>';
 
 
-                        if (index == 0) {
+                        if (index === 0) {
                             $("#best_student").html(story_div);
                         }else {
                             $("#best_student").append(story_div);
@@ -115,6 +114,9 @@
                     $("#best_student").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
                 IFrameResize();
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
     });

@@ -97,7 +97,6 @@
     $(document).ready(function () {
         //页面加载完成
         //……
-        ajaxErrorHandler(); //ajax请求错误统一处理
     });
 
     //选择权限对应的资源
@@ -194,6 +193,9 @@
                         icon: 2
                     });
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
     });

@@ -71,7 +71,6 @@
     $(document).ready(function () {
         //页面加载完成
         //……
-        ajaxErrorHandler(); //ajax请求错误统一处理
 
         /*从URL获取对象ID*/
         userId = getUrlParam('id');
@@ -231,6 +230,9 @@
                     $("#rePassword").css("border", "1px solid #cccccc");
                 }
             }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+            }
         });
     });
 
@@ -270,6 +272,9 @@
                     });
                 }
             }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+            }
         });
         return roles;
     }
@@ -307,6 +312,9 @@
                     });
                     return null;
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
         return user;

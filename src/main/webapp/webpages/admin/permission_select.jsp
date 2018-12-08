@@ -69,7 +69,6 @@
     var searchContent = $("#searchContent").val(); //模糊查询内容
 
     $(document).ready(function () {
-        ajaxErrorHandler(); //ajax请求错误统一处理
 
         /*从URL获取对象ID,获取当前要授权的角色对象id*/
         roleId = getUrlParam('id');
@@ -109,6 +108,9 @@
                     });
                 }
             }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+            }
         });
         return returnData;
     }
@@ -138,6 +140,9 @@
                             icon: 2
                         });
                     }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                 }
             });
         }
@@ -507,6 +512,9 @@
                     return false;
                 }
             }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+            }
         });
     });
 
@@ -567,6 +575,9 @@
                         icon: 2
                     });
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
         return resource;

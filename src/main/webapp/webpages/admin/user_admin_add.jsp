@@ -78,7 +78,6 @@
     $(document).ready(function () {
         //页面加载完成
         //……
-        ajaxErrorHandler(); //ajax请求错误统一处理
 
     });
     /*验证用户名*/
@@ -119,6 +118,9 @@
                             $("#usernameMsg").html('<span style="color:#FF5722">'+msg+'</span>');
                             $("#username").css("border", "1px solid red");
                         }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                     }
                 });
             }
@@ -283,6 +285,9 @@
                     $("#password").css("border", "1px solid #cccccc");
                     $("#rePassword").css("border", "1px solid #cccccc");
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
     });

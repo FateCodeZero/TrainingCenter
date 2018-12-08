@@ -24,6 +24,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by IntelliJ IDEA.
@@ -174,6 +175,21 @@ public class PermissionServiceImpl implements PermissionService {
             LogUtil.warn(this, "权限添加", "用户【" + currentUsername + "】添加权限【失败】，添加对象为空，数据效验没起到应有的作用！");
             throw insertException;
         }
+
+        //判断当前权限是否已存在
+        Map<String,Object> condition = new ConcurrentHashMap<>();
+        condition.put("resourceId",permission.getResourceId());
+        condition.put("operations",permission.getOperations());
+        List<Permission> ps = this.getPermissions(condition);
+        if (ps.size() > 0){
+            Permission p = ps.get(0);
+            //判断当前权限是否已存在
+            if (p != null){
+                insertException = new InsertException("添加失败，添加对象已存在，请勿重复添加");
+                throw insertException;
+            }
+        }
+
         //日志记录
         LogUtil.info(this, "权限添加", "用户【" + currentUsername + "】添加了==>权限：【" + permission.getName() + "】的相关信息");
 

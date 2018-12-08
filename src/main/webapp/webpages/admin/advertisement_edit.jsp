@@ -94,7 +94,6 @@
         });
     });
     $(document).ready(function () {
-        ajaxErrorHandler(); //ajax请求错误统一处理
         //页面加载完成
         //……
         /*从URL获取对象ID*/
@@ -161,6 +160,9 @@
                     });
                     return false;
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR);
             }
         });
         return advertisement;
@@ -257,6 +259,9 @@
                         icon: 2
                     });
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR);
             }
         });
     });

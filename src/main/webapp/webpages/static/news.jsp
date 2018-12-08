@@ -40,7 +40,6 @@
 <script>
 
     $(document).ready(function () {
-        ajaxErrorHandler(); //ajax请求错误统一处理
 
         var id = $.Request('id');
         $.ajax({
@@ -53,10 +52,10 @@
                 var code = jsonData.code;
                 var msg = jsonData.msg;
 
-                if(code == 1){
+                if(code === 1){
                     var news_details = jsonData.data.items;
 
-                    if (news_details == 0){
+                    if (news_details.length === 0){
                         $("#news_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                     var id = news_details.id;
@@ -88,12 +87,11 @@
                 }else {
                     $("#news_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
-            },
-            error:function (msg) {
-                alert(msg);
             }
-
-        })
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+            }
+        });
         IFrameResize();
     })
 </script>

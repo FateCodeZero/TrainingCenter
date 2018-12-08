@@ -52,25 +52,10 @@
     //ajax刷新验证码
     $("#refreshImg").click(function () {
         $("#kaptchaImg").attr("src","${webRoot}/except/kaptcha?flag="+Math.random());
-        <%--alert("进入");--%>
-        <%--$.ajax({--%>
-        <%--type: "get",--%>
-        <%--url: "${webRoot}/except/kaptcha",--%>
-        <%--dataType: "text",--%>
-        <%--success: function (img, status) {--%>
-        <%--alert(img);--%>
-        <%--$("#kaptchaImg").attr("src", "data:image/png;base64," + img);--%>
-        <%--},--%>
-        <%--error: function (data) {--%>
-        <%--alert('响应失败！');--%>
-        <%--}--%>
-        <%--});--%>
-        return false;
     });
 
     /*输入控制*/
     $(document).ready(function(){
-        ajaxErrorHandler();//ajax请求错误统一处理
 
         $('#username').blur(function () {
             if ($('#username').val() =='')
@@ -151,7 +136,12 @@
 
                     //显示错误信息
                     $("#kaptchaMsg").html('<span style="color: #b92c28">' + msg + '</span>');
+                    //刷新验证码
+                    $("#kaptchaImg").attr("src","${webRoot}/except/kaptcha?flag="+Math.random());
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
     });

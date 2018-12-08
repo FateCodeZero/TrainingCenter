@@ -57,7 +57,6 @@
 
     $(document).ready(function loading(){
         IFrameResize();
-        ajaxErrorHandler();//ajax请求错误统一处理
         //加载学员学习照列表
         $.ajax({
             type: 'GET',
@@ -68,10 +67,10 @@
                 var jsonData = eval(data);
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if(code == 1){
+                if(code === 1){
                     var studentPhotos = jsonData.data.items;
 
-                    if(studentPhotos.length == 0){
+                    if(studentPhotos.length === 0){
                         $("#student_photo").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                     $.each(studentPhotos,function (index,studentPhoto) {
@@ -132,6 +131,9 @@
                     $("#student_photo").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
                 IFrameResize();
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
     });

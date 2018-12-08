@@ -157,6 +157,9 @@
                     return false;
                 }
             }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR);
+            }
         });
         return Info;
     }
@@ -248,6 +251,9 @@
                         icon: 2
                     });
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR);
             }
         });
     });

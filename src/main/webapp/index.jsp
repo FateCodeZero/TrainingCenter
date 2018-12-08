@@ -77,9 +77,9 @@
                         <dl class="layui-nav-child">
                             <dd><a href="${webRoot}/webpages/user/userInfo.jsp">个人中心</a></dd>
                             <dd><a>消息通知</a></dd>
-                            <%--<sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">--%>
-                                <dd><a href="${webRoot}/webpages/admin/index.jsp">后台管理系统</a></dd>
-                            <%--</sec:authorize>--%>
+                                <%--<sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">--%>
+                            <dd><a href="${webRoot}/webpages/admin/index.jsp">后台管理系统</a></dd>
+                                <%--</sec:authorize>--%>
                             <dd><a href="${webRoot}/user/logout">退出</a></dd>
                         </dl>
                     </li>
@@ -112,7 +112,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        ajaxErrorHandler(); //ajax请求错误统一处理
     });
 
     //使用 element 模块

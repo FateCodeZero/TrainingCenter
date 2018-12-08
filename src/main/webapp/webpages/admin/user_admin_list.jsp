@@ -9,9 +9,11 @@
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css" charset="UTF-8">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css" charset="UTF-8">
 
-    <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js" charset="UTF-8"></script>
-    <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js" charset="UTF-8"></script>
-    <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js" charset="UTF-8"></script>
+    <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+    <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
+    <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
+    <script src="${webRoot}/plug-in/js/utils.js"></script>
+
 </head>
 
 <body>
@@ -76,7 +78,6 @@
     var state = null; //tab标题状态
 
     $(document).ready(function () {
-        ajaxErrorHandler(); //ajax请求错误统一处理
         loadLayuiElement();//加载 layui element
         tableData();    //加载数据表格
     });
@@ -431,13 +432,16 @@
                                 time: 3000,
                                 icon: 1
                             });
+                            location.reload(); //操作成功后刷新页面
                         } else {
                             layer.alert(msg, {
                                 time: 3000,
                                 icon: 2
                             });
                         }
-                        location.reload(); //操作后刷新页面
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                     }
                 });
             });
@@ -469,13 +473,16 @@
                     var msg = jsonData.msg;
                     if (code === 1) {
                         layer.msg(msg);
+                        location.reload(); //操作成功后刷新页面
                     } else {
                         layer.alert(msg, {
                             time: 3000,
                             icon: 2
                         });
                     }
-                    location.reload(); //操作后刷新页面
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                 }
             });
         }
@@ -512,55 +519,19 @@
                     var msg = jsonData.msg;
                     if (code === 1) {
                         layer.msg(msg);
+                        location.reload(); //操作成功后刷新页面
                     } else {
                         layer.alert(msg, {
                             time: 3000,
                             icon: 2
                         });
                     }
-                    location.reload(); //操作后刷新页面
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                 }
             });
         }
-    }
-
-    /**
-     * 通过 id 获取用户
-     * @param id
-     * @returns {*}
-     */
-    function getUserById(id) {
-        if (id == null || id == '') {
-            layer.alert('id不能为空！', {
-                time: 3000,
-                icon: 2
-            });
-            return false;
-        }
-        var user = null;
-        var data = {id: id};
-        $.ajax({
-            url: "${webRoot}/user/getUserById",
-            type: "get",
-            async: false,    //关闭异步请求
-            data: data,
-            dataType: "json",
-            success: function (data) {
-                var jsonData = eval(data); //数据解析
-                var code = jsonData.code;
-                var msg = jsonData.msg;
-                if (code == 1) {
-                    user = jsonData.data.user;
-                } else {
-                    layer.alert(msg, {
-                        time: 3000,
-                        icon: 2
-                    });
-                    return false;
-                }
-            }
-        });
-        return user;
     }
 </script>
 

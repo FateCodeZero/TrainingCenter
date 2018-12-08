@@ -82,7 +82,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        ajaxErrorHandler(); //ajax请求错误统一处理
         //页面加载完成
         //……
         /*富文本*/
@@ -155,6 +154,9 @@
                     });
                     return false;
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
         return newsInfo;
@@ -247,6 +249,9 @@
                         icon: 2
                     });
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
     });

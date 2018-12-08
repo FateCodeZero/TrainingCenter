@@ -5,6 +5,7 @@ import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.dao.UserInfoMapper;
 import com.trainingcenter.exception.DeleteException;
+import com.trainingcenter.exception.FindException;
 import com.trainingcenter.service.UserInfoService;
 import com.trainingcenter.utils.LogUtil;
 import com.trainingcenter.utils.StringUtil;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -52,24 +54,39 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     /**
+     * 获取所有用户数据，不分页
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
+     * @return 返回所有数据
+     */
+    @Override
+    public List<UserInfo> getUserInfos(Map<String, Object> condition) {
+        return this.getUserInfos(null,null,condition);
+    }
+
+    /**
      * 分页获取所有用户
      *
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回当前页的数据集合
      */
     @Override
-    public List<UserInfo> getUserInfos(Integer currentPage, Integer rows, String searchContent) {
-        Integer start = null;
-        if (currentPage != null && rows != null ) {
-            if (currentPage < 0 || rows < 0){
-                return null;
-            }else {
-                start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
+    public List<UserInfo> getUserInfos(Integer currentPage, Integer rows, Map<String,Object> condition) {
+        FindException findException;
+
+        if (currentPage != null && rows != null) {
+            if (currentPage < 0 || rows < 0) {
+                findException = new FindException("分页查询不能的页数或查询数量小于0");
+                LogUtil.info(this, "查询用户登录信息", "查询失败，分页查询不能的页数或查询数量小于0");
+                throw findException;
+            } else {
+                Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
+                return userInfoMapper.getUserInfos(start, rows, condition);
             }
+        } else {
+            return userInfoMapper.getUserInfos(null, null, condition);
         }
-        return userInfoMapper.getUserInfos(start, rows, searchContent);
     }
 
     /**

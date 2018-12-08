@@ -52,7 +52,7 @@
                 var code = jsonData.code;
                 var msg = jsonData.msg;
 
-                if(code == 1){
+                if(code === 1){
                     var dynamic_details = jsonData.data.items;
                     var id = dynamic_details.id;
                     var title = dynamic_details.title;
@@ -83,9 +83,9 @@
                     $("#dynamic_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
 
-            },
-            error:function (msg) {
-                $("#dynamic_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         })
 

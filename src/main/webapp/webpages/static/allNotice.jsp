@@ -64,7 +64,6 @@
         var laypage = layui.laypage;
 
         $(document).ready(function loading(){
-            ajaxErrorHandler(); //ajax请求错误统一处理
             getNotices();
             IFrameResize();
         });
@@ -73,7 +72,7 @@
         /*获取notices数据，完成DIV追加，返回总条数*/
         function getNotices(currentPage) {
             //首次加载，当前页为第一页时传入参数为空
-            if (currentPage == null){
+            if (currentPage === null){
                 currentPage = 1;
             }
             $.ajax({
@@ -85,11 +84,11 @@
                     var jsonData = eval(data);
                     var code = jsonData.code;
                     var msg = jsonData.msg;
-                    if(code == 1){
+                    if(code === 1){
                         var notice = jsonData.data.items;
                         var noticeTotal = Math.ceil((jsonData.data.total)/10);
 
-                        if (notice == 0){
+                        if (notice === 0){
                             $("#notice").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                         }
 
@@ -127,6 +126,9 @@
                     }else {
                         $("#notices").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                 }
             });
         }

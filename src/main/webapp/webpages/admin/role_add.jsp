@@ -19,6 +19,8 @@
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
+    <script src="${webRoot}/plug-in/js/utils.js"></script>
+
 </head>
 <body>
 <br>
@@ -74,7 +76,6 @@
     $(document).ready(function () {
         //页面加载完成
         //……
-        ajaxErrorHandler(); //ajax请求错误统一处理
     });
 
     //提交
@@ -137,6 +138,9 @@
                         icon: 2
                     });
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
     });

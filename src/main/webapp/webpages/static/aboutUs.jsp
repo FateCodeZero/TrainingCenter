@@ -149,7 +149,6 @@
 <script>
 
         $(document).ready(function loading(){
-            ajaxErrorHandler();//ajax请求错误统一处理
             getCompanyIntroduction();
             getRedHistory();
             getGreenDevelopment();
@@ -188,7 +187,7 @@
                     var code = jsonData.code;
                     var msg = jsonData.msg;
 
-                    if(code == 1){
+                    if(code === 1){
                         var company = jsonData.data.items;
                         $.each(company,function (index,companyOne) {
 
@@ -215,9 +214,9 @@
                         $("#company").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
 
-                },
-                error:function (msg) {
-                    $("#company").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                 }
             })
         }
@@ -235,10 +234,10 @@
                     var jsonData = eval(data);
                     var code = jsonData.code;
                     var msg = jsonData.msg;
-                    if(code == 1){
+                    if(code === 1){
                         var redPoints = jsonData.data.items;
 
-                        if(redPoints.length == 0){
+                        if(redPoints.length === 0){
                             $("#culturalTeachingPoint").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                         }
 
@@ -281,6 +280,9 @@
                         $("#culturalTeachingPoint").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                 }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+                }
             });
 
         }
@@ -297,10 +299,10 @@
                     var jsonData = eval(data);
                     var code = jsonData.code;
                     var msg = jsonData.msg;
-                    if(code == 1){
+                    if(code === 1){
                         var greenPoints = jsonData.data.items;
 
-                        if(greenPoints.length == 0){
+                        if(greenPoints.length === 0){
                             $("#culturalTeachingPoint").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                         }
 
@@ -331,7 +333,7 @@
                                 '                        </div>';
 
 
-                            if (index == 0) {
+                            if (index === 0) {
                                 $("#developTeachingPoint").html(green_div);
                             }else {
                                 $("#developTeachingPoint").append(green_div);
@@ -342,6 +344,9 @@
                     }else {
                         $("#developTeachingPoint").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                 }
             });
         }

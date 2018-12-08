@@ -14,6 +14,7 @@
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
+    <script src="${webRoot}/plug-in/js/utils.js"></script>
     <script src="${webRoot}/plug-in/js/bootstrap-treeview.min.js"></script>
 
     <style>
@@ -90,7 +91,6 @@
 </body>
 <script>
     $(document).ready(function () {
-//        ajaxErrorHandler(); //ajax请求错误统一处理
         var resourceData = getResourceData();
         var treeData = buildTreeData(resourceData);
         initSelectableTree(treeData);
@@ -137,6 +137,9 @@
                     });
                     return false;
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
         return returnData;

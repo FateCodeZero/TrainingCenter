@@ -98,7 +98,6 @@
     $(document).ready(function () {
         //页面加载完成
         //……
-        ajaxErrorHandler(); //ajax请求错误统一处理
 
         /*从URL获取对象ID*/
         var permissionId = getUrlParam('id');
@@ -218,6 +217,9 @@
                     });
                 }
             }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+            }
         });
     });
 
@@ -263,6 +265,9 @@
                     });
                     return null;
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
         return permission;

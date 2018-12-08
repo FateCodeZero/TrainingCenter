@@ -54,14 +54,13 @@
     layui.use('laypage', function(){
 
         $(document).ready(function loading(){
-            ajaxErrorHandler();//ajax请求错误统一处理
             getListPage();
             IFrameResize();
         });
         //获取ListPage数据，完成DIV追加，返回总条数
         function getListPage(currentPage){
             //首次加载，当前页为第一页时传入参数为空
-            if (currentPage == null){
+            if (currentPage === null){
                 currentPage = 1;
             }
 
@@ -74,10 +73,10 @@
                     var jsonData = eval(data);
                     var code = jsonData.code;
                     var msg = jsonData.msg;
-                    if(code == 1){
+                    if(code === 1){
                         var ListPages = jsonData.data.items;
                         var Total = Math.ceil((jsonData.data.total)/3);
-                        if(ListPages.length == 0){
+                        if(ListPages.length === 0){
                             $("#special").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                         }
 
@@ -130,6 +129,9 @@
                     }else {
                         $("#special").html('<h3 class="col-md-12 text-center">暂无数据</h3>');
                     }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                 }
             });
 

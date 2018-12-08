@@ -43,7 +43,7 @@
                             <p><a class="btn btn-primary btn-lg btn-learn btn_study" href="${webRoot}/webpages/static/experientialTeaching.jsp">开 启 学 习！</a></p>
                         </div>
                 </div>
-                <div style="background-image: url(${webRoot}/webpages/static/images/img_bg3.PNG)" class="scroll_map">
+                <div style="background-image: url(${webRoot}/webpages/static/images/about_us_bg.jpg)" class="scroll_map">
                     <div class="scrolls_map_text text-center">
                         <h1 class="myh1">赋  能  人  才，从  这  里  开  始</h1>
                         <h3 class="myh3">卓越人生，从梦润起航，梦润新世界  <a href="${webRoot}/webpages/static/experientialTeaching.jsp" class="myh3 a_study">全新的学习方式</a></h3>
@@ -175,7 +175,6 @@
         });
 
         $(document).ready(function loading(){
-            ajaxErrorHandler();//ajax请求错误统一处理
             getNotices();
             getNews();
             getDynamicListPage();
@@ -199,11 +198,11 @@
                     var jsonData = eval(data);
                     var code = jsonData.code;
                     var msg = jsonData.msg;
-                    if(code == 1){
+                    if(code === 1){
                         var trainingDynamics = jsonData.data.items;
                         var dynamicsTotal = Math.ceil((jsonData.data.total)/4);
 
-                        if(trainingDynamics.length == 0){
+                        if(trainingDynamics.length === 0){
                             $("#dynamic").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                         }
 
@@ -233,7 +232,7 @@
                                 '                </div>';
 
 
-                            if (index == 0) {
+                            if (index === 0) {
                                 $("#dynamic").html(dynamic_div);
                             }else {
                                 $("#dynamic").append(dynamic_div);
@@ -253,6 +252,9 @@
                     }else {
                         $("#dynamic").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                 }
             });
 
@@ -295,9 +297,9 @@
                     var jsonData = eval(data);
                     var code = jsonData.code;
                     var msg = jsonData.msg;
-                    if(code == 1){
+                    if(code === 1){
                         var advertisements = jsonData.data.items;
-                        if(advertisements.length == 0){
+                        if(advertisements.length === 0){
                             $("#advertisement").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                         }
 
@@ -338,6 +340,9 @@
                         $("#advertisement").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                 }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+                }
             });
         }
         /*获取新闻*/
@@ -351,9 +356,9 @@
                     var jsonData = eval(data);
                     var code = jsonData.code;
                     var msg = jsonData.msg;
-                    if(code == 1){
+                    if(code === 1){
                         var news = jsonData.data.items;
-                        if(news.length == 0){
+                        if(news.length === 0){
                             $("#newsInfo").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                         }
 
@@ -389,6 +394,9 @@
                         $("#newsInfo").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                 }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+                }
             });
         }
         /*获取公告*/
@@ -402,9 +410,9 @@
                     var jsonData = eval(data);
                     var code = jsonData.code;
                     var msg = jsonData.msg;
-                    if(code == 1){
+                    if(code === 1){
                         var notice = jsonData.data.items;
-                        if(notice.length == 0){
+                        if(notice.length === 0){
                             $("#notices").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                         }
 
@@ -439,6 +447,9 @@
                     }else {
                         $("#notices").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                 }
             });
         }

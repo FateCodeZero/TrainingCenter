@@ -52,7 +52,6 @@
 
 <script>
     $(document).ready(function loading(){
-        ajaxErrorHandler();//ajax请求错误统一处理
         //加载往期学员故事列表
         $.ajax({
             type: 'GET',
@@ -63,10 +62,10 @@
                 var jsonData = eval(data);
                 var code = jsonData.code;
                 var msg = jsonData.msg;
-                if(code == 1){
+                if(code === 1){
                     var studentStories = jsonData.data.items;
 
-                    if(studentStories.length == 0){
+                    if(studentStories.length === 0){
                         $("#student_story").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                     }
                     $.each(studentStories,function (index,studentstory) {
@@ -118,6 +117,9 @@
                 }else {
                     $("#student_story").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
     });

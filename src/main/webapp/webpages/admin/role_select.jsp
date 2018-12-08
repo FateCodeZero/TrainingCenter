@@ -55,7 +55,6 @@
     var roleData = null; /*该用户已有的角色数据*/
 
     $(document).ready(function () {
-        ajaxErrorHandler(); //ajax请求错误统一处理
 
         /*从URL获取对象ID*/
         userId = getUrlParam('id');
@@ -89,6 +88,9 @@
                         icon: 2
                     });
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
         return roles;

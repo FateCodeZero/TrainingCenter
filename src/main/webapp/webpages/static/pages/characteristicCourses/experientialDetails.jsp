@@ -38,7 +38,6 @@
 <script>
 
     $(document).ready(function () {
-        ajaxErrorHandler();//ajax请求错误统一处理
         var id = $.Request('id');
         $.ajax({
             type: 'GET',
@@ -50,7 +49,7 @@
                 var code = jsonData.code;
                 var msg = jsonData.msg;
 
-                if(code == 1){
+                if(code === 1){
                     var experiential_details = jsonData.data.items;
                     var id = experiential_details.id;
                     var title = experiential_details.title;
@@ -81,9 +80,9 @@
                     $("#experiential_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
 
-            },
-            error:function (msg) {
-                $("#experiential_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         })
     })

@@ -9,6 +9,43 @@ IFrameResize = function(){
 };
 
 /**
+ * Ajax 请求错误统一异常处理处理
+ */
+ajaxErrorHandler = function (jqXHR) {
+    switch (jqXHR.status) {
+        case(500):
+            layer.alert('非常抱歉，服务器出现异常了', {
+                time: 3000,
+                icon: 2
+            });
+            break;
+        case(401):
+            layer.alert('您未登录，请您先去登录', {
+                time: 3000,
+                icon: 2
+            });
+            break;
+        case(403):
+            layer.alert('非常抱歉，您没有该操作权限', {
+                time: 3000,
+                icon: 2
+            });
+            break;
+        case(408):
+            layer.alert('服务器请求超时', {
+                time: 3000,
+                icon: 2
+            });
+            break;
+        default:
+            layer.alert('网络异常', {
+                time: 3000,
+                icon: 2
+            });
+    }
+};
+
+/**
  * 获取URL后携带的参数
  * @param paramName:参数名称
  */

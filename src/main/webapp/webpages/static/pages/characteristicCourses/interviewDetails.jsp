@@ -39,7 +39,6 @@
 <script>
 
     $(document).ready(function () {
-        ajaxErrorHandler();//ajax请求错误统一处理
         var id = $.Request('id');
         $.ajax({
             type: 'GET',
@@ -51,7 +50,7 @@
                 var code = jsonData.code;
                 var msg = jsonData.msg;
 
-                if(code == 1){
+                if(code === 1){
                     var interview_details = jsonData.data.items;
                     var id = interview_details.id;
                     var title = interview_details.title;
@@ -82,9 +81,9 @@
                     $("#interview_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
 
-            },
-            error:function (msg) {
-                $("#interview_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         })
     })

@@ -7,6 +7,7 @@ import com.trainingcenter.exception.DeleteException;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,14 +34,21 @@ public interface UserInfoService {
     public UserInfo getUserInfoByUsername(String username);
 
     /**
+     * 查询所有用户信息，不分页
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
+     * @return 返回所有数据集合
+     */
+    public List<UserInfo> getUserInfos(Map<String,Object> condition);
+
+    /**
      * 分页获取所有用户
      *
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回当前页的数据集合
      */
-    public List<UserInfo> getUserInfos(Integer currentPage, Integer rows, String searchContent);
+    public List<UserInfo> getUserInfos(Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 用户添加方法

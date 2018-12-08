@@ -1,7 +1,6 @@
 package com.trainingcenter.controller;
 
 import com.trainingcenter.bean.Permission;
-import com.trainingcenter.bean.Resource;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.service.PermissionService;

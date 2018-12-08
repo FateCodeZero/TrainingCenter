@@ -39,8 +39,6 @@
 
     $(document).ready(function () {
 
-        ajaxErrorHandler();//ajax请求错误统一处理
-
         var id = $.Request('id');
         $.ajax({
             type: 'GET',
@@ -52,7 +50,7 @@
                 var code = jsonData.code;
                 var msg = jsonData.msg;
 
-                if(code == 1){
+                if(code === 1){
                     var details = jsonData.data.items;
                     var id = details.id;
                     var title = details.title;
@@ -82,9 +80,9 @@
                 }else {
                     $("#communication_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
                 }
-            },
-            error:function (msg) {
-                $("#communication_details").html('<h3 class="col-md-12 text-center">'+msg+'</h3>');
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         })
     })

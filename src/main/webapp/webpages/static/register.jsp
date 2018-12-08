@@ -24,31 +24,34 @@
     <script src="${webRoot}/plug-in/js/utils.js"></script>
 
 </head>
-<body >
-<a href="http://localhost:8080/index.jsp" ></a>
+<body>
+<a href="http://localhost:8080/index.jsp"></a>
 <h1>梦润传承</h1>
 
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4 register_body">
-            <div class="col-md-12 register_title">
-                <h2 class="col-md-12 text-center ">注册</h2>
-                <label class="col-md-2 col-md-offset-5 bar-w3-agile"></label>
-            </div>
-            <input type="text" name="username" id="username" class="col-md-10 col-md-offset-1  register_input" placeholder="请填写用户名" required="" />
-            <div class="col-md-10 col-md-offset-1 text-left" id="usernameMsg"></div>
-            <input type="password" name="password" id="password" class="col-md-10 col-md-offset-1  register_input" placeholder="请填写密码" required="" />
-            <div class="col-md-10 col-md-offset-1 text-left" id="passwordMsg"></div>
-            <input type="password" name="password" id="rePassword" class="col-md-10 col-md-offset-1  register_input" value="" placeholder="重复密码">
-            <div class="col-md-10 col-md-offset-1 text-left" id="rePasswordMsg"></div>
-            <div class="clear"></div>
-            <button type="button"  id="submit" class="col-md-10 col-md-offset-1  btn_submit" onclick="javascript:;">注册</button>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4 register_body">
+        <div class="col-md-12 register_title">
+            <h2 class="col-md-12 text-center ">注册</h2>
+            <label class="col-md-2 col-md-offset-5 bar-w3-agile"></label>
         </div>
+        <input type="text" name="username" id="username" class="col-md-10 col-md-offset-1  register_input"
+               placeholder="请填写用户名" required=""/>
+        <div class="col-md-10 col-md-offset-1 text-left" id="usernameMsg"></div>
+        <input type="password" name="password" id="password" class="col-md-10 col-md-offset-1  register_input"
+               placeholder="请填写密码" required=""/>
+        <div class="col-md-10 col-md-offset-1 text-left" id="passwordMsg"></div>
+        <input type="password" name="password" id="rePassword" class="col-md-10 col-md-offset-1  register_input"
+               value="" placeholder="重复密码">
+        <div class="col-md-10 col-md-offset-1 text-left" id="rePasswordMsg"></div>
+        <div class="clear"></div>
+        <button type="button" id="submit" class="col-md-10 col-md-offset-1  btn_submit" onclick="javascript:;">注册
+        </button>
     </div>
+</div>
 </body>
 <script type="text/javascript">
 
-    $(document).ready( function(){
-        ajaxErrorHandler(); //ajax请求错误统一处理
+    $(document).ready(function () {
 
     });
 
@@ -58,20 +61,20 @@
         var msg = '';
         if (username === null || username === '') {
             msg = '账号不能为空';
-            $("#usernameMsg").html("<span style='color:#FF5722'>"+msg+"</span>");
+            $("#usernameMsg").html("<span style='color:#FF5722'>" + msg + "</span>");
             $("#username").css("border", "1px solid red");
         } else {
             $("#usernameMsg").html("");
             msg = '账号不是合法的手机号或者邮箱';
 
-            if(!usernameCheck(username.trim())) {
-                $("#usernameMsg").html("<span style='color:#FF5722'>"+msg+"</span>");
+            if (!usernameCheck(username.trim())) {
+                $("#usernameMsg").html("<span style='color:#FF5722'>" + msg + "</span>");
                 $("#username").css("border", "1px solid red");
-            }else {
+            } else {
                 $("#usernameMsg").html("");
 
                 var data = {
-                    username:username
+                    username: username
                 };
                 $.ajax({
                     url: "${webRoot}/user/usernameCheck",
@@ -84,12 +87,15 @@
                         var msg = jsonData.msg;
 
                         if (code === 1) {
-                            $("#usernameMsg").html('<span style="color:#009688">'+msg+'</span>');
+                            $("#usernameMsg").html('<span style="color:#009688">' + msg + '</span>');
                             $("#username").css("border", "1px solid #009688");
-                        }else {
-                            $("#usernameMsg").html('<span style="color:#FF5722">'+msg+'</span>');
+                        } else {
+                            $("#usernameMsg").html('<span style="color:#FF5722">' + msg + '</span>');
                             $("#username").css("border", "1px solid red");
                         }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
                     }
                 });
             }
@@ -102,16 +108,16 @@
         var msg = '';
         if (password === null || password === '') {
             msg = '密码不能为空';
-            $("#passwordMsg").html("<span style='color:#FF5722'>"+msg+"</span>");
+            $("#passwordMsg").html("<span style='color:#FF5722'>" + msg + "</span>");
             $("#password").css("border", "1px solid red");
         } else {
             $("#passwordMsg").html("");
             msg = '密码需以字母开头，且长度是6~18位,只能包含字母、数字和下划线';
 
-            if(!passwordCheck(password.trim())) {
-                $("#passwordMsg").html("<span style='color:#FF5722'>"+msg+"</span>");
+            if (!passwordCheck(password.trim())) {
+                $("#passwordMsg").html("<span style='color:#FF5722'>" + msg + "</span>");
                 $("#password").css("border", "1px solid red");
-            }else {
+            } else {
                 $("#passwordMsg").html("");
                 $("#password").css("border", "1px solid #009688");
             }
@@ -136,7 +142,7 @@
             return false;
         } else {
             $("#usernameMsg").html('');
-            if(!usernameCheck(username.trim())) {
+            if (!usernameCheck(username.trim())) {
                 msg = '<span style="color: #FF5722;">账号不是合法的手机号或者邮箱</span>';
                 layer.msg(msg, {
                     icon: 2,
@@ -145,7 +151,7 @@
                 $("#usernameMsg").html(msg);
                 $("#username").css("border", "1px solid red");
                 return false;
-            }else {
+            } else {
                 $("#usernameMsg").html('');
                 $("#username").css("border", "1px solid #009688");
             }
@@ -161,7 +167,7 @@
             return false;
         } else {
             $("#passwordMsg").html('');
-            if(!passwordCheck(password.trim())) {
+            if (!passwordCheck(password.trim())) {
                 msg = '<span style="font-size: large">密码格式不安全</span>';
                 layer.msg(msg, {
                     icon: 2,
@@ -171,7 +177,7 @@
                 $("#passwordMsg").html(tip);
                 $("#password").css("border", "1px solid red");
                 return false;
-            }else {
+            } else {
                 $("#passwordMsg").html('');
                 $("#password").css("border", "1px solid #009688");
             }
@@ -216,8 +222,8 @@
                         time: 3000,
                         icon: 1
                     });
-                    window.location="${webRoot}/user/goLogin";
-                }else if (code === 0) {
+                    window.location = "${webRoot}/user/goLogin";
+                } else if (code === 0) {
                     layer.alert(msg, {
                         time: 3000,
                         icon: 2
@@ -229,10 +235,10 @@
                     $("#username").css("border", "1px solid #cccccc");
                     $("#password").css("border", "1px solid #cccccc");
                     $("#rePassword").css("border", "1px solid #cccccc");
-
-                    //错误错误状态码统一跳转
-                    ajaxErrorHandler("${webRoot}", code);
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
     });

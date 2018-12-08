@@ -9,9 +9,11 @@
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css" charset="UTF-8">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css" charset="UTF-8">
 
-    <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js" charset="UTF-8"></script>
-    <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js" charset="UTF-8"></script>
-    <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js" charset="UTF-8"></script>
+    <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+    <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
+    <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
+    <script src="${webRoot}/plug-in/js/utils.js"></script>
+
 </head>
 
 <body>
@@ -75,7 +77,6 @@
     var state = null; //tab标题状态
 
     $(document).ready(function () {
-        ajaxErrorHandler(); //ajax请求错误统一处理
         loadLayuiElement();//加载 layui element
         tableData();    //加载数据表格
     });
@@ -133,25 +134,26 @@
      * condition：自定义查询条件
      * */
     function layuiReload(condition) {
-        if (condition !== null && condition !== ''){
+        if (condition !== null && condition !== '') {
             var state = condition.state;
             var searchTxt = condition.searchContent;
-            if (state === null || state === ''){
+            if (state === null || state === '') {
                 //保证tab返回全部时，能查询所有
                 condition = {
-                    searchContent:searchTxt
+                    searchContent: searchTxt
                 };
             }
             table.reload('table1', {
                 page: {
                     curr: 1 //重新从第 1 页开始
                 }
-                ,where: { //接口需要的其它参数
+                , where: { //接口需要的其它参数
                     condition: JSON.stringify(condition)
                 }
             });
         }
     }
+
     /**
      * 模糊查询
      */
@@ -159,7 +161,7 @@
         var searchContent = $("#searchContent").val(); //模糊查询内容
         var condition = {
             searchContent: searchContent
-            ,state:state
+            , state: state
         };
         layuiReload(condition);
     });
@@ -214,7 +216,12 @@
                         }
                     }
                     , {
-                        field: 'registerTime', title: '注册时间', sort: true, width: 150, align: 'center', templet: function (d) {
+                        field: 'registerTime',
+                        title: '注册时间',
+                        sort: true,
+                        width: 150,
+                        align: 'center',
+                        templet: function (d) {
                             return new Date(d.registerTime).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
                         }
                     }
@@ -265,10 +272,13 @@
             //监听工具条
             table.on('tool(table-filter)', function (obj) {
                 var data = obj.data;
-                var id = data.id;/*操作的数据Id*/
+                var id = data.id;
+                /*操作的数据Id*/
 
-                var state = 1;/*启/禁用操作（1：启用，0：禁用）*/
-                var locked = 1;/*IP锁定操作（1：锁定，0：正常）*/
+                var state = 1;
+                /*启/禁用操作（1：启用，0：禁用）*/
+                var locked = 1;
+                /*IP锁定操作（1：锁定，0：正常）*/
 
                 if (obj.event === 'enable') {    //启用
                     state = 1;
@@ -278,10 +288,10 @@
                     enableOpt(data, state);
                 } else if (obj.event === 'lock') {  /*锁定IP*/
                     locked = 0;
-                    IPLockedOpt(data,locked);
+                    IPLockedOpt(data, locked);
                 } else if (obj.event === 'unlock') {  /*解锁IP*/
                     locked = 1;
-                    IPLockedOpt(data,locked);
+                    IPLockedOpt(data, locked);
                 }
             });
         });
@@ -313,13 +323,16 @@
                     var msg = jsonData.msg;
                     if (code === 1) {
                         layer.msg(msg);
+                        location.reload(); //操作成功后刷新页面
                     } else {
                         layer.alert(msg, {
                             time: 3000,
                             icon: 2
                         });
                     }
-                    location.reload(); //操作后刷新页面
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR);
                 }
             });
         }
@@ -342,8 +355,8 @@
                 id: obj.id,
                 username: obj.username,
                 state: obj.state,
-                unlockedFlag:locked,
-                loginIP:obj.loginIP
+                unlockedFlag: locked,
+                loginIP: obj.loginIP
             };
             $.ajax({
                 url: "${webRoot}/user/update",
@@ -356,13 +369,16 @@
                     var msg = jsonData.msg;
                     if (code === 1) {
                         layer.msg(msg);
+                        location.reload(); //操作后刷新页面
                     } else {
                         layer.alert(msg, {
                             time: 3000,
                             icon: 2
                         });
                     }
-                    location.reload(); //操作后刷新页面
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR);
                 }
             });
         }

@@ -434,7 +434,7 @@ public class UserController {
     @PreAuthorize("hasPermission('/webpages/admin/user_list.jsp','READ')")
     @ResponseBody
     @RequestMapping("/list")
-    public AjaxJson list(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
+    public AjaxJson getUsers(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null) {
             ajaxJson.setCode(0);
@@ -477,7 +477,7 @@ public class UserController {
     @PreAuthorize("hasPermission('/webpages/admin/user_admin_list.jsp','READ')")
     @ResponseBody
     @RequestMapping("/list_admin")
-    public AjaxJson list_admin(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
+    public AjaxJson getAdmins(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null) {
             ajaxJson.setCode(0);

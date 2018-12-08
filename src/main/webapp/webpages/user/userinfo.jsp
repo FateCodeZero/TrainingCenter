@@ -278,7 +278,6 @@
 
     /*验证修改个人信息格式*/
     $(document).ready(function () {
-        ajaxErrorHandler(); //ajax请求错误统一处理
         /*验证手机号*/
         $("#phone").blur(function () {
             if (!checkPhone($("#phone").val().trim())) {
@@ -382,6 +381,9 @@
                 if (re.status == '1') {
                     $('.user_pic img').attr('src', src);
                 }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
     }
