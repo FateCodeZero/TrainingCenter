@@ -11,6 +11,7 @@
 
     <%--JS--%>
     <script type="text/javascript" src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="${webRoot}/plug-in/jquery-cookie/jquery.cookie.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script src="${webRoot}/plug-in/js/utils.js"></script>
@@ -22,18 +23,18 @@
         <div class="col-md-6 login_div">
             <h3 class="col-md-12 text-center my_title2">登录</h3>
 
-                <input type="text" name="username" id="username" class="col-md-10 col-md-offset-1  login_input" placeholder="请填写用户名" required="" />
-                <div class="col-md-10 col-md-offset-1 text-left" id="usernameMsg"></div>
+            <input type="text" name="username" id="username" class="col-md-10 col-md-offset-1  login_input" placeholder="请填写用户名" required="" />
+            <div class="col-md-10 col-md-offset-1 text-left" id="usernameMsg"></div>
 
-                <input type="password" name="password" id="password" class="col-md-10 col-md-offset-1  login_input" placeholder="请填写密码" required="" />
-                <div class="col-md-10 col-md-offset-1 text-left" id="passwordMsg"></div>
+            <input type="password" name="password" id="password" class="col-md-10 col-md-offset-1  login_input" placeholder="请填写密码" required="" />
+            <div class="col-md-10 col-md-offset-1 text-left" id="passwordMsg"></div>
 
-                <input type="text" name="kaptcha" id="kaptcha" class="col-md-5 col-md-offset-1 login_input" placeholder="请填写验证码" required="" />
-                <img id="kaptchaImg" src="${webRoot}/except/kaptcha" class="col-md-4 col-md-offset-1 captcha_css"/>
-                <a id="refreshImg" class="col-md-4 col-md-offset-7 text-center refreshImg_css">点此刷新验证码</a>
-                <div class="col-md-10 col-md-offset-1 text-left" id="kaptchaMsg"></div>
+            <input type="text" name="kaptcha" id="kaptcha" class="col-md-5 col-md-offset-1 login_input" placeholder="请填写验证码" required="" />
+            <img id="kaptchaImg" src="${webRoot}/except/kaptcha" class="col-md-4 col-md-offset-1 captcha_css"/>
+            <a id="refreshImg" class="col-md-4 col-md-offset-7 text-center refreshImg_css">点此刷新验证码</a>
+            <div class="col-md-10 col-md-offset-1 text-left" id="kaptchaMsg"></div>
 
-                <button  id="submit" type="button"  class="col-md-10 col-md-offset-1 login_submit" >登录</button>
+            <button  id="submit" type="button"  class="col-md-10 col-md-offset-1 login_submit" >登录</button>
 
         </div>
         <div class="col-md-6 img_div">
@@ -109,6 +110,7 @@
                 var msg = jsonData.msg;     //提示信息
                 var url = null;
                 var responseData = null;
+                var username = null;
 
                 if (code === 1) {
                     layer.alert(msg, {
@@ -118,6 +120,8 @@
                     responseData = jsonData.data;    //获取返回的数据集
                     if (responseData !== null && responseData !== "") {
                         url = responseData.url;
+                        username = responseData.username;
+                        $.cookie('username',username , { expires: 7, path: '/' });//有效时间为7天
                     }
                     if (url !== null) {
                         //登录成功后跳转

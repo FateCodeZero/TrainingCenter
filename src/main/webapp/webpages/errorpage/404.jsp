@@ -27,7 +27,7 @@
                 <p class="notFond1">404</p>
                 <h1 class="notFond2">找不到页面</h1>
                 <h2 class="notFond3">非常抱歉，您访问的页面不存在，&nbsp;&nbsp;&nbsp;您可以
-                    <a  href="${webRoot}/webpages/index.jsp" >&nbsp;返回首页&nbsp;</a>
+                    <a  href="${webRoot}/index.jsp" >&nbsp;返回首页&nbsp;</a>
                     或者<a href="${webRoot}/webpages/static/contact.jsp" >&nbsp;联系我们&nbsp;</a></h2>
 
             </div>

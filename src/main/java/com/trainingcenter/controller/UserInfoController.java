@@ -5,6 +5,7 @@ import com.trainingcenter.bean.UserInfo;
 import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.service.UserInfoService;
 import com.trainingcenter.utils.AjaxJson;
+import com.trainingcenter.utils.DateUtil;
 import com.trainingcenter.utils.FindConditionUtils;
 import com.trainingcenter.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,8 +49,8 @@ public class UserInfoController {
             return ajaxJson;
         }
 
-        UserInfo userInfoById = userInfoService.getUserInfoById(id);
-        if (userInfoById == null){
+        UserInfo userInfo = userInfoService.getUserInfoById(id);
+        if (userInfo == null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("查询错误，对象不存在或已被删除");
             return ajaxJson;
@@ -54,7 +58,7 @@ public class UserInfoController {
             ajaxJson.setCode(1);
             ajaxJson.setMsg("查询成功");
             Map<String,Object> data = new ConcurrentHashMap<>();
-            data.put("userInfoById",userInfoById);
+            data.put("userInfo",userInfo);
             ajaxJson.setData(data);
         }
         return ajaxJson;
@@ -71,8 +75,8 @@ public class UserInfoController {
             return ajaxJson;
         }
 
-        UserInfo userInfoById = userInfoService.getUserInfoByUsername(username);
-        if (userInfoById == null){
+        UserInfo userInfo = userInfoService.getUserInfoByUsername(username);
+        if (userInfo == null){
             ajaxJson.setCode(0);
             ajaxJson.setMsg("查询错误，对象不存在或已被删除");
             return ajaxJson;
@@ -80,7 +84,7 @@ public class UserInfoController {
             ajaxJson.setCode(1);
             ajaxJson.setMsg("查询成功");
             Map<String,Object> data = new ConcurrentHashMap<>();
-            data.put("userInfoById",userInfoById);
+            data.put("userInfo",userInfo);
             ajaxJson.setData(data);
         }
         return ajaxJson;
@@ -124,34 +128,93 @@ public class UserInfoController {
     @PreAuthorize("hasPermission('/webpages/user/userInfo.jsp','UPDATE')")
     @ResponseBody
     @RequestMapping("/update")
-    public AjaxJson update(@Validated(value = {TC_Update.class}) UserInfo userInfo){
+    public AjaxJson update(HttpServletRequest request){
         AjaxJson ajaxJson = new AjaxJson();
+        UserInfo userInfo;
 
-        //更新结果
-        Integer res;
-        //id与username不能都为空
-        if (userInfo == null || (StringUtil.isEmpty(userInfo.getId()) && StringUtil.isEmpty(userInfo.getUsername()))){
+        String id = request.getParameter("id");
+        String username = request.getParameter("username");
+        //从数据库读取旧的对象进行更新
+        if (StringUtil.isNotEmpty(id)){
+            //按id查找
+            userInfo = userInfoService.getUserInfoById(id);
+        }else if (StringUtil.isNotEmpty(username)){
+            //按 username 查找
+            userInfo = userInfoService.getUserInfoByUsername(username);
+        }else {
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("更新失败，请先选择更新对象");
+            ajaxJson.setMsg("更新失败，请先选择要更新的对象");
             return ajaxJson;
         }
 
-        //从数据库读取旧的对象进行更新
-        UserInfo oldUserInfo;
-        if (StringUtil.isNotEmpty(userInfo.getId())){
-            //按id查找
-            oldUserInfo = userInfoService.getUserInfoById(userInfo.getId());
-        }else {
-            //按 username 查找
-            oldUserInfo = userInfoService.getUserInfoByUsername(userInfo.getUsername());
-        }
-        if (oldUserInfo == null) {
+        if (userInfo == null) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("更新失败，对象不存在或已被删除");
             return ajaxJson;
         }
 
-        res = userInfoService.update(oldUserInfo);
+        String nickname = request.getParameter("nickname");
+        if (StringUtil.isNotEmpty(nickname)){
+            userInfo.setNickname(nickname);
+        }
+        String realName = request.getParameter("realName");
+        if (realName != null){
+            userInfo.setRealName(realName);
+        }
+        String genderStr = request.getParameter("gender");
+        Integer gender;
+        if (StringUtil.isNotEmpty(genderStr)){
+            gender = Integer.valueOf(genderStr);
+            userInfo.setGender(gender);
+        }
+        String birthdayStr = request.getParameter("birthday");
+        Date birthday;
+        if (StringUtil.isNotEmpty(birthdayStr)){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            birthday = DateUtil.strToDate(birthdayStr,sdf);
+            if (birthday != null){
+                userInfo.setBirthday(birthday);
+            }
+        }
+        String address = request.getParameter("address");
+        if (address != null){
+            userInfo.setAddress(address);
+        }
+        String postalCode = request.getParameter("postalCode");
+        if (postalCode != null ){
+            userInfo.setPostalCode(postalCode);
+        }
+        String email = request.getParameter("email");
+        if (StringUtil.isNotEmpty(email)){
+            userInfo.setEmail(email);
+        }
+        String phone = request.getParameter("phone");
+        if (StringUtil.isNotEmpty(phone)){
+            userInfo.setPhone(phone);
+        }
+        String motto = request.getParameter("motto");
+        if (motto != null){
+            userInfo.setMotto(motto);
+        }
+        String describe = request.getParameter("describe");
+        if (describe != null){
+            userInfo.setDescribe(describe);
+        }
+        String company = request.getParameter("company");
+        if (company != null){
+            userInfo.setCompany(company);
+        }
+        String position = request.getParameter("position");
+        if (position != null){
+            userInfo.setPosition(position);
+        }
+        String career = request.getParameter("career");
+        if (career != null){
+            userInfo.setCareer(career);
+        }
+
+        //更新结果
+        Integer res = userInfoService.update(userInfo);
         if (res > 0) {
             ajaxJson.setCode(1);
             ajaxJson.setMsg("更新成功");
