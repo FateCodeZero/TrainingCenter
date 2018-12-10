@@ -58,7 +58,7 @@
 
         <!--2、权限初步管理，基于角色，再通过注解对每个方法进行细化管理-->
         <!--用户文件夹至少需要用户权限-->
-        <security:intercept-url pattern="/webpages/user/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/webpages/user/**" access="hasAnyRole('ROLE_USER','ROLE_MANAGER','ROLE_ADMIN')"/>
 
         <!--管理员文件夹下需要管理员权限-->
         <security:intercept-url pattern="/webpages/admin/**" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>

@@ -14,7 +14,7 @@ IFrameResize = function(){
 ajaxErrorHandler = function (jqXHR) {
     switch (jqXHR.status) {
         case(500):
-            layer.alert('非常抱歉，服务器出现异常了', {
+            layer.alert('请求参数有误', {
                 time: 3000,
                 icon: 2
             });

@@ -23,6 +23,7 @@
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script type="text/javascript" src="${webRoot}/webpages/static/js/jquery.flexText.js" charset="gbk"></script>
     <script type="text/javascript" src="${webRoot}/webpages/static/js/utils.js"></script>
+    <script type="text/javascript" src="${webRoot}/plug-in/js/utils.js"></script>
 
 </head>
 <body onload="IFrameResize()">
@@ -137,7 +138,7 @@
             '               <div class="col-md-12 pl-text clearfix">' +
             '                   <a href="#" class="comment-size-name">' + username + ' : </a>' +
             '                   <span class="my-pl-con">&nbsp;' + comment + '</span>' +
-            '               </div>\n' +
+            '               </div>' +
             '               <div class="col-md-12 date-dz">' +
             '                   <span class="col-md-3 date-dz-left pull-left comment-time">' + now + '</span>' +
             '                   <div class="col-md-3 date-dz-right pull-right comment-pl-block">' +
@@ -233,19 +234,19 @@
                     oHf = data.hfName;
                 });
 
-                var replyDiv = '<div class="col-md-11 all-pl-con">\n' +
-                    '    <div class="col-md-12 pl-text hfpl-text clearfix">\n' +
-                    '        <a href="#" class="comment-size-name">' + username + ' : </a>\n' +
-                    '        <span class="my-pl-con">' + oAt + '</span>\n' +
-                    '    </div>\n' +
-                    '    <div class="col-md-12 date-dz">\n' +
-                    '        <span class="col-md-3 date-dz-left pull-left comment-time"></span>\n' +
-                    '        <div class="col-md-3 date-dz-right pull-right comment-pl-block">\n' +
-                    '            <a href="javascript:;" class="col-md-2 removeBlock">删除</a>\n' +
-                    '            <a href="javascript:;" class="col-md-2 date-dz-pl pl-hf hf-con-block pull-left">回复</a>\n' +
-                    '        </div>\n' +
-                    '    </div>\n' +
-                    '</div>\n';
+                var replyDiv = '<div class="col-md-11 all-pl-con">' +
+                    '    <div class="col-md-12 pl-text hfpl-text clearfix">' +
+                    '        <a href="#" class="comment-size-name">' + username + ' : </a>' +
+                    '        <span class="my-pl-con">' + oAt + '</span>' +
+                    '    </div>' +
+                    '    <div class="col-md-12 date-dz">' +
+                    '        <span class="col-md-3 date-dz-left pull-left comment-time"></span>' +
+                    '        <div class="col-md-3 date-dz-right pull-right comment-pl-block">' +
+                    '            <a href="javascript:;" class="col-md-2 removeBlock">删除</a>' +
+                    '            <a href="javascript:;" class="col-md-2 date-dz-pl pl-hf hf-con-block pull-left">回复</a>' +
+                    '        </div>' +
+                    '    </div>' +
+                    '</div>';
                 oThis.parents('.hf-con').parents('.comment-show-con-list').find('.hf-list-con').css('display', 'block').prepend(replyDiv) && oThis.parents('.hf-con').siblings('.date-dz-right').find('.pl-hf').addClass('hf-con-block') && oThis.parents('.hf-con').remove();
             });
         }

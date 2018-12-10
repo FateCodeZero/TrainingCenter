@@ -28,6 +28,7 @@
     <script src="${webRoot}/webpages/static/js/uploadPhoto/sitelogo.js"></script>
     <script src="${webRoot}/webpages/static/js/uploadPhoto/html2canvas.min.js" type="text/javascript"
             charset="utf-8"></script>
+    <script type="text/javascript" src="${webRoot}/plug-in/js/utils.js"></script>
 
 </head>
 <body onload="IFrameResize()">
@@ -233,6 +234,11 @@
 <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
 
 <script type="text/javascript">
+
+    $(document).ready(function () {
+        getUrlParam('id');
+    });
+
     //上传图片简易的验证  大小 格式
     $('#avatarInput').on('change', function (e) {
         var filemaxsize = 1024 * 3;//5M
