@@ -56,6 +56,8 @@
                     var content = details.content;
                     var imgs = details.imgs;
 
+                    content = pageContent(content);
+
                     var details_div = '    <div id="'+id+' " class="container">' +
                         '        <div class="row animate-box">' +
                         '            <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">' +

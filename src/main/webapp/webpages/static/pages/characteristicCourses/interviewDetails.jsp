@@ -57,6 +57,8 @@
                     var content = interview_details.content;
                     var imgs = interview_details.imgs;
 
+                    content = pageContent(content);
+
                     var interview_details_div = '    <div id="'+id+' " class="container">' +
                         '        <div class="row animate-box">' +
                         '            <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">' +

@@ -214,14 +214,8 @@
                             var updateData = trainingDynamic.updateData;
 
                             /*处理当前字符串，p标签里面的文字长度必须一样长，否则页面会乱码*/
-                            content = content.replace(/(\n)/g, "");
-                            content = content.replace(/(\t)/g, "");
-                            content = content.replace(/(\r)/g, "");
-                            content = content.replace(/<\/?[^>]*>/g, "");
-                            content = content.replace(/\s*/g, "");
-
                             title = titleSubstring(title);
-                            content = contentSubstring(content);
+                            content = contentSubstring(pageContent(content));
 
                             var dynamic_div = ' <div id="'+id+'" class="col-md-6 animate-box"><div class="course"><a href="#" class="course-img" style="background-image: url('+imgs+');"></a>' +
                                 '                        <div class="desc">' +

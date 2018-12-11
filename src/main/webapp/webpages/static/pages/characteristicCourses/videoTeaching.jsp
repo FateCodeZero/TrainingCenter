@@ -88,14 +88,8 @@
                             var updateData = ListPage.updateData;
 
                             /*处理当前字符串，p标签里面的文字长度必须一样长，否则页面会乱码*/
-                            content = content.replace(/(\n)/g, "");
-                            content = content.replace(/(\t)/g, "");
-                            content = content.replace(/(\r)/g, "");
-                            content = content.replace(/<\/?[^>]*>/g, "");
-                            content = content.replace(/\s*/g, "");
-
                             title = titleSubstring(title);
-                            content = contentSubstring(content);
+                            content = contentSubstring(pageContent(content));
 
                             var video_div = '<div id="'+id+'" class="col-md-6 animate-box">\n' +
                                 '                <div class="course">\n' +
