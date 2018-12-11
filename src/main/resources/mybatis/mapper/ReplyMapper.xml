@@ -37,7 +37,6 @@
                     <if test="key == &quot;comment_id&quot; and value != null and value != '' ">
                         and comment_id = #{value}
                     </if>
-                    id,content,comment_id,praise_count,create_user_id,create_date
                     <if test="(key == &quot;praise_count&quot; or key == &quot;praise_count&quot;) and value != null ">
                         and praise_count = #{value}
                     </if>
