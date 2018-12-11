@@ -57,10 +57,6 @@
 
         //获取getNewsListPage数据，完成DIV追加，返回总条数
         function getNewsListPage(currentPage){
-            //首次加载，当前页为第一页时传入参数为空
-            if (currentPage === null){
-                currentPage = 1;
-            }
 
             $.ajax({
                 type: 'GET',

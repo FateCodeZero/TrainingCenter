@@ -177,17 +177,13 @@
         $(document).ready(function loading(){
             getNotices();
             getNews();
-            getDynamicListPage();
+            getDynamicListPage(1);
             getAdvertisement();
             IFrameResize();
         });
 
         //获取dynamiclistPage数据，完成DIV追加，返回总条数
         function getDynamicListPage(currentPage){
-            //首次加载，当前页为第一页时传入参数为空
-            if (currentPage == null){
-                currentPage = 1;
-            }
 
             $.ajax({
                 type: 'GET',
@@ -217,10 +213,15 @@
                             var updateUserId = trainingDynamic.updateUserId;
                             var updateData = trainingDynamic.updateData;
 
-                            /*截取字符串，p标签里面的文字长度必须一样长，否则页面会乱码*/
-                            if(content.length > 60 ){
-                                content = content.substring(0,60);
-                            }
+                            /*处理当前字符串，p标签里面的文字长度必须一样长，否则页面会乱码*/
+                            content = content.replace(/(\n)/g, "");
+                            content = content.replace(/(\t)/g, "");
+                            content = content.replace(/(\r)/g, "");
+                            content = content.replace(/<\/?[^>]*>/g, "");
+                            content = content.replace(/\s*/g, "");
+
+                            title = titleSubstring(title);
+                            content = contentSubstring(content);
 
                             var dynamic_div = ' <div id="'+id+'" class="col-md-6 animate-box"><div class="course"><a href="#" class="course-img" style="background-image: url('+imgs+');"></a>' +
                                 '                        <div class="desc">' +

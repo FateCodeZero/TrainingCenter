@@ -46,8 +46,50 @@ function IFrameResize(){
     });
 })(jQuery);
 
+/**
+ * 处理标题
+ * @param title
+ * @returns {string}
+ */
+function titleSubstring(title) {
 
+    if(title.length > 20){
+        title = title.substring(0,20)+"…";
+        /*console.log(title);*/
+        return title;
+    }else if(title.length < 10){
+        for(k = 0; k < 10;k ++){
+            title = title +'\xa0';
+        }
+        /*console.log(title +"000");*/
+        return title;
 
+    }else {
+        return title;
 
+    }
+}
+
+/**
+ * 处理content
+ * @param content
+ * @returns {string}
+ */
+function contentSubstring(content) {
+
+    /*alert("当前传入的："+content);*/
+    if(content.length > 70){
+        console.log("执行if")
+        content = content.substring(0,70)+"…";
+        console.log("返回前的值："+content);
+        return content;
+    }else{
+        console.log("执行else")
+        content += content;
+        /*alert("回调的："+content);*/
+        return contentSubstring(content);
+    }
+
+}
 
 

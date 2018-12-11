@@ -10,7 +10,7 @@
 <%@include file="/context/mytags.jsp" %>
 <html>
 <head>
-    <title>红色圣地</title>
+    <title>特色美食</title>
 
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css">
