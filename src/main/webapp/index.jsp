@@ -25,13 +25,7 @@
 <body>
 <div id="mian">
 
-    <%--顶部公司log图片--%>
-    <div id="top">
-        <iframe id="IF-top" src="${webRoot}/webpages/static/top.jsp" frameborder="0" width="100%"
-                scrolling="no"></iframe>
-    </div>
-
-    <%--颈部导航栏--%>
+    <%--顶部导航栏--%>
     <div class="row " id="navigation">
         <div class="col-sm-12">
             <ul class="layui-nav" lay-filter="index-nav">
