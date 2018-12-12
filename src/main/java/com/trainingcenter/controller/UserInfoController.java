@@ -1,28 +1,26 @@
 package com.trainingcenter.controller;
 
-import com.trainingcenter.bean.User;
 import com.trainingcenter.bean.UserInfo;
-import com.trainingcenter.controller.validation.TC_Update;
+import com.trainingcenter.exception.UploadException;
 import com.trainingcenter.service.UserInfoService;
-import com.trainingcenter.utils.AjaxJson;
-import com.trainingcenter.utils.DateUtil;
-import com.trainingcenter.utils.FindConditionUtils;
-import com.trainingcenter.utils.StringUtil;
+import com.trainingcenter.utils.*;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -224,4 +222,101 @@ public class UserInfoController {
         }
         return ajaxJson;
     }
+
+    /**
+     *更换头像
+     * @param request:HttpServletRequest
+     * @return
+     */
+    /*@ResponseBody
+    @RequestMapping("/updateLogo")
+    public AjaxJson updateHead(HttpServletRequest request){
+        AjaxJson ajaxJson = new AjaxJson();
+        *//**
+         * 执行上传操作
+         * 1、判断表单是否支持上传，即判断表单的提交类型是否为enctype=multipart/form-data
+         * 2、创建文件上传工厂对象：DiskFileItemFactory
+         * 3、创建表单解析器对象：ServletFileUpload（核心对象）
+         * 4、解析request对象，并得到一个表单项的List集合
+         * 5、迭代（遍历）表单项List集合，获取到上传的数据
+         *//*
+        // 1、判断表单是否支持上传，表单不支持上传则抛异常
+        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+        if (!isMultipart) {
+            throw new UploadException("Form 表单不是 multipart/form-data 类型，不支持上传操作！");
+        }
+
+        // 2、创建文件上传工厂对象
+        DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
+        String webUploadPath = SysResourcesUtils.getWebUploadPath();
+        diskFileItemFactory.setRepository(new File(webUploadPath + File.separator +"temp")); // 指定临时文件的存储路径
+
+        // 3、创建表单解析器对象
+        ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);
+
+        servletFileUpload.setSizeMax(1024 * 1024 * 2); // 限制总上传文件的大小不能超过2M
+
+        //存放普通表单项
+        List<FileItem> ordinary = Collections.synchronizedList(new ArrayList<>());
+        String username = null;  //要更新头像的用户的用户名
+
+        try {
+            // 4、解析request对象，并得到一个表单项的List集合
+            List<FileItem> fileItemList = servletFileUpload.parseRequest(request);
+
+            // 5、迭代（遍历）表单项List集合，获取到上传的数据
+            for (FileItem fileItem : fileItemList) {
+                if (fileItem.isFormField()) {
+                    //提取普通表单项
+                    ordinary.add(fileItem);
+                }
+            }
+            for (FileItem item:ordinary) {
+                if (item.getName().equals("username")){
+                    username = item.getString("UTF-8"); // 获取字段value，并设置编码
+                    break;
+                }
+            }
+        } catch (FileUploadException e) {
+            e.printStackTrace();
+            throw new UploadException("头像上传只支持2M以内的图片");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("保存失败，找不到用户信息（username）");
+            return ajaxJson;
+        }
+
+        if (StringUtil.isEmpty(username)){
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("更新失败，请先选择更新对象");
+            return ajaxJson;
+        }
+
+        UserInfo userInfo = userInfoService.getUserInfoByUsername(username);
+        if (userInfo == null){
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("更新失败，对象不存在或已被删除");
+            return ajaxJson;
+        }
+
+        List<String> uploadFiles = FileUploadUtils.upload(request);
+
+        if (uploadFiles == null){
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("更新失败，请重试");
+            return ajaxJson;
+        }
+        String url = uploadFiles.get(0);//头像上传只有一个图片
+        userInfo.setPortraitImg(url);
+        Integer res = userInfoService.update(userInfo);//更新用户信息
+        if (res > 0) {
+            ajaxJson.setCode(1);
+            ajaxJson.setMsg("保存成功");
+        } else {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("保存成功，请重试");
+        }
+        return ajaxJson;
+    }*/
 } 

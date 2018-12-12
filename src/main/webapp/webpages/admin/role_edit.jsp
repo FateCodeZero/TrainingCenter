@@ -27,7 +27,7 @@
     <div class="col-sm-1"></div>
     <div class="text-left col-sm-10 panel panel-primary">
         <br>
-        <div class="form-horizontal" role="form" action="">
+        <div class="form-horizontal">
             <input type="hidden" value="" name="id" id="id">
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">角色名称</label>

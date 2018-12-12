@@ -4,7 +4,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,5 +28,16 @@ public class SysResourcesUtils implements Serializable {
         }else {
             return authentication.getName();
         }
+    }
+
+    /**
+     * 获取文件上传路径，默认是操作系统下用户目录
+    * @return
+     */
+    public static String getWebUploadPath(){
+        String userHome = System.getProperty("user.home");
+        String parentDir = "uploadFiles";
+        File file = new File(userHome + File.separator + parentDir);
+        return file.toString();
     }
 }
