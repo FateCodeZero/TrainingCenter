@@ -54,7 +54,10 @@
         $.ajax({
             type: 'GET',
             url: "${webRoot}/bestStudent/listPage",
-            data: {currentPage:1,rows:8},
+            data: {currentPage:1,
+                rows:8,
+                condition: JSON.stringify({searchContent: ''})
+            },
             dataType: "json",
             success: function (data) {
                 var jsonData = eval(data);

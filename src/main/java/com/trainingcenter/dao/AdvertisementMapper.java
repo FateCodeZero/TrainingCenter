@@ -31,8 +31,7 @@ public interface AdvertisementMapper {
      * @return 返回广告对象集合
      */
     public List<Advertisement> getAdvertisements(@Param("start") Integer start, @Param("number") Integer number,
-                                                Map<String,Object> condition);
-
+                                                 @Param("condition") Map<String,Object> condition);
 
     /**
      * 广告添加方法

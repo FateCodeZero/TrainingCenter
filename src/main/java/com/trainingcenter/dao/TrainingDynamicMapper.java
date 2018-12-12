@@ -29,7 +29,7 @@ public interface TrainingDynamicMapper {
      * @return 返回动态培训对象集合
      */
     public List<TrainingDynamic> getTrainingDynamics(@Param("start") Integer start, @Param("number") Integer number,
-                                                    Map<String,Object> condition);
+                                                     @Param("condition") Map<String,Object> condition);
 
 
     /**

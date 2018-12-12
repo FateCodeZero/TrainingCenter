@@ -64,7 +64,10 @@
             $.ajax({
                 type: 'GET',
                 url: "${webRoot}/specialFood/listPage",
-                data: {currentPage:currentPage,rows:3},
+                data: {currentPage:currentPage,
+                    rows:3,
+                    condition: JSON.stringify({searchContent: ''})
+                },
                 dataType: "json",
                 success: function (data) {
                     var jsonData = eval(data);

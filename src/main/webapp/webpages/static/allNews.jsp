@@ -62,7 +62,10 @@
             $.ajax({
                 type: 'GET',
                 url: "${webRoot}/newsInfo/listPage",
-                data: {currentPage:currentPage,rows:9},
+                data: {currentPage:currentPage,
+                    rows:9,
+                    condition: JSON.stringify({searchContent: ''})
+                },
                 dataType: "json",
                 success: function (data) {
                     var jsonData = eval(data);

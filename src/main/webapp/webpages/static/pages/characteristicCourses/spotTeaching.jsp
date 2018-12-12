@@ -64,7 +64,10 @@
             $.ajax({
                 type: 'GET',
                 url: "${webRoot}/spotTeaching/listPage",
-                data: {currentPage:currentPage,rows:4},
+                data: {currentPage:currentPage,
+                    rows:4,
+                    condition: JSON.stringify({searchContent: ''})
+                },
                 dataType: "json",
                 success: function (data) {
                     var jsonData = eval(data);

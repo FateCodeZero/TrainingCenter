@@ -189,7 +189,10 @@
             $.ajax({
                 type: 'GET',
                 url: "${webRoot}/trainingDynamic/listPage",
-                data: {currentPage:currentPage,rows:4},
+                data: {currentPage:currentPage,
+                    rows:4,
+                    condition: JSON.stringify({searchContent: ''})
+                },
                 dataType: "json",
                 success: function (data) {
                     var jsonData = eval(data);
@@ -287,7 +290,10 @@
             $.ajax({
                 type: 'GET',
                 url: "${webRoot}/advertisement/listPage",
-                data: {currentPage:1,rows:2},
+                data: {currentPage:1,
+                    rows:2,
+                    condition: JSON.stringify({searchContent: ''})
+                },
                 dataType: "json",
                 success: function (data) {
                     var jsonData = eval(data);
@@ -346,7 +352,10 @@
             $.ajax({
                 type: 'GET',
                 url: "${webRoot}/newsInfo/listPage",
-                data: {currentPage:1,rows:7},
+                data: {currentPage:1,
+                    rows:7,
+                    condition: JSON.stringify({searchContent: ''})
+                },
                 dataType: "json",
                 success: function (data) {
                     var jsonData = eval(data);
@@ -400,7 +409,10 @@
             $.ajax({
                 type: 'GET',
                 url: "${webRoot}/annunciation/listPage",
-                data: {currentPage:1,rows:7},
+                data: {currentPage:1,
+                    rows:7,
+                    condition: JSON.stringify({searchContent: ''})
+                },
                 dataType: "json",
                 success: function (data) {
                     var jsonData = eval(data);

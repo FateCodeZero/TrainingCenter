@@ -181,7 +181,11 @@
             $.ajax({
                 type: 'GET',
                 url: "${webRoot}/aboutMe/listPage",
-                data:{currentPage:1,rows:1},
+                data:{
+                    currentPage:1,
+                    rows:1,
+                    condition: JSON.stringify({searchContent: ''})
+                },
                 dataType: "json",
                 success:function (data) {
                     var jsonData = eval(data);
@@ -229,7 +233,10 @@
             $.ajax({
                 type: 'GET',
                 url: "${webRoot}/culturalTeachingPoint/listPage",
-                data: {currentPage:1,rows:4},
+                data: {currentPage:1,
+                        rows:4,
+                        condition: JSON.stringify({searchContent: ''})
+                },
                 dataType: "json",
                 success: function (data) {
                     var jsonData = eval(data);
@@ -294,7 +301,10 @@
             $.ajax({
                 type: 'GET',
                 url: "${webRoot}/developTeachingPoint/listPage",
-                data: {currentPage:1,rows:4},
+                data: {currentPage:1,
+                    rows:4,
+                    condition: JSON.stringify({searchContent: ''})
+                },
                 dataType: "json",
                 success: function (data) {
                     var jsonData = eval(data);

@@ -29,7 +29,7 @@ public interface AnnunciationMapper {
      * @return 返回新闻对象集合
      */
     public List<Annunciation> getAnnunciations(@Param("start") Integer start, @Param("number") Integer number,
-                                      Map<String,Object> condition);
+                                               @Param("condition")  Map<String,Object> condition);
 
 
     /**
