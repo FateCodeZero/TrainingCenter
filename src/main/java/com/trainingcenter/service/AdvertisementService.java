@@ -21,17 +21,17 @@ public interface AdvertisementService {
      */
     public Advertisement getAdvertisementById(String id);
 
-    public List<Advertisement> getAdvertisements();
+    public List<Advertisement> getAdvertisements(Map<String,Object> condition);
 
     /**
      * 分页获取所有广告
      *
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public List<Advertisement> getAdvertisements(Integer currentPage, Integer rows, String searchContent);
+    public List<Advertisement> getAdvertisements(Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 广告添加方法

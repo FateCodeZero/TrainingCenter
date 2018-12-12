@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -23,7 +24,7 @@ public interface InterviewTeachingService {
      * 获取所有资源对象
      * @return 返回资源对象集合
      */
-    public List<InterviewTeaching> getInterviewTeachings();
+    public List<InterviewTeaching> getInterviewTeachings(Map<String,Object> condition);
 
     /**
      * 分页获取所以培训动态
@@ -33,7 +34,7 @@ public interface InterviewTeachingService {
      * @param searchContent：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public List<InterviewTeaching> getInterviewTeachings(Integer currentPage, Integer rows, String searchContent);
+    public List<InterviewTeaching> getInterviewTeachings(Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 培训动态添加方法

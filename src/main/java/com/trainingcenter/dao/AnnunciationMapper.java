@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -24,11 +25,11 @@ public interface AnnunciationMapper {
      * 分页获取所有培训
      * @param start：从第几条数据开始
      * @param number：要获取多少条数据
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return 返回新闻对象集合
      */
     public List<Annunciation> getAnnunciations(@Param("start") Integer start, @Param("number") Integer number,
-                                       @Param("searchContent") String searchContent);
+                                      Map<String,Object> condition);
 
 
     /**

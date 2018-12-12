@@ -45,7 +45,7 @@ public class SpecialFoodServiceImpl implements SpecialFoodService {
      * @return
      */
     @Override
-    public List<SpecialFood> getSpecialFoods(Integer currentPage, Integer rows, String searchContent) {
+    public List<SpecialFood> getSpecialFoods(Integer currentPage, Integer rows, Map<String,Object> condition) {
             if(currentPage != null && rows != null) {
                 if (currentPage < 0 || rows < 0) {
                     return null;

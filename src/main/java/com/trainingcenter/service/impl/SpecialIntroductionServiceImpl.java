@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -34,27 +35,27 @@ public class SpecialIntroductionServiceImpl implements SpecialIntroductionServic
     }
 
     @Override
-    public List<SpecialIntroduction> getSpecialIntroductions() {
-        return getSpecialIntroductions(null, null, null);
+    public List<SpecialIntroduction> getSpecialIntroductions(Map<String,Object> condition) {
+        return getSpecialIntroductions(null, null, condition);
     }
     /**
      *分页获取所以培训动态
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return
      */
     @Override
-    public List<SpecialIntroduction> getSpecialIntroductions(Integer currentPage, Integer rows, String searchContent) {
+    public List<SpecialIntroduction> getSpecialIntroductions(Integer currentPage, Integer rows, Map<String,Object> condition) {
             if(currentPage != null && rows != null) {
                 if (currentPage < 0 || rows < 0) {
                     return null;
                 }
                 Integer start = (currentPage - 1) * rows;
-                return specialIntroductionMapper.getSpecialIntroductions(start, rows, searchContent);
+                return specialIntroductionMapper.getSpecialIntroductions(start, rows, condition);
             }
             else {
-                return specialIntroductionMapper.getSpecialIntroductions(null,null,searchContent);
+                return specialIntroductionMapper.getSpecialIntroductions(null,null,condition);
             }
     }
 

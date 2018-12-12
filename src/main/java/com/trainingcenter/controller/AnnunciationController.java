@@ -8,6 +8,7 @@ import com.trainingcenter.exception.UpdateException;
 import com.trainingcenter.service.AnnunciationService;
 import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
+import com.trainingcenter.utils.FindConditionUtils;
 import com.trainingcenter.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -46,28 +48,38 @@ public class AnnunciationController {
 
     @RequestMapping(value = "/listPage")
     @ResponseBody
-    public AjaxJson listPage(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, String searchContent){
+    public AjaxJson listPage(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
-        if(currentPage < 0 || rows < 0 ){
+        if (currentPage == null || rows == null) {
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("参数异常");
-            return ajaxJson;        }
-        List<Annunciation> annunciations = annunciationService.getAnnunciations(currentPage, rows, searchContent);
-        Integer total = annunciationService.getAnnunciations().size();
+            ajaxJson.setMsg("数据获取失败，页数不能为空");
+            return ajaxJson;
+        } else {
+            //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
+            Map<String, Object> condition = new ConcurrentHashMap<>();
+            String conditionStr = request.getParameter("condition");
+            if (StringUtil.isNotEmpty(conditionStr)) {
+                condition = FindConditionUtils.findConditionBuild(Annunciation.class, conditionStr);
+            }
 
-        if (annunciations.size() == 0){
+            //获取当前查询条件下的所有数据条数，分页用
+            Integer total = annunciationService.getAnnunciations(condition).size();
+            //获取当前页的数据
+            List<Annunciation> resources = annunciationService.getAnnunciations(currentPage, rows, condition);
+
             ajaxJson.setCode(1);
-            ajaxJson.setMsg("暂无数据");
-        }else {
-            ajaxJson.setCode(1);
-            ajaxJson.setMsg("操作成功");
+            if (resources.size() == 0) {
+                ajaxJson.setMsg("暂无数据Ծ‸Ծ");
+            } else {
+                ajaxJson.setMsg("数据获取成功");
+            }
+
+            Map<String, Object> data = new ConcurrentHashMap<>();
+            data.put("total", total);
+            data.put("items", resources);
+            ajaxJson.setData(data);
+            return ajaxJson;
         }
-
-        Map<String,Object> data = new ConcurrentHashMap<>();
-        data.put("total",total);
-        data.put("items",annunciations);
-        ajaxJson.setData(data);
-        return ajaxJson;
     }
 
     /**

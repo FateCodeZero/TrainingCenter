@@ -45,7 +45,7 @@ public class CulturalProductsServiceImpl implements CulturalProductsService {
      * @return
      */
     @Override
-    public List<CulturalProducts> getCulturalProductss(Integer currentPage, Integer rows, String searchContent) {
+    public List<CulturalProducts> getCulturalProductss(Integer currentPage, Integer rows, Map<String,Object> condition) {
             if(currentPage != null && rows != null) {
                 if (currentPage < 0 || rows < 0) {
                     return null;

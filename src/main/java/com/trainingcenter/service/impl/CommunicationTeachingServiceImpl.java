@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -34,27 +35,27 @@ public class CommunicationTeachingServiceImpl implements CommunicationTeachingSe
     }
 
     @Override
-    public List<CommunicationTeaching> getCommunicationTeachings() {
-        return getCommunicationTeachings(null, null, null);
+    public List<CommunicationTeaching> getCommunicationTeachings(Map<String,Object> condition){
+        return getCommunicationTeachings(null, null, condition);
     }
     /**
      *分页获取所以培训动态
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return
      */
     @Override
-    public List<CommunicationTeaching> getCommunicationTeachings(Integer currentPage, Integer rows, String searchContent) {
+    public List<CommunicationTeaching> getCommunicationTeachings(Integer currentPage, Integer rows, Map<String,Object> condition) {
             if(currentPage != null && rows != null) {
                 if (currentPage < 0 || rows < 0) {
                     return null;
                 }
                 Integer start = (currentPage - 1) * rows;
-                return communicationTeachingMapper.getCommunicationTeachings(start, rows, searchContent);
+                return communicationTeachingMapper.getCommunicationTeachings(start, rows, condition);
             }
             else {
-                return communicationTeachingMapper.getCommunicationTeachings(null,null,searchContent);
+                return communicationTeachingMapper.getCommunicationTeachings(null,null,condition);
             }
     }
 

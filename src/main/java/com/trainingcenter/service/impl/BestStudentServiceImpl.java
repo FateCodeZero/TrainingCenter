@@ -45,7 +45,7 @@ public class BestStudentServiceImpl implements BestStudentService {
      *分页获取所以学生风采
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return
      */
     public List<BestStudent> getBestStudents(Integer currentPage, Integer rows, Map<String,Object> condition) {

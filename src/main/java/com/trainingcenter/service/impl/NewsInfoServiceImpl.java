@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -39,27 +40,27 @@ public class NewsInfoServiceImpl implements NewsInfoService {
     }
 
     @Override
-    public List<NewsInfo> getNewsInfos() {
-        return getNewsInfos(null, null, null);
+    public List<NewsInfo> getNewsInfos(Map<String,Object> condition) {
+        return getNewsInfos(null, null, condition);
     }
     /**
      *分页获取所以培训动态
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return
      */
     @Override
-    public List<NewsInfo> getNewsInfos(Integer currentPage, Integer rows, String searchContent) {
+    public List<NewsInfo> getNewsInfos(Integer currentPage, Integer rows, Map<String,Object> condition) {
             if(currentPage != null && rows != null) {
                 if (currentPage < 0 || rows < 0) {
                     return null;
                 }
                 Integer start = (currentPage - 1) * rows;
-                return newsInfoMapper.getNewsInfos(start, rows, searchContent);
+                return newsInfoMapper.getNewsInfos(start, rows, condition);
             }
             else {
-                return newsInfoMapper.getNewsInfos(null,null,searchContent);
+                return newsInfoMapper.getNewsInfos(null,null,condition);
             }
     }
 

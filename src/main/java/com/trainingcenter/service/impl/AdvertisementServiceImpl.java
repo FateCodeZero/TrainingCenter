@@ -39,26 +39,26 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public List<Advertisement> getAdvertisements(){return getAdvertisements(null, null, null);}
+    public List<Advertisement> getAdvertisements(Map<String,Object> condition){return getAdvertisements(null, null, condition);}
 
     /**
      *分页获取所以广告
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return
      */
     @Override
-    public List<Advertisement> getAdvertisements(Integer currentPage, Integer rows, String searchContent) {
+    public List<Advertisement> getAdvertisements(Integer currentPage, Integer rows, Map<String,Object> condition) {
         if (currentPage != null && rows != null) {
             if (currentPage < 0 || rows < 0) {
                 return null;
             } else {
                 Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
-                return advertisementMapper.getAdvertisements(start, rows, searchContent);
+                return advertisementMapper.getAdvertisements(start, rows, condition);
             }
         } else {
-            return advertisementMapper.getAdvertisements(null, null, searchContent);
+            return advertisementMapper.getAdvertisements(null, null, condition);
         }
     }
 

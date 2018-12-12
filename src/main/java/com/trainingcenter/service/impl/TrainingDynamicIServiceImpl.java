@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -38,27 +39,27 @@ public class TrainingDynamicIServiceImpl implements TrainingDynamicService {
     }
 
     @Override
-    public List<TrainingDynamic> getTrainingDynamics() {
-        return getTrainingDynamics(null, null, null);
+    public List<TrainingDynamic> getTrainingDynamics(Map<String,Object> condition) {
+        return getTrainingDynamics(null, null, condition);
     }
     /**
      *分页获取所以培训动态
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return
      */
     @Override
-    public List<TrainingDynamic> getTrainingDynamics(Integer currentPage, Integer rows, String searchContent) {
+    public List<TrainingDynamic> getTrainingDynamics(Integer currentPage, Integer rows, Map<String,Object> condition) {
             if(currentPage != null && rows != null) {
                 if (currentPage < 0 || rows < 0) {
                     return null;
                 }
                 Integer start = (currentPage - 1) * rows;
-                return trainingDynamicMapper.getTrainingDynamics(start, rows, searchContent);
+                return trainingDynamicMapper.getTrainingDynamics(start, rows, condition);
             }
             else {
-                return trainingDynamicMapper.getTrainingDynamics(null,null,searchContent);
+                return trainingDynamicMapper.getTrainingDynamics(null,null,condition);
             }
     }
 

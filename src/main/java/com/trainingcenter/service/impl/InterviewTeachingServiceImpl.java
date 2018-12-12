@@ -41,20 +41,20 @@ public class InterviewTeachingServiceImpl implements InterviewTeachingService {
      *分页获取所以培训动态
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return
      */
     @Override
-    public List<InterviewTeaching> getInterviewTeachings(Integer currentPage, Integer rows, String searchContent) {
+    public List<InterviewTeaching> getInterviewTeachings(Integer currentPage, Integer rows, Map<String,Object> condition) {
             if(currentPage != null && rows != null) {
                 if (currentPage < 0 || rows < 0) {
                     return null;
                 }
                 Integer start = (currentPage - 1) * rows;
-                return interviewTeachingMapper.getInterviewTeachings(start, rows, searchContent);
+                return interviewTeachingMapper.getInterviewTeachings(start, rows, condition);
             }
             else {
-                return interviewTeachingMapper.getInterviewTeachings(null,null,searchContent);
+                return interviewTeachingMapper.getInterviewTeachings(null,null,condition);
             }
     }
 

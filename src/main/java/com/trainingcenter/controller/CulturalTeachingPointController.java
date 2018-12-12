@@ -47,7 +47,7 @@ public class CulturalTeachingPointController {
 
     @RequestMapping(value = "/listPage")
     @ResponseBody
-    public AjaxJson listPage(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request){
+    public AjaxJson listPage(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null) {
             ajaxJson.setCode(0);
@@ -57,8 +57,8 @@ public class CulturalTeachingPointController {
             //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
             Map<String, Object> condition = new ConcurrentHashMap<>();
             String conditionStr = request.getParameter("condition");
-            if (StringUtil.isNotEmpty(conditionStr)){
-                condition = FindConditionUtils.findConditionBuild(CulturalTeachingPoint.class,conditionStr);
+            if (StringUtil.isNotEmpty(conditionStr)) {
+                condition = FindConditionUtils.findConditionBuild(CulturalTeachingPoint.class, conditionStr);
             }
 
             //获取当前查询条件下的所有数据条数，分页用

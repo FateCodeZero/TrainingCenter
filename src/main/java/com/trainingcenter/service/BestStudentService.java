@@ -27,7 +27,7 @@ public interface BestStudentService {
      *
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return 返回当前页的数据集合
      */
     public List<BestStudent> getBestStudents(Integer currentPage, Integer rows, Map<String,Object> condition);

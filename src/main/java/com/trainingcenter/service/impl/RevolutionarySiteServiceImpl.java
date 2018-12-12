@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -34,8 +35,8 @@ public class RevolutionarySiteServiceImpl implements RevolutionarySiteService {
     }
 
     @Override
-    public List<RevolutionarySite> getRevolutionarySites() {
-        return getRevolutionarySites(null, null, null);
+    public List<RevolutionarySite> getRevolutionarySites(Map<String,Object> condition) {
+        return getRevolutionarySites(null, null, condition);
     }
     /**
      *分页获取所以培训动态
@@ -45,16 +46,16 @@ public class RevolutionarySiteServiceImpl implements RevolutionarySiteService {
      * @return
      */
     @Override
-    public List<RevolutionarySite> getRevolutionarySites(Integer currentPage, Integer rows, String searchContent) {
+    public List<RevolutionarySite> getRevolutionarySites(Integer currentPage, Integer rows, Map<String,Object> condition) {
             if(currentPage != null && rows != null) {
                 if (currentPage < 0 || rows < 0) {
                     return null;
                 }
                 Integer start = (currentPage - 1) * rows;
-                return revolutionarySiteMapper.getRevolutionarySites(start, rows, searchContent);
+                return revolutionarySiteMapper.getRevolutionarySites(start, rows, condition);
             }
             else {
-                return revolutionarySiteMapper.getRevolutionarySites(null,null,searchContent);
+                return revolutionarySiteMapper.getRevolutionarySites(null,null,condition);
             }
     }
 

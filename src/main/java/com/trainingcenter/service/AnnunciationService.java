@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -23,17 +24,17 @@ public interface AnnunciationService {
      * 获取所有资源对象
      * @return 返回资源对象集合
      */
-    public List<Annunciation> getAnnunciations();
+    public List<Annunciation> getAnnunciations(Map<String,Object> condition);
 
     /**
      * 分页获取所以新闻信息
      *
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public List<Annunciation> getAnnunciations(Integer currentPage, Integer rows, String searchContent);
+    public List<Annunciation> getAnnunciations(Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 新闻信息添加方法
