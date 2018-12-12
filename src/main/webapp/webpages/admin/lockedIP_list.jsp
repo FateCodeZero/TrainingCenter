@@ -11,7 +11,7 @@
 
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script src="${webRoot}/plug-in/jquery-cookie/jquery.cookie.js"></script>
-    <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
+    <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script src="${webRoot}/plug-in/js/utils.js"></script>
 
@@ -51,30 +51,90 @@
 <script type="text/javascript">
     var layer_window = ''; 	//定义全局变量,用以储存弹出的窗口的窗口对象
     var searchContent = $("#searchContent").val(); //模糊查询内容
-    var table;  //layui table
+    var table = null;  //layui table
+    var element = null; //layui element
+    var state = null; //tab标题状态
 
     $(document).ready(function () {
-
+        loadLayuiElement();//加载 layui element
         //加载表格数据
         tableData();
     });
 
-    //JavaScript代码区域
-    layui.use('element', function () {
-        var element = layui.element;
-        //监听选项卡切换
-        element.on('tab', function (data) {
-            var lay_id = this.getAttribute('lay-id');
-            console.log(lay_id); //当前Tab标题所在的原始DOM元素
-            /*if (lay_id === 'enable'){
-                table.reload('table1',{
-                    where: {//接口需要的其它参数
-                        searchContent: 1
-                    }
-                });
-            }*/
+    function loadLayuiElement() {
+        //JavaScript代码区域
+        layui.use('element', function () {
+            var element = layui.element;
+            //监听选项卡切换
+            element.on('tab(tab-top)', function (data) {
+                console.log(data);
+                var lay_id = this.getAttribute('lay-id');//当前Tab标题所在的原始DOM元素
+                var condition = null;
+                switch (lay_id) {
+                    case 'all':     //全部数据
+                        state = '';
+                        condition = {
+                            searchContent: searchContent,
+                            state: state
+                        };
+                        layuiReload(condition);
+                        break;
+                    case 'enable':     //已启用的数据
+                        state = 1;
+                        condition = {
+                            searchContent: searchContent,
+                            state: state
+                        };
+                        layuiReload(condition);
+                        break;
+                    case 'unEnable':     //已禁用的数据
+                        state = 0;
+                        condition = {
+                            searchContent: searchContent,
+                            state: state
+                        };
+                        layuiReload(condition);
+                        break;
+                }
+            });
+            element.render('tab(tab-top)');
         });
-        element.render('tab');
+    }
+
+    /**
+     * 数据表格重新加载
+     * condition：自定义查询条件
+     * */
+    function layuiReload(condition) {
+        if (condition !== null && condition !== ''){
+            var state = condition.state;
+            var searchTxt = condition.searchContent;
+            if (state === null || state === ''){
+                //保证tab返回全部时，能查询所有
+                condition = {
+                    searchContent:searchTxt
+                };
+            }
+            table.reload('table1', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                ,where: { //接口需要的其它参数
+                    condition: JSON.stringify(condition)
+                }
+            });
+        }
+    }
+    /**
+     * 模糊查询
+     */
+    $("#search").click(function () {
+        var searchContent = $("#searchContent").val(); //模糊查询内容
+        var condition = {
+            searchContent: searchContent
+            ,state:state
+        };
+        layuiReload(condition);
     });
 
     function tableData() {
@@ -89,8 +149,15 @@
                 , toolbar: '#table-head'
                 , title: '菜单管理'
                 , url: '${webRoot}/lockedIP/list' //数据接口
-                , page: true //开启分页
-                , limit: 10 //每页显示多少条数据
+                , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    , limit: 10
+                    , prev: '上一页'
+                    , next: '下一页'
+                    , groups: 5 //只显示 5 个连续页码
+                    , first: '首页' //显示首页
+                    , last: '尾页' //显示尾页
+                }
                 , cols: [[ //表头
                     {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
                     , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
@@ -127,12 +194,10 @@
                     var code = res.code === 1 ? 0 : 1;
                     var msg = res.msg;
                     var data = null;
-                    if (code === 0){
-                        data = res.data.items;
-                    }
                     var count = 0;
-                    if (data !== null) {
-                        count = data.total;
+                    if (code === 0) {
+                        data = res.data.items;
+                        count = res.data.total;
                     }
                     return {
                         "code": code, //解析接口状态，layui的0为成功

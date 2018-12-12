@@ -11,7 +11,7 @@
 
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script src="${webRoot}/plug-in/jquery-cookie/jquery.cookie.js"></script>
-    <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
+    <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script src="${webRoot}/plug-in/js/utils.js"></script>
 
@@ -183,8 +183,8 @@
                     , prev: '上一页'
                     , next: '下一页'
                     , groups: 5 //只显示 5 个连续页码
-                    , first: true //显示首页
-                    , last: true //显示尾页
+                    , first: '首页' //显示首页
+                    , last: '尾页' //显示尾页
                 }
                 , request: { //用于对分页请求的参数：page、limit重新设定名称
                     pageName: 'currentPage' //页码的参数名称，默认：page

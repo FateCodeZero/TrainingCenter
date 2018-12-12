@@ -11,7 +11,7 @@
 
     <script src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <script src="${webRoot}/plug-in/jquery-cookie/jquery.cookie.js"></script>
-    <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
+    <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script src="${webRoot}/plug-in/js/utils.js"></script>
 

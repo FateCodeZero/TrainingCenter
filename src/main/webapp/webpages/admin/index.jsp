@@ -102,23 +102,23 @@
     });
 
     //JavaScript代码区域
-    <%--layui.use('element', function () {--%>
-        <%--var element = layui.element;--%>
-        <%--//监听导航点击--%>
-        <%--element.on('nav', function (elem) {--%>
-            <%--//console.log(elem)--%>
-            <%--layer.msg(elem.text()); //弹出提示--%>
-            <%--var text = elem.text();--%>
-            <%--var loadUrl = "";--%>
+    layui.use('element', function () {
+        var element = layui.element;
+        //监听导航点击
+        element.on('nav', function (elem) {
+            //console.log(elem)
+            layer.msg(elem.text()); //弹出提示
+            var text = elem.text();
+            var loadUrl = "";
 
-            <%--if (text === '控制台') {--%>
-                <%--loadUrl = "${webRoot}/webpages/admin/index.jsp";--%>
-            <%--}--%>
-            <%--//通过修改 iframe 的 url 来切换页面，注：要用此方法，点击处<a>标签必须是 href="#"--%>
-            <%--$("#index-body").attr('src', loadUrl);--%>
-        <%--});--%>
-        <%--element.render("nav");--%>
-    <%--});--%>
+            if (text === '控制台') {
+                loadUrl = "${webRoot}/webpages/admin/index.jsp";
+            }
+            //通过修改 iframe 的 url 来切换页面，注：要用此方法，点击处<a>标签必须是 href="#"
+            $("#index-body").attr('src', loadUrl);
+        });
+        element.render("nav");
+    });
 
     /*获取菜单数据*/
     function getResourceData() {
@@ -203,8 +203,8 @@
             var children = item.children;
 
             var tags = [];
-            if (name === '信息管理' || name === '用户留言' ){
-                tags[0] = '<span style="color: #FF5722;font-size: larger">'+unEnableCount+'</span>'; //显示未审核留言数目
+            if (name === '信息管理' || name === '用户留言') {
+                tags[0] = '<span style="color: #FF5722;font-size: larger">' + unEnableCount + '</span>'; //显示未审核留言数目
             }
 
             //使用递归方式解析数据
@@ -232,7 +232,7 @@
             selectedBackColor: '#009688', //节点被选中后的背景颜色
             showBorder: false,       //不显示边框
             showIcon: true, /*开启节点图标*/
-            showTags:true, /*显示 tags*/
+            showTags: true, /*显示 tags*/
             enableLinks: false, /*不启用当前节点的超链接*/
             multiSelect: $('#chk-select-multi').is(':checked'),
             onNodeSelected: function (event, node) {

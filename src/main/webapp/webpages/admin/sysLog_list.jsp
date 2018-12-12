@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Sky
-  Date: 2018/12/6
-  Time: 18:31
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@include file="/context/mytags.jsp" %>
@@ -12,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>体验式教学管理</title>
+    <title>系统日志</title>
     <link rel="stylesheet" href="${webRoot}/plug-in/layui-v2.4.5/layui/css/layui.css" charset="UTF-8">
     <link rel="stylesheet" href="${webRoot}/plug-in/bootstrap3.3.5/css/bootstrap.min.css" charset="UTF-8">
 
@@ -21,15 +14,12 @@
     <script src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.js"></script>
     <script src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script src="${webRoot}/plug-in/js/utils.js"></script>
-
 </head>
 
 <body>
 <div class="layui-tab layui-tab-brief" lay-filter="tab-top">
     <div class="layui-tab-title">
         <li class="layui-this" lay-id="all">全部</li>
-        <li lay-id="enable">已启用</li>
-        <li lay-id="unEnable">已禁用</li>
     </div>
     <div class="layui-tab-content">
         <div class="row">
@@ -56,16 +46,15 @@
 <%--头部工具栏--%>
 <script type="text/html" id="table-head">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="add" title="添加菜单"><i
-                class="layui-icon layui-icon-add-circle"></i> 添加
-        </button>
-        <button class="layui-btn layui-btn-sm" lay-event="update" title="编辑菜单"><i
-                class="layui-icon layui-icon-edit"></i> 编辑
-        </button>
         <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="delete" title="批量删除菜单"><i
                 class="layui-icon layui-icon-delete"></i> 批量删除
         </button>
     </div>
+</script>
+
+<%--表格操作--%>
+<script type="text/html" id="table-opt">
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detail">查看</a>
 </script>
 
 <script type="text/javascript">
@@ -77,9 +66,9 @@
 
     $(document).ready(function () {
         loadLayuiElement();//加载 layui element
+        //加载表格数据
         tableData();
     });
-
 
     function loadLayuiElement() {
         //JavaScript代码区域
@@ -155,6 +144,7 @@
         };
         layuiReload(condition);
     });
+
     function tableData() {
         //layui数据表格
         layui.use('table', function () {
@@ -163,9 +153,10 @@
             table.render({
                 id: 'table1'
                 , elem: '#tableData'
+                , height: 550
                 , toolbar: '#table-head'
-                , title: '菜单管理'
-                , url: '${webRoot}/experientialTeaching/listPage' //数据接口
+                , title: '系统日志'
+                , url: '${webRoot}/sysLog/list' //数据接口
                 , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                     layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
                     , limit: 10
@@ -175,53 +166,27 @@
                     , first: '首页' //显示首页
                     , last: '尾页' //显示尾页
                 }
-                ,height:550
                 , cols: [[ //表头
                     {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
                     , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
-                    , {field: 'id', title: 'id', hide: true, width: 100, align: 'center'}
-                    , {field: 'title', title: '教学标题', width: 200, align: 'center'}
-                    , {field: 'content', title: '教学内容', width: 200, align: 'center'}
-                    , {field: 'imgs', title: '图片', width: 150}
-                    , {field: 'remarks', title: '备注', width: 150, align: 'center'}
+                    , {field: 'id', title: 'ID', hide: true, width: 100, align: 'center'}
+                    , {field: 'opUserId', title: '操作人', width: 150, align: 'center', templet: function (d) {
+                        var user = getUserById(d.opUserId);
+                        return user.username;
+                    }}
+                    , {field: 'opContent', title: '操作内容', width: 150, align: 'center'}
+                    , {field: 'opType', title: '操作类型', width: 150, align: 'center'}
                     , {
-                        field: 'createUserId', title: '创建人', width: 150, align: 'center', templet: function (d) {
-                            var user = getUserById(d.createUserId);
-                            return user.username;
-                        }
-                    }
-                    , {
-                        field: 'createDate',
-                        title: '创建时间',
-                        sort: true,
-                        width: 180,
-                        align: 'center',
-                        templet: function (d) {
-                            return new Date(d.createDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
-                        }
-                    }
-                    , {
-                        field: 'updateUserId', title: '更新人Id', width: 150, align: 'center', templet: function (d) {
-                            var user = getUserById(d.updateUserId);
-                            return user.username;
-                        }
-                    }
-                    , {
-                        field: 'updateDate',
-                        title: '更新时间',
-                        sort: true,
-                        width: 180,
-                        align: 'center',
-                        templet: function (d) {
-                            return new Date(d.updateDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
+                        field: 'opTime', title: '操作时间', sort: true, width: 180, align: 'center', templet: function (d) {
+                            return new Date(d.opTime).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
                         }
                     }
                     <%--<sec:authorize access="hasPermission('/webpages/admin/resource_list.jsp','UPDATE')">--%>
-                    /* , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 150, align: 'center'} *///这里的toolbar值是模板元素的选择器
+                    , {title: '操作', fixed: 'right', toolbar: '#table-opt', width: 180, align: 'center'} //这里的toolbar值是模板元素的选择器
                     <%--</sec:authorize>--%>
                 ]]
                 , where: {//接口需要的其它参数
-                    searchContent: searchContent
+                    condition: JSON.stringify({searchContent:searchContent})
                 }
                 , parseData: function (res) { //res 即为原始返回的数据
                     var code = res.code === 1 ? 0 : 1;
@@ -266,9 +231,6 @@
                     return false;
                 } else {
                     switch (obj.event) {
-                        case 'add':     //添加
-                            addData();
-                            break;
                         case 'delete':  //删除
 
                             var ids = '';
@@ -284,28 +246,6 @@
                             });
                             deleteData(ids, cnt); //删除数据
                             break;
-                        case 'update':  //编辑
-                            if (data.length > 1) {
-                                layer.alert('一次只能编辑一条数据', {
-                                    time: 3000,
-                                    icon: 2
-                                });
-                                return false;
-                            } else {
-                                editData(data[0].id);
-                            }
-                            break;
-                        case 'detail':
-                            if (data.length > 1) {
-                                layer.alert('一次只能查看一条数据', {
-                                    time: 3000,
-                                    icon: 2
-                                });
-                                return false;
-                            } else {
-                                layer.msg("ID:【" + data[0].id + "】的查看操作");
-                            }
-                            break;
                     }
                 }
             });
@@ -315,36 +255,26 @@
                 console.log(obj)
             });
 
+            //监听工具条
+            table.on('tool(table-filter)', function (obj) {
+                var data = obj.data;
+                var id = data.id;
+
+                if (obj.event === 'detail') {    //查看
+                    editData(id);
+                }
+            });
         });
     }
 
-    /*添加体验式教学*/
-    function addData() {
-        layer.open({
-            title: '添加体验式教学',
-            type: 2,
-            area: ['1100px', '550px'],
-            fix: false, //不固定
-            maxmin: true,
-            content: '${webRoot}/webpages/admin/experientialTeaching_add.jsp',
-            success: function (layero, index) {
-                layer_window = layero;   //获取弹出窗口的窗口对象
-            },
-            end: function () {
-                location.reload(); //回调函数，刷新页面
-            }
-        });
-    }
-
-    /*编辑体验式教学*/
     function editData(id) {
         layer.open({
-            title: '编辑体验式教学',
+            title: '查看日志详情',
             type: 2,
-            area: ['1100px', '550px'],
+            area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/webpages/admin/experientialTeaching_edit.jsp?id=' + id,
+            content: '${webRoot}/webpages/admin/sysLog_edit.jsp?id=' + id,
             success: function (layero, index) {
                 layer_window = layero;   //获取弹出窗口的窗口对象
             },
@@ -352,12 +282,6 @@
                 location.reload(); //回调函数，刷新页面
             }
         });
-    }
-
-    //获取弹出窗口返回的json格式的数据
-    function getBackPermissionData(JsonData) {		//返回权限数据
-        var resourceSelectWindow = window[layer_window.find('iframe')[0]['name']];	//获取子窗口的窗口对象
-        resourceSelectWindow.window.setPermissionData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
     }
 
     //删除
@@ -374,7 +298,7 @@
                     ids: ids
                 };
                 $.ajax({
-                    url: "${webRoot}/experientialTeaching/delete",
+                    url: "${webRoot}/role/delete",
                     type: "post",
                     data: data,
                     dataType: "json",
@@ -409,13 +333,13 @@
      */
     function getUserById(id) {
         if (id === null || id === '') {
-            /*layer.alert('id不能为空！', {
+            layer.alert('id不能为空！', {
                 time: 3000,
                 icon: 2
-            });*/
+            });
             return false;
         }
-        var user = '';
+        var user = null;
         var data = {id: id};
         $.ajax({
             url: "${webRoot}/user/getUserById",
