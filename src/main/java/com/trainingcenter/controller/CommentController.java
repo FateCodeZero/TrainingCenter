@@ -1,16 +1,16 @@
 package com.trainingcenter.controller;
 
 import com.trainingcenter.bean.Comment;
-import com.trainingcenter.bean.Reply;
 import com.trainingcenter.bean.User;
 import com.trainingcenter.controller.validation.TC_Add;
 import com.trainingcenter.controller.validation.TC_Update;
-import com.trainingcenter.exception.InsertException;
 import com.trainingcenter.exception.UpdateException;
 import com.trainingcenter.service.CommentService;
-import com.trainingcenter.service.ReplyService;
 import com.trainingcenter.service.UserService;
-import com.trainingcenter.utils.*;
+import com.trainingcenter.utils.AjaxJson;
+import com.trainingcenter.utils.FindConditionUtils;
+import com.trainingcenter.utils.StringUtil;
+import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -21,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -41,6 +44,45 @@ public class CommentController {
     private UserService userService;
 
     /**
+     * 获取数据总数分页用
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getTotal")
+    public AjaxJson getTotal(HttpServletRequest request){
+        AjaxJson ajaxJson = new AjaxJson();
+        //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
+        Map<String, Object> condition = new ConcurrentHashMap<>();
+        String conditionStr = request.getParameter("condition");
+        if (StringUtil.isNotEmpty(conditionStr)){
+            condition = FindConditionUtils.findConditionBuild(Comment.class,conditionStr);
+        }
+        String currentUsername = SysResourcesUtils.getCurrentUsername();
+        if (StringUtil.isEmpty(currentUsername)){
+            //保证未通过审批的评论不展示
+            condition.put("state",1);
+        }else {
+            User user = userService.getUserByUsername(currentUsername);
+            if (user != null){
+                //保证评论用户可以看到自己所发的评论
+                condition.put("currentUserId",user.getId());
+            }else {
+                //保证未通过审批的评论不展示
+                condition.put("state",1);
+            }
+        }
+        //获取当前查询条件下的所有数据条数，分页用
+        Integer total = commentService.getComments(condition).size();
+
+        ajaxJson.setCode(1);
+        ajaxJson.setMsg("获取成功");
+        Map<String,Object> data = new ConcurrentHashMap<>();
+        data.put("total",total);
+        ajaxJson.setData(data);
+        return ajaxJson;
+    }
+
+    /**
      * 分页获取资源数据（获取全部，（已启用 + 已禁用 + 已删除（软删除）））
      *
      * @param currentPage：当前页
@@ -48,8 +90,8 @@ public class CommentController {
      * @param request：其他参数，如模糊查询等
      */
     @ResponseBody
-    @RequestMapping("/listPage")
-    public AjaxJson getComments_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
+    @RequestMapping("/list")
+    public AjaxJson getComments(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
         AjaxJson ajaxJson = new AjaxJson();
         if (currentPage == null || rows == null) {
             ajaxJson.setCode(0);
@@ -61,6 +103,20 @@ public class CommentController {
             String conditionStr = request.getParameter("condition");
             if (StringUtil.isNotEmpty(conditionStr)){
                 condition = FindConditionUtils.findConditionBuild(Comment.class,conditionStr);
+            }
+            String currentUsername = SysResourcesUtils.getCurrentUsername();
+            if (StringUtil.isEmpty(currentUsername)){
+                //保证未通过审批的评论不展示
+                condition.put("state",1);
+            }else {
+                User user = userService.getUserByUsername(currentUsername);
+                if (user != null){
+                    //保证评论用户可以看到自己所发的评论
+                    condition.put("currentUserId",user.getId());
+                }else {
+                    //保证未通过审批的评论不展示
+                    condition.put("state",1);
+                }
             }
 
             //获取当前查询条件下的所有数据条数，分页用
@@ -82,67 +138,29 @@ public class CommentController {
             return ajaxJson;
         }
     }
-
-    /**
-     * 分页获取资源数据（获取只获取已启用的）
-     *
-     * @param currentPage：当前页
-     * @param rows：每页展示的数据条数
-     */
-    @ResponseBody
-    @RequestMapping("/select")
-    public AjaxJson getComments_select(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
-        AjaxJson ajaxJson = new AjaxJson();
-        if (currentPage == null || rows == null) {
-            ajaxJson.setCode(0);
-            ajaxJson.setMsg("数据获取失败，页数不能为空");
-            return ajaxJson;
-        } else {
-            //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
-            Map<String, Object> condition = new ConcurrentHashMap<>();
-            String conditionStr = request.getParameter("condition");
-            if (StringUtil.isNotEmpty(conditionStr)){
-                condition = FindConditionUtils.findConditionBuild(Comment.class,conditionStr);
-            }
-            condition.put("state", 1);   //只查询已启用的数据
-
-            //获取当前查询条件下的所有数据条数，分页用
-            Integer total = commentService.getComments(condition).size();
-            //获取当前页的数据
-            List<Comment> comments = commentService.getComments(currentPage, rows, condition);
-
-            ajaxJson.setCode(1);
-            if (comments.size() == 0) {
-                ajaxJson.setMsg("暂无数据Ծ‸Ծ");
-            } else {
-                ajaxJson.setMsg("数据获取成功");
-            }
-
-            Map<String, Object> data = new ConcurrentHashMap<>();
-            data.put("total", total);
-            data.put("items", comments);
-            ajaxJson.setData(data);
-            return ajaxJson;
-        }
-    }
-
 
     @ResponseBody
     @RequestMapping("/add")
     public AjaxJson add(@Validated(value = {TC_Add.class}) Comment comment) {
+        AjaxJson ajaxJson = new AjaxJson(); //返回的Json数据封装对象
         String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
         User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
         if (currentUser == null) {
-            throw new CredentialsExpiredException("登录凭证已过期");
-        }
-
-        AjaxJson ajaxJson = new AjaxJson(); //返回的Json数据封装对象
-        if (comment == null) {
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("添加失败，添加对象不能为空");
+            ajaxJson.setMsg("只有登录后才能评论哟");
             return ajaxJson;
         }
+
+        if (comment == null) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("请稍微写点什么吧");
+            return ajaxJson;
+        }
+
         comment.setId(UUID.randomUUID().toString());
+        comment.setReplyCount(0);
+        comment.setPraiseCount(0);
+        comment.setState(0); //默认不显示，需要审核
         comment.setCreateUserId(currentUser.getId());
         comment.setCreateDate(new Date());
         comment.setUpdateUserId(currentUser.getId());
@@ -152,11 +170,11 @@ public class CommentController {
 
         if (res == 0) {
             ajaxJson.setCode(0);
-            ajaxJson.setMsg("添加失败，请重试");
+            ajaxJson.setMsg("评论失败，请重试");
             return ajaxJson;
         } else {
             ajaxJson.setCode(1);
-            ajaxJson.setMsg("添加成功");
+            ajaxJson.setMsg("评论成功");
             return ajaxJson;
         }
     }

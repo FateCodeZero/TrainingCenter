@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="${webRoot}/webpages/static/css/contact.css">
     <!-- JS -->
     <script type="text/javascript" src="${webRoot}/plug-in/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="${webRoot}/plug-in/jquery-cookie/jquery.cookie.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script type="text/javascript" src="${webRoot}/webpages/static/js/jquery.flexText.js" charset="gbk"></script>
@@ -32,49 +33,217 @@
 -->
 <div class="row">
     <div class="col-md-8 col-md-offset-2 commentAll">
+        <!--回复区域 begin-->
+        <div id="comment-show" class="col-md-12 comment-show"></div>
+        <!--回复区域 end-->
+        <div id="layui-page" class="text-center"></div>
         <!--评论区域 begin-->
-        <div class="col-md-12 reviewArea clearfix">
-            <textarea class="col-md-12 content comment-input" placeholder="留下您想对我们说的话吧&hellip;"
+        <div class="col-md-12 reviewArea clearfix" style="margin-top: 20px">
+            <textarea id="content" class="col-md-12 content comment-input" placeholder="留下您想对我们说的话吧&hellip;"
                       onkeyup="keyUP(this)"></textarea>
-            <a id="submit" href="javascript:;" class="col-md-1 plBtn">评论</a>
+            <div id="commentTip"></div>
+            <a id="btn-comment" href="javascript:;" class="col-md-1 plBtn">评论</a>
         </div>
         <!--评论区域 end-->
-        <!--回复区域 begin-->
-        <div class="col-md-12 comment-show"></div>
-        <!--回复区域 end-->
     </div>
 </div>
 <div class="block" style="height: 100px"></div>
 
 <script type="text/javascript">
+    /*从cookie里提取username*/
+    var username = $.cookie('username');
+    var laypage = null; //layui分页模块
+    var total = null; //数据总数
+    var rows = 10; //每页显示的数据条数
+    var currentPage = 1; //当前页
 
-//    textarea高度自适应
+    //    textarea高度自适应
     $(document).ready(function () {
         $('.content').flexText();
+        total = getTotal();
+        layuiPage();
+        getPageData(null, currentPage, rows);
     });
+
+    function layuiPage() {
+        layui.use('laypage', function () {
+            laypage = layui.laypage;
+            laypage.render({
+                elem: 'layui-page'      //div的ID
+                , count: total        //数据总数，从服务端得到
+                , limit: rows              //每页显示数据条数
+                , groups: 5             //连续出现的页码数
+                , layout: ['prev', 'page', 'next']    //自定义排版，需要显示的组件
+                , theme: '#437be2'           //自定义主题颜色
+                , jump: function (obj, first) {
+                    //页码切换回调
+                    if (!first) {
+                        currentPage = obj.curr; //修改当前页
+                        //重新获取新分页数据
+                        getPageData(obj, currentPage, rows);
+                    }
+                }
+            });
+        });
+    }
+
+    function getTotal() {
+        var count = 0;
+        $.ajax({
+            type: 'GET',
+            url: "${webRoot}/comment/getTotal",
+            async: false,    //关闭异步请求
+            dataType: "json",
+            success: function (data) {
+                var jsonData = eval(data);
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+                if (code === 1) {
+                    count = jsonData.data.total;
+                } else {
+                    layer.alert(msg, {
+                        time: 3000,
+                        icon: 2
+                    });
+                }
+            }
+        });
+        return count;
+    }
+
+    //获取Comment数据，完成DIV追加，返回总条数
+    function getPageData(obj, currentPage, rows) {
+        //首次加载，当前页为第一页时传入参数为空
+        if (currentPage === null) {
+            currentPage = 1;
+        }
+        if (rows === null) {
+            rows = 10;
+        }
+        $.ajax({
+            type: 'GET',
+            url: "${webRoot}/comment/list",
+            data: {
+                currentPage: currentPage,
+                rows: rows,
+                condition: JSON.stringify({searchContent: ''})
+            },
+            dataType: "json",
+            success: function (data) {
+                var jsonData = eval(data);
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+
+                if (code === 1) {
+                    var items = jsonData.data.items;
+                    if (items.length === 0) {
+                        $("#comment-show").html('<h3 class="col-md-12 text-center">' + msg + '</h3>');
+                    } else {
+                        pageRender(items); //渲染页面数据
+                    }
+                } else {
+                    layer.alert(msg, {
+                        time: 3000,
+                        icon: 2
+                    });
+                }
+
+                if (obj !== null) {
+                    obj.count = jsonData.data.total;
+                }
+                layui.laypage.render(obj);    //重新渲染分页组件
+                IFrameResize();//再次计算高度，包含ajax新增的数据流
+            }, error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+            }
+        });
+    }
+
+    /**
+     * 渲染页面数据
+     * @param items
+     */
+    function pageRender(items) {
+        var comments = items;
+        if (comments.length === 0){
+            $("#comment-show").html('<h3 class="col-md-12 text-center">暂无数据</h3>');
+            return;
+        }
+        var commentContent = '';
+        $.each(comments, function (index, comment) {
+            var id = comment.id;
+            var content = comment.content;
+            var replyCount = comment.replyCount;
+            var praiseCount = comment.praiseCount;
+            var createUserId = comment.createUserId;
+            var username = getUserById(createUserId).username;
+            var userInfo = getUserInfoByUsername(username);
+            var nickname = userInfo.nickname;
+            var portraitImg = userInfo.portraitImg; //头像url
+            var createDate = new Date(comment.createDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
+
+            commentContent += '<div class="col-md-12 comment-show-con clearfix">' +
+                '           <div class="col-md-1 comment-show-con-img pull-left"><img style=" border-radius: 50%;overflow:display: flex; hidden;" class="col-md-12 person_img" src="${webRoot}/' + portraitImg + '" alt=""></div>' +
+                '           <div class="col-md-11  comment-show-con-list pull-left clearfix">' +
+                '               <div class="col-md-12 pl-text clearfix">' +
+                '                   <a href="#" class="comment-size-name">' + nickname + ' : </a>' +
+                '                   <span class="my-pl-con">&nbsp;' + content + '</span>' +
+                '               </div>' +
+                '               <div class="col-md-12 date-dz">' +
+                '                   <span class="col-md-3 date-dz-left pull-left comment-time">' + createDate + '</span>' +
+               /* '                   <div class="col-md-3 date-dz-right pull-right comment-pl-block">' +
+                '                       <a href="javascript:;" class="col-md-2 removeBlock">删除</a>' +
+                '                       <a href="javascript:;" class="col-md-2 date-dz-pl pl-hf hf-con-block pull-left">回复</a>' +
+                '                   </div>' +*/
+                '               </div>' +
+                '               <div class="col-md-12 hf-list-con"></div>' +
+                '           </div>' +
+                '       </div>';
+        });
+
+        $("#comment-show").html(commentContent);
+    }
 
     <!--textarea限制字数-->
     function keyUP(t) {
         var len = $(t).val().length;
-        if (len > 139) {
-            $(t).val($(t).val().substring(0, 140));
+        if (len > 200) {
+            $(t).val($(t).val().substring(0, 200));
         }
     }
 
     //提交评论到后台数据库
-    $("#submit").click(function () {
-        //获取输入内容
-        var comment = $(this).siblings('.flex-text-wrap').find('.comment-input').val();
-        var reply = $(this).siblings('.flex-text-wrap').find('.hf-input').val();
-        var username = "${user.username}";
+    $("#btn-comment").click(function () {
 
+        var username = $.cookie('username');
+        if (username === null || username === '') {
+            //询问框
+            layer.confirm("只有登录才能评论哟，现在要去登录吗？", {
+                    btn: ['确定', '取消']//按钮
+                }
+                , function () { //确定之后执行
+                    window.location = "${webRoot}/webpages/static/login.jsp";
+                }
+                , function () {
+                    return false;
+                })
+            return false;
+        }
+
+        //获取输入内容
+        var content = $("#content").val();
+
+        if (content === null || content === '') {
+            $("#commentTip").html('<span style="color: #FF5722">请稍微写点什么吧</span>');
+            return false;
+        } else {
+            $("#commentTip").html('');
+        }
         var data = {
-            comment: comment,
-            reply: reply,
-            username: username
+            content: content
         };
         $.ajax({
-            url: "${webRoot}/user/login",
+            url: "${webRoot}/comment/add",
             type: "post",
             data: data,
             dataType: "json",
@@ -82,78 +251,25 @@
                 var jsonData = eval(data);   //数据解析
                 var code = jsonData.code;   //状态码
                 var msg = jsonData.msg;     //提示信息
-                var url = null;
-
-                var responseData = jsonData.data.items;    //获取返回的数据集
-                if (responseData === 0) {
-                    $("#responseData").html('<h3 class="col-md-12 text-center">' + msg + '</h3>');
-                }
-
-                if (responseData != null && responseData != "") {
-                    url = responseData.url;
-                }
-
                 if (code === 1) {
                     layer.alert(msg, {
-                        time: 3000,
+                        time: 2000,
                         icon: 1
                     });
-
+                    $("#content").val('');//输入框置空，防止恶意回复
+                    getPageData(null, currentPage, rows);
                 } else {
                     //显示错误信息
-                    $("#kaptchaMsg").html('<span style="color: #b92c28">' + msg + '</span>');
+                    layer.alert(msg, {
+                        time: 3000,
+                        icon: 2
+                    });
                 }
             }
             , error: function (jqXHR, textStatus, errorThrown) {
                 ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
             }
         });
-    });
-
-
-    <!--点击评论创建评论条-->
-    $('.commentAll').on('click', '.plBtn', function () {
-        var myDate = new Date();
-        //获取当前年
-        var year = myDate.getFullYear();
-        //获取当前月
-        var month = myDate.getMonth() + 1;
-        //获取当前日
-        var date = myDate.getDate();
-        var h = myDate.getHours();       //获取当前小时数(0-23)
-        var m = myDate.getMinutes();     //获取当前分钟数(0-59)
-        if (m < 10) m = '0' + m;
-        var s = myDate.getSeconds();
-        if (s < 10) s = '0' + s;
-        var now = year + '-' + month + "-" + date + " " + h + ':' + m + ":" + s;
-        //获取输入内容
-        var comment = $(this).siblings('.flex-text-wrap').find('.comment-input').val();
-        var portrait = '${webRoot}/webpages/static/images/header-img-comment_03.png';
-        var username = '评论人';
-        console.log(comment);
-        //动态创建评论模块
-        commentDiv = '<div class="col-md-12 comment-show-con clearfix">' +
-            '           <div class="col-md-1 comment-show-con-img pull-left"><img src="' + portrait + '" alt=""></div>' +
-            '           <div class="col-md-11  comment-show-con-list pull-left clearfix">' +
-            '               <div class="col-md-12 pl-text clearfix">' +
-            '                   <a href="#" class="comment-size-name">' + username + ' : </a>' +
-            '                   <span class="my-pl-con">&nbsp;' + comment + '</span>' +
-            '               </div>' +
-            '               <div class="col-md-12 date-dz">' +
-            '                   <span class="col-md-3 date-dz-left pull-left comment-time">' + now + '</span>' +
-            '                   <div class="col-md-3 date-dz-right pull-right comment-pl-block">' +
-            '                       <a href="javascript:;" class="col-md-2 removeBlock">删除</a>' +
-            '                       <a href="javascript:;" class="col-md-2 date-dz-pl pl-hf hf-con-block pull-left">回复</a>' +
-            '                   </div>' +
-            '               </div>' +
-            '               <div class="col-md-12 hf-list-con"></div>' +
-            '           </div>' +
-            '       </div>';
-        if (comment.replace(/(^\s*)|(\s*$)/g, "") != '') {
-            $(this).parents('.reviewArea ').siblings('.comment-show').prepend(commentDiv);
-            $(this).siblings('.flex-text-wrap').find('.comment-input').prop('value', '').siblings('pre').find('span').text('');
-        }
-        IFrameResize();
     });
 
     <!--点击回复动态创建回复块-->
@@ -164,9 +280,10 @@
         var fhN = '回复@' + fhName;
         //var oInput = $(this).parents('.date-dz-right').parents('.date-dz').siblings('.hf-con');
         var fhHtml = '<div class="hf-con pull-left"> ' +
-            '               <textarea class="content comment-input hf-input" placeholder="" onkeyup="keyUP(this)"></textarea>' +
-            '               <a href="javascript:;" class="hf-pl">评论</a>' +
+            '               <textarea id="replyContent" class="content comment-input hf-input" placeholder="" onkeyup="keyUP(this)"></textarea>' +
+            '               <a id="btn-reply" href="javascript:;" class="hf-pl">回复</a>' +
             '         </div>';
+
         //显示回复
         if ($(this).is('.hf-con-block')) {
             $(this).parents('.date-dz-right').parents('.date-dz').append(fhHtml);
@@ -186,26 +303,15 @@
     <!--评论回复块创建-->
     $('.comment-show').on('click', '.hf-pl', function () {
         var oThis = $(this);
-        var myDate = new Date();
-        //获取当前年
-        var year = myDate.getFullYear();
-        //获取当前月
-        var month = myDate.getMonth() + 1;
-        //获取当前日
-        var date = myDate.getDate();
-        var h = myDate.getHours();       //获取当前小时数(0-23)
-        var m = myDate.getMinutes();     //获取当前分钟数(0-59)
-        if (m < 10) m = '0' + m;
-        var s = myDate.getSeconds();
-        if (s < 10) s = '0' + s;
-        var now = year + '-' + month + "-" + date + " " + h + ':' + m + ":" + s;
+
         //获取输入内容
         var oHfVal = $(this).siblings('.flex-text-wrap').find('.hf-input').val();
-        console.log(oHfVal)
+        console.log(oHfVal);
+
         var oHfName = $(this).parents('.hf-con').parents('.date-dz').siblings('.pl-text').find('.comment-size-name').html();
         var oAllVal = '回复@' + oHfName;
         var username = '回复人';
-        if (oHfVal.replace(/^ +| +$/g, '') == '' || oHfVal == oAllVal) {
+        if (oHfVal.replace(/^ +| +$/g, '') === '' || oHfVal === oAllVal) {
 
         } else {
             $.getJSON("json/pl.json", function (data) {
@@ -216,7 +322,7 @@
                     delete v.atName;
                     var arr;
                     var ohfNameArr;
-                    if (oHfVal.indexOf("@") == -1) {
+                    if (oHfVal.indexOf("@") === -1) {
                         data['atName'] = '';
                         data['hfContent'] = oHfVal;
                     } else {
@@ -226,7 +332,7 @@
                         data['atName'] = ohfNameArr[1];
                     }
 
-                    if (data.atName == '') {
+                    if (data.atName === '') {
                         oAt = data.hfContent;
                     } else {
                         oAt = '回复<a href="#" class="atName">@' + data.atName + '</a> : ' + data.hfContent;
@@ -253,93 +359,7 @@
         IFrameResize();
     });
 
-
-    layui.use('laypage', function () {
-
-        $(document).ready(function loading() {
-            ajaxErrorHandler(); //ajax请求错误统一处理
-
-            getCommentListPage();
-            IFrameResize();
-        });
-
-        //获取getCommentListPage数据，完成DIV追加，返回总条数
-        function getCommentListPage(currentPage) {
-            //首次加载，当前页为第一页时传入参数为空
-            if (currentPage == null) {
-                currentPage = 1;
-            }
-
-            $.ajax({
-                type: 'GET',
-                url: "${webRoot}/comment/listPage",
-                data: {currentPage: currentPage, rows: 20},
-                dataType: "json",
-                success: function (data) {
-                    var jsonData = eval(data);
-                    var code = jsonData.code;
-                    var msg = jsonData.msg;
-
-                    if (code == 1) {
-
-                        var allComment = jsonData.data.items;
-                        var commentTotal = Math.ceil((jsonData.data.total) / 20);
-
-                        if (allComment == 0) {
-                            $("#allComment").html('<h3 class="col-md-12 text-center">' + msg + '</h3>');
-                        }
-
-                        $.each(allComment, function (index, allComment) {
-                            var id = contact.id;
-                            var portrait = contact.portrait;
-                            var comment = contact.commnet;
-                            var reply = contact.reply;
-
-
-                            var allNews_div = '';
-
-                            if (index == 0) {
-                                $("#allNews").html(allNews_div);
-                            } else {
-                                $("#allNews").append(allNews_div);
-                            }
-                        });
-                        //生成分页
-                        createlayPage(commentTotal, currentPage);
-                        //再次计算高度，包含ajax新增的数据流
-                        IFrameResize();
-                    } else {
-                        $("#allComment").html('<h3 class="col-md-12 text-center">' + msg + '</h3>');
-                    }
-
-                }
-            });
-        }
-
-        /*生成分页*/
-        function createlayPage(newsTotal, currentPage) {
-
-            var laypage = layui.laypage;
-            laypage.render({
-                elem: 'allNews_pagination'      //div的ID
-                , count: newsTotal        //数据总数，从服务端得到
-                , limit: 1              //每页显示数据条数
-                , groups: 3             //连续出现的页码数
-                , theme: '#437be2'           //自定义主题颜色
-                , curr: currentPage             //当前页
-                , jump: function (obj, first) {
-                    //页码切换回调
-                    if (!first) {
-                        //重新获取新分页数据
-                        getNewsListPage(obj.curr);
-                    }
-
-                }
-            });
-        }
-    });
-
-    <!--删除评论块-->
+    /*<!--删除评论块-->
     $('.commentAll').on('click', '.removeBlock', function () {
         var oT = $(this).parents('.date-dz-right').parents('.date-dz').parents('.all-pl-con');
         if (oT.siblings('.all-pl-con').length >= 1) {
@@ -350,7 +370,91 @@
         }
         $(this).parents('.date-dz-right').parents('.date-dz').parents('.comment-show-con-list').parents('.comment-show-con').remove();
 
-    });
+    });*/
+
+    /**
+     * 通过 id 获取用户
+     * @param id
+     * @returns {*}
+     */
+    function getUserById(id) {
+        if (id === null || id === '') {
+            layer.alert('id不能为空！', {
+                time: 3000,
+                icon: 2
+            });
+            return false;
+        }
+        var user = '';
+        var data = {id: id};
+        $.ajax({
+            url: "${webRoot}/user/getUserById",
+            type: "get",
+            async: false,    //关闭异步请求
+            data: data,
+            dataType: "json",
+            success: function (data) {
+                var jsonData = eval(data); //数据解析
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+                if (code === 1) {
+                    user = jsonData.data.user;
+                } else {
+                    layer.alert(msg, {
+                        time: 3000,
+                        icon: 2
+                    });
+                    return false;
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+            }
+        });
+        return user;
+    }
+
+    /**
+     * 通过 username 获取用户
+     * @param username
+     * @returns {*}
+     */
+    function getUserInfoByUsername(username) {
+        if (username === null || username === '') {
+            layer.alert('请先选择要查询的数据', {
+                time: 3000,
+                icon: 2
+            });
+            return false;
+        }
+        var userInfo = null;
+        var data = {username: username};
+        $.ajax({
+            url: "${webRoot}/userInfo/getUserInfoByUsername",
+            type: "get",
+            async: false,    //关闭异步请求
+            data: data,
+            dataType: "json",
+            success: function (data) {
+                var jsonData = eval(data); //数据解析
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+                if (code === 1) {
+                    userInfo = jsonData.data.userInfo;
+                } else {
+                    layer.alert(msg, {
+                        time: 3000,
+                        icon: 2
+                    });
+                    return false;
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+            }
+        });
+        return userInfo;
+    }
 </script>
 
 </body>

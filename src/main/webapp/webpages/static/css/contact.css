@@ -4,7 +4,10 @@
 * @Last Modified by:   SJH
 * @Last Modified time: 2018-11-30 17:08:55
 */
+.person_img{
+    height: 40px !important;
 
+}
 pre {
     white-space: pre;
     white-space: pre-wrap;

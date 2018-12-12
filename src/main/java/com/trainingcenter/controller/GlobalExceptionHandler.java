@@ -11,9 +11,9 @@ import com.trainingcenter.exception.OperationException;
 import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.LogUtil;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,16 +45,8 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 处理登录认证异常
-     * @param e
-    @ExceptionHandler(AuthenticationException.class)
-    @ResponseBody
-    private void handleAuthenticationException(AuthenticationException e){
-
-    }*/
-
-    /**
      * 处理 SpringSecurity 访问无权限异常
+     *
      * @param e
      * @return
      */
@@ -70,6 +62,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 处理所有接口数据验证异常
+     *
      * @param e
      * @return
      */
@@ -86,6 +79,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 处理数据绑定异常
+     *
      * @param e
      * @return
      */
@@ -101,6 +95,23 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 处理url请求参数不匹配异常
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseBody
+    private AjaxJson handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        LogUtil.debug(this, "url请求参数匹配异常", e.getMessage());
+
+        AjaxJson ajaxJson = new AjaxJson();
+        ajaxJson.setCode(0);
+        ajaxJson.setMsg("请求错误，参数不匹配");
+        return ajaxJson;
+    }
+
+    /**
      * 处理所有不可知的异常
      *
      * @param e
@@ -108,7 +119,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     private void handleException(Exception e, HttpServletResponse response) {
-        LogUtil.error(this, "未知异常", "遇到未知异常",e);
+        LogUtil.error(this, "未知异常", "遇到未知异常", e);
         e.printStackTrace();
         try {
             response.sendError(500);
