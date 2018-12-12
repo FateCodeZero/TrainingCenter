@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -20,7 +21,7 @@ public interface BestStudentService {
      */
     public BestStudent getBestStudentById(String id);
 
-    public List<BestStudent> getBestStudents();
+    public List<BestStudent> getBestStudents(Map<String,Object> condition);
     /**
      * 分页获取所有学生风采
      *
@@ -29,7 +30,7 @@ public interface BestStudentService {
      * @param searchContent：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public List<BestStudent> getBestStudents(Integer currentPage, Integer rows, String searchContent);
+    public List<BestStudent> getBestStudents(Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 学生风采添加方法

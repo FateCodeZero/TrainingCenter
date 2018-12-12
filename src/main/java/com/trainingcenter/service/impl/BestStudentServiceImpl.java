@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -37,8 +38,8 @@ public class BestStudentServiceImpl implements BestStudentService {
         return StringUtil.isEmpty(id)?null:BestStudentMapper.getBestStudentById(id);
     }
 
-    public List<BestStudent> getBestStudents(){
-        return getBestStudents(null,null,null);
+    public List<BestStudent> getBestStudents(Map<String,Object> condition){
+        return getBestStudents(null,null,condition);
     }
     /**
      *分页获取所以学生风采
@@ -47,16 +48,16 @@ public class BestStudentServiceImpl implements BestStudentService {
      * @param searchContent：模糊查询内容
      * @return
      */
-    public List<BestStudent> getBestStudents(Integer currentPage, Integer rows, String searchContent) {
+    public List<BestStudent> getBestStudents(Integer currentPage, Integer rows, Map<String,Object> condition) {
         if(currentPage != null && rows != null) {
             if (currentPage < 0 || rows < 0) {
                 return null;
             }
             Integer start = (currentPage - 1) * rows;
-            return BestStudentMapper.getBestStudents(start, rows, searchContent);
+            return BestStudentMapper.getBestStudents(start, rows, condition);
         }
         else {
-            return BestStudentMapper.getBestStudents(null,null,searchContent);
+            return BestStudentMapper.getBestStudents(null,null,condition);
         }
     }
 

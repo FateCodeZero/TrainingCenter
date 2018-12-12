@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -34,27 +35,27 @@ public class DevelopTeachingPointServiceImpl implements DevelopTeachingPointServ
     }
 
     @Override
-    public List<DevelopTeachingPoint> getDevelopTeachingPoints() {
-        return getDevelopTeachingPoints(null, null, null);
+    public List<DevelopTeachingPoint> getDevelopTeachingPoints(Map<String,Object> condition) {
+        return getDevelopTeachingPoints(null, null, condition);
     }
     /**
      *分页获取所以培训动态
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return
      */
     @Override
-    public List<DevelopTeachingPoint> getDevelopTeachingPoints(Integer currentPage, Integer rows, String searchContent) {
+    public List<DevelopTeachingPoint> getDevelopTeachingPoints(Integer currentPage, Integer rows, Map<String,Object> condition) {
             if(currentPage != null && rows != null) {
                 if (currentPage < 0 || rows < 0) {
                     return null;
                 }
                 Integer start = (currentPage - 1) * rows;
-                return developTeachingPointMapper.getDevelopTeachingPoints(start, rows, searchContent);
+                return developTeachingPointMapper.getDevelopTeachingPoints(start, rows, condition);
             }
             else {
-                return developTeachingPointMapper.getDevelopTeachingPoints(null,null,searchContent);
+                return developTeachingPointMapper.getDevelopTeachingPoints(null,null,condition);
             }
     }
 
