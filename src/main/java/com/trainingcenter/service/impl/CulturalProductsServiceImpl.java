@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -34,14 +35,14 @@ public class CulturalProductsServiceImpl implements CulturalProductsService {
     }
 
     @Override
-    public List<CulturalProducts> getCulturalProductss() {
-        return getCulturalProductss(null, null, null);
+    public List<CulturalProducts> getCulturalProductss(Map<String,Object> condition) {
+        return getCulturalProductss(null, null, condition);
     }
     /**
      *分页获取所以培训动态
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return
      */
     @Override
@@ -51,10 +52,10 @@ public class CulturalProductsServiceImpl implements CulturalProductsService {
                     return null;
                 }
                 Integer start = (currentPage - 1) * rows;
-                return culturalProductsMapper.getCulturalProductss(start, rows, searchContent);
+                return culturalProductsMapper.getCulturalProductss(start, rows, condition);
             }
             else {
-                return culturalProductsMapper.getCulturalProductss(null,null,searchContent);
+                return culturalProductsMapper.getCulturalProductss(null,null,condition);
             }
     }
 

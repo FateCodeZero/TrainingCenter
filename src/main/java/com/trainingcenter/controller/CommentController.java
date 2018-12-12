@@ -83,8 +83,71 @@ public class CommentController {
     }
 
     /**
+     * 获取未审核的留言条数
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getUnEnableCount")
+    public AjaxJson getUnEnableCount(){
+        //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
+        Map<String, Object> condition = new ConcurrentHashMap<>();
+        condition.put("state",0);
+
+        //获取当前查询条件下的所有数据条数，分页用
+        Integer total = commentService.getComments(condition).size();
+        AjaxJson ajaxJson = new AjaxJson();
+        ajaxJson.setCode(1);
+        ajaxJson.setMsg("查询成功");
+        Map<String,Object> data = new ConcurrentHashMap<>();
+        data.put("total",total);
+        ajaxJson.setData(data);
+        return ajaxJson;
+    }
+
+    /**
      * 分页获取资源数据（获取全部，（已启用 + 已禁用 + 已删除（软删除）））
-     *
+     * @param currentPage：当前页
+     * @param rows：每页展示的数据条数
+     * @param request：其他参数，如模糊查询等
+     */
+    @ResponseBody
+    @RequestMapping("/all")
+    public AjaxJson getComments_all(@RequestParam("currentPage") Integer currentPage, @RequestParam("rows") Integer rows, HttpServletRequest request) {
+        AjaxJson ajaxJson = new AjaxJson();
+        if (currentPage == null || rows == null) {
+            ajaxJson.setCode(0);
+            ajaxJson.setMsg("数据获取失败，页数不能为空");
+            return ajaxJson;
+        } else {
+            //自定义查询条件，以 key-value 的形式进行条件查询，模糊查询的 key 固定为 searchContent
+            Map<String, Object> condition = new ConcurrentHashMap<>();
+            String conditionStr = request.getParameter("condition");
+            if (StringUtil.isNotEmpty(conditionStr)){
+                condition = FindConditionUtils.findConditionBuild(Comment.class,conditionStr);
+            }
+
+            //获取当前查询条件下的所有数据条数，分页用
+            Integer total = commentService.getComments(condition).size();
+            //获取当前页的数据
+            List<Comment> comments = commentService.getComments(currentPage, rows, condition);
+
+            ajaxJson.setCode(1);
+            if (comments.size() == 0) {
+                ajaxJson.setMsg("暂无数据Ծ‸Ծ");
+            } else {
+                ajaxJson.setMsg("数据获取成功");
+            }
+
+            Map<String, Object> data = new ConcurrentHashMap<>();
+            data.put("total", total);
+            data.put("items", comments);
+            ajaxJson.setData(data);
+            return ajaxJson;
+        }
+    }
+
+    /**
+     * 分页获取资源数据，首页显示
      * @param currentPage：当前页
      * @param rows：每页展示的数据条数
      * @param request：其他参数，如模糊查询等

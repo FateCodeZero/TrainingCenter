@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -34,14 +35,14 @@ public class SpecialFoodServiceImpl implements SpecialFoodService {
     }
 
     @Override
-    public List<SpecialFood> getSpecialFoods() {
-        return getSpecialFoods(null, null, null);
+    public List<SpecialFood> getSpecialFoods(Map<String,Object> condition) {
+        return getSpecialFoods(null, null, condition);
     }
     /**
      *分页获取所以培训动态
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return
      */
     @Override
@@ -51,10 +52,10 @@ public class SpecialFoodServiceImpl implements SpecialFoodService {
                     return null;
                 }
                 Integer start = (currentPage - 1) * rows;
-                return specialFoodMapper.getSpecialFoods(start, rows, searchContent);
+                return specialFoodMapper.getSpecialFoods(start, rows, condition);
             }
             else {
-                return specialFoodMapper.getSpecialFoods(null,null,searchContent);
+                return specialFoodMapper.getSpecialFoods(null,null,condition);
             }
     }
 

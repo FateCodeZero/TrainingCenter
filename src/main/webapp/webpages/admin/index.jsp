@@ -91,30 +91,34 @@
 
 </body>
 <script>
+    var resourceData = null;
+    var unEnableCount = 0;
+    var treeData = null;
     $(document).ready(function () {
-        var resourceData = getResourceData();
-        var treeData = buildTreeData(resourceData);
+        resourceData = getResourceData();
+        unEnableCount = getCommentUnEnableCount();
+        treeData = buildTreeData(resourceData);
         initSelectableTree(treeData);
     });
 
     //JavaScript代码区域
-    layui.use('element', function () {
-        var element = layui.element;
-        //监听导航点击
-        element.on('nav', function (elem) {
-            //console.log(elem)
-            layer.msg(elem.text()); //弹出提示
-            var text = elem.text();
-            var loadUrl = "";
+    <%--layui.use('element', function () {--%>
+        <%--var element = layui.element;--%>
+        <%--//监听导航点击--%>
+        <%--element.on('nav', function (elem) {--%>
+            <%--//console.log(elem)--%>
+            <%--layer.msg(elem.text()); //弹出提示--%>
+            <%--var text = elem.text();--%>
+            <%--var loadUrl = "";--%>
 
-            if (text === '控制台') {
-                loadUrl = "${webRoot}/webpages/admin/index.jsp";
-            }
-            //通过修改 iframe 的 url 来切换页面，注：要用此方法，点击处<a>标签必须是 href="#"
-            $("#index-body").attr('src', loadUrl);
-        });
-        element.render("nav");
-    });
+            <%--if (text === '控制台') {--%>
+                <%--loadUrl = "${webRoot}/webpages/admin/index.jsp";--%>
+            <%--}--%>
+            <%--//通过修改 iframe 的 url 来切换页面，注：要用此方法，点击处<a>标签必须是 href="#"--%>
+            <%--$("#index-body").attr('src', loadUrl);--%>
+        <%--});--%>
+        <%--element.render("nav");--%>
+    <%--});--%>
 
     /*获取菜单数据*/
     function getResourceData() {
@@ -146,26 +150,62 @@
         return returnData;
     }
 
+    /**
+     * 获取未审核的留言条数
+     * */
+    function getCommentUnEnableCount() {
+        var total = null;
+        $.ajax({
+            url: "${webRoot}/comment/getUnEnableCount",
+            type: "get",
+            async: false,    //关闭异步请求
+            dataType: "json",
+            success: function (data) {
+                var jsonData = eval(data); //数据解析
+                var code = jsonData.code;
+                var msg = jsonData.msg;
+                if (code === 1) {
+                    total = jsonData.data.total;
+                } else {
+                    layer.alert(msg, {
+                        time: 3000,
+                        icon: 2
+                    });
+                    return false;
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+            }
+        });
+        return total;
+    }
+
     /*构建树形数据*/
     function buildTreeData(data) {
         var tree = [];
         $.each(data, function (index, item) {
-            var id = item.id;
             /*本节点菜单id*/
-            var name = item.name;
+            var id = item.id;
             /*本节点菜单名称*/
-            var parentId = item.parentId;
+            var name = item.name;
             /*本节点的父节点菜单id*/
-            var order = item.order;
+            var parentId = item.parentId;
             /*本节点排序，可忽略*/
-            var level = item.level;
+            var order = item.order;
             /*本节点层级*/
-            var url = item.data.url;
+            var level = item.level;
             /*本节点url*/
-            var iconStyle = item.data.iconStyle;
+            var url = item.data.url;
             /*本节点iocn*/
-            var children = item.children;
+            var iconStyle = item.data.iconStyle;
             /*子节点*/
+            var children = item.children;
+
+            var tags = [];
+            if (name === '信息管理' || name === '用户留言' ){
+                tags[0] = '<span style="color: #FF5722;font-size: larger">'+unEnableCount+'</span>'; //显示未审核留言数目
+            }
 
             //使用递归方式解析数据
             tree[index] = {
@@ -176,7 +216,7 @@
                 icon: iconStyle, /*当前节点上的图标*/
                 selectedIcon: iconStyle, /*当前节点被选择后的图标*/
                 href: url,
-                tags: level,
+                tags: tags,
                 nodes: buildTreeData(children)
             };
         });
@@ -192,6 +232,7 @@
             selectedBackColor: '#009688', //节点被选中后的背景颜色
             showBorder: false,       //不显示边框
             showIcon: true, /*开启节点图标*/
+            showTags:true, /*显示 tags*/
             enableLinks: false, /*不启用当前节点的超链接*/
             multiSelect: $('#chk-select-multi').is(':checked'),
             onNodeSelected: function (event, node) {

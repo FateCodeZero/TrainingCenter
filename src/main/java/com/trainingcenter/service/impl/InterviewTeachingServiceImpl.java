@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -34,8 +35,8 @@ public class InterviewTeachingServiceImpl implements InterviewTeachingService {
     }
 
     @Override
-    public List<InterviewTeaching> getInterviewTeachings() {
-        return getInterviewTeachings(null, null, null);
+    public List<InterviewTeaching> getInterviewTeachings(Map<String,Object> condition) {
+        return getInterviewTeachings(null, null, condition);
     }
     /**
      *分页获取所以培训动态
