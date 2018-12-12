@@ -306,8 +306,12 @@ public class UserController {
             } else {
                 //若该IP已被封禁，则不进行操作了
                 if (lockedIP == null) {
-                    String currentUsername = SysResourcesUtils.getCurrentUsername();
-                    User currentUser = userService.getUserByUsername(currentUsername);
+                    User currentUser = null;
+                    //获取当前用户
+                    String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+                    if (!"anonymousUser".equals(currentUsername)){
+                        currentUser = userService.getUserByUsername(currentUsername); //当前登录对象
+                    }
 
                     LockedIP locked = new LockedIP();
                     locked.setId(UUID.randomUUID().toString());

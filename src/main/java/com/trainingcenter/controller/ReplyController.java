@@ -134,9 +134,13 @@ public class ReplyController {
     @ResponseBody
     @RequestMapping("/add")
     public AjaxJson add(@Validated(value = {TC_Add.class}) Reply reply) {
-        String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
-        User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
-        if (currentUser == null) {
+        User user = null;
+        //获取当前用户
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
+        if (user == null) {
             throw new CredentialsExpiredException("登录凭证已过期");
         }
 
@@ -147,7 +151,7 @@ public class ReplyController {
             return ajaxJson;
         }
         reply.setId(UUID.randomUUID().toString());
-        reply.setCreateUserId(currentUser.getId());
+        reply.setCreateUserId(user.getId());
         reply.setCreateDate(new Date());
 
         Integer res = replyService.add(reply);
@@ -166,10 +170,14 @@ public class ReplyController {
     @ResponseBody
     @RequestMapping("/update")
     public AjaxJson update(@Validated(value = {TC_Update.class}) Reply reply) {
-        String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
-        User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
+        User user = null;
+        //获取当前用户
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
 
-        if (currentUser == null) {
+        if (user == null) {
             throw new CredentialsExpiredException("登录凭证已过期");
         }
 

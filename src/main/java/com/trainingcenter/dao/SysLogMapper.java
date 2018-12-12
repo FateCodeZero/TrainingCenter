@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,10 +29,10 @@ public interface SysLogMapper {
      * 分页获取数据
      * @param start：从第几条数据开始查
      * @param number：查询多少条数据
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回当前页的数据集合
      */
-    public List<SysLog> getSysLogs(@Param("start") Integer start, @Param("number") Integer number, @Param("searchContent") String searchContent);
+    public List<SysLog> getSysLogs(@Param("start") Integer start, @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
 
     /**
      * 添加日志

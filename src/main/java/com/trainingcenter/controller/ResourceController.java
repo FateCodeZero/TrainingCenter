@@ -187,9 +187,13 @@ public class ResourceController {
     @ResponseBody
     @RequestMapping("/add")
     public AjaxJson add(@Validated(value = {TC_Add.class}) Resource resource) {
-        String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
-        User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
-        if (currentUser == null) {
+        User user = null;
+        //获取当前用户
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
+        if (user == null) {
             throw new CredentialsExpiredException("登录凭证已过期");
         }
 
@@ -200,9 +204,9 @@ public class ResourceController {
             return ajaxJson;
         }
         resource.setId(UUID.randomUUID().toString());
-        resource.setCreateUserId(currentUser.getId());
+        resource.setCreateUserId(user.getId());
         resource.setCreateDate(new Date());
-        resource.setUpdateUserId(currentUser.getId());
+        resource.setUpdateUserId(user.getId());
         resource.setUpdateDate(new Date());
 
         String parentId = resource.getParentId();
@@ -237,10 +241,14 @@ public class ResourceController {
     @ResponseBody
     @RequestMapping("/update")
     public AjaxJson update(@Validated(value = {TC_Update.class}) Resource resource) {
-        String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
-        User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
+        User user = null;
+        //获取当前用户
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
 
-        if (currentUser == null) {
+        if (user == null) {
             throw new CredentialsExpiredException("登录凭证已过期");
         }
 
@@ -294,7 +302,7 @@ public class ResourceController {
         if (StringUtil.isNotEmpty(resource.getRemarks())) {
             oldResource.setRemarks(resource.getRemarks());
         }
-        oldResource.setUpdateUserId(currentUser.getId());
+        oldResource.setUpdateUserId(user.getId());
         oldResource.setUpdateDate(new Date());
 
         Integer res = resourceService.update(oldResource); //操作结果 flag

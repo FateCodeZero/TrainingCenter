@@ -8,7 +8,7 @@
 
 
     <sql id="videoTeachingcolumns">
-      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public VideoTeaching getVideoTeachingById(@Param("id") String id);
@@ -92,18 +92,17 @@
                 remarks = #{videoTeaching.remarks},
             </if>
             <if test="videoTeaching.createUserId != null and videoTeaching.createUserId != '' ">
-                createUserId = #{videoTeaching.createUserId},
+                create_user_id = #{videoTeaching.createUserId},
             </if>
             <if test="videoTeaching.createDate != null ">
-                createDate = #{videoTeaching.createDate},
+                create_date = #{videoTeaching.createDate},
             </if>
             <if test="videoTeaching.updateUserId != null and videoTeaching.updateUserId != '' ">
-                createDate = #{videoTeaching.createDate},
+                update_user_id = #{videoTeaching.updateUserId},
             </if>
             <if test="videoTeaching.updateDate != null ">
-                updateDate = #{videoTeaching.updateDate},
+                update_date = #{videoTeaching.updateDate},
             </if>
-
         </trim>
         WHERE id = #{videoTeaching.id}
     </update>

@@ -8,7 +8,7 @@
 
 
     <sql id="revolutionarySitecolumns">
-      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public RevolutionarySite getRevolutionarySiteById(@Param("id") String id);
@@ -92,16 +92,16 @@
                 remarks = #{revolutionarySite.remarks},
             </if>
             <if test="revolutionarySite.createUserId != null and revolutionarySite.createUserId != '' ">
-                createUserId = #{revolutionarySite.createUserId},
+                create_user_id = #{revolutionarySite.createUserId},
             </if>
             <if test="revolutionarySite.createDate != null ">
-                createDate = #{revolutionarySite.createDate},
+                create_date = #{revolutionarySite.createDate},
             </if>
             <if test="revolutionarySite.updateUserId != null and revolutionarySite.updateUserId != '' ">
-                updateUserId = #{revolutionarySite.updateUserId},
+                update_user_id = #{revolutionarySite.updateUserId},
             </if>
             <if test="revolutionarySite.updateDate != null ">
-                updateDate = #{revolutionarySite.updateDate},
+                update_date = #{revolutionarySite.updateDate},
             </if>
 
         </trim>

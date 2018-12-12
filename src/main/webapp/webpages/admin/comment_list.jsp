@@ -49,9 +49,6 @@
 <%--头部工具栏--%>
 <script type="text/html" id="table-head">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="update" title="编辑菜单"><i
-                class="layui-icon layui-icon-edit"></i> 查看
-        </button>
         <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="delete" title="批量删除菜单"><i
                 class="layui-icon layui-icon-delete"></i> 批量删除
         </button>
@@ -60,8 +57,8 @@
 
 <%--表格操作--%>
 <script type="text/html" id="table-opt">
-    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="grant">授权</a>
-    <a class="layui-btn layui-btn-xs" lay-event="enable">启用</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="enable">通过</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="unEnable">禁用</a>
 </script>
 
@@ -178,16 +175,17 @@
                     {type: 'checkbox', fixed: 'left', width: 50, align: 'center'}
                     , {title: '序号', type: 'numbers', fixed: 'left', width: 50, align: 'center'}
                     , {field: 'id', title: 'ID', hide: true, width: 100, align: 'center'}
-                    , {field: 'name', title: '角色名称', width: 150, align: 'center'}
-                    , {field: 'describe', title: '角色描述', width: 150, align: 'center'}
-                    , {field: 'remarks', title: '备注', width: 150, align: 'center'}
+                    , {field: 'title', title: '留言标题', width: 150, align: 'center'}
+                    , {field: 'content', title: '留言内容', width: 150, align: 'center'}
+                    , {field: 'replyCount', title: '回复数',sort: true, hide: true, width: 150, align: 'center'}
+                    , {field: 'praiseCount', title: '点赞数',sort: true, hide: true,width: 150, align: 'center'}
                     , {
                         field: 'state', title: '使用状态', width: 100, align: 'center', templet: function (d) {
                             if (d.state === 1) {
-                                return '<span class="layui-btn layui-btn-xs">已启用</span>'
+                                return '<span class="layui-btn layui-btn-xs">已通过</span>'
                             }
                             if(d.state === 0){
-                                return '<span class="layui-btn layui-btn-danger layui-btn-xs">已禁用</span>'
+                                return '<span class="layui-btn layui-btn-danger layui-btn-xs">未审核</span>'
                             }
                             if(d.state === -1){
                                 return '<span class="layui-btn layui-btn-disabled layui-btn-xs">已删除</span>'
@@ -195,24 +193,24 @@
                         }
                     }
                     , {
-                        field: 'createUserId', title: '创建人', width: 150, align: 'center', templet: function (d) {
+                        field: 'createUserId', title: '留言人', width: 150, align: 'center', templet: function (d) {
                             var user = getUserById(d.createUserId);
                             return user.username;
                         }
                     }
                     , {
-                        field: 'createDate', title: '创建时间', sort: true, width: 180, align: 'center', templet: function (d) {
+                        field: 'createDate', title: '留言时间', sort: true, width: 180, align: 'center', templet: function (d) {
                             return new Date(d.createDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
                         }
                     }
                     , {
-                        field: 'updateUserId', title: '更新人Id', width: 150, align: 'center', templet: function (d) {
+                        field: 'updateUserId', title: '更新人Id', width: 150, hide: true, align: 'center', templet: function (d) {
                             var user = getUserById(d.updateUserId);
                             return user.username;
                         }
                     }
                     , {
-                        field: 'updateDate', title: '更新时间', sort: true, width: 180, align: 'center', templet: function (d) {
+                        field: 'updateDate', title: '更新时间', sort: true, width: 180, hide: true, align: 'center', templet: function (d) {
                             return new Date(d.updateDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
                         }
                     }
@@ -266,9 +264,6 @@
                     return false;
                 } else {
                     switch (obj.event) {
-                        case 'add':     //添加
-                            addData();
-                            break;
                         case 'delete':  //删除
 
                             var ids = '';
@@ -283,28 +278,6 @@
                                 cnt += 1;
                             });
                             deleteData(ids, cnt); //删除数据
-                            break;
-                        case 'update':  //编辑
-                            if (data.length > 1) {
-                                layer.alert('一次只能编辑一条数据', {
-                                    time: 3000,
-                                    icon: 2
-                                });
-                                return false;
-                            } else {
-                                editData(data[0].id);
-                            }
-                            break;
-                        case 'detail':
-                            if (data.length > 1) {
-                                layer.alert('一次只能查看一条数据', {
-                                    time: 3000,
-                                    icon: 2
-                                });
-                                return false;
-                            } else {
-                                layer.msg("ID:【" + data[0].id + "】的查看操作");
-                            }
                             break;
                     }
                 }
@@ -328,51 +301,21 @@
                 } else if (obj.event === 'unEnable') {  //禁用
                     state = 0;
                     enableOpt(data,state);
-                }else if (obj.event === 'grant'){ //授权
-                    layer.open({
-                        title: '角色授权',
-                        type: 2,
-                        area: ['1000px', '450px'],
-                        fix: false, //不固定
-                        maxmin: true,
-                        content: '${webRoot}/webpages/admin/permission_select.jsp?id='+id,
-                        success: function (layero, index) {
-                            layer_window = layero;   //获取弹出窗口的窗口对象
-                        },
-                        end: function () {
-                            location.reload(); //回调函数，刷新页面
-                        }
-                    });
+                }else if (obj.event === 'detail'){ //查看
+                    editData(id);
                 }
             });
         });
     }
 
-    function addData() {
-        layer.open({
-            title: '添加角色',
-            type: 2,
-            area: ['1000px', '450px'],
-            fix: false, //不固定
-            maxmin: true,
-            content: '${webRoot}/webpages/admin/role_add.jsp',
-            success: function (layero, index) {
-                layer_window = layero;   //获取弹出窗口的窗口对象
-            },
-            end: function () {
-                location.reload(); //回调函数，刷新页面
-            }
-        });
-    }
-
     function editData(id) {
         layer.open({
-            title: '编辑角色',
+            title: '查看留言',
             type: 2,
             area: ['1000px', '450px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${webRoot}/webpages/admin/role_edit.jsp?id=' + id,
+            content: '${webRoot}/webpages/admin/comment_edit.jsp?id=' + id,
             success: function (layero, index) {
                 layer_window = layero;   //获取弹出窗口的窗口对象
             },
@@ -380,12 +323,6 @@
                 location.reload(); //回调函数，刷新页面
             }
         });
-    }
-
-    //获取弹出窗口返回的json格式的数据
-    function getBackPermissionData(JsonData) {		//返回权限数据
-        var resourceSelectWindow = window[layer_window.find('iframe')[0]['name']];	//获取子窗口的窗口对象
-        resourceSelectWindow.window.setPermissionData(JsonData);		//由弹出窗口的窗口对象去调用弹出窗口的方法
     }
 
     //删除
@@ -402,7 +339,7 @@
                     ids: ids
                 };
                 $.ajax({
-                    url: "${webRoot}/role/delete",
+                    url: "${webRoot}/comment/delete",
                     type: "post",
                     data: data,
                     dataType: "json",
@@ -447,7 +384,7 @@
                 resourceId: obj.resourceId
             };
             $.ajax({
-                url: "${webRoot}/role/update",
+                url: "${webRoot}/comment/update",
                 type: "post",
                 data: data,
                 dataType: "json",

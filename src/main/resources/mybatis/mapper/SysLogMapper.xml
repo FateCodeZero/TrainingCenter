@@ -27,14 +27,31 @@
         SELECT <include refid="sysLogColumns"/>
         FROM tab_log
         <trim prefix="WHERE" prefixOverrides="and">
-            <if test="searchContent != null and searchContent != ''">
-                and
-                ((
-                op_user_id like CONCAT('%',#{searchContent},'%')
-                OR op_type like CONCAT('%',#{searchContent},'%')
-                ))
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="(key == &quot;opUserId&quot; or key == &quot;op_user_id&quot; ) and value != null and value != '' ">
+                        and op_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;opContent&quot; or key == &quot;op_content&quot; ) and value != null and value != '' ">
+                        and  op_content = #{value}
+                    </if>
+                    <if test="(key == &quot;opType&quot; or key == &quot;op_type&quot; ) and value != null and value != '' ">
+                        and  op_type = #{value}
+                    </if>
+                    <if test="(key == &quot;opTime&quot; or key == &quot;op_time&quot; ) and value != null ">
+                        and  op_time = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and
+                        ((
+                        op_user_id like CONCAT('%',#{searchContent},'%')
+                        OR op_type like CONCAT('%',#{searchContent},'%')
+                        ))
+                    </if>
+                </foreach>
             </if>
         </trim>
+        ORDER BY op_time DESC
         <if test="start != null and number != null">
             LIMIT #{start},#{number}
         </if>

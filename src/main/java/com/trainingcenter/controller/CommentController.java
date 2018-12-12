@@ -58,7 +58,7 @@ public class CommentController {
             condition = FindConditionUtils.findConditionBuild(Comment.class,conditionStr);
         }
         String currentUsername = SysResourcesUtils.getCurrentUsername();
-        if (StringUtil.isEmpty(currentUsername)){
+        if (StringUtil.isEmpty(currentUsername) || "anonymousUser".equals(currentUsername)){
             //保证未通过审批的评论不展示
             condition.put("state",1);
         }else {
@@ -168,7 +168,7 @@ public class CommentController {
                 condition = FindConditionUtils.findConditionBuild(Comment.class,conditionStr);
             }
             String currentUsername = SysResourcesUtils.getCurrentUsername();
-            if (StringUtil.isEmpty(currentUsername)){
+            if (StringUtil.isEmpty(currentUsername) || currentUsername.equals("anonymousUser")){
                 //保证未通过审批的评论不展示
                 condition.put("state",1);
             }else {
@@ -206,9 +206,13 @@ public class CommentController {
     @RequestMapping("/add")
     public AjaxJson add(@Validated(value = {TC_Add.class}) Comment comment) {
         AjaxJson ajaxJson = new AjaxJson(); //返回的Json数据封装对象
-        String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
-        User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
-        if (currentUser == null) {
+        User user = null;
+        //获取当前用户
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
+        if (user == null) {
             ajaxJson.setCode(0);
             ajaxJson.setMsg("只有登录后才能评论哟");
             return ajaxJson;
@@ -224,9 +228,9 @@ public class CommentController {
         comment.setReplyCount(0);
         comment.setPraiseCount(0);
         comment.setState(0); //默认不显示，需要审核
-        comment.setCreateUserId(currentUser.getId());
+        comment.setCreateUserId(user.getId());
         comment.setCreateDate(new Date());
-        comment.setUpdateUserId(currentUser.getId());
+        comment.setUpdateUserId(user.getId());
         comment.setUpdateDate(new Date());
 
         Integer res = commentService.add(comment);

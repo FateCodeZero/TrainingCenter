@@ -87,10 +87,14 @@ public class LockedIPController {
     @ResponseBody
     @RequestMapping("/add")
     public AjaxJson add(@Validated(value = {TC_Add.class}) LockedIP lockedIP){
-        String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
-        User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
+        User user = null;
+        //获取当前用户
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
 
-        if (currentUser == null) {
+        if (user == null) {
             throw new CredentialsExpiredException("登录凭证已过期");
         }
         AjaxJson ajaxJson = new AjaxJson();
@@ -100,9 +104,9 @@ public class LockedIPController {
             return ajaxJson;
         }
         lockedIP.setId(UUID.randomUUID().toString());
-        lockedIP.setCreateUserId(currentUser.getId());
+        lockedIP.setCreateUserId(user.getId());
         lockedIP.setCreateDate(new Date());
-        lockedIP.setUpdateUserId(currentUser.getId());
+        lockedIP.setUpdateUserId(user.getId());
         lockedIP.setUpdateDate(new Date());
 
         Integer res = lockedIPService.add(lockedIP);//操作结果 flag
@@ -121,9 +125,13 @@ public class LockedIPController {
     @ResponseBody
     @RequestMapping("/update")
     public AjaxJson update(@Validated(value = {TC_Update.class}) LockedIP lockedIP){
-        String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
-        User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
-        if (currentUsername == null || currentUser == null) {
+        User user = null;
+        //获取当前用户
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
+        if (currentUsername == null || user == null) {
             throw new CredentialsExpiredException("登录凭证已过期");
         }
         AjaxJson ajaxJson = new AjaxJson();
@@ -147,7 +155,7 @@ public class LockedIPController {
         if (StringUtil.isNotEmpty(remarks)){
             oldLockedIP.setRemarks(remarks);
         }
-        oldLockedIP.setUpdateUserId(currentUser.getId());
+        oldLockedIP.setUpdateUserId(user.getId());
         oldLockedIP.setUpdateDate(new Date());
 
         Integer res = lockedIPService.update(oldLockedIP);//操作结果 flag

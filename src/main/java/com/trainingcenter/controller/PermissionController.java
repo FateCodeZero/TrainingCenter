@@ -163,10 +163,14 @@ public class PermissionController {
     @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public AjaxJson add(@Validated(value = {TC_Add.class}) Permission permission){
-        String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
-        User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
+        User user = null;
+        //获取当前用户
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
 
-        if (currentUser == null){
+        if (user == null){
             throw new CredentialsExpiredException("登录凭证已过期");
         }
         AjaxJson ajaxJson = new AjaxJson();
@@ -178,9 +182,9 @@ public class PermissionController {
         }
 
         permission.setId(UUID.randomUUID().toString());
-        permission.setCreateUserId(currentUser.getId());
+        permission.setCreateUserId(user.getId());
         permission.setCreateDate(new Date());
-        permission.setUpdateUserId(currentUser.getId());
+        permission.setUpdateUserId(user.getId());
         permission.setUpdateDate(new Date());
 
         Integer res = permissionService.add(permission);//操作结果 flag
@@ -204,10 +208,14 @@ public class PermissionController {
     @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public AjaxJson update(@Validated(value = {TC_Add.class}) Permission permission){
-        String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
-        User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
+        User user = null;
+        //获取当前用户
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
 
-        if (currentUser == null){
+        if (user == null){
             throw new CredentialsExpiredException("登录凭证已过期");
         }
 
@@ -249,7 +257,7 @@ public class PermissionController {
         if (StringUtil.isNotEmpty(remarks)){
             oldPermission.setRemarks(remarks);
         }
-        oldPermission.setUpdateUserId(currentUser.getId());
+        oldPermission.setUpdateUserId(user.getId());
         oldPermission.setUpdateDate(new Date());
 
         Integer res = permissionService.update(oldPermission);

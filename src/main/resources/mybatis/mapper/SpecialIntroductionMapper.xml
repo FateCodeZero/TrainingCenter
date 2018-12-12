@@ -8,7 +8,7 @@
 
 
     <sql id="trainingdynamiccolumns">
-      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public SpecialIntroduction getSpecialIntroductionById(@Param("id") String id);
@@ -92,16 +92,16 @@
                 remarks = #{specialIntroduction.remarks},
             </if>
             <if test="specialIntroduction.createUserId != null and specialIntroduction.createUserId != '' ">
-                createUserId = #{specialIntroduction.createUserId},
+                create_user_id = #{specialIntroduction.createUserId},
             </if>
             <if test="specialIntroduction.createDate != null ">
-                createDate = #{specialIntroduction.createDate},
+                create_date = #{specialIntroduction.createDate},
             </if>
             <if test="specialIntroduction.updateUserId != null and specialIntroduction.updateUserId != '' ">
-                updateUserId = #{specialIntroduction.updateUserId},
+                update_user_id = #{specialIntroduction.updateUserId},
             </if>
             <if test="specialIntroduction.updateDate != null ">
-                updateDate = #{specialIntroduction.updateDate},
+                update_date = #{specialIntroduction.updateDate},
             </if>
 
         </trim>

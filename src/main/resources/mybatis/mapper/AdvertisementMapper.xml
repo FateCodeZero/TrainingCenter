@@ -27,13 +27,35 @@
         SELECT <include refid="advertisementcolumns"></include>
         FROM tab_advertisement
         <trim prefix="WHERE" prefixOverrides="and">
-            <if test="searchContent != null and searchContent != ''">
-                and (
-                `describe` like CONCAT('%',#{searchContent},'%') OR
-                remarks like CONCAT('%',#{searchContent},'%')
-                )
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;url&quot; and value != null and value != '' ">
+                        and  url= #{value}
+                    </if>
+                    <if test="key == &quot;start&quot; and value != null ">
+                        and start = #{value}
+                    </if>
+                    <if test="key == &quot;end&quot; and value != null ">
+                        and `end` = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and
+                        (
+                        url like CONCAT('%',#{value},'%')
+                        OR start like CONCAT('%',#{value},'%')
+                        OR createUserId like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
             </if>
         </trim>
+        ORDER BY create_date DESC
         <if test="start != null and number != null">
             LIMIT #{start},#{number}
         </if>

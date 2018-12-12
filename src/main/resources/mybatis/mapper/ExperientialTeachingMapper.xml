@@ -8,7 +8,7 @@
 
 
     <sql id="experientialTeachingcolumns">
-      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public ExperientialTeaching getExperientialTeachingById(@Param("id") String id);
@@ -92,16 +92,16 @@
                 remarks = #{experientialTeaching.remarks},
             </if>
             <if test="experientialTeaching.createUserId != null and experientialTeaching.createUserId != '' ">
-                createUserId = #{experientialTeaching.createUserId},
+                create_user_id = #{experientialTeaching.createUserId},
             </if>
             <if test="experientialTeaching.createDate != null">
-                createDate = #{experientialTeaching.createDate},
+                create_date = #{experientialTeaching.createDate},
             </if>
             <if test="experientialTeaching.updateUserId != null and experientialTeaching.updateUserId != '' ">
-                updateUserId = #{experientialTeaching.updateUserId},
+                update_user_id = #{experientialTeaching.updateUserId},
             </if>
             <if test="experientialTeaching.updateDate != null ">
-                updateDate = #{experientialTeaching.updateDate},
+                update_date = #{experientialTeaching.updateDate},
             </if>
 
         </trim>

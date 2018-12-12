@@ -8,7 +8,7 @@
 
 
     <sql id="trainingdynamiccolumns">
-      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public AboutMe getAboutMeById(@Param("id") String id);
@@ -20,7 +20,8 @@
         WHERE id = #{id}
     </select>
 
-    <!-- public List<AboutMe> getAboutMes(Integer start, Integer number, String searchContent);
+    <!-- public List<AboutMe> getAboutMes(@Param("start") Integer start, @Param("number") Integer number,
+                                     @Param("condition") Map<String,Object> condition)
         分页查询所有动态培训
     -->
     <select id="getAboutMes" resultType="com.trainingcenter.bean.AboutMe">

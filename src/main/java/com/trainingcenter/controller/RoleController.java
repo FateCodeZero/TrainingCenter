@@ -144,10 +144,14 @@ public class RoleController {
     @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public AjaxJson add(@Validated(value = {TC_Add.class}) Role role) {
-        String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
-        User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
+        User user = null;
+        //获取当前用户
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
 
-        if (currentUser == null) {
+        if (user == null) {
             throw new CredentialsExpiredException("登录凭证已过期");
         }
         AjaxJson ajaxJson = new AjaxJson();
@@ -159,9 +163,9 @@ public class RoleController {
         }
 
         role.setId(UUID.randomUUID().toString());
-        role.setCreateUserId(currentUser.getId());
+        role.setCreateUserId(user.getId());
         role.setCreateDate(new Date());
-        role.setUpdateUserId(currentUser.getId());
+        role.setUpdateUserId(user.getId());
         role.setUpdateDate(new Date());
 
         Integer res = roleService.add(role);//操作结果 flag
@@ -186,9 +190,13 @@ public class RoleController {
     @ResponseBody
     @RequestMapping(value = "/update")
     public AjaxJson update(@Validated(value = {TC_Add.class}) Role role) {
-        String currentUsername = SysResourcesUtils.getCurrentUsername();    //当前登录用户的用户名
-        User currentUser = userService.getUserByUsername(currentUsername);  //当前登录用户对象
-        if (currentUsername == null || currentUser == null) {
+        User user = null;
+        //获取当前用户
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
+        if (currentUsername == null || user == null) {
             throw new CredentialsExpiredException("登录凭证已过期");
         }
         AjaxJson ajaxJson = new AjaxJson();
@@ -221,7 +229,7 @@ public class RoleController {
         if (StringUtil.isNotEmpty(remarks)) {
             oldRole.setRemarks(remarks);
         }
-        oldRole.setUpdateUserId(currentUser.getId());
+        oldRole.setUpdateUserId(user.getId());
         oldRole.setUpdateDate(new Date());
 
         Integer res = roleService.update(oldRole);

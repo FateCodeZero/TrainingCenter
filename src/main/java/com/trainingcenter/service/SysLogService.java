@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,17 +25,18 @@ public interface SysLogService {
 
     /**
      * 分页获取数据
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回所有数据
      */
-    public List<SysLog> getSysLogs();
+    public List<SysLog> getSysLogs(Map<String,Object> condition);
     /**
      * 分页获取数据
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：自定义查询条件，模糊查询的 key 固定为 searchContent
      * @return 返回当前页的数据集合
      */
-    public List<SysLog> getSysLogs(Integer currentPage, Integer rows, String searchContent);
+    public List<SysLog> getSysLogs(Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 添加日志

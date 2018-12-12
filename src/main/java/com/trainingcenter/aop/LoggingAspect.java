@@ -21,10 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -200,10 +197,12 @@ public class LoggingAspect implements Serializable {
         StringBuffer title;   //日志标题
         StringBuffer content; //日志类容
         SysLog sysLog = new SysLog();  //日志对象
-        User currentUser;  //当前登录对象
+        User currentUser = null;  //当前登录对象
 
         String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
-        currentUser = userService.getUserByUsername(currentUsername); //当前登录对象
+        if (!"anonymousUser".equals(currentUsername)){
+            currentUser = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
         if (StringUtil.isEmpty(currentUsername) || currentUser == null) {
             throw new CredentialsExpiredException("登录凭证已过期");
         }

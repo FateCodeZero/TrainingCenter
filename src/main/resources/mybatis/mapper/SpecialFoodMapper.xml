@@ -8,7 +8,7 @@
 
 
     <sql id="specialFoodcolumns">
-      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public SpecialFood getSpecialFoodById(@Param("id") String id);
@@ -92,16 +92,16 @@
                 remarks = #{specialFood.remarks},
             </if>
             <if test="specialFood.createUserId != null and specialFood.createUserId != '' ">
-                createUserId = #{specialFood.createUserId},
+                create_user_id = #{specialFood.createUserId},
             </if>
             <if test="specialFood.createDate != null ">
-                createDate = #{specialFood.createDate},
+                create_date = #{specialFood.createDate},
             </if>
             <if test="specialFood.updateUserId != null and specialFood.updateUserId != '' ">
-                updateUserId = #{specialFood.updateUserId},
+                update_user_id = #{specialFood.updateUserId},
             </if>
             <if test="specialFood.updateDate != null ">
-                updateDate = #{specialFood.updateDate},
+                update_date = #{specialFood.updateDate},
             </if>
 
         </trim>

@@ -8,7 +8,7 @@
 
 
     <sql id="annunciationcolumns">
-      id,title,content,remarks,createUserId,createDate,updateUserId,updateDate
+      id,title,content,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public Annunciation getAnnunciationById(@Param("id") String id);
@@ -31,12 +31,6 @@
                 <foreach collection="condition" index="key" item="value">
                     <if test="key == &quot;title&quot; and value != null and value != '' ">
                         and title = #{value}
-                    </if>
-                    <if test="key == &quot;content&quot; and value != null and value != '' ">
-                        and  content= #{value}
-                    </if>
-                    <if test="key == &quot;remarks&quot; and value != null ">
-                        and remarks = #{value}
                     </if>
                     <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
                         and create_user_id = #{value}
@@ -89,16 +83,16 @@
                 remarks = #{annunciation.remarks},
             </if>
             <if test="annunciation.createUserId != null and annunciation.createUserId != '' ">
-                createUserId = #{annunciation.createUserId},
+                create_user_id = #{annunciation.createUserId},
             </if>
             <if test="annunciation.createDate != null">
-                createDate = #{annunciation.createDate},
+                create_date = #{annunciation.createDate},
             </if>
             <if test="annunciation.updateUserId != null and annunciation.updateUserId != '' ">
-                updateUserId = #{annunciation.updateUserId},
+                update_user_id = #{annunciation.updateUserId},
             </if>
             <if test="annunciation.updateDate != null">
-                updateDate = #{annunciation.updateDate},
+                update_date = #{annunciation.updateDate},
             </if>
 
         </trim>

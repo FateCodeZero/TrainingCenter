@@ -9,6 +9,7 @@ import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.FindConditionUtils;
 import com.trainingcenter.utils.StringUtil;
+import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,7 +37,6 @@ import static com.trainingcenter.utils.SysResourcesUtils.getCurrentUsername;
 @RequestMapping("/aboutMe")
 @Controller
 public class AboutMeController {
-
 
     @Qualifier("aboutMeService")
     @Autowired
@@ -149,10 +149,12 @@ public class AboutMeController {
         AjaxJson ajaxJson = new AjaxJson();
         Integer res;    //操作结果 flag
 
-
+        User user = null;
         //获取当前用户
-        String currentName = getCurrentUsername();
-        User user = userService.getUserByUsername(currentName);
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
 
         if (user == null){
             throw new CredentialsExpiredException("登录凭证已过期");
@@ -196,10 +198,12 @@ public class AboutMeController {
             , @RequestParam("content") String content, String remarks){
         AjaxJson ajaxJson = new AjaxJson();
 
+        User user = null;
         //获取当前用户
-        String currentName = getCurrentUsername();
-
-        User user = userService.getUserByUsername(currentName);
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
 
         //非空验证
         if (StringUtil.isEmpty(title)) {

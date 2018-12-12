@@ -8,7 +8,7 @@
 
 
     <sql id="communicationTeachingcolumns">
-      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public CommunicationTeaching getCommunicationTeachingById(@Param("id") String id);
@@ -92,16 +92,16 @@
                 remarks = #{communicationTeaching.remarks},
             </if>
             <if test="communicationTeaching.createUserId != null and communicationTeaching.createUserId != '' ">
-                createUserId = #{communicationTeaching.createUserId},
+                create_user_id = #{communicationTeaching.createUserId},
             </if>
             <if test="communicationTeaching.createDate != null">
-                createDate = #{communicationTeaching.createDate},
+                create_date = #{communicationTeaching.createDate},
             </if>
             <if test="communicationTeaching.updateUserId != null and communicationTeaching.updateUserId != '' ">
-                updateUserId = #{communicationTeaching.updateUserId},
+                update_user_id = #{communicationTeaching.updateUserId},
             </if>
             <if test="communicationTeaching.updateDate != null">
-                updateDate = #{communicationTeaching.updateDate},
+                update_date = #{communicationTeaching.updateDate},
             </if>
 
         </trim>

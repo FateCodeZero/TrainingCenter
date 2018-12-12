@@ -99,10 +99,10 @@
                 content = #{comment.content},
             </if>
             <if test="comment.replyCount != null">
-                reply_count = #{comment.reply_count},
+                reply_count = #{comment.replyCount},
             </if>
             <if test="comment.praiseCount != null">
-                praise_count = #{comment.praise_count},
+                praise_count = #{comment.praiseCount},
             </if>
             <if test="comment.createUserId != null and comment.createUserId != '' ">
                 create_user_id = #{comment.createUserId},
@@ -119,8 +119,6 @@
             <if test="comment.state != null ">
                 state = #{comment.state},
             </if>
-
-
         </trim>
         WHERE id = #{comment.id}
     </update>

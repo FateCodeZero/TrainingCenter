@@ -10,13 +10,15 @@ import com.trainingcenter.service.UserService;
 import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.FindConditionUtils;
 import com.trainingcenter.utils.StringUtil;
+import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -24,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.trainingcenter.utils.SysResourcesUtils.getCurrentUsername;
 
 /**
  * @author Liutingwei
@@ -145,10 +145,12 @@ public class AdvertisementController {
         AjaxJson ajaxJson = new AjaxJson();
         Integer res;    //操作结果 flag
 
-
+        User user = null;
         //获取当前用户
-        String currentName = getCurrentUsername();
-        User user = userService.getUserByUsername(currentName);
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
 
         if (user == null){
             throw new CredentialsExpiredException("登录凭证已过期");
@@ -206,10 +208,12 @@ public class AdvertisementController {
     public AjaxJson add(@Validated(value = {TC_Add.class}) Advertisement advertisement){
         AjaxJson ajaxJson = new AjaxJson();
 
+        User user = null;
         //获取当前用户
-        String currentName = getCurrentUsername();
-
-        User user = userService.getUserByUsername(currentName);
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
 
         //非空验证
         if(advertisement==null){

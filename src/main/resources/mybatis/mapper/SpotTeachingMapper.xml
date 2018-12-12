@@ -8,7 +8,7 @@
 
 
     <sql id="spotTeachingcolumns">
-      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public SpotTeaching getSpotTeachingById(@Param("id") String id);
@@ -92,16 +92,16 @@
                 remarks = #{spotTeaching.remarks},
             </if>
             <if test="spotTeaching.createUserId != null and spotTeaching.createUserId != '' ">
-                createUserId = #{spotTeaching.createUserId},
+                create_user_id = #{spotTeaching.createUserId},
             </if>
             <if test="spotTeaching.createDate != null  ">
-                createDate = #{spotTeaching.createDate},
+                create_date = #{spotTeaching.createDate},
             </if>
             <if test="spotTeaching.updateUserId != null and spotTeaching.updateUserId != '' ">
-                updateUserId = #{spotTeaching.updateUserId},
+                update_user_id = #{spotTeaching.updateUserId},
             </if>
             <if test="spotTeaching.updateDate != null  ">
-                updateDate = #{spotTeaching.updateDate},
+                update_date = #{spotTeaching.updateDate},
             </if>
 
         </trim>

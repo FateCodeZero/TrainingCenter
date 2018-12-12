@@ -36,7 +36,7 @@ public class UserInfoController {
     @Autowired
     private UserInfoService userInfoService;
 
-    @PreAuthorize("hasPermission('/webpages/user/userInfo.jsp','READ')")
+    /*@PreAuthorize("hasPermission('/webpages/user/userInfo.jsp','READ')")*/
     @ResponseBody
     @RequestMapping("/getUserInfoById")
     public AjaxJson getUserInfoById(@RequestParam("id") String id){
@@ -62,7 +62,7 @@ public class UserInfoController {
         return ajaxJson;
     }
 
-    @PreAuthorize("hasPermission('/webpages/user/userInfo.jsp','READ')")
+    /*@PreAuthorize("hasPermission('/webpages/user/userInfo.jsp','READ')")*/
     @ResponseBody
     @RequestMapping("/getUserInfoByUsername")
     public AjaxJson getUserInfoByUsername(@RequestParam("username") String username){

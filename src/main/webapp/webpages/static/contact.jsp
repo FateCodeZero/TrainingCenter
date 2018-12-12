@@ -176,8 +176,8 @@
             var replyCount = comment.replyCount;
             var praiseCount = comment.praiseCount;
             var createUserId = comment.createUserId;
-            var username = getUserById(createUserId).username;
-            var userInfo = getUserInfoByUsername(username);
+            var user = getUserById(createUserId);
+            var userInfo = getUserInfoByUsername(user.username);
             var nickname = userInfo.nickname;
             var portraitImg = userInfo.portraitImg; //头像url
             var createDate = new Date(comment.createDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');

@@ -8,7 +8,7 @@
 
 
     <sql id="culturalProductscolumns">
-      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public CulturalProducts getCulturalProductsById(@Param("id") String id);
@@ -92,16 +92,16 @@
                 remarks = #{culturalProducts.remarks},
             </if>
             <if test="culturalProducts.createUserId != null and culturalProducts.createUserId != '' ">
-                createUserId = #{culturalProducts.createUserId},
+                create_user_id = #{culturalProducts.createUserId},
             </if>
             <if test="culturalProducts.createDate != null ">
-                createDate = #{culturalProducts.createDate},
+                create_date = #{culturalProducts.createDate},
             </if>
             <if test="culturalProducts.updateUserId != null and culturalProducts.updateUserId != '' ">
-                updateUserId = #{culturalProducts.updateUserId},
+                update_user_id = #{culturalProducts.updateUserId},
             </if>
             <if test="culturalProducts.updateDate != null ">
-                updateDate = #{culturalProducts.updateDate},
+                update_date = #{culturalProducts.updateDate},
             </if>
 
         </trim>

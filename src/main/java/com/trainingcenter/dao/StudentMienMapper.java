@@ -25,7 +25,7 @@ public interface StudentMienMapper {
      * 分页获取所有学员风采
      * @param start：从第几条数据开始
      * @param number：要获取多少条数据
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return 返回学员风采对象集合
      */
     public List<StudentMien> getStudentMiens(@Param("start") Integer start, @Param("number") Integer number,

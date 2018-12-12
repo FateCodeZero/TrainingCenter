@@ -1,22 +1,21 @@
 package com.trainingcenter.controller;
 
-import com.trainingcenter.bean.SpotTeaching;
-import com.trainingcenter.bean.VideoTeaching;
 import com.trainingcenter.bean.User;
+import com.trainingcenter.bean.VideoTeaching;
 import com.trainingcenter.controller.validation.TC_Update;
 import com.trainingcenter.exception.UpdateException;
-import com.trainingcenter.service.VideoTeachingService;
 import com.trainingcenter.service.UserService;
+import com.trainingcenter.service.VideoTeachingService;
 import com.trainingcenter.utils.AjaxJson;
 import com.trainingcenter.utils.FindConditionUtils;
 import com.trainingcenter.utils.StringUtil;
+import com.trainingcenter.utils.SysResourcesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.trainingcenter.utils.SysResourcesUtils.getCurrentUsername;
 
 /**
  * @author Liutingwei
@@ -184,9 +181,12 @@ public class VideoTeachingController {
         Integer res;    //操作结果 flag
 
 
+        User user = null;
         //获取当前用户
-        String currentName = getCurrentUsername();
-        User user = userService.getUserByUsername(currentName);
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
 
         if (user == null){
             throw new CredentialsExpiredException("登录凭证已过期");
@@ -228,10 +228,12 @@ public class VideoTeachingController {
             , @RequestParam("content") String content, String remarks){
         AjaxJson ajaxJson = new AjaxJson();
 
+        User user = null;
         //获取当前用户
-        String currentName = getCurrentUsername();
-
-        User user = userService.getUserByUsername(currentName);
+        String currentUsername = SysResourcesUtils.getCurrentUsername(); //当前登录人账号
+        if (!"anonymousUser".equals(currentUsername)){
+            user = userService.getUserByUsername(currentUsername); //当前登录对象
+        }
 
         //非空验证
         if (StringUtil.isEmpty(title)) {

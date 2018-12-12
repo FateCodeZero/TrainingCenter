@@ -8,7 +8,7 @@
 
 
     <sql id="trainingdynamiccolumns">
-      id,title,imgs,content,remarks,createUserId,createDate,updateUserId,updateDate
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
     </sql>
 
     <!-- public TrainingDynamic getTrainingDynamicById(@Param("id") String id);
@@ -92,19 +92,17 @@
                 remarks = #{trainingDynamic.remarks},
             </if>
             <if test="trainingDynamic.createUserId != null and trainingDynamic.createUserId != '' ">
-                createUserId = #{trainingDynamic.createUserId},
+                create_user_id = #{trainingDynamic.createUserId},
             </if>
             <if test="trainingDynamic.createDate != null ">
-                createDate = #{trainingDynamic.createDate},
+                create_date = #{trainingDynamic.createDate},
             </if>
             <if test="trainingDynamic.updateUserId != null and trainingDynamic.updateUserId != '' ">
-                updateUserId = #{trainingDynamic.updateUserId},
+                update_user_id = #{trainingDynamic.updateUserId},
             </if>
             <if test="trainingDynamic.updateDate != null ">
-                updateDate = #{trainingDynamic.updateDate},
+                update_date = #{trainingDynamic.updateDate},
             </if>
-
-
         </trim>
         WHERE id = #{trainingDynamic.id}
     </update>

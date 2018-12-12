@@ -30,6 +30,7 @@
     <script type="text/javascript" src="${webRoot}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${webRoot}/plug-in/layui-v2.4.5/layui/layui.all.js"></script>
     <script type="text/javascript" src="${webRoot}/webpages/static/js/utils.js"></script>
+    <script type="text/javascript" src="${webRoot}/plug-in/js/utils.js"></script>
 
 </head>
 <body id="" onload="IFrameResize()">
