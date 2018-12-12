@@ -72,7 +72,7 @@ function titleSubstring(title) {
         title = title.substring(0,20)+"…";
         return title;
     }else if(title.length < 10){
-        for(k = 0; k < 10;k ++){
+        for(var k = 0; k < 10;k ++){
             title = title +'\xa0';
         }
         return title;

@@ -86,9 +86,7 @@
                         var updateData = studentPhoto.updateData;
 
                         /*截取字符串，p标签里面的文字长度必须一样长，否则页面会乱码*/
-                        if(title.length > 20 ){
-                            title = title.substring(0,20);
-                        }
+                        content = contentSubstring(pageContent(content));
                         //处理context文本换行
 /*                        var my_content = "";
                         if(content.length > 100){
