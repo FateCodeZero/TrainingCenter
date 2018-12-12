@@ -21,16 +21,16 @@ public interface StudentMienService {
      */
     public StudentMien getStudentMienById(String id);
 
-    public List<StudentMien> getStudentMiens();
+    public List<StudentMien> getStudentMiens(Map<String,Object> condition);
     /**
      * 分页获取所有学生风采
      *
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public List<StudentMien> getStudentMiens(Integer currentPage, Integer rows, String searchContent);
+    public List<StudentMien> getStudentMiens(Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 学生风采添加方法

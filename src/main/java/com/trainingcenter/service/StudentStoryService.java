@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -20,16 +21,16 @@ public interface StudentStoryService {
      */
     public StudentStory getStudentStoryById(String id);
 
-    public List<StudentStory> getStudentStorys();
+    public List<StudentStory> getStudentStorys(Map<String,Object> condition);
     /**
      * 分页获取所有学生风采
      *
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return 返回当前页的数据集合
      */
-    public List<StudentStory> getStudentStorys(Integer currentPage, Integer rows, String searchContent);
+    public List<StudentStory> getStudentStorys(Integer currentPage, Integer rows, Map<String,Object> condition);
 
     /**
      * 学生风采添加方法

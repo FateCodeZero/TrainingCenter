@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -28,7 +29,7 @@ public interface StudentStoryMapper {
      * @return 返回学员风采对象集合
      */
     public List<StudentStory> getStudentStorys(@Param("start") Integer start, @Param("number") Integer number,
-                                             @Param("searchContent") String searchContent);
+                                               @Param("condition") Map<String,Object> condition);
 
 
     /**

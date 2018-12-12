@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liutingwei
@@ -35,26 +36,26 @@ public class StudentStoryServiceImpl implements StudentStoryService {
         return StringUtil.isEmpty(id)?null:studentStoryMapper.getStudentStoryById(id);
     }
 
-    public List<StudentStory> getStudentStorys(){
-        return getStudentStorys(null,null,null);
+    public List<StudentStory> getStudentStorys(Map<String,Object> condition){
+        return getStudentStorys(null,null,condition);
     }
     /**
      *分页获取所以学生风采
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return
      */
-    public List<StudentStory> getStudentStorys(Integer currentPage, Integer rows, String searchContent) {
-        if(currentPage != null && rows != null) {
+    public List<StudentStory> getStudentStorys(Integer currentPage, Integer rows, Map<String,Object> condition) {
+        if (currentPage != null && rows != null) {
             if (currentPage < 0 || rows < 0) {
                 return null;
+            } else {
+                Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
+                return studentStoryMapper.getStudentStorys(start, rows, condition);
             }
-            Integer start = (currentPage - 1) * rows;
-            return studentStoryMapper.getStudentStorys(start, rows, searchContent);
-        }
-        else {
-            return studentStoryMapper.getStudentStorys(null,null,searchContent);
+        } else {
+            return studentStoryMapper.getStudentStorys(null, null, condition);
         }
     }
 

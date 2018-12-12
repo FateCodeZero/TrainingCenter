@@ -37,26 +37,26 @@ public class StudentMienServiceImpl implements StudentMienService {
         return StringUtil.isEmpty(id)?null:studentMienMapper.getStudentMienById(id);
     }
 
-    public List<StudentMien> getStudentMiens(){
-        return getStudentMiens(null,null,null);
+    public List<StudentMien> getStudentMiens(Map<String,Object> condition){
+        return getStudentMiens(null,null,condition);
     }
     /**
      *分页获取所以学生风采
      * @param currentPage：当前页
      * @param rows：每页要显示的数据条数
-     * @param searchContent：模糊查询内容
+     * @param condition：模糊查询内容
      * @return
      */
-    public List<StudentMien> getStudentMiens(Integer currentPage, Integer rows, String searchContent) {
-        if(currentPage != null && rows != null) {
+    public List<StudentMien> getStudentMiens(Integer currentPage, Integer rows,Map<String,Object> condition) {
+        if (currentPage != null && rows != null) {
             if (currentPage < 0 || rows < 0) {
                 return null;
+            } else {
+                Integer start = (currentPage - 1) * rows;   //计算当前页的数据是从第几条开始查询
+                return studentMienMapper.getStudentMiens(start, rows, condition);
             }
-            Integer start = (currentPage - 1) * rows;
-            return studentMienMapper.getStudentMiens(start, rows, searchContent);
-        }
-        else {
-            return studentMienMapper.getStudentMiens(null,null,searchContent);
+        } else {
+            return studentMienMapper.getStudentMiens(null, null, condition);
         }
     }
 
