@@ -252,10 +252,6 @@
                 var code = jsonData.code;   //状态码
                 var msg = jsonData.msg;     //提示信息
                 if (code === 1) {
-                    layer.alert(msg, {
-                        time: 2000,
-                        icon: 1
-                    });
                     $("#content").val('');//输入框置空，防止恶意回复
                     getPageData(null, currentPage, rows);
                 } else {
