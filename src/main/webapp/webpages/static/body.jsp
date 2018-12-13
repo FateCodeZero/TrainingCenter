@@ -174,6 +174,7 @@
             ,height:'600px'//设置容器高度
             ,arrow: 'always' //始终显示箭头
             ,anim: 'default' //切换动画方式
+            ,interval:'1500'//切换动画时间（毫秒）
         });
 
         $(document).ready(function loading(){

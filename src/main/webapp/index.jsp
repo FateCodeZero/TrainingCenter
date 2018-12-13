@@ -49,9 +49,9 @@
                 <li class="layui-nav-item">
                     <a href="#">学员风采</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="#">学员学习照</a></dd>
                         <dd><a href="#">最佳学员</a></dd>
                         <dd><a href="#">往期学员故事</a></dd>
+                        <dd><a href="#">学员学习照</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
