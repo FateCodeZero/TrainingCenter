@@ -98,9 +98,9 @@
 
                             var special_div = '<div id="'+id+'" class="col-lg-4 col-md-4">\n' +
                                 '                <div class="fh5co-blog animate-box">\n' +
-                                '                    <a href="#" class="blog-img-holder" style="background-image: url('+imgs+');"></a>\n' +
+                                '                    <a href="#" onclick="return false" class="blog-img-holder" style="background-image: url('+imgs+');"></a>\n' +
                                 '                    <div class="blog-text">\n' +
-                                '                        <h3><a id="'+id+'" target="special_a" >'+title+'</a></h3>\n' +
+                                '                        <h3><a href="#" onclick="return false" id="'+id+'" target="special_a" >'+title+'</a></h3>\n' +
                                 '                        <span class="posted_on">March. 15th</span>\n' +
                                 '                        <span class="comment"><a href="">21<i class="icon-speech-bubble"></i></a></span>\n' +
                                 '                        <p>'+content+'</p>\n' +

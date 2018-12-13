@@ -104,7 +104,7 @@
 
                             //alert("数据id:"+news_id+"标题："+news_title);
                             var noticeTotal_div = '<span class="pricing__currency"> &amp; </span>'+noticeTotal+'';
-                            var notice_div = '<li id="'+id+'" target="noticeContent" class="pricing__feature">'+notice_title+'</li>';
+                            var notice_div = '<li id="'+id+'" target="noticeContent" class="pricing__feature"><a href="#"> '+notice_title+'</li>';
 
                             if (index == 0) {
                                 $("#notices").html(notice_div);

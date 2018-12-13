@@ -65,6 +65,8 @@
                     var imgs = news_details.imgs;
                     var createDate = news_details.createDate;
 
+                    content = pageContent(content);
+
                     var news_details_div = '    <div id="'+id+' " class="container" style="padding-bottom: 30px">' +
                         '        <div class="row animate-box">' +
                         '            <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">' +
