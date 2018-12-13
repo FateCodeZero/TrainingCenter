@@ -62,7 +62,6 @@
             if ($('#username').val() =='')
             {
                 $("#usernameMsg").html("<span style='color:#FF5722'>账号不能为空！</span>" );
-                $("#username").focus(); //获取焦点
             }else {
                 $("#usernameMsg").html("");
             }
@@ -70,7 +69,6 @@
         $('#password').blur(function () {
             if ($('#password').val() == '') {
                 $("#passwordMsg").html("<span style='color:#FF5722'>密码不能为空！</span>");
-                $("#password").focus();
             }else {
                 $("#passwordMsg").html("");
             }
@@ -78,7 +76,6 @@
         $('#kaptcha').blur(function () {
             if ($('#kaptcha').val() == '') {
                 $("#kaptchaMsg").html("<span style='color:#FF5722'>验证码不能为空！</span>");
-                $("#kaptcha").focus();
             }else {
                 $("#kaptchaMsg").html("");
             }

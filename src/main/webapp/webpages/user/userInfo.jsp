@@ -45,7 +45,9 @@
         <%--  user_info   --%>
         <div class="col-md-12 user_info">
             <div class="col-md-2  header">
-                <img id="headPhoto" src="${webRoot}/webpages/static/images/photo1.jpg" alt="" class="col-md-12 head"
+
+                <img id="headPhoto" src="${webRoot}/webpages/static/images/photo1.jpg" class="col-md-8 col-md-offset-2 "
+                     style="border-radius: 50%; overflow:hidden;flex:auto; height: 40px"
                      data-toggle="modal" data-target="#avatar-modal"/>
                 <p class="col-md-12 modify" data-toggle="modal" data-target="#avatar-modal">修改头像</p>
             </div>
@@ -296,6 +298,7 @@
         $("#company").val(userInfo.company);
         $("#position").val(userInfo.position);
         $("#career").val(userInfo.career);
+        $("#headPhoto").attr('src',"${webRoot}/"+userInfo.portraitImg);
     }
 
     //上传图片简易的验证  大小 格式

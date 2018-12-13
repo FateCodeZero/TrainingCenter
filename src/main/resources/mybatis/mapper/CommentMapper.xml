@@ -46,7 +46,7 @@
                         and state = #{value}
                     </if>
                     <if test="key == &quot;currentUserId&quot; and value != null and value != ''">
-                        and (state = 1 or create_user_id = #{value})
+                        and (state = 1 or create_user_id = #{value}) and state != -1
                     </if>
                     <if test="(key == &quot;praise_count&quot; or key == &quot;praiseCount&quot;)  and value != null ">
                         and `praise_count` = #{value}

@@ -32,7 +32,7 @@
             <h4 class="col-md-12 text-center mytitle2">
                 梦润，致力于让每个人都能公平和便利地获取优质教育服务，实现可持续职业成长
             </h4>
-            <div class="col-md-10 col-md-offset-1">
+            <div  class="col-md-10 col-md-offset-1">
                 <div class="col-md-3">
                    <div class="col-md-10 col-md-offset-1 introduce bg1">
                        <a target="introduce1">
@@ -72,10 +72,10 @@
 
 
        <%-- 公司简介--%>
-        <div id="introduce2" class="col-md-12 fh5co-bg-section" style="padding-top: 50px;">
-            <div id="">
+        <div class="col-md-12 fh5co-bg-section" style="padding-top: 50px;">
+            <div >
                 <div class="container">
-                    <div class="row animate-box">
+                    <div id="introduce1" class="row animate-box">
                         <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
                             <h2>  公司&amp;简介 </h2>
                             <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>

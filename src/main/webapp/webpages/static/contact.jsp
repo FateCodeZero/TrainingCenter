@@ -183,7 +183,8 @@
             var createDate = new Date(comment.createDate).toLocaleString('chinese', {hour12: false}).replace(/:d{1,2}$/, ' ');
 
             commentContent += '<div class="col-md-12 comment-show-con clearfix">' +
-                '           <div class="col-md-1 comment-show-con-img pull-left"><img style=" border-radius: 50%;overflow:display: flex; hidden;" class="col-md-12 person_img" src="${webRoot}/' + portraitImg + '" alt=""></div>' +
+                '           <div class="col-md-1 comment-show-con-img pull-left">' +
+                '               <img style=" border-radius:50%; overflow:display; flex:hidden;" class="col-md-12 person_img" src="${webRoot}/' + portraitImg + '" alt=""></div>' +
                 '           <div class="col-md-11  comment-show-con-list pull-left clearfix">' +
                 '               <div class="col-md-12 pl-text clearfix">' +
                 '                   <a href="#" class="comment-size-name">' + nickname + ' : </a>' +
