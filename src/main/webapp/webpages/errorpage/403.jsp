@@ -26,7 +26,7 @@
             <h1 class="notFond2">权限不足</h1>
             <h2 class="notFond3">非常抱歉，您没有相关权限，&nbsp;&nbsp;&nbsp;您可以选择
                 <a  href="${webRoot}/index.jsp" >&nbsp;返回首页&nbsp;</a>或者
-                <a href="${webRoot}/webpages/static/register.jsp" >&nbsp;重新登录&nbsp;</a></h2>
+                <a href="${webRoot}/webpages/static/login.jsp" >&nbsp;重新登录&nbsp;</a></h2>
         </div>
         <div class="col-md-2"></div>
     </div>

@@ -203,7 +203,7 @@
             var children = item.children;
 
             var tags = [];
-            if (name === '信息管理' || name === '用户留言') {
+            if (unEnableCount !== 0 && (name === '信息管理' || name === '用户留言')) {
                 tags[0] = '<span style="color: #FF5722;font-size: larger">' + unEnableCount + '</span>'; //显示未审核留言数目
             }
 

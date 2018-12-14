@@ -44,6 +44,11 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
      */
     @Override
     public boolean hasPermission(Authentication authentication, Object targetUrl, Object targetPermission) {
+        Object principal = authentication.getPrincipal();
+        //不允许匿名用户进行操作
+        if (principal.toString().equals("anonymousUser")){
+            return false;
+        }
         // 1、获得loadUserByUsername()方法的结果
         User user = (User) authentication.getPrincipal();
 

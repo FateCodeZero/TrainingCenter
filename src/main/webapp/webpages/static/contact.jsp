@@ -165,7 +165,7 @@
      */
     function pageRender(items) {
         var comments = items;
-        if (comments.length === 0){
+        if (comments.length === 0) {
             $("#comment-show").html('<h3 class="col-md-12 text-center">暂无数据</h3>');
             return;
         }
@@ -192,10 +192,10 @@
                 '               </div>' +
                 '               <div class="col-md-12 date-dz">' +
                 '                   <span class="col-md-3 date-dz-left pull-left comment-time">' + createDate + '</span>' +
-               /* '                   <div class="col-md-3 date-dz-right pull-right comment-pl-block">' +
-                '                       <a href="javascript:;" class="col-md-2 removeBlock">删除</a>' +
-                '                       <a href="javascript:;" class="col-md-2 date-dz-pl pl-hf hf-con-block pull-left">回复</a>' +
-                '                   </div>' +*/
+                /* '                   <div class="col-md-3 date-dz-right pull-right comment-pl-block">' +
+                 '                       <a href="javascript:;" class="col-md-2 removeBlock">删除</a>' +
+                 '                       <a href="javascript:;" class="col-md-2 date-dz-pl pl-hf hf-con-block pull-left">回复</a>' +
+                 '                   </div>' +*/
                 '               </div>' +
                 '               <div class="col-md-12 hf-list-con"></div>' +
                 '           </div>' +
@@ -226,8 +226,7 @@
                     window.location = "${webRoot}/webpages/static/login.jsp";
                 }
                 , function () {
-                    return false;
-                })
+                });
             return false;
         }
 
@@ -264,7 +263,19 @@
                 }
             }
             , error: function (jqXHR, textStatus, errorThrown) {
-                ajaxErrorHandler(jqXHR); //ajax请求异常统一处理
+                //询问框
+                layer.confirm("只有登录才能评论哟，现在要去登录吗？", {
+                        btn: ['确定', '取消']//按钮
+                    }
+                    , function () { //确定之后执行
+                        window.location = "${webRoot}/webpages/static/login.jsp";
+                    }
+                    , function () {
+                        layer.msg('好的吧Ծ‸Ծ',{
+                            time: 2000
+                        });
+                    });
+                return false;
             }
         });
     });
