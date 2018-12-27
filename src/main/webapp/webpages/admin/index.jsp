@@ -240,7 +240,7 @@
                 var id = node.id; //节点数据id
                 var href = node.href;
                 var jspReg = /\/\w+\.jsp$/;   //以 / 开头，中间至少有一个字符，以.jsp结尾
-                if (jspReg.test(href)) {
+                if (href !== '/webpages/admin/index.jsp' && jspReg.test(href) ) {
                     $("#index-body").attr('src', "${webRoot}" + href);
                 }
             },
