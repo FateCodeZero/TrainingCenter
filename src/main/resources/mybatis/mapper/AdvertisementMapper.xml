@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.AdvertisementMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="advertisementcolumns">
+      id,imgs,`describe`,url,start,`end`,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public Advertisement getAdvertisementById(@Param("id") String id);
+        通过id获取广告
+    -->
+    <select id="getAdvertisementById" resultType="com.trainingcenter.bean.Advertisement">
+        SELECT <include refid="advertisementcolumns"></include>
+        FROM tab_advertisement
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<Advertisement> getAdvertisements(Integer start, Integer number, String searchContent);
+        分页查询所有广告
+    -->
+    <select id="getAdvertisements" resultType="com.trainingcenter.bean.Advertisement">
+        SELECT <include refid="advertisementcolumns"></include>
+        FROM tab_advertisement
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;url&quot; and value != null and value != '' ">
+                        and  url= #{value}
+                    </if>
+                    <if test="key == &quot;start&quot; and value != null ">
+                        and start = #{value}
+                    </if>
+                    <if test="key == &quot;end&quot; and value != null ">
+                        and `end` = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and
+                        (
+                        url like CONCAT('%',#{value},'%')
+                        OR start like CONCAT('%',#{value},'%')
+                        OR createUserId like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY create_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("advertisement") Advertisement advertisement;
+    广告添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.Advertisement">
+        INSERT INTO tab_advertisement(<include refid="advertisementcolumns"></include>)
+        VALUES (#{advertisement.id},#{advertisement.imgs},#{advertisement.describe},#{advertisement.url},#{advertisement.start},#{advertisement.end},#{advertisement.remarks},#{advertisement.createUserId},#{advertisement.createDate},
+        #{advertisement.updateUserId},#{advertisement.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("advertisement") Advertisement advertisement);
+            更新广告信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.Advertisement">
+        UPDATE tab_advertisement
+        <trim prefix="set" suffixOverrides=",">
+            <if test="advertisement.describe != null and advertisement.describe != '' ">
+            `describe` = #{advertisement.describe},
+            </if>
+            <if test="advertisement.imgs != null and advertisement.imgs != '' ">
+                imgs = #{advertisement.imgs},
+            </if>
+            <if test="advertisement.url != null and advertisement.url != '' ">
+                url = #{advertisement.url},
+            </if>
+            <if test="advertisement.remarks != null and advertisement.remarks != '' ">
+                remarks = #{advertisement.remarks},
+            </if>
+            <if test="advertisement.start != null">
+                start = #{advertisement.start},
+            </if>
+            <if test="advertisement.end != null ">
+                `end` = #{advertisement.end},
+            </if>
+            <if test="advertisement.createUserId != null and advertisement.createUserId != '' ">
+                create_user_id = #{advertisement.createUserId},
+            </if>
+            <if test="advertisement.createDate != null ">
+                create_date = #{advertisement.createDate},
+            </if>
+            <if test="advertisement.updateUserId != null and advertisement.updateUserId != '' ">
+                update_user_id = #{advertisement.updateUserId},
+            </if>
+            <if test="advertisement.updateDate != null ">
+                update_date = #{advertisement.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{advertisement.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除广告
+       -->
+    <delete id="delete">
+        DELETE FROM tab_advertisement
+        WHERE id = #{id}
+    </delete>
+</mapper>

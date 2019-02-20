@@ -1,0 +1,60 @@
+body {
+    background: url("../images/background_1.jpg");
+    font-family: 'Lora', serif;
+}
+h1,h2,h3,h4,h5,h6{
+    font-family: 'Lora', serif;
+
+}
+h1{
+    font-size:40px;
+    color:#fff;
+    margin:50px 0px;
+    text-align:center;
+    letter-spacing: 2px;
+    text-transform: capitalize;
+}
+.register_body{
+    height: 450px;
+    background-color: #FFFFFF;
+}
+
+.register_title{
+    font-size:25px;
+    color:#000;
+    margin: 40px 0;
+    padding: 0 40px;
+}
+label.bar-w3-agile {
+    width: 62px;
+    height: 3px;
+    background: #2D6CDF;
+    display: block;
+    margin-top: 10px;
+
+}
+.register_input {
+    padding: 10px 15px;
+    border: none;
+    border-bottom: 1px solid #7d7d7d;
+    outline: none;
+    font-size: 14px;
+    margin-bottom: 20px;
+
+}
+.btn_submit{
+    height: 50px;
+    background-color: #2D6CDF;
+    border-radius: 25px;
+    border: none;
+    color: #FFFFFF;
+    font-size: 20px;
+    margin-top: 40px;
+
+
+}
+
+.btn_submit:hover {
+    background: #003f87;
+}
+

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.UserInfoMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+    <!--用户信息表的所有列-->
+    <sql id="userInfoColumns">
+        id,username,nickname,real_name,portrait_img,gender,birthday,address,postal_code,email,phone,
+        motto,`describe`,imgs,company,`position`,career
+    </sql>
+
+    <!--
+        public UserInfo getUserInfoById(@Param("id") String id);
+        通过id获取用户信息
+        -->
+    <select id="getUserInfoById" resultType="com.trainingcenter.bean.UserInfo">
+        SELECT
+        <include refid="userInfoColumns"></include>
+        FROM tab_user_info
+        WHERE id = #{id}
+    </select>
+
+    <!--
+        public UserInfo getUserInfoByUsername(@Param("username") String username);
+        通过用户名获取用户信息
+        -->
+    <select id="getUserInfoByUsername" resultType="com.trainingcenter.bean.UserInfo">
+        SELECT
+        <include refid="userInfoColumns"></include>
+        FROM tab_user_info
+        WHERE username = #{username}
+    </select>
+
+    <!--
+       public List<UserInfo> getUserInfos(@Param("start") Integer start, @Param("number") Integer number,
+                                   @Param("condition") Map<String,Object> condition);
+        分页查询所有用户信息，condition自定义查询条件
+        -->
+    <select id="getUserInfos" resultType="com.trainingcenter.bean.UserInfo">
+        SELECT
+        <include refid="userInfoColumns"></include>
+        FROM tab_user_info
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;id&quot; and value != null and value != '' ">
+                        and id = #{value}
+                    </if>
+                    <if test="key == &quot;username&quot; and value != null and value != '' ">
+                        and username = #{value}
+                    </if>
+                    <if test="key == &quot;nickname&quot; and value != null and value != '' ">
+                        and nickname = #{value}
+                    </if>
+                    <if test="(key == &quot;realName&quot; or key == &quot;real_name&quot;) and value != null and value != '' ">
+                        and real_name = #{value}
+                    </if>
+                    <if test="(key == &quot;portraitImg&quot; or key == &quot;portrait_img&quot;) and value != null and value != '' ">
+                        and portrait_img = #{value}
+                    </if>
+                    <if test="key == &quot;gender&quot; and value != null and value != '' ">
+                        and gender = #{value}
+                    </if>
+                    <if test="key == &quot;birthday&quot; and value != null ">
+                        and birthday = #{value}
+                    </if>
+                    <if test="key == &quot;address&quot; and value != null and value != '' ">
+                        and address = #{value}
+                    </if>
+                    <if test="(key == &quot;postalCode&quot; or key == &quot;postal_code&quot;) and value != null and value != '' ">
+                        and postal_code = #{value}
+                    </if>
+                    <if test="key == &quot;email&quot; and value != null and value != '' ">
+                        and email = #{value}
+                    </if>
+                    <if test="key == &quot;phone&quot; and value != null and value != '' ">
+                        and phone = #{value}
+                    </if>
+                    <if test="key == &quot;motto&quot; and value != null and value != '' ">
+                        and motto = #{value}
+                    </if>
+                    <if test="key == &quot;describe&quot; and value != null and value != '' ">
+                        and `describe` = #{value}
+                    </if>
+                    <if test="key == &quot;imgs&quot; and value != null and value != '' ">
+                        and imgs = #{value}
+                    </if>
+                    <if test="key == &quot;company&quot; and value != null and value != '' ">
+                        and company = #{value}
+                    </if>
+                    <if test="key == &quot;position&quot; and value != null and value != '' ">
+                        and `position` = #{value}
+                    </if>
+                    <if test="key == &quot;career&quot; and value != null and value != '' ">
+                        and career = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != ''">
+                        and (
+                        username like CONCAT('%',#{value},'%') OR
+                        nickname like CONCAT('%',#{value},'%') OR
+                        real_name like CONCAT('%',#{value},'%') OR
+                        gender like CONCAT('%',#{value},'%') OR
+                        address like CONCAT('%',#{value},'%') OR
+                        postal_code like CONCAT('%',#{value},'%') OR
+                        email like CONCAT('%',#{value},'%') OR
+                        phone like CONCAT('%',#{value},'%') OR
+                        company like CONCAT('%',#{value},'%') OR
+                        career like CONCAT('%',#{value},'%') OR
+                        `position` like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+        public Integer add(@Validated(value = {TC_Add.class}) @Param("userInfo") UserInfo userInfo);
+        添加用户信息
+        -->
+    <insert id="add" parameterType="com.trainingcenter.bean.UserInfo">
+        INSERT INTO tab_user_info(<include refid="userInfoColumns"></include>)
+        VALUES (#{userInfo.id},#{userInfo.username},#{userInfo.nickname},#{userInfo.realName},#{userInfo.portraitImg},#{userInfo.gender},#{userInfo.birthday},
+        #{userInfo.address},#{userInfo.postalCode},#{userInfo.email},#{userInfo.phone},#{userInfo.motto},#{userInfo.describe},#{userInfo.imgs},
+        #{userInfo.company},#{userInfo.position},#{userInfo.career})
+    </insert>
+
+    <!--
+        public Integer update(@Validated(value = {TC_Update.class}) @Param("userInfo") UserInfo userInfo);
+        更新用户信息
+        -->
+    <update id="update" parameterType="com.trainingcenter.bean.UserInfo">
+        UPDATE tab_user_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userInfo.nickname != null and userInfo.nickname != '' ">
+                nickname = #{userInfo.nickname},
+            </if>
+            <if test="userInfo.realName != null ">
+                real_name = #{userInfo.realName},
+            </if>
+            <if test="userInfo.portraitImg != null ">
+                portrait_img = #{userInfo.portraitImg},
+            </if>
+            <if test="userInfo.gender != null">
+                gender = #{userInfo.gender},
+            </if>
+            <if test="userInfo.birthday != null">
+                birthday = #{userInfo.birthday},
+            </if>
+            <if test="userInfo.address != null ">
+                address = #{userInfo.address},
+            </if>
+            <if test="userInfo.postalCode != null ">
+                postal_code = #{userInfo.postalCode},
+            </if>
+            <if test="userInfo.email != null ">
+                email = #{userInfo.email},
+            </if>
+            <if test="userInfo.phone != null ">
+                phone = #{userInfo.phone},
+            </if>
+            <if test="userInfo.motto != null ">
+                motto = #{userInfo.motto},
+            </if>
+            <if test="userInfo.describe != null ">
+                `describe` = #{userInfo.describe},
+            </if>
+            <if test="userInfo.imgs != null ">
+                imgs = #{userInfo.imgs},
+            </if>
+            <if test="userInfo.company != null ">
+                company = #{userInfo.company},
+            </if>
+            <if test="userInfo.position != null ">
+                `position` = #{userInfo.position},
+            </if>
+            <if test="userInfo.career != null ">
+                career = #{userInfo.career},
+            </if>
+        </trim>
+        WHERE id = #{userInfo.id}
+    </update>
+
+    <!--
+        public Integer delete(@Param("id") String id);
+        通过id删除用户信息
+        -->
+    <delete id="delete">
+        DELETE FROM tab_user_info
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

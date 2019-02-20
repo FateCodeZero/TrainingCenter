@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.StudentStoryMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="studentStorycolumns">
+      id,title,content,imgs,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public StudentStory getStudentStoryById(@Param("id") String id);
+        通过id获取学院风采
+    -->
+    <select id="getStudentStoryById" resultType="com.trainingcenter.bean.StudentStory">
+        SELECT <include refid="studentStorycolumns"></include>
+        FROM tab_student_story
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<StudentStory> getStudentStorys(Integer start, Integer number, String searchContent);
+        分页查询所有学院风采
+    -->
+    <select id="getStudentStorys" resultType="com.trainingcenter.bean.StudentStory">
+        SELECT <include refid="studentStorycolumns"></include>
+        FROM tab_student_story
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;title&quot; and value != null and value != '' ">
+                        and title = #{value}
+                    </if>
+                    <if test="key == &quot;content&quot; and value != null and value != '' ">
+                        and  content= #{value}
+                    </if>
+                    <if test="key == &quot;remarks&quot; and value != null ">
+                        and remarks = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and
+                        (
+                        title like CONCAT('%',#{value},'%')
+                        OR content like CONCAT('%',#{value},'%')
+                        OR state like CONCAT('%',#{value},'%')
+                        OR remarks like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY create_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("studentStory") StudentStory studentStory;
+    学院风采添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.StudentStory">
+        INSERT INTO tab_student_story(<include refid="studentStorycolumns"></include>)
+        VALUES (#{studentStory.id},#{studentStory.title},#{studentStory.content},#{studentStory.imgs},#{studentStory.remarks},#{studentStory.createUserId},#{studentStory.createDate},
+        #{studentStory.updateUserId},#{studentStory.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("studentStory") StudentStory studentStory);
+            更新学院风采信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.StudentStory">
+        UPDATE tab_student_story
+        <trim prefix="set" suffixOverrides=",">
+            <if test="studentStory.title != null and studentStory.title != '' ">
+                title = #{studentStory.title},
+            </if>
+            <if test="studentStory.content != null and studentStory.content != '' ">
+                content = #{studentStory.content},
+            </if>
+            <if test="studentStory.imgs != null and studentStory.imgs != '' ">
+                imgs = #{studentStory.imgs},
+            </if>
+            <if test="studentStory.remarks != null and studentStory.remarks != '' ">
+                remarks = #{studentStory.remarks},
+            </if>
+            <if test="studentStory.createUserId != null and studentStory.createUserId != '' ">
+                create_user_id = #{studentStory.createUserId},
+            </if>
+            <if test="studentStory.createDate != null ">
+                create_date = #{studentStory.createDate},
+            </if>
+            <if test="studentStory.updateUserId != null and studentStory.updateUserId != '' ">
+                update_user_id = #{studentStory.updateUserId},
+            </if>
+            <if test="studentStory.updateDate != null ">
+                update_date = #{studentStory.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{studentStory.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除学院风采
+       -->
+    <delete id="delete">
+        DELETE FROM tab_student_story
+        WHERE id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.RolePermissionMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+    <sql id="rolePermissionColumns">
+        id,role_id,permission_id
+    </sql>
+
+    <!--
+        public Integer add(@Validated(value = {TC_Add.class}) @Param("rolePermission") RolePermission rolePermission);
+        添加，在给角色授权时调用
+    -->
+    <insert id="add">
+        INSERT INTO tab_role_permission(<include refid="rolePermissionColumns"/>)
+        VALUES(#{rolePermission.id},#{rolePermission.roleId},#{rolePermission.permissionId})
+    </insert>
+
+    <!--public Integer delete(@Param("id") String id);
+        删除，取消角色权限时调用
+    -->
+    <delete id="delete">
+        DELETE FROM tab_role_permission
+        WHERE id = #{id}
+    </delete>
+
+    <!--public Integer update(@Validated(value = {TC_Update.class})@Param("rolePermission") RolePermission rolePermission);
+        更新，更新角色-权限信息时调用
+    -->
+    <update id="update">
+        UPDATE tab_role_permission
+        <trim prefix="set" suffixOverrides=",">
+            <if test="rolePermission.roleId != null and rolePermission.roleId != '' ">
+                role_id = #{rolePermission.roleId},
+            </if>
+            <if test="rolePermission.permissionId != null and rolePermission.permissionId != '' ">
+                permission_id = #{rolePermission.permissionId},
+            </if>
+        </trim>
+        WHERE id = #{rolePermission.id}
+    </update>
+
+    <!--   public RolePermission getRolePermissionByRoleIdAndPermissionId(@Param("roleId") String roleId, @Param("permissionId") String permissionId);
+        通过 角色id 与 权限id 获取角色-权限信息对象
+    -->
+    <select id="getRolePermissionByRoleIdAndPermissionId" resultType="com.trainingcenter.bean.RolePermission">
+        SELECT <include refid="rolePermissionColumns"/>
+        FROM tab_role_permission
+        WHERE role_id = #{roleId} AND permission_id = #{permissionId}
+    </select>
+
+    <!-- public List<RolePermission> getRolePermissionByRoleId(@Param("roleId") String roleId);
+        通过 角色id 获取 角色-权限信息对象
+    -->
+    <select id="getRolePermissionByRoleId" resultType="com.trainingcenter.bean.RolePermission">
+        SELECT <include refid="rolePermissionColumns"/>
+        FROM tab_role_permission
+        WHERE role_id = #{roleId}
+    </select>
+
+    <!-- public List<RolePermission> getRolePermissionByPermissionId(@Param("permissionId") String permissionId);
+        通过 权限id 获取 角色-权限信息对象
+    -->
+    <select id="getRolePermissionByPermissionId" resultType="com.trainingcenter.bean.RolePermission">
+        SELECT <include refid="rolePermissionColumns"/>
+        FROM tab_role_permission
+        WHERE permission_id = #{permissionId}
+    </select>
+</mapper>

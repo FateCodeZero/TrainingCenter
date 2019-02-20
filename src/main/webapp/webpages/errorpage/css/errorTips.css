@@ -1,0 +1,53 @@
+@charset "utf-8";
+/* CSS Document */
+
+.bg_css
+{
+	background-image: url("../images/error_bg.PNG");
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+a {font-size:25px}
+a:link {color: #FFFFFF; text-decoration:none; !important;} /*未访问：蓝色、无下划线*/
+a:active {color: #2D6CDF; } /*激活：蓝色*/
+a:visited {color:#FFFFFF;text-decoration:none;} /*已访问：蓝色、无下划线*/
+a:hover {color: #2D6CDF; text-decoration:underline;} /*鼠标移近：白色、下划线*/
+
+.center-vertical
+{
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.notFond1
+{
+
+	font-size: 200px;
+	display: inline-block;
+	color: #ffffff;
+	padding:0px;
+	margin: 0px;
+	height: 300px;
+
+}
+.notFond2
+{
+	font-size: 30px;
+	display: inline-block;
+	color: #ffffff;
+	padding:0px;
+	margin: 0px;
+}
+.notFond3
+{
+	font-size: 20px;
+	display: inline-block;
+	color: #ffffff;
+	padding:0px;
+	margin: 0px;
+}
+

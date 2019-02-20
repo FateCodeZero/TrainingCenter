@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.CommunicationTeachingMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="communicationTeachingcolumns">
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public CommunicationTeaching getCommunicationTeachingById(@Param("id") String id);
+        通过id获取动态培训
+    -->
+    <select id="getCommunicationTeachingById" resultType="com.trainingcenter.bean.CommunicationTeaching">
+        SELECT <include refid="communicationTeachingcolumns"></include>
+        FROM tab_communication_teaching
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<CommunicationTeaching> getCommunicationTeachings(Integer start, Integer number, String searchContent);
+        分页查询所有动态培训
+    -->
+    <select id="getCommunicationTeachings" resultType="com.trainingcenter.bean.CommunicationTeaching">
+        SELECT <include refid="communicationTeachingcolumns"></include>
+        FROM tab_communication_teaching
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;title&quot; and value != null and value != '' ">
+                        and title = #{value}
+                    </if>
+                    <if test="key == &quot;content&quot; and value != null and value != '' ">
+                        and  content= #{value}
+                    </if>
+                    <if test="key == &quot;remarks&quot; and value != null ">
+                        and remarks = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and
+                        (
+                        title like CONCAT('%',#{value},'%')
+                        OR content like CONCAT('%',#{value},'%')
+                        OR state like CONCAT('%',#{value},'%')
+                        OR remarks like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY create_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("communicationTeaching") CommunicationTeaching communicationTeaching;
+    动态培训添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.CommunicationTeaching">
+        INSERT INTO tab_communication_teaching(<include refid="communicationTeachingcolumns"></include>)
+        VALUES (#{communicationTeaching.id},#{communicationTeaching.title},#{communicationTeaching.imgs},#{communicationTeaching.content},#{communicationTeaching.remarks},#{communicationTeaching.createUserId},#{communicationTeaching.createDate},
+        #{communicationTeaching.updateUserId},#{communicationTeaching.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("communicationTeaching") CommunicationTeaching communicationTeaching);
+            更新动态培训信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.CommunicationTeaching">
+        UPDATE tab_communication_teaching
+        <trim prefix="set" suffixOverrides=",">
+            <if test="communicationTeaching.title != null and communicationTeaching.title != '' ">
+                title = #{communicationTeaching.title},
+            </if>
+            <if test="communicationTeaching.imgs != null and communicationTeaching.imgs != '' ">
+                imgs = #{communicationTeaching.imgs},
+            </if>
+            <if test="communicationTeaching.content != null and communicationTeaching.content != '' ">
+                content = #{communicationTeaching.content},
+            </if>
+            <if test="communicationTeaching.remarks != null and communicationTeaching.remarks != '' ">
+                remarks = #{communicationTeaching.remarks},
+            </if>
+            <if test="communicationTeaching.createUserId != null and communicationTeaching.createUserId != '' ">
+                create_user_id = #{communicationTeaching.createUserId},
+            </if>
+            <if test="communicationTeaching.createDate != null">
+                create_date = #{communicationTeaching.createDate},
+            </if>
+            <if test="communicationTeaching.updateUserId != null and communicationTeaching.updateUserId != '' ">
+                update_user_id = #{communicationTeaching.updateUserId},
+            </if>
+            <if test="communicationTeaching.updateDate != null">
+                update_date = #{communicationTeaching.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{communicationTeaching.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除动态培训
+       -->
+    <delete id="delete">
+        DELETE FROM tab_communication_teaching
+        WHERE id = #{id}
+    </delete>
+</mapper>

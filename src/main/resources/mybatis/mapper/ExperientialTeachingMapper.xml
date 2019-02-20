@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.ExperientialTeachingMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="experientialTeachingcolumns">
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public ExperientialTeaching getExperientialTeachingById(@Param("id") String id);
+        通过id获取动态培训
+    -->
+    <select id="getExperientialTeachingById" resultType="com.trainingcenter.bean.ExperientialTeaching">
+        SELECT <include refid="experientialTeachingcolumns"></include>
+        FROM tab_experiential_teaching
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<ExperientialTeaching> getExperientialTeachings(Integer start, Integer number, String searchContent);
+        分页查询所有动态培训
+    -->
+    <select id="getExperientialTeachings" resultType="com.trainingcenter.bean.ExperientialTeaching">
+        SELECT <include refid="experientialTeachingcolumns"></include>
+        FROM tab_experiential_teaching
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;title&quot; and value != null and value != '' ">
+                        and title = #{value}
+                    </if>
+                    <if test="key == &quot;content&quot; and value != null and value != '' ">
+                        and  content= #{value}
+                    </if>
+                    <if test="key == &quot;remarks&quot; and value != null ">
+                        and remarks = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and
+                        (
+                        title like CONCAT('%',#{value},'%')
+                        OR content like CONCAT('%',#{value},'%')
+                        OR state like CONCAT('%',#{value},'%')
+                        OR remarks like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY create_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("experientialTeaching") ExperientialTeaching experientialTeaching;
+    动态培训添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.ExperientialTeaching">
+        INSERT INTO tab_experiential_teaching(<include refid="experientialTeachingcolumns"></include>)
+        VALUES (#{experientialTeaching.id},#{experientialTeaching.title},#{experientialTeaching.imgs},#{experientialTeaching.content},#{experientialTeaching.remarks},#{experientialTeaching.createUserId},#{experientialTeaching.createDate},
+        #{experientialTeaching.updateUserId},#{experientialTeaching.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("experientialTeaching") ExperientialTeaching experientialTeaching);
+            更新动态培训信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.ExperientialTeaching">
+        UPDATE tab_experiential_teaching
+        <trim prefix="set" suffixOverrides=",">
+            <if test="experientialTeaching.title != null and experientialTeaching.title != '' ">
+                title = #{experientialTeaching.title},
+            </if>
+            <if test="experientialTeaching.imgs != null and experientialTeaching.imgs != '' ">
+                imgs = #{experientialTeaching.imgs},
+            </if>
+            <if test="experientialTeaching.content != null and experientialTeaching.content != '' ">
+                content = #{experientialTeaching.content},
+            </if>
+            <if test="experientialTeaching.remarks != null and experientialTeaching.remarks != '' ">
+                remarks = #{experientialTeaching.remarks},
+            </if>
+            <if test="experientialTeaching.createUserId != null and experientialTeaching.createUserId != '' ">
+                create_user_id = #{experientialTeaching.createUserId},
+            </if>
+            <if test="experientialTeaching.createDate != null">
+                create_date = #{experientialTeaching.createDate},
+            </if>
+            <if test="experientialTeaching.updateUserId != null and experientialTeaching.updateUserId != '' ">
+                update_user_id = #{experientialTeaching.updateUserId},
+            </if>
+            <if test="experientialTeaching.updateDate != null ">
+                update_date = #{experientialTeaching.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{experientialTeaching.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除动态培训
+       -->
+    <delete id="delete">
+        DELETE FROM tab_experiential_teaching
+        WHERE id = #{id}
+    </delete>
+</mapper>

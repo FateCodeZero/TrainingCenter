@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.AnnunciationMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="annunciationcolumns">
+      id,title,content,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public Annunciation getAnnunciationById(@Param("id") String id);
+        通过id获取新闻信息
+    -->
+    <select id="getAnnunciationById" resultType="com.trainingcenter.bean.Annunciation">
+        SELECT <include refid="annunciationcolumns"></include>
+        FROM tab_annunciation
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<Annunciation> getAnnunciations(Integer start, Integer number, String searchContent);
+        分页查询所有新闻信息
+    -->
+    <select id="getAnnunciations" resultType="com.trainingcenter.bean.Annunciation">
+        SELECT <include refid="annunciationcolumns"></include>
+        FROM tab_annunciation
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;title&quot; and value != null and value != '' ">
+                        and title = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and
+                        (
+                        title like CONCAT('%',#{value},'%')
+                        OR content like CONCAT('%',#{value},'%')
+                        OR state like CONCAT('%',#{value},'%')
+                        OR remarks like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY create_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("annunciation") Annunciation annunciation;
+    新闻信息添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.Annunciation">
+        INSERT INTO tab_annunciation(<include refid="annunciationcolumns"></include>)
+        VALUES (#{annunciation.id},#{annunciation.title},#{annunciation.content},#{annunciation.remarks},#{annunciation.createUserId},#{annunciation.createDate},
+        #{annunciation.updateUserId},#{annunciation.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("annunciation") Annunciation annunciation);
+            更新新闻信息信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.Annunciation">
+        UPDATE tab_annunciation
+        <trim prefix="set" suffixOverrides=",">
+            <if test="annunciation.title != null and annunciation.title != '' ">
+                title = #{annunciation.title},
+            </if>
+            <if test="annunciation.content != null and annunciation.content != '' ">
+                content = #{annunciation.content},
+            </if>
+            <if test="annunciation.remarks != null and annunciation.remarks != '' ">
+                remarks = #{annunciation.remarks},
+            </if>
+            <if test="annunciation.createUserId != null and annunciation.createUserId != '' ">
+                create_user_id = #{annunciation.createUserId},
+            </if>
+            <if test="annunciation.createDate != null">
+                create_date = #{annunciation.createDate},
+            </if>
+            <if test="annunciation.updateUserId != null and annunciation.updateUserId != '' ">
+                update_user_id = #{annunciation.updateUserId},
+            </if>
+            <if test="annunciation.updateDate != null">
+                update_date = #{annunciation.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{annunciation.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除新闻信息
+       -->
+    <delete id="delete">
+        DELETE FROM tab_annunciation
+        WHERE id = #{id}
+    </delete>
+</mapper>

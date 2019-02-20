@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.TrainingDynamicMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="trainingdynamiccolumns">
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public TrainingDynamic getTrainingDynamicById(@Param("id") String id);
+        通过id获取动态培训
+    -->
+    <select id="getTrainingDynamicById" resultType="com.trainingcenter.bean.TrainingDynamic">
+        SELECT <include refid="trainingdynamiccolumns"></include>
+        FROM tab_training_dynamic
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<TrainingDynamic> getTrainingDynamics(Integer start, Integer number, String searchContent);
+        分页查询所有动态培训
+    -->
+    <select id="getTrainingDynamics" resultType="com.trainingcenter.bean.TrainingDynamic">
+        SELECT <include refid="trainingdynamiccolumns"></include>
+        FROM tab_training_dynamic
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;title&quot; and value != null and value != '' ">
+                        and title = #{value}
+                    </if>
+                    <if test="key == &quot;content&quot; and value != null and value != '' ">
+                        and  content= #{value}
+                    </if>
+                    <if test="key == &quot;remarks&quot; and value != null ">
+                        and remarks = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and
+                        (
+                        title like CONCAT('%',#{value},'%')
+                        OR content like CONCAT('%',#{value},'%')
+                        OR state like CONCAT('%',#{value},'%')
+                        OR remarks like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY create_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("trainingDynamic") TrainingDynamic trainingDynamic;
+    动态培训添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.TrainingDynamic">
+        INSERT INTO tab_training_dynamic(<include refid="trainingdynamiccolumns"></include>)
+        VALUES (#{trainingDynamic.id},#{trainingDynamic.title},#{trainingDynamic.imgs},#{trainingDynamic.content},#{trainingDynamic.remarks},#{trainingDynamic.createUserId},#{trainingDynamic.createDate},
+        #{trainingDynamic.updateUserId},#{trainingDynamic.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("trainingDynamic") TrainingDynamic trainingDynamic);
+            更新动态培训信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.TrainingDynamic">
+        UPDATE tab_training_dynamic
+        <trim prefix="set" suffixOverrides=",">
+            <if test="trainingDynamic.title != null and trainingDynamic.title != '' ">
+                title = #{trainingDynamic.title},
+            </if>
+            <if test="trainingDynamic.imgs != null and trainingDynamic.imgs != '' ">
+                imgs = #{trainingDynamic.imgs},
+            </if>
+            <if test="trainingDynamic.content != null and trainingDynamic.content != '' ">
+                content = #{trainingDynamic.content},
+            </if>
+            <if test="trainingDynamic.remarks != null and trainingDynamic.remarks != '' ">
+                remarks = #{trainingDynamic.remarks},
+            </if>
+            <if test="trainingDynamic.createUserId != null and trainingDynamic.createUserId != '' ">
+                create_user_id = #{trainingDynamic.createUserId},
+            </if>
+            <if test="trainingDynamic.createDate != null ">
+                create_date = #{trainingDynamic.createDate},
+            </if>
+            <if test="trainingDynamic.updateUserId != null and trainingDynamic.updateUserId != '' ">
+                update_user_id = #{trainingDynamic.updateUserId},
+            </if>
+            <if test="trainingDynamic.updateDate != null ">
+                update_date = #{trainingDynamic.updateDate},
+            </if>
+        </trim>
+        WHERE id = #{trainingDynamic.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除动态培训
+       -->
+    <delete id="delete">
+        DELETE FROM tab_training_dynamic
+        WHERE id = #{id}
+    </delete>
+</mapper>

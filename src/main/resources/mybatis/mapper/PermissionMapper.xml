@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.PermissionMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"/>
+
+
+    <sql id="permissionColumns">
+      id,`name`,resource_id,operations,state,`describe`,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public Permission getPermissionById(@Param("id") String id);
+        通过id获取权限
+    -->
+    <select id="getPermissionById" resultType="com.trainingcenter.bean.Permission">
+        SELECT
+        <include refid="permissionColumns"></include>
+        FROM tab_permission
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<Permission> getPermissions(@Param("start") Integer start, @Param("number") Integer number,
+                               @Param("condition") Map<String,Object> condition);
+        分页查询所有权限，condition：自定义查询条件，模糊查询的 key 固定为 searchContent
+    -->
+    <select id="getPermissions" resultType="com.trainingcenter.bean.Permission">
+        SELECT
+        <include refid="permissionColumns"></include>
+        FROM tab_permission
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;name&quot; and value != null and value != '' ">
+                        and `name` = #{value}
+                    </if>
+                    <if test="key == &quot;state&quot; and value != null ">
+                        and state = #{value}
+                    </if>
+                    <if test="(key == &quot;resourceId&quot; or key == &quot;resource_id&quot;) and value != null ">
+                        and resource_id = #{value}
+                    </if>
+                    <if test="key == &quot;operations&quot; and value != null ">
+                        and FIND_IN_SET(#{value},operations)>0
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and (
+                        `name` like CONCAT('%',#{value},'%')
+                        OR state like CONCAT('%',#{value},'%')
+                        OR resource_id like CONCAT('%',#{value},'%')
+                        OR FIND_IN_SET(#{value},operations)>0
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY update_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+        public Integer add(@Validated(value = {TC_Add.class}) @Param("permission") Permission permission);
+        权限添加
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.Permission">
+        INSERT INTO tab_permission(<include refid="permissionColumns"></include>)
+        VALUES
+        (#{permission.id},#{permission.name},#{permission.resourceId},#{permission.operations},#{permission.state},
+        #{permission.describe},#{permission.remarks},#{permission.createUserId},#{permission.createDate},
+        #{permission.updateUserId},#{permission.updateDate})
+    </insert>
+
+    <!--
+           public Integer update(@Validated(value = {TC_Update.class}) @Param("permission") Permission permission);
+            更新权限信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.Permission">
+        UPDATE tab_permission
+        <trim prefix="set" suffixOverrides=",">
+            <if test="permission.name != null and permission.name != '' ">
+                `name` = #{permission.name},
+            </if>
+            <if test="permission.resourceId != null and permission.resourceId != '' ">
+                resource_id = #{permission.resourceId},
+            </if>
+            <if test="permission.operations != null and permission.operations != '' ">
+                operations = #{permission.operations},
+            </if>
+            <if test="permission.state != null ">
+                state = #{permission.state},
+            </if>
+            <if test="permission.describe != null and permission.describe != '' ">
+                `describe` = #{permission.describe},
+            </if>
+            <if test="permission.remarks != null and permission.remarks != '' ">
+                remarks = #{permission.remarks},
+            </if>
+            <if test="permission.updateUserId != null and permission.updateUserId != '' ">
+                update_user_id = #{permission.updateUserId},
+            </if>
+            <if test="permission.updateDate != null ">
+                update_date = #{permission.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{permission.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除权限
+       -->
+    <delete id="delete">
+        DELETE FROM tab_permission
+        WHERE id = #{id}
+    </delete>
+
+    <!--
+       public List<Permission> getPermissionsByRoleId(@Param("roleId") String roleId,@Param("start") Integer start,
+                                                 @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
+        通过id 获取指定 角色 所含有的全部权限，支持分页与模糊查询
+        -->
+    <select id="getPermissionsByRoleId" resultType="com.trainingcenter.bean.Permission">
+        SELECT
+        p.id,p.name,p.resource_id,p.operations,p.state,p.describe,p.remarks,p.create_user_id,p.create_date,p.create_date,p.update_user_id,p.update_date
+        FROM tab_permission p LEFT JOIN tab_role_permission rp ON p.id = rp.permission_id
+        <trim prefix="WHERE" prefixOverrides="and">
+            rp.role_id = #{roleId}
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;name&quot; and value != null and value != '' ">
+                        and `name` = #{value}
+                    </if>
+                    <if test="key == &quot;state&quot; and value != null ">
+                        and state = #{value}
+                    </if>
+                    <if test="(key == &quot;resourceId&quot; or key == &quot;resource_id&quot;) and value != null ">
+                        and resource_id = #{value}
+                    </if>
+                    <if test="key == &quot;operations&quot; and value != null ">
+                        and FIND_IN_SET(#{value},operations)>0
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and (
+                        `name` like CONCAT('%',#{value},'%')
+                        OR state like CONCAT('%',#{value},'%')
+                        OR resource_id like CONCAT('%',#{value},'%')
+                        OR FIND_IN_SET(#{value},operations)>0
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY update_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+</mapper>

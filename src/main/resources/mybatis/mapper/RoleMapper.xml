@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.RoleMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="roleColumns">
+      id,`name`,state,`describe`,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public Role getRoleById(@Param("id") String id);
+        通过id获取角色
+    -->
+    <select id="getRoleById" resultType="com.trainingcenter.bean.Role">
+        SELECT
+        <include refid="roleColumns"></include>
+        FROM tab_role
+        WHERE id = #{id}
+    </select>
+
+    <!--public Role getRoleByName(@Param("name") String name);
+        通过角色名称获取角色
+    -->
+    <select id="getRoleByName" resultType="com.trainingcenter.bean.Role">
+        SELECT
+        <include refid="roleColumns"></include>
+        FROM tab_role
+        WHERE name = #{name}
+    </select>
+
+    <!-- public List<Role> getRoles(Integer start, Integer number, String searchContent);
+        分页查询所有角色
+    -->
+    <select id="getRoles" resultType="com.trainingcenter.bean.Role">
+        SELECT
+        <include refid="roleColumns"></include>
+        FROM tab_role
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null ">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;name&quot; and value != null and value != '' ">
+                        and `name` = #{value}
+                    </if>
+                    <if test="key == &quot;state&quot; and value != null ">
+                        and state = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and (
+                        `name` like CONCAT('%',#{value},'%')
+                        OR state like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY update_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Validated(value = {TC_Add.class}) @Param("role") Role role);
+    角色添加
+    -->
+    <insert id="add">
+        INSERT INTO tab_role(<include refid="roleColumns"></include>)
+        VALUES
+        (#{role.id},#{role.name},#{role.state},#{role.describe},#{role.remarks},#{role.createUserId},#{role.createDate},
+        #{role.updateUserId},#{role.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Validated(value = {TC_Update.class}) @Param("role") Role role);
+            更新角色信息
+            -->
+    <update id="update">
+        UPDATE tab_role
+        <trim prefix="set" suffixOverrides=",">
+            <if test="role.name != null and role.name != '' ">
+                `name` = #{role.name},
+            </if>
+            <if test="role.state != null">
+                state = #{role.state},
+            </if>
+            <if test="role.describe != null and role.describe != '' ">
+                `describe` = #{role.describe},
+            </if>
+            <if test="role.remarks != null and role.remarks != '' ">
+                remarks = #{role.remarks},
+            </if>
+            <if test="role.updateUserId != null and role.updateUserId != '' ">
+                update_user_id = #{role.updateUserId},
+            </if>
+            <if test="role.updateDate != null ">
+                update_date = #{role.updateDate},
+            </if>
+        </trim>
+        WHERE id = #{role.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除角色
+       -->
+    <delete id="delete">
+        DELETE FROM tab_role
+        WHERE id = #{id}
+    </delete>
+
+    <!--
+       public List<Role> getRolesByUserId(@Param("userId") String userId,@Param("start") Integer start,
+                                                 @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
+        获取登录用户所含角色集合，condition：自定义查询条件
+        -->
+    <select id="getRolesByUserId" resultType="com.trainingcenter.bean.Role">
+        SELECT
+        r.id,r.name,r.state,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
+        FROM tab_role r LEFT JOIN tab_user_role ur ON r.id = ur.role_id
+        WHERE ur.user_id = #{userId}
+        <trim prefixOverrides="AND">
+            <if test="condition != null ">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;name&quot; and value != null and value != '' ">
+                        and r.name = #{value}
+                    </if>
+                    <if test="key == &quot;state&quot; and value != null ">
+                        and r.state = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and r.create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and r.update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and (
+                        r.name like CONCAT('%',#{value},'%')
+                        OR r.state like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY update_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--public List<Role> getRolesByPermissionId(@Param("permissionId") String permissionId, @Param("start") Integer start,
+                                                         @Param("number") Integer number, @Param("condition") Map<String,Object> condition);
+       获取含有指定权限的所有角色
+                                                         -->
+    <select id="getRolesByPermissionId" resultType="com.trainingcenter.bean.Role">
+        SELECT
+        r.id,r.name,r.state,r.describe,r.remarks,r.create_user_id,r.create_date,r.create_date,r.update_user_id,r.update_date
+        FROM tab_role r LEFT JOIN tab_role_permission rp ON r.id = rp.role_id
+        WHERE rp.permission_id = #{permissionId}
+        <trim prefixOverrides="AND">
+            <if test="condition != null ">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;name&quot; and value != null and value != '' ">
+                        and r.name = #{value}
+                    </if>
+                    <if test="key == &quot;state&quot; and value != null ">
+                        and r.state = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and r.create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and r.update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and (
+                        r.name like CONCAT('%',#{value},'%')
+                        OR r.state like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY update_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+</mapper>

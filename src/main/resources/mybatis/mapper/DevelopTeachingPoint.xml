@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trainingcenter.dao.DevelopTeachingPointMapper">
+    <!--使用二级缓存-->
+    <cache-ref namespace="com.trainingcenter.dao.UserMapper"></cache-ref>
+
+
+    <sql id="trainingdynamiccolumns">
+      id,title,imgs,content,remarks,create_user_id,create_date,update_user_id,update_date
+    </sql>
+
+    <!-- public DevelopTeachingPoint getDevelopTeachingPointById(@Param("id") String id);
+        通过id获取动态培训
+    -->
+    <select id="getDevelopTeachingPointById" resultType="com.trainingcenter.bean.DevelopTeachingPoint">
+        SELECT <include refid="trainingdynamiccolumns"></include>
+        FROM tab_develop_teaching_point
+        WHERE id = #{id}
+    </select>
+
+    <!-- public List<DevelopTeachingPoint> getDevelopTeachingPoints(Integer start, Integer number, String searchContent);
+        分页查询所有动态培训
+    -->
+    <select id="getDevelopTeachingPoints" resultType="com.trainingcenter.bean.DevelopTeachingPoint">
+        SELECT <include refid="trainingdynamiccolumns"></include>
+        FROM tab_develop_teaching_point
+        <trim prefix="WHERE" prefixOverrides="and">
+            <if test="condition != null">
+                <foreach collection="condition" index="key" item="value">
+                    <if test="key == &quot;title&quot; and value != null and value != '' ">
+                        and title = #{value}
+                    </if>
+                    <if test="key == &quot;content&quot; and value != null and value != '' ">
+                        and  content= #{value}
+                    </if>
+                    <if test="key == &quot;remarks&quot; and value != null ">
+                        and remarks = #{value}
+                    </if>
+                    <if test="(key == &quot;createUserId&quot; or key == &quot;create_user_id&quot;) and value != null and value != '' ">
+                        and create_user_id = #{value}
+                    </if>
+                    <if test="(key == &quot;updateUserId&quot; or key == &quot;update_user_id&quot;) and value != null and value != '' ">
+                        and update_user_id = #{value}
+                    </if>
+                    <if test="key == &quot;searchContent&quot; and value != null and value != '' ">
+                        and
+                        (
+                        title like CONCAT('%',#{value},'%')
+                        OR content like CONCAT('%',#{value},'%')
+                        OR state like CONCAT('%',#{value},'%')
+                        OR remarks like CONCAT('%',#{value},'%')
+                        )
+                    </if>
+                </foreach>
+            </if>
+        </trim>
+        ORDER BY create_date DESC
+        <if test="start != null and number != null">
+            LIMIT #{start},#{number}
+        </if>
+    </select>
+
+    <!--
+    public Integer add(@Param("developTeachingPoint") DevelopTeachingPoint developTeachingPoint;
+    动态培训添加，需要开启 Mysql 的allowMultiQueries连接属性，即连接时添加allowMultiQueries=true
+    -->
+    <insert id="add" parameterType="com.trainingcenter.bean.DevelopTeachingPoint">
+        INSERT INTO tab_develop_teaching_point(<include refid="trainingdynamiccolumns"></include>)
+        VALUES (#{developTeachingPoint.id},#{developTeachingPoint.title},#{developTeachingPoint.imgs},#{developTeachingPoint.content},#{developTeachingPoint.remarks},#{developTeachingPoint.createUserId},#{developTeachingPoint.createDate},
+        #{developTeachingPoint.updateUserId},#{developTeachingPoint.updateDate})
+    </insert>
+
+    <!--
+            public Integer update(@Param("developTeachingPoint") DevelopTeachingPoint developTeachingPoint);
+            更新动态培训信息
+            -->
+    <update id="update" parameterType="com.trainingcenter.bean.DevelopTeachingPoint">
+        UPDATE tab_develop_teaching_point
+        <trim prefix="set" suffixOverrides=",">
+            <if test="developTeachingPoint.title != null and developTeachingPoint.title != '' ">
+                title = #{developTeachingPoint.title},
+            </if>
+            <if test="developTeachingPoint.imgs != null and developTeachingPoint.imgs != '' ">
+                imgs = #{developTeachingPoint.imgs},
+            </if>
+            <if test="developTeachingPoint.content != null and developTeachingPoint.content != '' ">
+                content = #{developTeachingPoint.content},
+            </if>
+            <if test="developTeachingPoint.remarks != null and developTeachingPoint.remarks != '' ">
+                remarks = #{developTeachingPoint.remarks},
+            </if>
+            <if test="developTeachingPoint.createUserId != null and developTeachingPoint.createUserId != '' ">
+                create_user_id = #{developTeachingPoint.createUserId},
+            </if>
+            <if test="developTeachingPoint.createDate != null ">
+                create_date = #{developTeachingPoint.createDate},
+            </if>
+            <if test="developTeachingPoint.updateUserId != null and developTeachingPoint.updateUserId != '' ">
+                update_user_id = #{developTeachingPoint.updateUserId},
+            </if>
+            <if test="developTeachingPoint.updateDate != null ">
+                update_date = #{developTeachingPoint.updateDate},
+            </if>
+
+        </trim>
+        WHERE id = #{developTeachingPoint.id}
+    </update>
+
+    <!--
+       public Integer delete(@Param("id") String id);
+       通过id删除动态培训
+       -->
+    <delete id="delete">
+        DELETE FROM tab_develop_teaching_point
+        WHERE id = #{id}
+    </delete>
+</mapper>
