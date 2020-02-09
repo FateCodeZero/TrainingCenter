@@ -25,7 +25,7 @@
         <aspectj.version>1.9.1</aspectj.version>
 
         <!-- 控制 c3p0 数据源版本 -->
-        <c3p0.version>0.9.5.2</c3p0.version>
+        <c3p0.version>0.9.5.4</c3p0.version>
 
         <!-- 控制tomcat jar 包版本 -->
         <tomcat.version>9.0.1</tomcat.version>
