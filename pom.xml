@@ -278,7 +278,7 @@
         </dependency>
 
         <!--JCaptcha验证码 -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.octo.captcha</groupId>
             <artifactId>jcaptcha</artifactId>
             <version>${jcaptcha.version}</version>
@@ -287,7 +287,7 @@
             <groupId>com.jhlabs</groupId>
             <artifactId>imaging</artifactId>
             <version>01012005</version>
-        </dependency>
+        </dependency>-->
 
         <!-- servlet-api -->
         <dependency>
