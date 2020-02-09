@@ -57,7 +57,7 @@
         <jcaptcha.version>1.0</jcaptcha.version>
 
         <!-- 控制JSR303 校验标准 版本 -->
-        <JSR303.version>6.0.10.Final</JSR303.version>
+        <JSR303.version>6.1.0.Final</JSR303.version>
 
         <!--控制 jackson Json数据格式处理版本 -->
         <jackson.version>2.9.6</jackson.version>
