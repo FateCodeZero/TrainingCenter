@@ -10,7 +10,7 @@
         <spring.version>5.0.6.RELEASE</spring.version>
 
         <!-- spring-security 权限框架 -->
-        <spring-security.version>5.0.6.RELEASE</spring-security.version>
+        <spring-security.version>5.3.3.RELEASE</spring-security.version>
         <security-oauth2.version>2.3.3.RELEASE</security-oauth2.version>
 
         <!--谷歌验证码生成器-->
