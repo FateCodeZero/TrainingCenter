@@ -69,7 +69,7 @@
         <commons-fileupload.version>1.3.3</commons-fileupload.version>
 
         <!-- 控制 log4j 日志包版本 -->
-        <log4j.version>2.11.0</log4j.version>
+        <log4j.version>2.13.3</log4j.version>
 
         <!-- 控制 slf4j 日志包版本 -->
         <slf4j.version>1.7.25</slf4j.version>
