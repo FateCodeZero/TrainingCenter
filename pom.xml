@@ -7,7 +7,7 @@
     <packaging>war</packaging>
     <properties>
         <!-- 控制Spring版本 -->
-        <spring.version>5.0.6.RELEASE</spring.version>
+        <spring.version>5.2.22.RELEASE</spring.version>
 
         <!-- spring-security 权限框架 -->
         <spring-security.version>5.0.6.RELEASE</spring-security.version>
