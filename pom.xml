@@ -60,7 +60,7 @@
         <JSR303.version>6.0.10.Final</JSR303.version>
 
         <!--控制 jackson Json数据格式处理版本 -->
-        <jackson.version>2.9.6</jackson.version>
+        <jackson.version>2.12.6.1</jackson.version>
 
         <!-- 控制 json 相关 -->
         <json.version>2.4</json.version>
